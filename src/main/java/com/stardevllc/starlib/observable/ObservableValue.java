@@ -15,11 +15,11 @@ public class ObservableValue<T> {
         this.value = object;
     }
     
-    public T get() {
+    public T getValue() {
         return value;
     }
     
-    public void set(T object) {
+    public void setValue(T object) {
         if (!this.changeListeners.isEmpty()) {
             this.changeListeners.forEach(changeListener -> changeListener.onChange(this, this.value, object));
         }

@@ -8,11 +8,11 @@ public class Property<T> extends ObservableValue<T> {
     }
     
     public void bind(ObservableValue<T> observableValue) {
-        observableValue.addChangeListener((value, oldValue, newValue) -> set(newValue));
+        observableValue.addChangeListener((value, oldValue, newValue) -> setValue(newValue));
     }
     
     public void bidirectionalBind(ObservableValue<T> observableValue) {
         bind(observableValue);
-        this.addChangeListener((value, oldValue, newValue) -> observableValue.set(newValue));
+        this.addChangeListener((value, oldValue, newValue) -> observableValue.setValue(newValue));
     }
 }
