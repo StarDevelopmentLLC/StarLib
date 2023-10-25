@@ -1,8 +1,5 @@
 package com.stardevllc.starlib;
 
-import com.stardevllc.starlib.observable.ChangeListener;
-import com.stardevllc.starlib.observable.ObservableValue;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,8 +12,8 @@ import java.util.Set;
  */
 public final class Value implements Cloneable {
 
-    private ObservableValue<Type> type = new ObservableValue<>();
-    private ObservableValue<Object> object = new ObservableValue<>();
+    private Type type;
+    private Object object;
 
     /**
      * Constructs a new value
@@ -24,22 +21,22 @@ public final class Value implements Cloneable {
      * @param object The actual object of the value
      */
     public Value(Type type, Object object) {
-        this.type.set(type);
-        this.object.set(object);
+        this.type = type;
+        this.object = object;
     }
 
     /**
      * @return This value's type
      */
     public Type getType() {
-        return type.get();
+        return type;
     }
 
     /**
      * @return The actual object of the value
      */
     public Object get() {
-        return object.get();
+        return object;
     }
 
     /**
@@ -53,19 +50,11 @@ public final class Value implements Cloneable {
             return;
         }
         
-        if (!this.type.get().isValidClass(object.getClass())) {
+        if (!this.type.isValidClass(object.getClass())) {
             return;
         }
         
-        this.object.set(object);
-    }
-
-    /**
-     * Change listeners allow for detecting when the object is changed, note, things set by reflection are not detected by this.
-     * @param listener The listener to add.
-     */
-    public void addChangeListener(ChangeListener<Object> listener) {
-        object.addChangeListener(listener);
+        this.object = object;
     }
 
     /**
@@ -73,11 +62,11 @@ public final class Value implements Cloneable {
      * @return The object as an integer, or 0 if it is not
      */
     public int getAsInt() {
-        if (object.get() instanceof Number n) {
+        if (object instanceof Number n) {
             return n.intValue();
-        } else if (object.get() instanceof String str) {
+        } else if (object instanceof String str) {
             return Integer.parseInt(str);
-        } else if (object.get() instanceof Boolean bool) {
+        } else if (object instanceof Boolean bool) {
             return bool ? 1 : 0;
         }
         return 0;
@@ -88,11 +77,11 @@ public final class Value implements Cloneable {
      * @return The object as a double, or 0.0 if it is not
      */
     public double getAsDouble() {
-        if (object.get() instanceof Number n) {
+        if (object instanceof Number n) {
             return n.doubleValue();
-        } else if (object.get() instanceof String str) {
+        } else if (object instanceof String str) {
             return Double.parseDouble(str);
-        } else if (object.get() instanceof Boolean bool) {
+        } else if (object instanceof Boolean bool) {
             return bool ? 1.0 : 0.0;
         }
         return 0.0;
@@ -103,11 +92,11 @@ public final class Value implements Cloneable {
      * @return The object as a long, or 0 if it is not
      */
     public long getAsLong() {
-        if (object.get() instanceof Number n) {
+        if (object instanceof Number n) {
             return n.longValue();
-        } else if (object.get() instanceof String str) {
+        } else if (object instanceof String str) {
             return Long.parseLong(str);
-        } else if (object.get() instanceof Boolean bool) {
+        } else if (object instanceof Boolean bool) {
             return bool ? 1 : 0;
         }
         return 0;
@@ -133,15 +122,15 @@ public final class Value implements Cloneable {
      * @return The object as a boolean
      */
     public boolean getAsBoolean() {
-        if (object.get() instanceof Boolean bool) {
+        if (object instanceof Boolean bool) {
             return bool;
-        } else if (object.get() instanceof String str) {
+        } else if (object instanceof String str) {
             return Boolean.parseBoolean(str);
-        } else if (object.get() instanceof Integer integer) {
+        } else if (object instanceof Integer integer) {
             return integer == 1;
-        } else if (object.get() instanceof Long longValue) {
+        } else if (object instanceof Long longValue) {
             return longValue == 1;
-        } else if (object.get() instanceof Double doubleValue) {
+        } else if (object instanceof Double doubleValue) {
             return doubleValue == 1.0;
         }
         return false;
@@ -160,8 +149,8 @@ public final class Value implements Cloneable {
             return null;
         }
 
-        if (clazz.equals(this.object.get().getClass())) {
-            return (T) object.get();
+        if (clazz.equals(this.object.getClass())) {
+            return (T) object;
         }
 
         return null;
