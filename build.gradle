@@ -9,6 +9,16 @@ repositories {
 dependencies {
 }
 
+javadoc {
+    source = sourceSets.main.allJava
+    destinationDir = file("/docs")
+    options {
+        showFromPublic()
+        quiet()
+    }
+    
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
