@@ -9,6 +9,9 @@ repositories {
 dependencies {
 }
 
+group = "com.stardevllc"
+version = "1.0.0-SNAPSHOT"
+
 javadoc {
     source = sourceSets.main.allJava
     destinationDir = file("/docs")
@@ -23,4 +26,7 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+    
+    withJavadocJar()
+    withSourcesJar()
 }
