@@ -7,7 +7,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * A class to make it easier to recursively get friends and methods of a class
+ * A class to make it easier to recursively get fields and methods of a class <br>
+ * There is no caching of these though, but this is planned.
  */
 public final class ReflectionHelper {
     

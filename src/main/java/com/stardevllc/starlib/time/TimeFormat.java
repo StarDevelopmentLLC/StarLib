@@ -70,6 +70,10 @@ public class TimeFormat {
         return formattedTime;
     }
 
+    /**
+     * Sets the pattern to be used.
+     * @param pattern The new pattern string
+     */
     public void setPattern(String pattern) {
         this.unitPatterns.clear();
         this.pattern = pattern;

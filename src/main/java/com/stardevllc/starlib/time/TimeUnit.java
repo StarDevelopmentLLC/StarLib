@@ -11,9 +11,12 @@ public enum TimeUnit {
     MINUTES(SECONDS.msPerUnit * 60, "minute", "min", "m"),
     HOURS(MINUTES.msPerUnit * 60, "hour", "h"),
     DAYS(HOURS.msPerUnit * 24, "day", "d"),
+    /**
+     * The {@code WEEKS} value is based on a 7.604166666666667-day week. This is the average weeks in a month based on the below month value
+     */
     WEEKS((long) (DAYS.msPerUnit * 7.604166666666667), "week", "w"),
     /**
-     * The {@code MONTHS} value is based on a 30-day month. If another day count is needed, convert from the {@code DAYS} enum value
+     * The {@code MONTHS} value is based on a 30.41666667-day month. This is the average days in a month based on a 365 day year
      */
     MONTHS((long) (DAYS.msPerUnit * 30.41666667), "month", "mo"),
     /**

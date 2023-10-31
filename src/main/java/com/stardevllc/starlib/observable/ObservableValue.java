@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A value that allows listening to changes made to it. <br>
+ * Use the {@link ChangeListener} to listen for these changes and the appropriate addChangeListener method. <br>
+ * Changes made via Java Reflection do not trigger the change listener(s). <br>
+ * Loosly based on the JavaFX Beans 
+ * @param <T>
+ */
 public class ObservableValue<T> {
     protected T value;
     protected List<ChangeListener<T>> changeListeners = new ArrayList<>();

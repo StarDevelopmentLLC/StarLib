@@ -3,7 +3,7 @@ package com.stardevllc.starlib.task;
 /**
  * This class allows running tasks either now, with a delay or with a delay and a period<br>
  * This is mainly meant for use of abstracting code that is primarily used with Spigot as the structure is similar to that of the BukkitScheduler<br>
- * This is still fully functional with the default implementation in a non-Spigot environment and just uses Java's Timer class<br>
+ * If you want a default implementation, the Java Timer class works pretty well, just implement this class and use the timer for the later methods
  */
 public interface TaskFactory {
     /**

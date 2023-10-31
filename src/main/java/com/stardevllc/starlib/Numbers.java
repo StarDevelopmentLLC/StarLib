@@ -1,5 +1,10 @@
 package com.stardevllc.starlib;
 
+/**
+ * Just some number utilities that are useful. <br>
+ * The toXXX() methods check against the Number instance to get the value or parse it while silently catching the exceptions <br>
+ * The default return of each method is 0
+ */
 public final class Numbers {
     private Numbers() {}
     public static int toInt(Object object) {

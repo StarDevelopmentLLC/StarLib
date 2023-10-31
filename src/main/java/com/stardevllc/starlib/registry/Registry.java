@@ -4,6 +4,15 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * This class represents a list of objects that are mapped to keys. Yes, there is the Java Map and this uses a TreeMap behind the scenes. <br>
+ * This does provide a way to "normalize" keys to make them all the same. This function is fine to be null as there are checks where it would normally be used. <br>
+ * Another thing though is that this class implements the Iterable interface for the values, so you can use this in enhanced for-loops directly. <br>
+ * Changes made to returned collections do not affect the underlying Map as these methods return a copy of the underlying collection(s) <br>
+ * That makes it safe to modify the Registry if you are iterating over the contents technically.
+ * @param <K> The Key Type, Must implement the Comparable interface
+ * @param <V> The Value Type
+ */
 public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
     protected final TreeMap<K, V> objects = new TreeMap<>();
     protected final Function<K, K> keyNormalizer;
@@ -44,9 +53,9 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
         }
         return objects.get(key);
     }
-
+    
     public Map<K, V> getObjects() {
-        return new HashMap<>(this.objects);
+        return new TreeMap<>(this.objects);
     }
 
     public boolean contains(K key) {

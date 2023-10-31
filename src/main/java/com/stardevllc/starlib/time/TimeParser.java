@@ -29,6 +29,13 @@ public class TimeParser {
         return Stream.of(years, months, weeks, days, hours, minutes, seconds).mapToLong(Pair::firstValue).sum();
     }
 
+    /**
+     * Parses a date that is split with colons. Please note: You must have Years, Months, Days. <br>
+     * Hour minute and seconds are optional, but all must be present if they exist. 
+     * @param rawDate The date
+     * @return The time in milliseconds in UTC
+     * @throws IllegalArgumentException If the format is wrong
+     */
     public long parseDate(String rawDate) throws IllegalArgumentException {
         ParsedDate parsedDate = parseRawDate(rawDate);
         if (parsedDate == null) {
@@ -38,6 +45,12 @@ public class TimeParser {
         return zonedDateTime.toInstant().toEpochMilli();
     }
 
+    /**
+     * See the other documentation, just returns it as an object instead of a time
+     * @param rawDate The date
+     * @return The time in milliseconds in UTC
+     * @throws IllegalArgumentException If the format is wrong
+     */
     public ParsedDate parseRawDate(String rawDate) throws IllegalArgumentException {
         String[] inputArray = rawDate.split(" ");
         if (inputArray.length < 1) {

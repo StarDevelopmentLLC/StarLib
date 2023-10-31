@@ -1,7 +1,9 @@
 package com.stardevllc.starlib.time;
 
 /**
- * This class will allow representing a duration that will allow arithmetic operations using the custom TimeUnits
+ * This class represents a duration that will allow arithmetic operations using the custom TimeUnits <br>
+ * This stores the value as milliseconds <br>
+ * The methods should be pretty obvious
  */
 public class Duration {
     private long time;
