@@ -2,7 +2,7 @@ package com.stardevllc.starlib.observable;
 
 /**
  * An observable value that allows binding the value to another and/or vica versa <br>
- * There are plans for default Properties for java types to make it easier, but that will be in future updates.
+ * You can find some default properties in the property sub-package
  * @param <T>
  */
 public class Property<T> extends ObservableValue<T> {
