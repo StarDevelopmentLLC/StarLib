@@ -4,8 +4,8 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class Registry<K, V> implements Iterable<V> {
-    protected final Map<K, V> objects = new HashMap<>();
+public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
+    protected final TreeMap<K, V> objects = new TreeMap<>();
     protected final Function<K, K> keyNormalizer;
 
     public Registry(Map<K, V> initialObjects, Function<K, K> keyNormalizer) {
@@ -13,6 +13,10 @@ public class Registry<K, V> implements Iterable<V> {
             objects.putAll(initialObjects);
         }
         this.keyNormalizer = keyNormalizer;
+    }
+
+    public Registry(Map<K, V> initialObjects) {
+        this(initialObjects, null);
     }
 
     public Registry(Function<K, K> keyNormalizer) {
