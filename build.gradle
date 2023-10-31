@@ -10,7 +10,7 @@ dependencies {
 }
 
 group = "com.stardevllc"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 
 javadoc {
     source = sourceSets.main.allJava
@@ -19,6 +19,11 @@ javadoc {
         showFromPublic()
         quiet()
     }
+}
+
+tasks.withType(Javadoc).configureEach {
+    failOnError false
+    options.quiet()
 }
 
 java {
