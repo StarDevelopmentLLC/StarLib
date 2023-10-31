@@ -10,21 +10,21 @@ dependencies {
 }
 
 group = "com.stardevllc"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 
-javadoc {
-    source = sourceSets.main.allJava
-    destinationDir = file("/docs")
-    options {
-        showFromPublic()
-        quiet()
-    }
-}
-
-tasks.withType(Javadoc).configureEach {
-    failOnError false
-    options.quiet()
-}
+//javadoc {
+//    source = sourceSets.main.allJava
+//    destinationDir = file("/docs")
+//    options {
+//        showFromPublic()
+//        quiet()
+//    }
+//}
+//
+//tasks.withType(Javadoc).configureEach {
+//    failOnError false
+//    options.quiet()
+//}
 
 java {
     toolchain {
