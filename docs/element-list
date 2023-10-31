@@ -5,6 +5,7 @@ com.stardevllc.starlib.observable.collections.impl.list
 com.stardevllc.starlib.observable.collections.impl.map
 com.stardevllc.starlib.observable.collections.impl.set
 com.stardevllc.starlib.observable.collections.listeners
+com.stardevllc.starlib.observable.property
 com.stardevllc.starlib.reflection
 com.stardevllc.starlib.registry
 com.stardevllc.starlib.task
