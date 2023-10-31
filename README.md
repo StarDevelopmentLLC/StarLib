@@ -2,9 +2,18 @@
 A general-purpose Java Library that provides simple utilities
 
 [![](https://www.jitpack.io/v/StarDevelopmentLLC/StarLib.svg)](https://www.jitpack.io/#StarDevelopmentLLC/StarLib)
-
-Use JitPack for the repo.  
-URL: https://www.jitpack.io  
-Group: com.github.StarDevelopmentLLC  
-Artifact: StarLib  
-Version: The version of the latest release  
+## To use this Library
+You must add JitPack as a repo, below is for Gradle
+```groovy
+repositories {
+    maven {
+        url = 'https://www.jitpack.io'
+    }
+}
+```  
+Then to use this library as a dependency
+```goovy
+dependencies {
+    implementation 'com.github.StarDevelopmentLLC:StarLib:1.0.0-SNAPSHOT'
+}
+```
