@@ -19,7 +19,6 @@ javadoc {
         showFromPublic()
         quiet()
     }
-    
 }
 
 java {
