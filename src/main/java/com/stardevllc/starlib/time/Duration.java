@@ -10,6 +10,10 @@ public class Duration {
     
     public Duration() {}
     
+    public long getTime() {
+        return time;
+    }
+    
     public Duration(TimeUnit unit, long time) {
         this.time = unit.toMillis(time);
     }
