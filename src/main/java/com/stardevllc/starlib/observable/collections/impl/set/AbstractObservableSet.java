@@ -6,6 +6,7 @@ import com.stardevllc.starlib.observable.collections.listeners.SetChangeListener
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -137,5 +138,25 @@ public abstract class AbstractObservableSet<T> implements ObservableSet<T> {
     @Override
     public void forEach(Consumer<? super T> action) {
         this.value.forEach(action);
+    }
+
+    @Override
+    public Spliterator<T> spliterator() {
+        return this.value.spliterator();
+    }
+
+    @Override
+    public <T1> T1[] toArray(IntFunction<T1[]> generator) {
+        return this.value.toArray(generator);
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return this.value.containsAll(c);
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Cannot call retainAll on an ObservableSet");
     }
 }

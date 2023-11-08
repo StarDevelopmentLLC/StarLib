@@ -4,11 +4,11 @@ import com.stardevllc.starlib.observable.collections.ObservableList;
 import com.stardevllc.starlib.observable.collections.listeners.ListChangeListener;
 import com.stardevllc.starlib.observable.collections.listeners.ListChangeListener.Change;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 public abstract class AbstractObservableList<T> implements ObservableList<T> {
@@ -161,5 +161,68 @@ public abstract class AbstractObservableList<T> implements ObservableList<T> {
     @Override
     public Stream<T> parallelStream() {
         return value.parallelStream();
+    }
+
+    @Override
+    public void replaceAll(UnaryOperator<T> operator) {
+        throw new UnsupportedOperationException("Cannot use replaceAll on an ObservableList");
+    }
+
+    @Override
+    public void sort(Comparator<? super T> c) {
+        this.value.sort(c);
+    }
+
+    @Override
+    public Spliterator<T> spliterator() {
+        return this.value.spliterator();
+    }
+
+    @Override
+    public <T1> T1[] toArray(IntFunction<T1[]> generator) {
+        return this.value.toArray(generator);
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super T> filter) {
+        throw new IllegalArgumentException("Cannot use removeIf on an ObservableList");
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return this.value.containsAll(c);
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends T> c) {
+        boolean result = this.value.addAll(index, c);
+        if (result) {
+            Change<T> change = new Change<>(this);
+            change.getAdded().addAll(c);
+            for (ListChangeListener<T> changeListener : this.changeListeners) {
+                changeListener.onChange(change);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Cannot call retainAll on an ObservableList");
+    }
+
+    @Override
+    public ListIterator<T> listIterator() {
+        return this.value.listIterator();
+    }
+
+    @Override
+    public ListIterator<T> listIterator(int index) {
+        return this.value.listIterator();
+    }
+
+    @Override
+    public List<T> subList(int fromIndex, int toIndex) {
+        return new ArrayList<>(this.value.subList(fromIndex, toIndex));
     }
 }

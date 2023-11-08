@@ -6,6 +6,8 @@ import com.stardevllc.starlib.observable.collections.listeners.MapChangeListener
 
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V> {
     
@@ -90,5 +92,74 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     @Override
     public void forEach(BiConsumer<? super K, ? super V> action) {
         value.forEach(action);
+    }
+
+    @Override
+    public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
+        throw new UnsupportedOperationException("Cannot call replaceAll on an ObservableMap");
+    }
+
+    @Override
+    public V putIfAbsent(K key, V value) {
+        V v = this.value.putIfAbsent(key, value);
+        Change<K, V> change = new Change<>(this, key, value, v);
+        for (MapChangeListener<K, V> changeListener : this.changeListeners) {
+            changeListener.onChange(change);
+        }
+        return v;
+    }
+
+    @Override
+    public boolean remove(Object key, Object value) {
+        boolean remove = this.value.remove(key, value);
+        if (remove) {
+            Change<K, V> change = new Change<>(this, (K) key, null, (V) value);
+            this.changeListeners.forEach(listener -> listener.onChange(change));
+        }
+        return remove;
+    }
+
+    @Override
+    public boolean replace(K key, V oldValue, V newValue) {
+        boolean replace = this.value.replace(key, oldValue, newValue);
+        if (replace) {
+            Change<K, V> change = new Change<>(this, key, oldValue, newValue);
+            this.changeListeners.forEach(listener -> listener.onChange(change));
+        }
+        return replace;
+    }
+
+    @Override
+    public V replace(K key, V value) {
+        return ObservableMap.super.replace(key, value);
+    }
+
+    @Override
+    public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+        throw new UnsupportedOperationException("Cannot call computeIfAbsent on an ObservableMap");
+    }
+
+    @Override
+    public V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        throw new UnsupportedOperationException("Cannot call computeIfPresent on an ObservableMap");
+    }
+
+    @Override
+    public V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        throw new UnsupportedOperationException("Cannot call compute on an ObservableMap");
+    }
+
+    @Override
+    public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+        throw new UnsupportedOperationException("Cannot call merge on an ObservableMap");
+    }
+
+    @Override
+    public void putAll(Map<? extends K, ? extends V> m) {
+        this.value.putAll(m);
+        m.forEach((key, value) -> {
+            Change<K, V> change = new Change<>(this, key, value, null);
+            this.changeListeners.forEach(listener -> listener.onChange(change));
+        });
     }
 }
