@@ -1,5 +1,7 @@
 package com.stardevllc.starlib.observable;
 
+import com.stardevllc.starlib.observable.property.BindChangeListener;
+
 /**
  * An observable value that allows binding the value to another and/or vica versa <br>
  * You can find some default properties in the property sub-package
@@ -25,7 +27,25 @@ public class Property<T> extends ObservableValue<T> {
      * @param observableValue The other value
      */
     public void bidirectionalBind(ObservableValue<T> observableValue) {
-        bind(observableValue);
-        this.addChangeListener((value, oldValue, newValue) -> observableValue.setValue(newValue));
+        observableValue.addChangeListener((BindChangeListener<T>) (observable, oldObject, newObject) -> {
+            value = newObject;
+            for (ChangeListener<T> changeListener : this.changeListeners) {
+                if (changeListener instanceof BindChangeListener<T>) {
+                    continue;
+                }
+                
+                changeListener.onChange(observable, oldObject, newObject);
+            }
+        });
+        this.addChangeListener((BindChangeListener<T>) (observable, oldObject, newObject) -> {
+            observableValue.value = newObject;
+            for (ChangeListener<T> changeListener : observableValue.changeListeners) {
+                if (changeListener instanceof BindChangeListener<T>) {
+                    continue;
+                }
+
+                changeListener.onChange(observable, oldObject, newObject);
+            }
+        });
     }
 }

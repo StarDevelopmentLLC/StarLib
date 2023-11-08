@@ -27,11 +27,20 @@ public class ObservableValue<T> {
     }
     
     public void setValue(T object) {
+        if (this.value != null && object != null) {
+            if (this.value == object || this.value.equals(object)) {
+                return;
+            }
+        }
+        
+        callChangeListeners(object);
+        this.value = object;
+    }
+    
+    protected void callChangeListeners(T object) {
         if (!this.changeListeners.isEmpty()) {
             this.changeListeners.forEach(changeListener -> changeListener.onChange(this, this.value, object));
         }
-        
-        this.value = object;
     }
     
     public void addChangeListener(ChangeListener<T> changeListener) {
