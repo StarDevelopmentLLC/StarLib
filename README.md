@@ -14,7 +14,7 @@ repositories {
 Then to use this library as a dependency
 ```goovy
 dependencies {
-    implementation 'com.github.StarDevelopmentLLC:StarLib:1.0.0-SNAPSHOT'
+    implementation 'com.github.StarDevelopmentLLC:StarLib:1.0.0-alpha.1'
 }
 ```  
 You must shade this library in order to properly use it, or have it already on the class-path. Gradle has the Shadow Plugin you can use for this task.  
