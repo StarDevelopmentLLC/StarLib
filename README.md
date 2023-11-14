@@ -19,3 +19,10 @@ dependencies {
 ```  
 You must shade this library in order to properly use it, or have it already on the class-path. Gradle has the Shadow Plugin you can use for this task.  
 If you are using Maven, the Maven-Shade plugin works just fine.
+
+## Official Downloads
+This list serves as a way to double check to see if a download/post is officially supported. The list below is subject to change and lists only official releases of this Library
+- [GitHub Releases](https://github.com/StarDevelopmentLLC/StarLib/releases)
+- [SpigotMC](https://www.spigotmc.org/resources/starlib.106562/)
+- [Paper Hangar](https://hangar.papermc.io/Firestar311/StarLib)
+- [BuiltByBit (Formerly MCMarket)](https://builtbybit.com/resources/starlib.34903/)
