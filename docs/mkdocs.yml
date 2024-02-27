@@ -1,0 +1,37 @@
+site_name: StarLib Wiki
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.path
+    - content.code.copy
+    - content.code.annotate
+nav:
+  - Home: 'index.md'
+  - 'Time Utilities': 
+    - TimeUnit: 'timeunit.md'
+    - Duration: 'duration.md'
+    - TimeParser: 'timeparser.md'
+    - TimeFormat: 'timeformat.md'
+  - Numbers: 'numbers.md'
+  - Pair: 'pair.md'
+  - Value: 'value.md'
+  - Reflection:
+      - ReflectionHelper: 'reflectionhelper.md'
+      - URLClassLoader: 'urlclassloaderaccess.md'
+  - Tasks: 'tasks.md'
+  - Registry: 'registry.md'
+  - Observable: 
+      - ObservableValue: 'observablevalue.md'
+      - ObservableCollections: 'observablecollections.md'
+      - Property: 'property.md'
+repo_url: 'https://github.com/StarDevelopmentLLC/StarLib'
+repo_name: 'StarDevelopmentLLC/StarLib'
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
