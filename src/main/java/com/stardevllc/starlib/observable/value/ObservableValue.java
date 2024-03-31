@@ -42,24 +42,12 @@ public interface ObservableValue<T> extends Observable {
     T getValue();
 
     <U> ObservableValue<U> map(Function<? super T, ? extends U> mapper);
-//    {
-//        return new MappedBinding<>(this, mapper);
-//    }
 
     ObservableValue<T> orElse(T constant);
-//    {
-//        return new OrElseBinding<>(this, constant);
-//    }
 
     <U> ObservableValue<U> flatMap(Function<? super T, ? extends ObservableValue<? extends U>> mapper);
-//    {
-//        return new FlatMappedBinding<>(this, mapper);
-//    }
 
     ObservableValue<T> when(ObservableValue<Boolean> condition);
-//    {
-//        return new ConditionalBinding<>(this, condition);
-//    }
 
     default Subscription subscribe(BiConsumer<? super T, ? super T> changeSubscriber) {
         Objects.requireNonNull(changeSubscriber, "changeSubscriber cannot be null");
