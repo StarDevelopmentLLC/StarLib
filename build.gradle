@@ -29,5 +29,3 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
-
-tasks.build.finalizedBy(publishToMavenLocal)
