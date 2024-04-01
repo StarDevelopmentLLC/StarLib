@@ -9,22 +9,22 @@
       
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../duration/">
       
       
-        <link rel="next" href="../duration/">
+        <link rel="next" href="../timeformat/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
-        <title>TimeUnit - StarLib Wiki</title>
+        <title>TimeParser - StarLib Wiki</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
       
       
 
@@ -43,7 +43,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#timeunit-enum" class="md-skip">
+        <a href="#timeparser-class" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="StarLib Wiki" class="md-header__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
+    <a href="../.." title="StarLib Wiki" class="md-header__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -96,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TimeUnit
+              TimeParser
             
           </span>
         </div>
@@ -177,7 +177,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -198,7 +198,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+        <a href="../timeunit/" class="md-tabs__link">
           
   
   Time Utilities
@@ -214,7 +214,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../numbers/" class="md-tabs__link">
+      <a href="../../helper/numbers/" class="md-tabs__link">
         
   
     
@@ -231,7 +231,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../pair/" class="md-tabs__link">
+      <a href="../../pair/" class="md-tabs__link">
         
   
     
@@ -248,7 +248,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../value/" class="md-tabs__link">
+      <a href="../../value/" class="md-tabs__link">
         
   
     
@@ -267,7 +267,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../reflectionhelper/" class="md-tabs__link">
+        <a href="../../reflection/reflectionhelper/" class="md-tabs__link">
           
   
   Reflection
@@ -283,7 +283,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../tasks/" class="md-tabs__link">
+      <a href="../../tasks/" class="md-tabs__link">
         
   
     
@@ -300,7 +300,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../registry/" class="md-tabs__link">
+      <a href="../../registry/" class="md-tabs__link">
         
   
     
@@ -316,17 +316,33 @@
   
   
   
+    <li class="md-tabs__item">
+      <a href="../../converter/" class="md-tabs__link">
+        
+  
     
+  
+  Converter
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../observable/" class="md-tabs__link">
+        
+  
     
-      <li class="md-tabs__item">
-        <a href="../observablevalue/" class="md-tabs__link">
-          
   
   Observable
 
-        </a>
-      </li>
-    
+      </a>
+    </li>
   
 
       
@@ -352,7 +368,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="StarLib Wiki" class="md-nav__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
+    <a href="../.." title="StarLib Wiki" class="md-nav__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -382,7 +398,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -442,30 +458,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    TimeUnit
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../timeunit/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -474,44 +470,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#motivation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Motivation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -542,10 +500,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../timeparser/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    TimeParser
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -554,6 +532,44 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parse-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parse Time
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parse-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parse Date
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -594,7 +610,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../numbers/" class="md-nav__link">
+      <a href="../../helper/numbers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -614,7 +630,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pair/" class="md-nav__link">
+      <a href="../../pair/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -634,7 +650,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../value/" class="md-nav__link">
+      <a href="../../value/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -692,7 +708,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reflectionhelper/" class="md-nav__link">
+      <a href="../../reflection/reflectionhelper/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -713,7 +729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../urlclassloaderaccess/" class="md-nav__link">
+      <a href="../../reflection/urlclassloaderaccess/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -741,7 +757,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tasks/" class="md-nav__link">
+      <a href="../../tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -761,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../registry/" class="md-nav__link">
+      <a href="../../registry/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -780,104 +796,36 @@
   
   
   
-    
-    
+    <li class="md-nav__item">
+      <a href="../../converter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Converter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
     
       
       
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observable/" class="md-nav__link">
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
-        
-          
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
-            
   
   <span class="md-ellipsis">
     Observable
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9">
-            <span class="md-nav__icon md-icon"></span>
-            Observable
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../observablevalue/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ObservableValue
-  </span>
-  
-
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../observablecollections/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ObservableCollections
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../property/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Property
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -909,18 +857,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#motivation" class="md-nav__link">
+  <a href="#parse-time" class="md-nav__link">
     <span class="md-ellipsis">
-      Motivation
+      Parse Time
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#parse-date" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage
+      Parse Date
     </span>
   </a>
   
@@ -944,15 +892,18 @@
   
 
 
-<h1 id="timeunit-enum">TimeUnit Enum</h1>
-<p><em>Disclaimer: I know that Java has a built-in enum for this. However, if you read the Motivation, you can probably understand why I created this.</em></p>
-<h2 id="motivation">Motivation</h2>
-<p>The main motivation behind this enum is to provide a consistent and predictable time for each unit and it has also been tailored to fit a 365 day year as well as add values for Weeks, Months and Years.<br />
-This class also provides an easy way to make aliases for each unit for use in other classes.
-This is used in other libraries/projects extensively.</p>
-<h2 id="usage">Usage</h2>
-<p>This is pretty similar to Java's TimeUnit class, however they are not interchangeable and you may get weird results if you switch between them.<br />
-All Libraries from Star Development LLC will use this TimeUnit enum instead of Java's, however they are both ultimately using the Epoc Milliseconds, calculations will be different. </p>
+<h1 id="timeparser-class">TimeParser Class</h1>
+<p>This class takes in a time represented as a String and converts it into a value in milliseconds based on <a href="../timeunit/">TimeUnit</a>s<br />
+The inverse of this class is the <a href="../timeformat/">TimeFormat</a> class, if you are looking for that one.</p>
+<h2 id="parse-time">Parse Time</h2>
+<p>This method takes in what you would call a "duration" amount and converts it. Pretty much you can have any of the TimeUnits and/or their aliases with the value for the number in front of it and it will convert.<br />
+It should <em>theoretically (Have not done a lot of testing for this)</em> work if the arguments are out of order.<br />
+So this class will take something like <code>5s</code> and convert it into <code>5000</code> milliseconds. Or convert <code>1m5s</code> into <code>65000</code> milliseconds etc...
+This is mainly focused around user input and is for example, used in parsing temporary punishment time arguments in one of my project's punishment handling for players. </p>
+<h2 id="parse-date">Parse Date</h2>
+<p>This method takes in a date represented in the format <code>yyyy:MM:dd</code> with optional <code>hh:mm:ss</code> in UTC time zone.<br />
+The Year, Month, Day group must always exist and all 3 must be present. When using the Hour, Minute, Second group, all must be present if used.<br />
+The two groups are separated by a <code>:</code></p>
 
 
 
@@ -999,10 +950,10 @@ All Libraries from Star Development LLC will use this TimeUnit enum instead of J
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.path", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.path", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
       
     
   </body>

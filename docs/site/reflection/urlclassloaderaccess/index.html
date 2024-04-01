@@ -9,22 +9,22 @@
       
       
       
-        <link rel="prev" href="../timeunit/">
+        <link rel="prev" href="../reflectionhelper/">
       
       
-        <link rel="next" href="../timeparser/">
+        <link rel="next" href="../../tasks/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
-        <title>Duration - StarLib Wiki</title>
+        <title>URLClassLoader - StarLib Wiki</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
       
       
 
@@ -43,7 +43,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#duration-class" class="md-skip">
+        <a href="#urlclassloaderaccess-class" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="StarLib Wiki" class="md-header__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
+    <a href="../.." title="StarLib Wiki" class="md-header__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -96,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Duration
+              URLClassLoader
             
           </span>
         </div>
@@ -177,7 +177,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -192,13 +192,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../timeunit/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../time/timeunit/" class="md-tabs__link">
           
   
   Time Utilities
@@ -214,7 +212,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../numbers/" class="md-tabs__link">
+      <a href="../../helper/numbers/" class="md-tabs__link">
         
   
     
@@ -231,7 +229,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../pair/" class="md-tabs__link">
+      <a href="../../pair/" class="md-tabs__link">
         
   
     
@@ -248,7 +246,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../value/" class="md-tabs__link">
+      <a href="../../value/" class="md-tabs__link">
         
   
     
@@ -263,10 +261,12 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../reflectionhelper/" class="md-tabs__link">
           
   
@@ -283,7 +283,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../tasks/" class="md-tabs__link">
+      <a href="../../tasks/" class="md-tabs__link">
         
   
     
@@ -300,7 +300,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../registry/" class="md-tabs__link">
+      <a href="../../registry/" class="md-tabs__link">
         
   
     
@@ -316,17 +316,33 @@
   
   
   
+    <li class="md-tabs__item">
+      <a href="../../converter/" class="md-tabs__link">
+        
+  
     
+  
+  Converter
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../observable/" class="md-tabs__link">
+        
+  
     
-      <li class="md-tabs__item">
-        <a href="../observablevalue/" class="md-tabs__link">
-          
   
   Observable
 
-        </a>
-      </li>
-    
+      </a>
+    </li>
   
 
       
@@ -341,6 +357,8 @@
           
             
               
+                
+              
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -352,7 +370,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="StarLib Wiki" class="md-nav__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
+    <a href="../.." title="StarLib Wiki" class="md-nav__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -382,11 +400,200 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Time Utilities
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Time Utilities
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../time/timeunit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TimeUnit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../time/duration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Duration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../time/timeparser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TimeParser
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../time/timeformat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TimeFormat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../helper/numbers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Numbers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pair/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pair
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../value/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Value
   </span>
   
 
@@ -417,257 +624,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    Time Utilities
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            Time Utilities
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../timeunit/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TimeUnit
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Duration
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Duration
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#creation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Creation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../timeparser/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TimeParser
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../timeformat/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TimeFormat
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../numbers/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Numbers
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pair/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Pair
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../value/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Value
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -678,7 +638,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Reflection
@@ -710,10 +670,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../urlclassloaderaccess/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -722,6 +691,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -741,7 +711,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tasks/" class="md-nav__link">
+      <a href="../../tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -761,7 +731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../registry/" class="md-nav__link">
+      <a href="../../registry/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -780,104 +750,36 @@
   
   
   
-    
-    
+    <li class="md-nav__item">
+      <a href="../../converter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Converter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
     
       
       
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observable/" class="md-nav__link">
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
-        
-          
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
-            
   
   <span class="md-ellipsis">
     Observable
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9">
-            <span class="md-nav__icon md-icon"></span>
-            Observable
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../observablevalue/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ObservableValue
-  </span>
-  
-
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../observablecollections/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ObservableCollections
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../property/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Property
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -890,7 +792,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -901,32 +805,6 @@
   
     
   
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#creation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Creation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -944,17 +822,14 @@
   
 
 
-<h1 id="duration-class">Duration Class</h1>
-<p>This is a class that is designed to represent durations.<br />
-This class does use the <a href="../timeunit/">TimeUnit</a> class for determining the length of units. This is a custom class in StarLib.  </p>
-<h2 id="creation">Creation</h2>
-<p>To create a <code>Duration</code> simply instantiate the constructor with a TimeUnit and a length
-<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">Duration</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Duration</span><span class="p">(</span><span class="n">TimeUnit</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="p">);</span>
-</span></code></pre></div></p>
-<h2 id="usage">Usage</h2>
-<p>There are a range of arithmetic methods that you can call that acts on the actual value of the duration.<br />
-Just simply call these methods to perform that arithmetic operation. Each of these methods return the Duration instance in a Builder pattern to allow much easier chains.<br />
-Then you can call the <code>getTime()</code> method to get the actual time of the duration.</p>
+<h1 id="urlclassloaderaccess-class">URLClassLoaderAccess class</h1>
+<p>This class provides a way to use the <code>URLClassLoader#add(URL)</code> method as it is protected by default. This was created for use with Spigot Plugin Class Loaders to add jar files to the class-path at run-time.<br />
+This class will use Reflection as the first way of modification as it is the safest way to it.<br />
+If it cannot use Reflection, it will try to use the Unsafe class to do it.<br />
+If either of these methods do not work, then it just can't do anything and will throw <code>UnsupportedOperationException</code>s.<br />
+Use the static <code>create(URLClassLoader)</code> method to instantiate the class and it will automatically do what it needs to do.<br />
+In most cases, the reflection method should not fail unless something is using a SecurityManager (Or equivilent).<br />
+Then in those cases, the Unsafe way of doing works pretty well. And I have not yet had it fail. But I am sure it will at some point as these Java Modules are a pain for reflection. </p>
 
 
 
@@ -962,8 +837,13 @@ Then you can call the <code>getTime()</code> method to get the actual time of th
 
 
 
+  
+  
 
 
+
+
+  
 
 
 
@@ -1001,10 +881,10 @@ Then you can call the <code>getTime()</code> method to get the actual time of th
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.path", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.path", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
       
     
   </body>

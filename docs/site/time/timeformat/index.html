@@ -9,22 +9,22 @@
       
       
       
-        <link rel="prev" href="../registry/">
+        <link rel="prev" href="../timeparser/">
       
       
-        <link rel="next" href="../observablecollections/">
+        <link rel="next" href="../../helper/numbers/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
-        <title>ObservableValue - StarLib Wiki</title>
+        <title>TimeFormat - StarLib Wiki</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
       
       
 
@@ -43,7 +43,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#observablevalue-class" class="md-skip">
+        <a href="#timeformat-class" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="StarLib Wiki" class="md-header__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
+    <a href="../.." title="StarLib Wiki" class="md-header__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -96,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ObservableValue
+              TimeFormat
             
           </span>
         </div>
@@ -177,7 +177,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -192,10 +192,12 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../timeunit/" class="md-tabs__link">
           
   
@@ -212,7 +214,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../numbers/" class="md-tabs__link">
+      <a href="../../helper/numbers/" class="md-tabs__link">
         
   
     
@@ -229,7 +231,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../pair/" class="md-tabs__link">
+      <a href="../../pair/" class="md-tabs__link">
         
   
     
@@ -246,7 +248,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../value/" class="md-tabs__link">
+      <a href="../../value/" class="md-tabs__link">
         
   
     
@@ -265,7 +267,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../reflectionhelper/" class="md-tabs__link">
+        <a href="../../reflection/reflectionhelper/" class="md-tabs__link">
           
   
   Reflection
@@ -281,7 +283,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../tasks/" class="md-tabs__link">
+      <a href="../../tasks/" class="md-tabs__link">
         
   
     
@@ -298,7 +300,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../registry/" class="md-tabs__link">
+      <a href="../../registry/" class="md-tabs__link">
         
   
     
@@ -313,20 +315,34 @@
         
   
   
+  
+    <li class="md-tabs__item">
+      <a href="../../converter/" class="md-tabs__link">
+        
+  
     
   
+  Converter
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../observable/" class="md-tabs__link">
+        
   
     
-    
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
-          
   
   Observable
 
-        </a>
-      </li>
-    
+      </a>
+    </li>
   
 
       
@@ -341,8 +357,6 @@
           
             
               
-                
-              
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -354,7 +368,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="StarLib Wiki" class="md-nav__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
+    <a href="../.." title="StarLib Wiki" class="md-nav__button md-logo" aria-label="StarLib Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -384,7 +398,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -401,23 +415,28 @@
       
   
   
+    
   
   
+  
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -428,7 +447,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Time Utilities
@@ -502,10 +521,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../timeformat/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    TimeFormat
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -514,6 +553,35 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Format
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -533,7 +601,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../numbers/" class="md-nav__link">
+      <a href="../../helper/numbers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -553,7 +621,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pair/" class="md-nav__link">
+      <a href="../../pair/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -573,7 +641,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../value/" class="md-nav__link">
+      <a href="../../value/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -631,7 +699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reflectionhelper/" class="md-nav__link">
+      <a href="../../reflection/reflectionhelper/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -652,7 +720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../urlclassloaderaccess/" class="md-nav__link">
+      <a href="../../reflection/urlclassloaderaccess/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -680,7 +748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tasks/" class="md-nav__link">
+      <a href="../../tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -700,7 +768,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../registry/" class="md-nav__link">
+      <a href="../../registry/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -717,121 +785,38 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../converter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Converter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
     
+      
+      
   
   
   
-    
-    
-    
-      
+  
+    <li class="md-nav__item">
+      <a href="../../observable/" class="md-nav__link">
         
-        
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
-            
   
   <span class="md-ellipsis">
     Observable
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_9">
-            <span class="md-nav__icon md-icon"></span>
-            Observable
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    ObservableValue
-  </span>
-  
-
       </a>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../observablecollections/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ObservableCollections
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../property/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Property
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -844,9 +829,7 @@
             
             
               
-                
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -857,6 +840,23 @@
   
     
   
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Format
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -874,28 +874,33 @@
   
 
 
-<h1 id="observablevalue-class">ObservableValue class</h1>
-<p>This class is simply a wrapper-type class over another object. This allows listening to when the wrapped object is set to a different value. Note: This does not detect changes to the wrapped object instance values, but the actual value stored in the ObservableValue. It is recommended to use multiple observable values in more complex types to detect state changes.<br />
-Pretty much, it is intended to be used with primitive wrappers, Strings and some other simple types.<br />
-Consider the following:
-<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">ObservableValue</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">observableInteger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ObservableValue</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">observableInteger</span><span class="p">.</span><span class="na">getValue</span><span class="p">());</span>
+<h1 id="timeformat-class">TimeFormat Class</h1>
+<p>This class allows you to take the time in milliseconds and convert it to a customizable, human-readable format.<br />
+The inverse of this class is the <a href="../timeparser/">TimeParser</a> class, if you are looking for that one.</p>
+<h2 id="creating-a-format">Creating a Format</h2>
+<p>The time format class has a special format handling, all time formats must be enclosed between two <code>%</code> signs. This will change in the future, but that is what it is right now. This is more because I was handling the units differently and I have a significant amount of projects that are using how this functions and I am kind of lazy for now. I will probably run both of these in the future and deprecate the old format for eventual removal.
+The numbers are formatted using a <code>DecimalFormat</code>, so you can use the same variables for digits in the formats as you would in DecimalFormat. As a basic example, using a <code>#</code> for a number will mean that the number will only exist there if it goes to that digit. Alternatively using a <code>0</code> for a digit will mean that a 0 or the number will exist there. Please see the JavaDocs for your version of the JDK on DecimalFormat.
+Our custom format uses this for numbers, but there are some other information that you need to put into the <code>%</code>. The only actual requirement is the unit for the time. This can be any of the aliases in the <code>TimeFormat</code> class from SDLLC and when formatting, it will use that specific alias as the unit in the formatted String. If you don't specify a unit for a higher denomination of time, it will not put it there when formatting. If you do, the format will take the highest one and derive the lower ones from the remainder of the higher ones.<br />
+For example, take this code below:
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">long</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">MINUTES</span><span class="p">.</span><span class="na">toMillis</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">SECONDS</span><span class="p">.</span><span class="na">toMillis</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">TimeFormat</span><span class="w"> </span><span class="n">timeFormat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TimeFormat</span><span class="p">(</span><span class="s">&quot;%00s%&quot;</span><span class="p">);</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">timeFormat</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="n">time</span><span class="p">));</span>
 </span></code></pre></div>
-Is the same as
-<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">regularInteger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">regularInteger</span><span class="p">);</span>
+This prints out <code>130s</code> because we didn't specify we wanted minutes.
+Now if we change the format to use <code>%00m%%00s%</code>, it will now print out <code>02m10s</code>.
+Notice the leading <code>0</code>? That is because we are using zeros for the digits. We can make it so that it doesn't have a leading 0 by doing this <code>%#0m%%00s%</code>, and now the output is <code>2m10s</code>. We can do this for every single part of the format.
+But what if we want to specify a format for a higher unit, but omit it if it doesnt go that high? Well, we can put a <code>*</code> after the first <code>%</code> to do just that.<br />
+If we change our code to the following:
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">long</span><span class="w"> </span><span class="n">longTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">MINUTES</span><span class="p">.</span><span class="na">toMillis</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">SECONDS</span><span class="p">.</span><span class="na">toMillis</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">TimeFormat</span><span class="w"> </span><span class="n">timeFormat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TimeFormat</span><span class="p">(</span><span class="s">&quot;%*#0m%%00s%&quot;</span><span class="p">);</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Longer Time: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">timeFormat</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="n">longTime</span><span class="p">));</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Shorter Time: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">timeFormat</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">SECONDS</span><span class="p">.</span><span class="na">toMillis</span><span class="p">(</span><span class="mi">10</span><span class="p">)));</span>
 </span></code></pre></div>
-However, we can add a <code>ChangeListener</code> to listen for changes to the observableInteger.
-<div class="language-java highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">observableInteger</span><span class="p">.</span><span class="na">addChangeListener</span><span class="p">((</span><span class="n">observable</span><span class="p">,</span><span class="w"> </span><span class="n">oldValue</span><span class="p">,</span><span class="w"> </span><span class="n">newValue</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;The observableInteger was changed from &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">oldValue</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; to &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">newValue</span><span class="p">);</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">});</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">observableInteger</span><span class="p">.</span><span class="na">setValue</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+We get the following output:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Longer Time: 2m10s
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Shorter Time: 10s
 </span></code></pre></div>
-And we get one the following output:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>The observableInteger was changed from 10 to 20
-</span></code></pre></div></p>
-<p>And that is pretty much it for the ObservableValue. This is expanded upon in the <code>Property</code> class as well as the <code>ObservableList</code>, <code>ObservableSet</code> and <code>ObservableMap</code> classes. Take a look at their wiki pages for what you can do with them. </p>
+You can reuse the format, and it is thread-safe to do so. The <code>format</code> method's calculations and parsing are entirely contained within the method with some handy things being stored in the class. It also operates on a copy of the stored data, so you can change the format from another thread and it will finish without issues on the previous format. Subsequent calls will use the new one. This is different from DecimalFormat as that one is not thread-safe. The internal DecimalFormat is created on every call to <code>format()</code>. </p>
 
 
 
@@ -903,13 +908,8 @@ And we get one the following output:
 
 
 
-  
-  
 
 
-
-
-  
 
 
 
@@ -947,10 +947,10 @@ And we get one the following output:
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.path", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.path", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
       
     
   </body>
