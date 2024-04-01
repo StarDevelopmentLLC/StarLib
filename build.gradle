@@ -1,19 +1,33 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
 }
 
 repositories {
     mavenCentral()
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.github.StarDevelopmentLLC'
+            artifactId = 'StarLib'
+
+            from components.java
+        }
+    }
+}
+
 dependencies {
 }
 
 group = "com.stardevllc"
-version = "1.0.0-alpha.2"
+version = "1.0.0-alpha.3"
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+
+tasks.build.finalizedBy(publishToMavenLocal)

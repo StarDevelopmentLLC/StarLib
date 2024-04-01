@@ -10,6 +10,7 @@ import java.util.Set;
  * StarSQL has default integration for this class built into it. <br>
  * All you need to do to use this is to store it as a field and use the methods to interact with the value and type.
  */
+@Deprecated
 public final class Value implements Cloneable {
 
     private Type type;
