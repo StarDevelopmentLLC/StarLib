@@ -1,8 +1,10 @@
 package com.stardevllc.starlib.registry;
 
+import com.stardevllc.starlib.registry.functions.Normalizer;
+import com.stardevllc.starlib.registry.functions.Register;
+
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * This class represents a list of objects that are mapped to keys. Yes, there is the Java Map and this uses a TreeMap behind the scenes. <br>
@@ -15,25 +17,52 @@ import java.util.function.Function;
  */
 public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
     protected final TreeMap<K, V> objects = new TreeMap<>();
-    protected final Function<K, K> keyNormalizer;
+    protected final Normalizer<K> keyNormalizer;
+    protected final Register<V, K> registerFunction;
 
-    public Registry(Map<K, V> initialObjects, Function<K, K> keyNormalizer) {
+    public Registry(Map<K, V> initialObjects, Normalizer<K> keyNormalizer, Register<V, K> registerFunction) {
         if (initialObjects != null && !initialObjects.isEmpty()) {
             objects.putAll(initialObjects);
         }
         this.keyNormalizer = keyNormalizer;
+        this.registerFunction = registerFunction;
+    }
+
+    public Registry() {
+        this(null, null, null);
     }
 
     public Registry(Map<K, V> initialObjects) {
-        this(initialObjects, null);
-    }
-
-    public Registry(Function<K, K> keyNormalizer) {
-        this(null, keyNormalizer);
+        this(initialObjects, null, null);
     }
     
-    public Registry() {
-        this(null, null);
+    public Registry(Map<K, V> initialObjects, Normalizer<K> normalizer) {
+        this(initialObjects, normalizer, null);
+    }
+
+    public Registry(Map<K, V> initialObjects, Register<V, K> register) {
+        this(initialObjects, null, register);
+    }
+
+    public Registry(Normalizer<K> keyNormalizer, Register<V, K> registerFunction) {
+        this(null, keyNormalizer, registerFunction);
+    }
+
+    public Registry(Normalizer<K> keyNormalizer) {
+        this(null, keyNormalizer, null);
+    }
+
+    public Registry(Register<V, K> registerFunction) {
+        this(null, null, registerFunction);
+    }
+
+    public void register(V object) {
+        if (registerFunction == null) {
+            return;
+        }
+
+        K key = registerFunction.apply(object);
+        register(key, object);
     }
     
     public void register(K key, V object) {
