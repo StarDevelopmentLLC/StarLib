@@ -1,0 +1,100 @@
+/*
+ * Copyright (c) 2011, 2022, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+
+package com.stardevllc.starlib.observable.constants;
+
+import com.stardevllc.starlib.observable.binding.ConditionalBinding;
+import com.stardevllc.starlib.observable.binding.FlatMappedBinding;
+import com.stardevllc.starlib.observable.binding.MappedBinding;
+import com.stardevllc.starlib.observable.binding.OrElseBinding;
+import com.stardevllc.starlib.observable.InvalidationListener;
+import com.stardevllc.starlib.observable.value.ChangeListener;
+import com.stardevllc.starlib.observable.value.ObservableObjectValue;
+import com.stardevllc.starlib.observable.value.ObservableValue;
+
+import java.util.function.Function;
+
+public class ObjectConstant<T> implements ObservableObjectValue<T> {
+
+    private final T value;
+
+    private ObjectConstant(T value) {
+        this.value = value;
+    }
+
+    public static <T> ObjectConstant<T> valueOf(T value) {
+        return new ObjectConstant<>(value);
+    }
+
+    @Override
+    public T get() {
+        return value;
+    }
+
+    @Override
+    public T getValue() {
+        return value;
+    }
+
+    @Override
+    public <U> ObservableValue<U> map(Function<? super T, ? extends U> function) {
+        return new MappedBinding<>(this, function);
+    }
+
+    @Override
+    public ObservableValue<T> orElse(T t) {
+        return new OrElseBinding<>(this, t);
+    }
+
+    @Override
+    public <U> ObservableValue<U> flatMap(Function<? super T, ? extends ObservableValue<? extends U>> function) {
+        return new FlatMappedBinding<>(this, function);
+    }
+
+    @Override
+    public ObservableValue<T> when(ObservableValue<Boolean> observableValue) {
+        return new ConditionalBinding<>(this, observableValue);
+    }
+
+    @Override
+    public void addListener(InvalidationListener observer) {
+        // no-op
+    }
+
+    @Override
+    public void addListener(ChangeListener<? super T> observer) {
+        // no-op
+    }
+
+    @Override
+    public void removeListener(InvalidationListener observer) {
+        // no-op
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super T> observer) {
+        // no-op
+    }
+}
