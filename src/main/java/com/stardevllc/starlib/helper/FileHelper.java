@@ -40,7 +40,7 @@ public final class FileHelper {
             if (downloadUrl.startsWith("file://")) {
                 Files.copy(Path.of(downloadUrl.replace("file://", "")), targetFile, REPLACE_EXISTING);
             } else {
-                URL url = new URL(downloadUrl);
+                URL url = new URI(downloadUrl).toURL();
                 Path tmpFile = FileSystems.getDefault().getPath(downloadDir.toString(), fileName + ".tmp");
                 if (Files.exists(tmpFile)) {
                     Files.delete(tmpFile);
