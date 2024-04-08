@@ -25,7 +25,46 @@
 
 package com.stardevllc.starlib.converter;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public abstract class StringConverter<T> {
+    
+    public static final Map<Class<?>, Class<? extends StringConverter<?>>> converters = new HashMap<>();
+    
+    static {
+        converters.put(boolean.class, BooleanStringConverter.class);
+        converters.put(Boolean.class, BooleanStringConverter.class);
+        converters.put(byte.class, ByteStringConverter.class);
+        converters.put(Byte.class, ByteStringConverter.class);
+        converters.put(char.class, CharacterStringConverter.class);
+        converters.put(Character.class, CharacterStringConverter.class);
+        converters.put(double.class, DoubleStringConverter.class);
+        converters.put(Double.class, DoubleStringConverter.class);
+        converters.put(float.class, FloatStringConverter.class);
+        converters.put(Float.class, FloatStringConverter.class);
+        converters.put(int.class, IntegerStringConverter.class);
+        converters.put(Integer.class, IntegerStringConverter.class);
+        converters.put(long.class, LongStringConverter.class);
+        converters.put(Long.class, LongStringConverter.class);
+        converters.put(short.class, ShortStringConverter.class);
+        converters.put(Short.class, ShortStringConverter.class);
+        converters.put(UUID.class, UUIDStringConverter.class);
+    }
+    
+    public static StringConverter<?> getConverter(Class<?> clazz) {
+        Class<? extends StringConverter<?>> converterClass = converters.get(clazz);
+        if (converterClass == null) {
+            return null;
+        }
+
+        try {
+            return converterClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public StringConverter() {
     }
