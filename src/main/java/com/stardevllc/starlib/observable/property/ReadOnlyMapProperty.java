@@ -25,12 +25,13 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.expression.MapExpression;
-import com.stardevllc.starlib.observable.expression.MapExpressionHelper;
 import com.stardevllc.starlib.observable.InvalidationListener;
+import com.stardevllc.starlib.observable.binding.BidirectionalContentBinding;
+import com.stardevllc.starlib.observable.binding.ContentBinding;
 import com.stardevllc.starlib.observable.collections.map.MapChangeListener;
 import com.stardevllc.starlib.observable.collections.map.ObservableMap;
+import com.stardevllc.starlib.observable.expression.MapExpression;
+import com.stardevllc.starlib.observable.expression.MapExpressionHelper;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 
 import java.util.Map;
@@ -63,19 +64,19 @@ public class ReadOnlyMapProperty<K, V> extends MapExpression<K, V> implements Re
     }
     
     public void bindContentBidirectional(ObservableMap<K, V> map) {
-        Bindings.bindContentBidirectional(this, map);
+        BidirectionalContentBinding.bind(this, map);
     }
     
     public void unbindContentBidirectional(Object object) {
-        Bindings.unbindContentBidirectional(this, object);
+        BidirectionalContentBinding.unbind(this, object);
     }
     
     public void bindContent(ObservableMap<K, V> map) {
-        Bindings.bindContent(this, map);
+        ContentBinding.bind(this, map);
     }
     
     public void unbindContent(Object object) {
-        Bindings.unbindContent(this, object);
+        ContentBinding.unbind(this, object);
     }
 
     @Override

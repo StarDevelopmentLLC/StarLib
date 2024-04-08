@@ -25,11 +25,11 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.Bindings;
 import com.stardevllc.starlib.converter.StringConverter;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
+import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableStringValue;
 
@@ -65,24 +65,24 @@ public class StringProperty extends ReadOnlyStringProperty implements Property<S
     
     @Override
     public void bindBidirectional(Property<String> other) {
-        Bindings.bindBidirectional(this, other);
+        BidirectionalBinding.bind(this, other);
     }
     
     public void bindBidirectional(Property<?> other, Format format) {
-        Bindings.bindBidirectional(this, other, format);
+        BidirectionalBinding.bind(this, other, format);
     }
     
     public <T> void bindBidirectional(Property<T> other, StringConverter<T> converter) {
-        Bindings.bindBidirectional(this, other, converter);
+        BidirectionalBinding.bind(this, other, converter);
     }
     
     @Override
     public void unbindBidirectional(Property<String> other) {
-        Bindings.unbindBidirectional(this, other);
+        BidirectionalBinding.unbind(this, other);
     }
     
     public void unbindBidirectional(Object other) {
-        Bindings.unbindBidirectional(this, other);
+        BidirectionalBinding.unbind(this, other);
     }
 
     private void markInvalid() {

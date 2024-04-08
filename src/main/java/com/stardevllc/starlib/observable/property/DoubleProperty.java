@@ -25,12 +25,11 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.binding.DoubleBinding;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
+import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
+import com.stardevllc.starlib.observable.binding.DoubleBinding;
 import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
 import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
@@ -72,12 +71,12 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
     
     @Override
     public void bindBidirectional(Property<Number> other) {
-        Bindings.bindBidirectional(this, other);
+        BidirectionalBinding.bind(this, other);
     }
     
     @Override
     public void unbindBidirectional(Property<Number> other) {
-        Bindings.unbindBidirectional(this, other);
+        BidirectionalBinding.unbind(this, other);
     }
 
     private void markInvalid() {

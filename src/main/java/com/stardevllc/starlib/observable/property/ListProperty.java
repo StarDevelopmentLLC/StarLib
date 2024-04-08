@@ -25,14 +25,14 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.writable.WritableListValue;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
+import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.collections.list.ListChangeListener;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.value.ObservableValue;
+import com.stardevllc.starlib.observable.writable.WritableListValue;
 
 import java.lang.ref.WeakReference;
 
@@ -74,12 +74,12 @@ public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property
     
     @Override
     public void bindBidirectional(Property<ObservableList<E>> other) {
-        Bindings.bindBidirectional(this, other);
+        BidirectionalBinding.bind(this, other);
     }
     
     @Override
     public void unbindBidirectional(Property<ObservableList<E>> other) {
-        Bindings.unbindBidirectional(this, other);
+        BidirectionalBinding.unbind(this, other);
     }
 
     private void invalidateProperties() {

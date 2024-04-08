@@ -59,7 +59,7 @@ public abstract class IntegerExpression extends NumberExpressionBase implements 
 
     @Override
     public IntegerBinding negate() {
-        return (IntegerBinding) Bindings.negate(this);
+        return new IntegerBinding(() -> -this.get());
     }
 
     @Override

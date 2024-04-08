@@ -25,12 +25,11 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.binding.BooleanBinding;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
+import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
+import com.stardevllc.starlib.observable.binding.BooleanBinding;
 import com.stardevllc.starlib.observable.value.ObservableBooleanValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableBooleanValue;
@@ -204,12 +203,12 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
 
     @Override
     public void bindBidirectional(Property<Boolean> other) {
-        Bindings.bindBidirectional(this, other);
+        BidirectionalBinding.bind(this, other);
     }
 
     @Override
     public void unbindBidirectional(Property<Boolean> other) {
-        Bindings.unbindBidirectional(this, other);
+        BidirectionalBinding.unbind(this, other);
     }
     
     public static BooleanProperty booleanProperty(final Property<Boolean> property) {

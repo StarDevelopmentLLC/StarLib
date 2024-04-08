@@ -60,11 +60,11 @@ public abstract class ListExpression<E> implements ObservableListValue<E> {
     public abstract ReadOnlyBooleanProperty emptyProperty();
 
     public ObjectBinding<E> valueAt(int index) {
-        return Bindings.valueAt(this, index);
+        return new ObjectBinding<>(() -> get(index), this);
     }
 
     public ObjectBinding<E> valueAt(ObservableIntegerValue index) {
-        return Bindings.valueAt(this, index);
+        return new ObjectBinding<>(() -> get(index.get()), this, index);
     }
 
     public BooleanBinding isEqualTo(final ObservableList<?> other) {

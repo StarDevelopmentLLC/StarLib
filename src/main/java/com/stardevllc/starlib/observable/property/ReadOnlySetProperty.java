@@ -25,10 +25,11 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.expression.SetExpression;
+import com.stardevllc.starlib.observable.binding.BidirectionalContentBinding;
+import com.stardevllc.starlib.observable.binding.ContentBinding;
 import com.stardevllc.starlib.observable.collections.set.ObservableSet;
 import com.stardevllc.starlib.observable.collections.set.SetChangeListener;
+import com.stardevllc.starlib.observable.expression.SetExpression;
 
 import java.util.Set;
 
@@ -60,19 +61,19 @@ public class ReadOnlySetProperty<E> extends SetExpression<E> implements ReadOnly
     }
     
     public void bindContentBidirectional(ObservableSet<E> set) {
-        Bindings.bindContentBidirectional(this, set);
+        BidirectionalContentBinding.bind(this, set);
     }
     
     public void unbindContentBidirectional(Object object) {
-        Bindings.unbindContentBidirectional(this, object);
+        BidirectionalContentBinding.unbind(this, object);
     }
     
     public void bindContent(ObservableSet<E> set) {
-        Bindings.bindContent(this, set);
+        ContentBinding.bind(this, set);
     }
     
     public void unbindContent(Object object) {
-        Bindings.unbindContent(this, object);
+        ContentBinding.unbind(this, object);
     }
 
     @Override

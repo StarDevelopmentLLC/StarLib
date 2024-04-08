@@ -62,7 +62,7 @@ public abstract class DoubleExpression extends NumberExpressionBase implements O
 
     @Override
     public DoubleBinding negate() {
-        return (DoubleBinding) Bindings.negate(this);
+        return new DoubleBinding(() -> -this.get());
     }
 
     @Override

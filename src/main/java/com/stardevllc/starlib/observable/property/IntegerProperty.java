@@ -25,13 +25,12 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.binding.IntegerBinding;
-import com.stardevllc.starlib.observable.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
+import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
+import com.stardevllc.starlib.observable.binding.IntegerBinding;
+import com.stardevllc.starlib.observable.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableIntegerValue;
 import com.stardevllc.starlib.observable.value.ObservableNumberValue;
@@ -252,12 +251,12 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements Property
     
     @Override
     public void bindBidirectional(Property<Number> other) {
-        Bindings.bindBidirectional(this, other);
+        BidirectionalBinding.bind(this, other);
     }
     
     @Override
     public void unbindBidirectional(Property<Number> other) {
-        Bindings.unbindBidirectional(this, other);
+        BidirectionalBinding.unbind(this, other);
     }
     
     public static IntegerProperty integerProperty(final Property<Integer> property) {

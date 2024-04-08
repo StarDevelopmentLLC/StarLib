@@ -25,10 +25,11 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.expression.ListExpression;
+import com.stardevllc.starlib.observable.binding.BidirectionalContentBinding;
+import com.stardevllc.starlib.observable.binding.ContentBinding;
 import com.stardevllc.starlib.observable.collections.list.ListChangeListener;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
+import com.stardevllc.starlib.observable.expression.ListExpression;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -84,19 +85,19 @@ public class ReadOnlyListProperty<E> extends ListExpression<E> implements ReadOn
     }
 
     public void bindContentBidirectional(ObservableList<E> list) {
-        Bindings.bindContentBidirectional(this, list);
+        BidirectionalContentBinding.bind(this, list);
     }
 
     public void unbindContentBidirectional(Object object) {
-        Bindings.unbindContentBidirectional(this, object);
+        BidirectionalContentBinding.unbind(this, object);
     }
 
     public void bindContent(ObservableList<E> list) {
-        Bindings.bindContent(this, list);
+        ContentBinding.bind(this, list);
     }
 
     public void unbindContent(Object object) {
-        Bindings.unbindContent(this, object);
+        ContentBinding.unbind(this, object);
     }
 
     @Override

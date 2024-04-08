@@ -59,7 +59,7 @@ public abstract class LongExpression extends NumberExpressionBase implements Obs
 
     @Override
     public LongBinding negate() {
-        return (LongBinding) Bindings.negate(this);
+        return new LongBinding(() -> -this.get());
     }
 
     @Override

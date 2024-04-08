@@ -62,7 +62,7 @@ public abstract class FloatExpression extends NumberExpressionBase implements Ob
 
     @Override
     public FloatBinding negate() {
-        return (FloatBinding) Bindings.negate(this);
+        return new FloatBinding(() -> -this.get());
     }
 
     @Override

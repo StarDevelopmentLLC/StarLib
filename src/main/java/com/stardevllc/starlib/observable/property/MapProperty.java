@@ -25,14 +25,14 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.writable.WritableMapValue;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
+import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.collections.map.MapChangeListener;
 import com.stardevllc.starlib.observable.collections.map.ObservableMap;
 import com.stardevllc.starlib.observable.value.ObservableValue;
+import com.stardevllc.starlib.observable.writable.WritableMapValue;
 
 import java.lang.ref.WeakReference;
 
@@ -69,12 +69,12 @@ public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Prop
     
     @Override
     public void bindBidirectional(Property<ObservableMap<K, V>> other) {
-        Bindings.bindBidirectional(this, other);
+        BidirectionalBinding.bind(this, other);
     }
     
     @Override
     public void unbindBidirectional(Property<ObservableMap<K, V>> other) {
-        Bindings.unbindBidirectional(this, other);
+        BidirectionalBinding.unbind(this, other);
     }
 
     private void invalidateProperties() {

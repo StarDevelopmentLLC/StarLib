@@ -25,14 +25,14 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.writable.WritableSetValue;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
+import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.collections.set.ObservableSet;
 import com.stardevllc.starlib.observable.collections.set.SetChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableValue;
+import com.stardevllc.starlib.observable.writable.WritableSetValue;
 
 import java.lang.ref.WeakReference;
 
@@ -70,12 +70,12 @@ public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<O
     
     @Override
     public void bindBidirectional(Property<ObservableSet<E>> other) {
-        Bindings.bindBidirectional(this, other);
+        BidirectionalBinding.bind(this, other);
     }
     
     @Override
     public void unbindBidirectional(Property<ObservableSet<E>> other) {
-        Bindings.unbindBidirectional(this, other);
+        BidirectionalBinding.unbind(this, other);
     }
 
     private void invalidateProperties() {

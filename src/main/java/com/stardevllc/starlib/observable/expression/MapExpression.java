@@ -58,11 +58,11 @@ public abstract class MapExpression<K, V> implements ObservableMapValue<K, V> {
     public abstract ReadOnlyBooleanProperty emptyProperty();
 
     public ObjectBinding<V> valueAt(K key) {
-        return Bindings.valueAt(this, key);
+        return new ObjectBinding<>(() -> get(key), this);
     }
 
     public ObjectBinding<V> valueAt(ObservableValue<K> key) {
-        return Bindings.valueAt(this, key);
+        return new ObjectBinding<>(() -> get(key.getValue()), this, key);
     }
 
     public BooleanBinding isEqualTo(final ObservableMap<?, ?> other) {
