@@ -24,13 +24,13 @@
  */
 package com.stardevllc.starlib.observable.collections.list;
 
-import com.stardevllc.starlib.Callback;
-import com.stardevllc.starlib.observable.collections.ElementObserver;
-import com.stardevllc.starlib.observable.collections.SortHelper;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
+import com.stardevllc.starlib.observable.collections.ElementObserver;
+import com.stardevllc.starlib.observable.collections.SortHelper;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class ObservableSequentialList<E> extends ModifiableObservableList<E> implements SortableList<E> {
 
@@ -42,7 +42,7 @@ public class ObservableSequentialList<E> extends ModifiableObservableList<E> imp
         elementObserver = null;
     }
 
-    public ObservableSequentialList(List<E> list, Callback<E, Observable[]> extractor) {
+    public ObservableSequentialList(List<E> list, Function<E, Observable[]> extractor) {
         backingList = list;
         this.elementObserver = new ElementObserver<>(extractor, e -> new InvalidationListener() {
 

@@ -25,12 +25,12 @@
 
 package com.stardevllc.starlib.observable.collections.list;
 
-import com.stardevllc.starlib.Callback;
+import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.collections.ElementObserver;
 import com.stardevllc.starlib.observable.collections.SortHelper;
-import com.stardevllc.starlib.observable.Observable;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class ObservableListWrapper<E> extends ModifiableObservableList<E> implements SortableList<E>, RandomAccess {
 
@@ -42,7 +42,7 @@ public class ObservableListWrapper<E> extends ModifiableObservableList<E> implem
         elementObserver = null;
     }
 
-    public ObservableListWrapper(List<E> list, Callback<E, Observable[]> extractor) {
+    public ObservableListWrapper(List<E> list, Function<E, Observable[]> extractor) {
         backingList = list;
         this.elementObserver = new ElementObserver<>(extractor, e -> observable -> {
             beginChange();

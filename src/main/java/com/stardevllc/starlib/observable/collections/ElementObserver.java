@@ -25,12 +25,12 @@
 
 package com.stardevllc.starlib.observable.collections;
 
-import com.stardevllc.starlib.Callback;
-import com.stardevllc.starlib.observable.collections.list.ObservableListBase;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
+import com.stardevllc.starlib.observable.collections.list.ObservableListBase;
 
 import java.util.IdentityHashMap;
+import java.util.function.Function;
 
 public final class ElementObserver<E> {
 
@@ -56,13 +56,13 @@ public final class ElementObserver<E> {
         }
     }
 
-    private Callback<E, Observable[]> extractor;
-    private final Callback<E, InvalidationListener> listenerGenerator;
+    private Function<E, Observable[]> extractor;
+    private final Function<E, InvalidationListener> listenerGenerator;
     private final ObservableListBase<E> list;
     private IdentityHashMap<E, ElementObserver.ElementsMapElement> elementsMap =
             new IdentityHashMap<>();
 
-    public ElementObserver(Callback<E, Observable[]> extractor, Callback<E, InvalidationListener> listenerGenerator, ObservableListBase<E> list) {
+    public ElementObserver(Function<E, Observable[]> extractor, Function<E, InvalidationListener> listenerGenerator, ObservableListBase<E> list) {
         this.extractor = extractor;
         this.listenerGenerator = listenerGenerator;
         this.list = list;
@@ -74,8 +74,8 @@ public final class ElementObserver<E> {
             if (elementsMap.containsKey(e)) {
                 elementsMap.get(e).increment();
             } else {
-                InvalidationListener listener = listenerGenerator.call(e);
-                for (Observable o : extractor.call(e)) {
+                InvalidationListener listener = listenerGenerator.apply(e);
+                for (Observable o : extractor.apply(e)) {
                     o.addListener(listener);
                 }
                 elementsMap.put(e, new ElementObserver.ElementsMapElement(listener));
@@ -86,7 +86,7 @@ public final class ElementObserver<E> {
     public void detachListener(E e) {
         if (elementsMap != null && e != null) {
             ElementObserver.ElementsMapElement el = elementsMap.get(e);
-            for (Observable o : extractor.call(e)) {
+            for (Observable o : extractor.apply(e)) {
                 o.removeListener(el.getListener());
             }
             if (el.decrement() == 0) {

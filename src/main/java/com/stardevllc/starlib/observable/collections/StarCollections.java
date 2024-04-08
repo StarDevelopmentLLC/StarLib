@@ -25,23 +25,18 @@
 
 package com.stardevllc.starlib.observable.collections;
 
-import com.stardevllc.starlib.Callback;
+import com.stardevllc.starlib.observable.InvalidationListener;
+import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.collections.array.ObservableFloatArray;
 import com.stardevllc.starlib.observable.collections.array.ObservableFloatArrayImpl;
 import com.stardevllc.starlib.observable.collections.array.ObservableIntegerArray;
 import com.stardevllc.starlib.observable.collections.array.ObservableIntegerArrayImpl;
 import com.stardevllc.starlib.observable.collections.list.*;
 import com.stardevllc.starlib.observable.collections.map.*;
-import com.stardevllc.starlib.observable.collections.set.ObservableSetWrapper;
-import com.stardevllc.starlib.observable.collections.set.SetAdapterChange;
-import com.stardevllc.starlib.observable.collections.set.SetListenerHelper;
-import com.stardevllc.starlib.observable.collections.set.WeakSetChangeListener;
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.collections.set.ObservableSet;
-import com.stardevllc.starlib.observable.collections.set.SetChangeListener;
+import com.stardevllc.starlib.observable.collections.set.*;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class StarCollections {
     private StarCollections() { }
@@ -54,7 +49,7 @@ public class StarCollections {
                 new ObservableSequentialList<>(list);
     }
 
-    public static <E> ObservableList<E> observableList(List<E> list, Callback<E, Observable[]> extractor) {
+    public static <E> ObservableList<E> observableList(List<E> list, Function<E, Observable[]> extractor) {
         if (list == null || extractor == null) {
             throw new NullPointerException();
         }
@@ -134,7 +129,7 @@ public class StarCollections {
         return observableList(new ArrayList<>());
     }
 
-    public static <E> ObservableList<E> observableArrayList(Callback<E, Observable[]> extractor) {
+    public static <E> ObservableList<E> observableArrayList(Function<E, Observable[]> extractor) {
         return observableList(new ArrayList<>(), extractor);
     }
 
