@@ -4,9 +4,7 @@ import com.stardevllc.starlib.observable.property.ReadOnlyProperty;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A class to make it easier to recursively get fields and methods of a class <br>
@@ -99,6 +97,21 @@ public final class ReflectionHelper {
         if (clazz.getSuperclass() != null) {
             getClassFields(clazz.getSuperclass(), fields);
         }
+    }
+    
+    public static <E, T extends ReadOnlyProperty<E>> List<T> getProperties(Class<T> propertyClass, Object object) {
+        Set<Field> classFields = getClassFields(object.getClass());
+        List<T> properties = new ArrayList<>();
+        for (Field field : classFields) {
+            if (propertyClass.isAssignableFrom(field.getType())) {
+                field.setAccessible(true);
+                try {
+                    properties.add((T) field.get(object));
+                } catch (IllegalAccessException e) {}
+            }
+        }
+
+        return properties;
     }
     
     public static <E, T extends ReadOnlyProperty<E>> T getProperty(Class<T> propertyClass, Object object, String name) {
