@@ -20,13 +20,13 @@ public class TimeParser {
      */
     public long parseTime(String rawTime) {
         Pair<Long, String> years = extractRawTime(rawTime, TimeUnit.YEARS);
-        Pair<Long, String> months = extractRawTime(years.secondValue(), TimeUnit.MONTHS);
-        Pair<Long, String> weeks = extractRawTime(months.secondValue(), TimeUnit.WEEKS);
-        Pair<Long, String> days = extractRawTime(weeks.secondValue(), TimeUnit.DAYS);
-        Pair<Long, String> hours = extractRawTime(days.secondValue(), TimeUnit.HOURS);
-        Pair<Long, String> minutes = extractRawTime(hours.secondValue(), TimeUnit.MINUTES);
-        Pair<Long, String> seconds = extractRawTime(minutes.secondValue(), TimeUnit.SECONDS);
-        return Stream.of(years, months, weeks, days, hours, minutes, seconds).mapToLong(Pair::firstValue).sum();
+        Pair<Long, String> months = extractRawTime(years.value(), TimeUnit.MONTHS);
+        Pair<Long, String> weeks = extractRawTime(months.value(), TimeUnit.WEEKS);
+        Pair<Long, String> days = extractRawTime(weeks.value(), TimeUnit.DAYS);
+        Pair<Long, String> hours = extractRawTime(days.value(), TimeUnit.HOURS);
+        Pair<Long, String> minutes = extractRawTime(hours.value(), TimeUnit.MINUTES);
+        Pair<Long, String> seconds = extractRawTime(minutes.value(), TimeUnit.SECONDS);
+        return Stream.of(years, months, weeks, days, hours, minutes, seconds).mapToLong(Pair::key).sum();
     }
 
     /**
