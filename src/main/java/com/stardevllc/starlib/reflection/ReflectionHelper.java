@@ -109,7 +109,7 @@ public final class ReflectionHelper {
                 try {
                     Object rawValue = field.get(object);
                     T property = (T) rawValue;
-                    if (property.getName().equals(name)) {
+                    if (property.getName().equalsIgnoreCase(name)) {
                         return property;
                     }
                 } catch (IllegalAccessException e) {}
