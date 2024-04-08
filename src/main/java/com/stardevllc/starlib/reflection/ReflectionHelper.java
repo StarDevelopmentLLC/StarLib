@@ -1,5 +1,7 @@
 package com.stardevllc.starlib.reflection;
 
+import com.stardevllc.starlib.observable.property.ReadOnlyProperty;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -97,5 +99,23 @@ public final class ReflectionHelper {
         if (clazz.getSuperclass() != null) {
             getClassFields(clazz.getSuperclass(), fields);
         }
+    }
+    
+    public static <E, T extends ReadOnlyProperty<E>> T getProperty(Class<T> propertyClass, Object object, String name) {
+        Set<Field> classFields = getClassFields(object.getClass());
+        for (Field field : classFields) {
+            if (propertyClass.isAssignableFrom(field.getType())) {
+                field.setAccessible(true);
+                try {
+                    Object rawValue = field.get(object);
+                    T property = (T) rawValue;
+                    if (property.getName().equals(name)) {
+                        return property;
+                    }
+                } catch (IllegalAccessException e) {}
+            }
+        }
+
+        return null;
     }
 }
