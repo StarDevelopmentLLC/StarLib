@@ -89,14 +89,6 @@ public class ReadOnlyBooleanProperty extends BooleanExpression implements ReadOn
         return result.toString();
     }
     
-    public static ReadOnlyBooleanProperty readOnlyBooleanProperty(final ReadOnlyProperty<Boolean> property) {
-        if (property == null) {
-            throw new NullPointerException("Property cannot be null");
-        }
-
-        return property instanceof ReadOnlyBooleanProperty ? (ReadOnlyBooleanProperty) property : new ReadOnlyBooleanProperty(null, property.getName(), property.getValue());
-    }
-    
     @Override
     public ReadOnlyObjectProperty<Boolean> asObject() {
         return new ReadOnlyObjectProperty<>(null, getName(), get());

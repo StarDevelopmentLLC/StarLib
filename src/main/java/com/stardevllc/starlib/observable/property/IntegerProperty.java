@@ -37,7 +37,6 @@ import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableIntegerValue;
 
 import java.lang.ref.WeakReference;
-import java.util.Objects;
 
 public class IntegerProperty extends ReadOnlyIntegerProperty implements Property<Number>, WritableIntegerValue {
 
@@ -207,13 +206,6 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements Property
     @Override
     public void unbindBidirectional(Property<Number> other) {
         BidirectionalBinding.unbind(this, other);
-    }
-
-    public static IntegerProperty integerProperty(final Property<Integer> property) {
-        Objects.requireNonNull(property, "Property cannot be null");
-        IntegerProperty integerProperty = new IntegerProperty(null, property.getName());
-        BidirectionalBinding.bindNumber(integerProperty, property);
-        return integerProperty;
     }
 
     @Override

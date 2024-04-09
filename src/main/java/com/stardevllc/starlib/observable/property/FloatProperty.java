@@ -36,7 +36,6 @@ import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableFloatValue;
 
 import java.lang.ref.WeakReference;
-import java.util.Objects;
 
 public class FloatProperty extends ReadOnlyFloatProperty implements Property<Number>, WritableFloatValue {
 
@@ -77,13 +76,6 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
     @Override
     public void unbindBidirectional(Property<Number> other) {
         BidirectionalBinding.unbind(this, other);
-    }
-
-    public static FloatProperty floatProperty(final Property<Float> property) {
-        Objects.requireNonNull(property, "Property cannot be null");
-        FloatProperty floatProperty = new FloatProperty(null, property.getName());
-        BidirectionalBinding.bindNumber(floatProperty, property);
-        return floatProperty;
     }
 
     @Override

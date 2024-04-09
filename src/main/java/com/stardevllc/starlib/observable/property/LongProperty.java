@@ -28,14 +28,14 @@ package com.stardevllc.starlib.observable.property;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
+import com.stardevllc.starlib.observable.binding.LongBinding;
 import com.stardevllc.starlib.observable.value.ObservableLongValue;
 import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableLongValue;
 
 import java.lang.ref.WeakReference;
-import java.util.Objects;
 
 public class LongProperty extends ReadOnlyLongProperty implements Property<Number>, WritableLongValue {
 
@@ -76,13 +76,6 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
     @Override
     public void unbindBidirectional(Property<Number> other) {
         BidirectionalBinding.unbind(this, other);
-    }
-
-    public static LongProperty longProperty(final Property<Long> property) {
-        Objects.requireNonNull(property, "Property cannot be null");
-        LongProperty longProperty = new LongProperty(null, property.getName(), property.getValue());
-        BidirectionalBinding.bindNumber(longProperty, property);
-        return longProperty;
     }
     
     @Override

@@ -190,13 +190,6 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
         BidirectionalBinding.unbind(this, other);
     }
     
-    public static BooleanProperty booleanProperty(final Property<Boolean> property) {
-        Objects.requireNonNull(property, "Property cannot be null");
-        BooleanProperty booleanProperty = new BooleanProperty(null, property.getName());
-        BidirectionalBinding.bind(booleanProperty, property);
-        return booleanProperty;
-    }
-    
     @Override
     public ObjectProperty<Boolean> asObject() {
         ObjectProperty<Boolean> objectProperty = new ObjectProperty<>(null, getName(), get());

@@ -36,7 +36,6 @@ import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableDoubleValue;
 
 import java.lang.ref.WeakReference;
-import java.util.Objects;
 
 public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<Number>, WritableDoubleValue {
 
@@ -202,13 +201,6 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
         public boolean wasGarbageCollected() {
             return wref.get() == null;
         }
-    }
-
-    public static DoubleProperty doubleProperty(final Property<Double> property) {
-        Objects.requireNonNull(property, "Property cannot be null");
-        DoubleProperty doubleProperty = new DoubleProperty(null, property.getName());
-        BidirectionalBinding.bindNumber(doubleProperty, property);
-        return doubleProperty;
     }
 
     @Override

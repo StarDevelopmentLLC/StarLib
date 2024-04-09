@@ -84,14 +84,6 @@ public class ReadOnlyFloatProperty extends FloatExpression implements ReadOnlyPr
         return result.toString();
     }
 
-    public static <T extends Number> ReadOnlyFloatProperty readOnlyFloatProperty(final ReadOnlyProperty<T> property) {
-        if (property == null) {
-            throw new NullPointerException("Property cannot be null");
-        }
-
-        return property instanceof ReadOnlyFloatProperty ? (ReadOnlyFloatProperty) property : new ReadOnlyFloatProperty(null, property.getName(), property.getValue().floatValue());
-    }
-
     @Override
     public ReadOnlyObjectProperty<Float> asObject() {
         return new ReadOnlyObjectProperty<>(null, getName(), get());

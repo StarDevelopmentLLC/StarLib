@@ -83,14 +83,6 @@ public class ReadOnlyDoubleProperty extends DoubleExpression implements ReadOnly
         result.append("value: ").append(get()).append("]");
         return result.toString();
     }
-
-    public static <T extends Number> ReadOnlyDoubleProperty readOnlyDoubleProperty(final ReadOnlyProperty<T> property) {
-        if (property == null) {
-            throw new NullPointerException("Property cannot be null");
-        }
-
-        return property instanceof ReadOnlyDoubleProperty ? (ReadOnlyDoubleProperty) property : new ReadOnlyDoubleProperty(null, property.getName(), property.getValue().doubleValue());
-    }
     
     @Override
     public ReadOnlyObjectProperty<Double> asObject() {

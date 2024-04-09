@@ -84,14 +84,6 @@ public class ReadOnlyIntegerProperty extends IntegerExpression implements ReadOn
         return result.toString();
     }
     
-    public static <T extends Number> ReadOnlyIntegerProperty readOnlyIntegerProperty(final ReadOnlyProperty<T> property) {
-        if (property == null) {
-            throw new NullPointerException("Property cannot be null");
-        }
-
-        return property instanceof ReadOnlyIntegerProperty ? (ReadOnlyIntegerProperty) property: new ReadOnlyIntegerProperty(null, property.getName(), property.getValue().intValue());
-    }
-    
     @Override
     public ReadOnlyObjectProperty<Integer> asObject() {
         return new ReadOnlyObjectProperty<>(null, getName(), get());

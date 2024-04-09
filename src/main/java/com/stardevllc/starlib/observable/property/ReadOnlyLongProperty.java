@@ -82,14 +82,6 @@ public class ReadOnlyLongProperty extends LongExpression implements ReadOnlyProp
         return result.toString();
     }
     
-    public static <T extends Number> ReadOnlyLongProperty readOnlyLongProperty(final ReadOnlyProperty<T> property) {
-        if (property == null) {
-            throw new NullPointerException("Property cannot be null");
-        }
-
-        return property instanceof ReadOnlyLongProperty ? (ReadOnlyLongProperty) property: new ReadOnlyLongProperty(null, property.getName(), property.getValue().longValue());
-    }
-    
     @Override
     public ReadOnlyObjectProperty<Long> asObject() {
         return new ReadOnlyObjectProperty<>(null, getName(), getValue());
