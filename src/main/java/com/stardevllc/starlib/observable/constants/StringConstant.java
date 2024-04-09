@@ -29,7 +29,7 @@ import com.stardevllc.starlib.observable.expression.StringExpression;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 
-public class StringConstant extends StringExpression {
+public final class StringConstant extends StringExpression {
 
     private final String value;
 

@@ -36,7 +36,7 @@ import com.stardevllc.starlib.observable.value.ObservableValue;
 
 import java.util.function.Function;
 
-public class ObjectConstant<T> implements ObservableObjectValue<T> {
+public final class ObjectConstant<T> implements ObservableObjectValue<T> {
 
     private final T value;
 

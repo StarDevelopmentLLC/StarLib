@@ -31,7 +31,7 @@ import com.stardevllc.starlib.observable.value.ChangeListener;
 
 import java.util.UUID;
 
-public class UUIDConstant extends UUIDExpression {
+public final class UUIDConstant extends UUIDExpression {
 
     private final UUID value;
 
