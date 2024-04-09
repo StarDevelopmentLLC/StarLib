@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.converter.StringConverter;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
@@ -34,7 +33,6 @@ import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableStringValue;
 
 import java.lang.ref.WeakReference;
-import java.text.Format;
 import java.util.Objects;
 
 public class StringProperty extends ReadOnlyStringProperty implements Property<String>, WritableStringValue {
@@ -66,14 +64,6 @@ public class StringProperty extends ReadOnlyStringProperty implements Property<S
     @Override
     public void bindBidirectional(Property<String> other) {
         BidirectionalBinding.bind(this, other);
-    }
-    
-    public void bindBidirectional(Property<?> other, Format format) {
-        BidirectionalBinding.bind(this, other, format);
-    }
-    
-    public <T> void bindBidirectional(Property<T> other, StringConverter<T> converter) {
-        BidirectionalBinding.bind(this, other, converter);
     }
     
     @Override
