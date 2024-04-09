@@ -39,7 +39,6 @@ import java.lang.ref.WeakReference;
 public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<ObservableSet<E>>, WritableSetValue<E> {
 
     protected final SetChangeListener<E> setChangeListener = change -> {
-        invalidateProperties();
         invalidated();
         fireValueChangedEvent(change);
     };
@@ -78,22 +77,12 @@ public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<O
         BidirectionalBinding.unbind(this, other);
     }
 
-    private void invalidateProperties() {
-        if (size0 != null) {
-            size0.fireValueChangedEvent();
-        }
-        if (empty0 != null) {
-            empty0.fireValueChangedEvent();
-        }
-    }
-
     private void markInvalid(ObservableSet<E> oldValue) {
         if (valid) {
             if (oldValue != null) {
                 oldValue.removeListener(setChangeListener);
             }
             valid = false;
-            invalidateProperties();
             invalidated();
             fireValueChangedEvent();
         }

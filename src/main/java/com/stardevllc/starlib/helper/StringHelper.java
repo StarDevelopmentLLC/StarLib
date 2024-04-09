@@ -42,4 +42,8 @@ public class StringHelper {
 
         return UUID.fromString(id);
     }
+
+    public static String getStringSafe(String value) {
+        return value == null ? "" : value;
+    }
 }

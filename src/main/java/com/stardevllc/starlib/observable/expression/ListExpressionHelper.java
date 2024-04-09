@@ -23,12 +23,11 @@
  * questions.
  */
 
-package com.stardevllc.starlib.observable.binding;
+package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.list.NonIterableChange;
 import com.stardevllc.starlib.observable.collections.list.SourceAdapterChange;
-import com.stardevllc.starlib.observable.expression.ExpressionHelperBase;
 import com.stardevllc.starlib.observable.value.ObservableListValue;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.collections.list.ListChangeListener;

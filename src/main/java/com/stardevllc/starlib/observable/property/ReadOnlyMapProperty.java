@@ -41,8 +41,6 @@ public class ReadOnlyMapProperty<K, V> extends MapExpression<K, V> implements Re
     protected final Object bean;
     protected final String name;
     protected ObservableMap<K, V> value;
-    protected SizeProperty size0;
-    protected EmptyProperty empty0;
 
     public ReadOnlyMapProperty() {
         this(DEFAULT_BEAN, DEFAULT_NAME);
@@ -148,22 +146,6 @@ public class ReadOnlyMapProperty<K, V> extends MapExpression<K, V> implements Re
     }
 
     @Override
-    public ReadOnlyIntegerProperty sizeProperty() {
-        if (size0 == null) {
-            size0 = new SizeProperty();
-        }
-        return size0;
-    }
-
-    @Override
-    public ReadOnlyBooleanProperty emptyProperty() {
-        if (empty0 == null) {
-            empty0 = new EmptyProperty();
-        }
-        return empty0;
-    }
-
-    @Override
     public void addListener(InvalidationListener listener) {
         helper = MapExpressionHelper.addListener(helper, this, listener);
     }
@@ -199,40 +181,5 @@ public class ReadOnlyMapProperty<K, V> extends MapExpression<K, V> implements Re
 
     protected void fireValueChangedEvent(MapChangeListener.Change<? extends K, ? extends V> change) {
         MapExpressionHelper.fireValueChangedEvent(helper, change);
-    }
-
-    protected class SizeProperty extends ReadOnlyIntegerProperty {
-        @Override
-        public int get() {
-            return size();
-        }
-
-        @Override
-        public Object getBean() {
-            return ReadOnlyMapProperty.this;
-        }
-
-        @Override
-        public String getName() {
-            return "size";
-        }
-    }
-
-    protected class EmptyProperty extends ReadOnlyBooleanProperty {
-
-        @Override
-        public boolean get() {
-            return isEmpty();
-        }
-
-        @Override
-        public Object getBean() {
-            return ReadOnlyMapProperty.this;
-        }
-
-        @Override
-        public String getName() {
-            return "empty";
-        }
     }
 }

@@ -47,19 +47,19 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
     public DoubleProperty() {
         super();
     }
-    
+
     public DoubleProperty(double initialValue) {
         super(initialValue);
     }
-    
+
     public DoubleProperty(Object bean, String name) {
         super(bean, name);
     }
-    
+
     public DoubleProperty(Object bean, String name, double initialValue) {
         super(bean, name, initialValue);
     }
-    
+
     @Override
     public void setValue(Number v) {
         if (v == null) {
@@ -68,12 +68,12 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
             set(v.doubleValue());
         }
     }
-    
+
     @Override
     public void bindBidirectional(Property<Number> other) {
         BidirectionalBinding.bind(this, other);
     }
-    
+
     @Override
     public void unbindBidirectional(Property<Number> other) {
         BidirectionalBinding.unbind(this, other);
@@ -86,34 +86,34 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
             fireValueChangedEvent();
         }
     }
-    
+
     protected void invalidated() {
         //no-op
     }
-    
+
     @Override
     public double get() {
         valid = true;
         return observable == null ? value : observable.get();
     }
-    
+
     @Override
     public void set(double newValue) {
         if (isBound()) {
             throw new java.lang.RuntimeException((getBean() != null && getName() != null ?
-                    getBean().getClass().getSimpleName() + "." + getName() + " : ": "") + "A bound value cannot be set.");
+                    getBean().getClass().getSimpleName() + "." + getName() + " : " : "") + "A bound value cannot be set.");
         }
         if (value != newValue) {
             value = newValue;
             markInvalid();
         }
     }
-    
+
     @Override
     public boolean isBound() {
         return observable != null;
     }
-    
+
     @Override
     public void bind(final ObservableValue<? extends Number> rawObservable) {
         if (rawObservable == null) {
@@ -122,7 +122,7 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
 
         ObservableDoubleValue newObservable;
         if (rawObservable instanceof ObservableDoubleValue) {
-            newObservable = (ObservableDoubleValue)rawObservable;
+            newObservable = (ObservableDoubleValue) rawObservable;
         } else if (rawObservable instanceof ObservableNumberValue numberValue) {
             newObservable = new DoubleProperty.ValueWrapper(rawObservable) {
 
@@ -137,7 +137,7 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
                 @Override
                 protected double computeValue() {
                     final Number value = rawObservable.getValue();
-                    return (value == null)? 0.0 : value.doubleValue();
+                    return (value == null) ? 0.0 : value.doubleValue();
                 }
             };
         }
@@ -162,7 +162,7 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
             value = observable.get();
             observable.removeListener(listener);
             if (observable instanceof DoubleProperty.ValueWrapper) {
-                ((DoubleProperty.ValueWrapper)observable).dispose();
+                ((DoubleProperty.ValueWrapper) observable).dispose();
             }
             observable = null;
         }
@@ -170,6 +170,7 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
 
     /**
      * Returns a string representation of this {@code DoublePropertyBase} object.
+     *
      * @return a string representation of this {@code DoublePropertyBase} object.
      */
     @Override
@@ -235,14 +236,14 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
             unbind(observable);
         }
     }
-    
+
     public static DoubleProperty doubleProperty(final Property<Double> property) {
         Objects.requireNonNull(property, "Property cannot be null");
         DoubleProperty doubleProperty = new DoubleProperty(null, property.getName());
         BidirectionalBinding.bindNumber(doubleProperty, property);
         return doubleProperty;
     }
-    
+
     @Override
     public ObjectProperty<Double> asObject() {
         ObjectProperty<Double> objectProperty = new ObjectProperty<>(null, getName(), get());

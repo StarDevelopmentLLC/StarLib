@@ -27,9 +27,12 @@ package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.constants.DoubleConstant;
+import com.stardevllc.starlib.observable.constants.FloatConstant;
+import com.stardevllc.starlib.observable.constants.IntegerConstant;
+import com.stardevllc.starlib.observable.constants.LongConstant;
 import com.stardevllc.starlib.observable.value.*;
 
-import java.util.Locale;
 import java.util.function.Function;
 
 public abstract class NumberExpressionBase implements NumberExpression {
@@ -82,206 +85,322 @@ public abstract class NumberExpressionBase implements NumberExpression {
         return new ConditionalBinding<>(this, observableValue);
     }
 
-    @Override
-    public NumberBinding add(final ObservableNumberValue other) {
-        return Bindings.add(this, other);
+    public NumberBinding add(ObservableNumberValue other) {
+        if ((this instanceof ObservableDoubleValue) || (other instanceof ObservableDoubleValue)) {
+            return new DoubleBinding(() -> doubleValue() + other.doubleValue(), this, other);
+        } else if ((this instanceof ObservableFloatValue) || (other instanceof ObservableFloatValue)) {
+            return new FloatBinding(() -> floatValue() + other.floatValue(), this, other);
+        } else if ((this instanceof ObservableLongValue) || (other instanceof ObservableLongValue)) {
+            return new LongBinding(() -> longValue() + other.longValue(), this, other);
+        } else {
+            return new IntegerBinding(() -> intValue() + other.intValue(), this, other);
+        }
+    }
+
+    public NumberBinding subtract(ObservableNumberValue other) {
+        if ((this instanceof ObservableDoubleValue) || (other instanceof ObservableDoubleValue)) {
+            return new DoubleBinding(() -> doubleValue() - other.doubleValue(), this, other);
+        } else if ((this instanceof ObservableFloatValue) || (other instanceof ObservableFloatValue)) {
+            return new FloatBinding(() -> floatValue() - other.floatValue(), this, other);
+        } else if ((this instanceof ObservableLongValue) || (other instanceof ObservableLongValue)) {
+            return new LongBinding(() -> longValue() - other.longValue(), this, other);
+        } else {
+            return new IntegerBinding(() -> intValue() - other.intValue(), this, other);
+        }
+    }
+
+    public NumberBinding multiply(ObservableNumberValue other) {
+        if ((this instanceof ObservableDoubleValue) || (other instanceof ObservableDoubleValue)) {
+            return new DoubleBinding(() -> doubleValue() * other.doubleValue(), this, other);
+        } else if ((this instanceof ObservableFloatValue) || (other instanceof ObservableFloatValue)) {
+            return new FloatBinding(() -> floatValue() * other.floatValue(), this, other);
+        } else if ((this instanceof ObservableLongValue) || (other instanceof ObservableLongValue)) {
+            return new LongBinding(() -> longValue() * other.longValue(), this, other);
+        } else {
+            return new IntegerBinding(() -> intValue() * other.intValue(), this, other);
+        }
+    }
+
+    public NumberBinding divide(ObservableNumberValue other) {
+        if ((this instanceof ObservableDoubleValue) || (other instanceof ObservableDoubleValue)) {
+            return new DoubleBinding(() -> doubleValue() / other.doubleValue(), this, other);
+        } else if ((this instanceof ObservableFloatValue) || (other instanceof ObservableFloatValue)) {
+            return new FloatBinding(() -> floatValue() / other.floatValue(), this, other);
+        } else if ((this instanceof ObservableLongValue) || (other instanceof ObservableLongValue)) {
+            return new LongBinding(() -> longValue() / other.longValue(), this, other);
+        } else {
+            return new IntegerBinding(() -> intValue() / other.intValue(), this, other);
+        }
+    }
+
+    public BooleanBinding greaterThan(ObservableNumberValue other) {
+        if ((this instanceof ObservableDoubleValue) || (other instanceof ObservableDoubleValue)) {
+            return new BooleanBinding(() -> doubleValue() > other.doubleValue(), this, other);
+        } else if ((this instanceof ObservableFloatValue) || (other instanceof ObservableFloatValue)) {
+            return new BooleanBinding(() -> floatValue() > other.floatValue(), this, other);
+        } else if ((this instanceof ObservableLongValue) || (other instanceof ObservableLongValue)) {
+            return new BooleanBinding(() -> longValue() > other.longValue(), this, other);
+        } else {
+            return new BooleanBinding(() -> intValue() > other.intValue(), this, other);
+        }
+    }
+
+    public BooleanBinding lessThan(ObservableNumberValue other) {
+        if ((this instanceof ObservableDoubleValue) || (other instanceof ObservableDoubleValue)) {
+            return new BooleanBinding(() -> doubleValue() < other.doubleValue(), this, other);
+        } else if ((this instanceof ObservableFloatValue) || (other instanceof ObservableFloatValue)) {
+            return new BooleanBinding(() -> floatValue() < other.floatValue(), this, other);
+        } else if ((this instanceof ObservableLongValue) || (other instanceof ObservableLongValue)) {
+            return new BooleanBinding(() -> longValue() < other.longValue(), this, other);
+        } else {
+            return new BooleanBinding(() -> intValue() < other.intValue(), this, other);
+        }
+    }
+
+    public BooleanBinding greaterThanOrEqualTo(ObservableNumberValue other) {
+        if ((this instanceof ObservableDoubleValue) || (other instanceof ObservableDoubleValue)) {
+            return new BooleanBinding(() -> doubleValue() >= other.doubleValue(), this, other);
+        } else if ((this instanceof ObservableFloatValue) || (other instanceof ObservableFloatValue)) {
+            return new BooleanBinding(() -> floatValue() >= other.floatValue(), this, other);
+        } else if ((this instanceof ObservableLongValue) || (other instanceof ObservableLongValue)) {
+            return new BooleanBinding(() -> longValue() >= other.longValue(), this, other);
+        } else {
+            return new BooleanBinding(() -> intValue() >= other.intValue(), this, other);
+        }
+    }
+
+    public BooleanBinding lessThanOrEqualTo(ObservableNumberValue other) {
+        if ((this instanceof ObservableDoubleValue) || (other instanceof ObservableDoubleValue)) {
+            return new BooleanBinding(() -> doubleValue() <= other.doubleValue(), this, other);
+        } else if ((this instanceof ObservableFloatValue) || (other instanceof ObservableFloatValue)) {
+            return new BooleanBinding(() -> floatValue() <= other.floatValue(), this, other);
+        } else if ((this instanceof ObservableLongValue) || (other instanceof ObservableLongValue)) {
+            return new BooleanBinding(() -> longValue() <= other.longValue(), this, other);
+        } else {
+            return new BooleanBinding(() -> intValue() <= other.intValue(), this, other);
+        }
     }
 
     @Override
-    public NumberBinding subtract(final ObservableNumberValue other) {
-        return Bindings.subtract(this, other);
+    public NumberBinding add(double other) {
+        return add(DoubleConstant.valueOf(other));
     }
 
     @Override
-    public NumberBinding multiply(final ObservableNumberValue other) {
-        return Bindings.multiply(this, other);
+    public NumberBinding add(float other) {
+        return add(FloatConstant.valueOf(other));
     }
 
     @Override
-    public NumberBinding divide(final ObservableNumberValue other) {
-        return Bindings.divide(this, other);
+    public NumberBinding add(long other) {
+        return add(LongConstant.valueOf(other));
     }
 
+    @Override
+    public NumberBinding add(int other) {
+        return add(IntegerConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding subtract(final double other) {
+        return subtract(DoubleConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding subtract(final float other) {
+        return subtract(FloatConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding subtract(final long other) {
+        return subtract(LongConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding subtract(final int other) {
+        return subtract(IntegerConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding multiply(final double other) {
+        return multiply(DoubleConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding multiply(final float other) {
+        return multiply(FloatConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding multiply(final long other) {
+        return multiply(LongConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding multiply(final int other) {
+        return multiply(IntegerConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding divide(final double other) {
+        return divide(DoubleConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding divide(final float other) {
+        return divide(FloatConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding divide(final long other) {
+        return divide(LongConstant.valueOf(other));
+    }
+
+    @Override
+    public NumberBinding divide(final int other) {
+        return divide(IntegerConstant.valueOf(other));
+    }
+
+    protected BooleanBinding equal(ObservableNumberValue other) {
+        if ((this instanceof ObservableDoubleValue) || (other instanceof ObservableDoubleValue)) {
+            return new BooleanBinding(() -> doubleValue() == other.doubleValue(), this, other);
+        } else if ((this instanceof ObservableFloatValue) || (other instanceof ObservableFloatValue)) {
+            return new BooleanBinding(() -> this.floatValue() == other.floatValue(), this, other);
+        } else if ((this instanceof ObservableLongValue) || (other instanceof ObservableLongValue)) {
+            return new BooleanBinding(() -> this.longValue() == other.longValue(), this, other);
+        } else {
+            return new BooleanBinding(() -> this.intValue() == other.intValue(), this, other);
+        }
+    }
+    
     @Override
     public BooleanBinding isEqualTo(final ObservableNumberValue other) {
-        return Bindings.equal(this, other);
+        return equal(other);
     }
 
     @Override
-    public BooleanBinding isEqualTo(final ObservableNumberValue other,
-                                    double epsilon) {
-        return Bindings.equal(this, other, epsilon);
+    public BooleanBinding isEqualTo(double other) {
+        return equal(DoubleConstant.valueOf(other));
     }
 
     @Override
-    public BooleanBinding isEqualTo(final double other, double epsilon) {
-        return Bindings.equal(this, other, epsilon);
+    public BooleanBinding isEqualTo(float other) {
+        return equal(FloatConstant.valueOf(other));
     }
 
     @Override
-    public BooleanBinding isEqualTo(final float other, double epsilon) {
-        return Bindings.equal(this, other, epsilon);
+    public BooleanBinding isEqualTo(long other) {
+        return equal(LongConstant.valueOf(other));
     }
 
     @Override
-    public BooleanBinding isEqualTo(final long other) {
-        return Bindings.equal(this, other);
+    public BooleanBinding isEqualTo(int other) {
+        return equal(IntegerConstant.valueOf(other));
     }
 
     @Override
-    public BooleanBinding isEqualTo(final long other, double epsilon) {
-        return Bindings.equal(this, other, epsilon);
+    public BooleanBinding isNotEqualTo(ObservableNumberValue other) {
+        return isEqualTo(other).not();
     }
 
     @Override
-    public BooleanBinding isEqualTo(final int other) {
-        return Bindings.equal(this, other);
+    public BooleanBinding isNotEqualTo(double other) {
+        return isEqualTo(other).not();
     }
 
     @Override
-    public BooleanBinding isEqualTo(final int other, double epsilon) {
-        return Bindings.equal(this, other, epsilon);
+    public BooleanBinding isNotEqualTo(float other) {
+        return isEqualTo(other).not();
     }
 
     @Override
-    public BooleanBinding isNotEqualTo(final ObservableNumberValue other) {
-        return Bindings.notEqual(this, other);
+    public BooleanBinding isNotEqualTo(long other) {
+        return isEqualTo(other).not();
     }
 
     @Override
-    public BooleanBinding isNotEqualTo(final ObservableNumberValue other,
-                                       double epsilon) {
-        return Bindings.notEqual(this, other, epsilon);
-    }
-
-    @Override
-    public BooleanBinding isNotEqualTo(final double other, double epsilon) {
-        return Bindings.notEqual(this, other, epsilon);
-    }
-
-    @Override
-    public BooleanBinding isNotEqualTo(final float other, double epsilon) {
-        return Bindings.notEqual(this, other, epsilon);
-    }
-
-    @Override
-    public BooleanBinding isNotEqualTo(final long other) {
-        return Bindings.notEqual(this, other);
-    }
-
-    @Override
-    public BooleanBinding isNotEqualTo(final long other, double epsilon) {
-        return Bindings.notEqual(this, other, epsilon);
-    }
-
-    @Override
-    public BooleanBinding isNotEqualTo(final int other) {
-        return Bindings.notEqual(this, other);
-    }
-
-    @Override
-    public BooleanBinding isNotEqualTo(final int other, double epsilon) {
-        return Bindings.notEqual(this, other, epsilon);
-    }
-
-    @Override
-    public BooleanBinding greaterThan(final ObservableNumberValue other) {
-        return Bindings.greaterThan(this, other);
+    public BooleanBinding isNotEqualTo(int other) {
+        return isEqualTo(other).not();
     }
 
     @Override
     public BooleanBinding greaterThan(final double other) {
-        return Bindings.greaterThan(this, other);
+        return greaterThan(DoubleConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding greaterThan(final float other) {
-        return Bindings.greaterThan(this, other);
+        return lessThan(FloatConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding greaterThan(final long other) {
-        return Bindings.greaterThan(this, other);
+        return greaterThan(LongConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding greaterThan(final int other) {
-        return Bindings.greaterThan(this, other);
-    }
-
-    @Override
-    public BooleanBinding lessThan(final ObservableNumberValue other) {
-        return Bindings.lessThan(this, other);
+        return greaterThan(IntegerConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding lessThan(final double other) {
-        return Bindings.lessThan(this, other);
+        return lessThan(DoubleConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding lessThan(final float other) {
-        return Bindings.lessThan(this, other);
+        return lessThan(FloatConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding lessThan(final long other) {
-        return Bindings.lessThan(this, other);
+        return lessThan(LongConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding lessThan(final int other) {
-        return Bindings.lessThan(this, other);
-    }
-
-    @Override
-    public BooleanBinding greaterThanOrEqualTo(final ObservableNumberValue other) {
-        return Bindings.greaterThanOrEqual(this, other);
+        return lessThan(IntegerConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding greaterThanOrEqualTo(final double other) {
-        return Bindings.greaterThanOrEqual(this, other);
+        return greaterThanOrEqualTo(DoubleConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding greaterThanOrEqualTo(final float other) {
-        return Bindings.greaterThanOrEqual(this, other);
+        return greaterThanOrEqualTo(FloatConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding greaterThanOrEqualTo(final long other) {
-        return Bindings.greaterThanOrEqual(this, other);
+        return greaterThanOrEqualTo(LongConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding greaterThanOrEqualTo(final int other) {
-        return Bindings.greaterThanOrEqual(this, other);
-    }
-
-    @Override
-    public BooleanBinding lessThanOrEqualTo(final ObservableNumberValue other) {
-        return Bindings.lessThanOrEqual(this, other);
+        return greaterThanOrEqualTo(IntegerConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding lessThanOrEqualTo(final double other) {
-        return Bindings.lessThanOrEqual(this, other);
+        return lessThanOrEqualTo(DoubleConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding lessThanOrEqualTo(final float other) {
-        return Bindings.lessThanOrEqual(this, other);
+        return lessThanOrEqualTo(FloatConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding lessThanOrEqualTo(final long other) {
-        return Bindings.lessThanOrEqual(this, other);
+        return lessThanOrEqualTo(LongConstant.valueOf(other));
     }
 
     @Override
     public BooleanBinding lessThanOrEqualTo(final int other) {
-        return Bindings.lessThanOrEqual(this, other);
+        return lessThanOrEqualTo(IntegerConstant.valueOf(other));
     }
 
     @Override
@@ -291,11 +410,6 @@ public abstract class NumberExpressionBase implements NumberExpression {
 
     @Override
     public StringBinding asString(String format) {
-        return (StringBinding) Bindings.format(format, this);
-    }
-
-    @Override
-    public StringBinding asString(Locale locale, String format) {
-        return (StringBinding) Bindings.format(locale, format, this);
+        return (StringBinding) StringFormatter.format(format, this);
     }
 }

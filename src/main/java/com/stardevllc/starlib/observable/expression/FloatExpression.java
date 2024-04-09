@@ -25,8 +25,6 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.binding.Bindings;
-import com.stardevllc.starlib.observable.binding.DoubleBinding;
 import com.stardevllc.starlib.observable.binding.FloatBinding;
 import com.stardevllc.starlib.observable.binding.ObjectBinding;
 import com.stardevllc.starlib.observable.value.ObservableFloatValue;
@@ -63,86 +61,6 @@ public abstract class FloatExpression extends NumberExpressionBase implements Ob
     @Override
     public FloatBinding negate() {
         return new FloatBinding(() -> -this.get());
-    }
-
-    @Override
-    public DoubleBinding add(final double other) {
-        return Bindings.add(this, other);
-    }
-
-    @Override
-    public FloatBinding add(final float other) {
-        return (FloatBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public FloatBinding add(final long other) {
-        return (FloatBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public FloatBinding add(final int other) {
-        return (FloatBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public DoubleBinding subtract(final double other) {
-        return Bindings.subtract(this, other);
-    }
-
-    @Override
-    public FloatBinding subtract(final float other) {
-        return (FloatBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public FloatBinding subtract(final long other) {
-        return (FloatBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public FloatBinding subtract(final int other) {
-        return (FloatBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public DoubleBinding multiply(final double other) {
-        return Bindings.multiply(this, other);
-    }
-
-    @Override
-    public FloatBinding multiply(final float other) {
-        return (FloatBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public FloatBinding multiply(final long other) {
-        return (FloatBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public FloatBinding multiply(final int other) {
-        return (FloatBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public DoubleBinding divide(final double other) {
-        return Bindings.divide(this, other);
-    }
-
-    @Override
-    public FloatBinding divide(final float other) {
-        return (FloatBinding) Bindings.divide(this, other);
-    }
-
-    @Override
-    public FloatBinding divide(final long other) {
-        return (FloatBinding) Bindings.divide(this, other);
-    }
-
-    @Override
-    public FloatBinding divide(final int other) {
-        return (FloatBinding) Bindings.divide(this, other);
     }
 
     public ObjectExpression<Float> asObject() {

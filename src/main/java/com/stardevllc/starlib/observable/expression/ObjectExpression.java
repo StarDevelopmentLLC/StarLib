@@ -27,11 +27,11 @@ package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.constants.ObjectConstant;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableObjectValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 
-import java.util.Locale;
 import java.util.function.Function;
 
 public abstract class ObjectExpression<T> implements ObservableObjectValue<T> {
@@ -66,27 +66,27 @@ public abstract class ObjectExpression<T> implements ObservableObjectValue<T> {
     }
 
     public BooleanBinding isEqualTo(final ObservableObjectValue<?> other) {
-        return Bindings.equal(this, other);
+        return new BooleanBinding(() -> get() == null ? other.get() == null : get().equals(other.get()), this, other);
     }
 
     public BooleanBinding isEqualTo(final Object other) {
-        return Bindings.equal(this, other);
+        return isEqualTo(ObjectConstant.valueOf(other));
     }
 
     public BooleanBinding isNotEqualTo(final ObservableObjectValue<?> other) {
-        return Bindings.notEqual(this, other);
+        return new BooleanBinding(() -> get() == null ? other.get() == null : !get().equals(other.get()), this, other);
     }
 
     public BooleanBinding isNotEqualTo(final Object other) {
-        return Bindings.notEqual(this, other);
+        return isNotEqualTo(ObjectConstant.valueOf(other));
     }
 
     public BooleanBinding isNull() {
-        return Bindings.isNull(this);
+        return new BooleanBinding(() -> get() == null, this);
     }
 
     public BooleanBinding isNotNull() {
-        return Bindings.isNotNull(this);
+        return new BooleanBinding(() -> get() != null, this);
     }
 
     public StringBinding asString() {
@@ -94,11 +94,7 @@ public abstract class ObjectExpression<T> implements ObservableObjectValue<T> {
     }
 
     public StringBinding asString(String format) {
-        return (StringBinding) Bindings.format(format, this);
-    }
-
-    public StringBinding asString(Locale locale, String format) {
-        return (StringBinding) Bindings.format(locale, format, this);
+        return (StringBinding) StringFormatter.format(format, this);
     }
 
     @Override

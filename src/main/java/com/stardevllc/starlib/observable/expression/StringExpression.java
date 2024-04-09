@@ -27,11 +27,14 @@ package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.constants.StringConstant;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableStringValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 
 import java.util.function.Function;
+
+import static com.stardevllc.starlib.helper.StringHelper.getStringSafe;
 
 public abstract class StringExpression implements ObservableStringValue {
     protected ExpressionHelper<String> helper;
@@ -45,97 +48,63 @@ public abstract class StringExpression implements ObservableStringValue {
     }
 
     public final String getValueSafe() {
-        final String value = get();
-        return value == null ? "" : value;
+        return getStringSafe(get());
     }
 
     public StringExpression concat(Object other) {
-        return Bindings.concat(this, other);
+        return StringFormatter.concat(this, other);
     }
 
-    public BooleanBinding isEqualTo(final ObservableStringValue other) {
-        return Bindings.equal(this, other);
+    public BooleanBinding isEqualTo(ObservableStringValue other) {
+        return new BooleanBinding(() -> getStringSafe(get()).equals(getStringSafe(get())), this, other);
     }
 
     public BooleanBinding isEqualTo(final String other) {
-        return Bindings.equal(this, other);
+        return isEqualTo(StringConstant.valueOf(other));
     }
 
     public BooleanBinding isNotEqualTo(final ObservableStringValue other) {
-        return Bindings.notEqual(this, other);
+        return new BooleanBinding(() -> !getStringSafe(get()).equals(getStringSafe(get())), this, other);
     }
 
     public BooleanBinding isNotEqualTo(final String other) {
-        return Bindings.notEqual(this, other);
+        return isNotEqualTo(StringConstant.valueOf(other));
     }
 
     public BooleanBinding isEqualToIgnoreCase(final ObservableStringValue other) {
-        return Bindings.equalIgnoreCase(this, other);
+        return new BooleanBinding(() -> getStringSafe(get()).equalsIgnoreCase(getStringSafe(get())), this, other);
     }
 
     public BooleanBinding isEqualToIgnoreCase(final String other) {
-        return Bindings.equalIgnoreCase(this, other);
+        return isEqualToIgnoreCase(StringConstant.valueOf(other));
     }
 
-    public BooleanBinding isNotEqualToIgnoreCase(
-            final ObservableStringValue other) {
-        return Bindings.notEqualIgnoreCase(this, other);
+    public BooleanBinding isNotEqualToIgnoreCase(final ObservableStringValue other) {
+        return new BooleanBinding(() -> !getStringSafe(get()).equalsIgnoreCase(getStringSafe(get())), this, other);
     }
 
     public BooleanBinding isNotEqualToIgnoreCase(final String other) {
-        return Bindings.notEqualIgnoreCase(this, other);
-    }
-
-    public BooleanBinding greaterThan(final ObservableStringValue other) {
-        return Bindings.greaterThan(this, other);
-    }
-
-    public BooleanBinding greaterThan(final String other) {
-        return Bindings.greaterThan(this, other);
-    }
-
-    public BooleanBinding lessThan(final ObservableStringValue other) {
-        return Bindings.lessThan(this, other);
-    }
-
-    public BooleanBinding lessThan(final String other) {
-        return Bindings.lessThan(this, other);
-    }
-
-    public BooleanBinding greaterThanOrEqualTo(final ObservableStringValue other) {
-        return Bindings.greaterThanOrEqual(this, other);
-    }
-
-    public BooleanBinding greaterThanOrEqualTo(final String other) {
-        return Bindings.greaterThanOrEqual(this, other);
-    }
-
-    public BooleanBinding lessThanOrEqualTo(final ObservableStringValue other) {
-        return Bindings.lessThanOrEqual(this, other);
-    }
-
-    public BooleanBinding lessThanOrEqualTo(final String other) {
-        return Bindings.lessThanOrEqual(this, other);
+        return isNotEqualToIgnoreCase(StringConstant.valueOf(other));
     }
 
     public BooleanBinding isNull() {
-        return Bindings.isNull(this);
+        return new BooleanBinding(() -> get() == null, this);
     }
 
     public BooleanBinding isNotNull() {
-        return Bindings.isNotNull(this);
+        return new BooleanBinding(() -> get() != null, this);
     }
 
     public IntegerBinding length() {
-        return Bindings.length(this);
+        return new IntegerBinding(() -> getValueSafe().length(), this);
     }
 
     public BooleanBinding isEmpty() {
-        return Bindings.isEmpty(this);
+        return new BooleanBinding(() -> getValueSafe().isEmpty(), this);
     }
 
     public BooleanBinding isNotEmpty() {
-        return Bindings.isNotEmpty(this);
+        return new BooleanBinding(() -> !getValueSafe().isEmpty(), this);
     }
 
     @Override

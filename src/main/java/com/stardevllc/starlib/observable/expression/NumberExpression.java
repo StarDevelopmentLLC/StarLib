@@ -30,8 +30,6 @@ import com.stardevllc.starlib.observable.binding.NumberBinding;
 import com.stardevllc.starlib.observable.binding.StringBinding;
 import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 
-import java.util.Locale;
-
 public interface NumberExpression extends ObservableNumberValue {
 
     NumberBinding negate();
@@ -78,36 +76,23 @@ public interface NumberExpression extends ObservableNumberValue {
 
     BooleanBinding isEqualTo(final ObservableNumberValue other);
 
-    BooleanBinding isEqualTo(final ObservableNumberValue other, double epsilon);
+    BooleanBinding isEqualTo(final double other);
 
-    BooleanBinding isEqualTo(final double other, double epsilon);
-
-    BooleanBinding isEqualTo(final float other, double epsilon);
+    BooleanBinding isEqualTo(final float other);
 
     BooleanBinding isEqualTo(final long other);
 
-    BooleanBinding isEqualTo(final long other, double epsilon);
-
     BooleanBinding isEqualTo(final int other);
-
-    BooleanBinding isEqualTo(final int other, double epsilon);
 
     BooleanBinding isNotEqualTo(final ObservableNumberValue other);
 
-    BooleanBinding isNotEqualTo(final ObservableNumberValue other,
-            double epsilon);
+    BooleanBinding isNotEqualTo(final double other);
 
-    BooleanBinding isNotEqualTo(final double other, double epsilon);
-
-    BooleanBinding isNotEqualTo(final float other, double epsilon);
+    BooleanBinding isNotEqualTo(final float other);
 
     BooleanBinding isNotEqualTo(final long other);
 
-    BooleanBinding isNotEqualTo(final long other, double epsilon);
-
     BooleanBinding isNotEqualTo(final int other);
-
-    BooleanBinding isNotEqualTo(final int other, double epsilon);
 
     BooleanBinding greaterThan(final ObservableNumberValue other);
 
@@ -152,6 +137,4 @@ public interface NumberExpression extends ObservableNumberValue {
     StringBinding asString();
 
     StringBinding asString(String format);
-
-    StringBinding asString(Locale locale, String format);
 }

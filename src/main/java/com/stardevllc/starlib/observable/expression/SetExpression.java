@@ -25,11 +25,9 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.collections.StarCollections;
-import com.stardevllc.starlib.observable.property.ReadOnlyBooleanProperty;
-import com.stardevllc.starlib.observable.property.ReadOnlyIntegerProperty;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.set.ObservableSet;
 import com.stardevllc.starlib.observable.collections.set.SetChangeListener;
 import com.stardevllc.starlib.observable.value.ChangeListener;
@@ -55,24 +53,20 @@ public abstract class SetExpression<E> implements ObservableSetValue<E> {
         return size();
     }
 
-    public abstract ReadOnlyIntegerProperty sizeProperty();
-
-    public abstract ReadOnlyBooleanProperty emptyProperty();
-
     public BooleanBinding isEqualTo(final ObservableSet<?> other) {
-        return Bindings.equal(this, other);
+        return new BooleanBinding(() -> get().equals(other), this, other);
     }
 
     public BooleanBinding isNotEqualTo(final ObservableSet<?> other) {
-        return Bindings.notEqual(this, other);
+        return new BooleanBinding(() -> !get().equals(other), this, other);
     }
 
     public BooleanBinding isNull() {
-        return Bindings.isNull(this);
+        return new BooleanBinding(() -> get() == null, this);
     }
 
     public BooleanBinding isNotNull() {
-        return Bindings.isNotNull(this);
+        return new BooleanBinding(() -> get() != null, this);
     }
 
     public StringBinding asString() {

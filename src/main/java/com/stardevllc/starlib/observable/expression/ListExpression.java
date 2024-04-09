@@ -25,16 +25,14 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.collections.StarCollections;
-import com.stardevllc.starlib.observable.property.ReadOnlyBooleanProperty;
-import com.stardevllc.starlib.observable.property.ReadOnlyIntegerProperty;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.list.ListChangeListener;
-import com.stardevllc.starlib.observable.value.ChangeListener;
-import com.stardevllc.starlib.observable.value.ObservableListValue;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
+import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableIntegerValue;
+import com.stardevllc.starlib.observable.value.ObservableListValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 
 import java.util.*;
@@ -55,10 +53,6 @@ public abstract class ListExpression<E> implements ObservableListValue<E> {
         return size();
     }
 
-    public abstract ReadOnlyIntegerProperty sizeProperty();
-
-    public abstract ReadOnlyBooleanProperty emptyProperty();
-
     public ObjectBinding<E> valueAt(int index) {
         return new ObjectBinding<>(() -> get(index), this);
     }
@@ -68,19 +62,19 @@ public abstract class ListExpression<E> implements ObservableListValue<E> {
     }
 
     public BooleanBinding isEqualTo(final ObservableList<?> other) {
-        return Bindings.equal(this, other);
+        return new BooleanBinding(() -> get().equals(other), this, other);
     }
 
     public BooleanBinding isNotEqualTo(final ObservableList<?> other) {
-        return Bindings.notEqual(this, other);
+        return new BooleanBinding(() -> get() != null ? other != null : !get().equals(other), this, other);
     }
 
     public BooleanBinding isNull() {
-        return Bindings.isNull(this);
+        return new BooleanBinding(() -> get() == null, this);
     }
 
     public BooleanBinding isNotNull() {
-        return Bindings.isNotNull(this);
+        return new BooleanBinding(() -> get() != null, this);
     }
 
     public StringBinding asString() {

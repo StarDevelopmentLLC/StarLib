@@ -65,23 +65,23 @@ public abstract class BooleanExpression implements ObservableBooleanValue {
     }
 
     public BooleanBinding and(final ObservableBooleanValue other) {
-        return Bindings.and(this, other);
+        return new BooleanBinding(() -> get() && other.get(), this, other);
     }
 
     public BooleanBinding or(final ObservableBooleanValue other) {
-        return Bindings.or(this, other);
+        return new BooleanBinding(() -> get() || other.get(), this, other);
     }
 
     public BooleanBinding not() {
-        return Bindings.not(this);
+        return new BooleanBinding(() -> !get(), this);
     }
 
     public BooleanBinding isEqualTo(final ObservableBooleanValue other) {
-        return Bindings.equal(this, other);
+        return new BooleanBinding(() -> get() == other.get(), this, other);
     }
 
     public BooleanBinding isNotEqualTo(final ObservableBooleanValue other) {
-        return Bindings.notEqual(this, other);
+        return new BooleanBinding(() -> get() != other.get(), this, other);
     }
 
     public StringBinding asString() {

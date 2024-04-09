@@ -25,10 +25,8 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.collections.StarCollections;
-import com.stardevllc.starlib.observable.property.ReadOnlyBooleanProperty;
-import com.stardevllc.starlib.observable.property.ReadOnlyIntegerProperty;
 import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.map.ObservableMap;
 import com.stardevllc.starlib.observable.value.ObservableMapValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
@@ -53,10 +51,6 @@ public abstract class MapExpression<K, V> implements ObservableMapValue<K, V> {
         return size();
     }
 
-    public abstract ReadOnlyIntegerProperty sizeProperty();
-
-    public abstract ReadOnlyBooleanProperty emptyProperty();
-
     public ObjectBinding<V> valueAt(K key) {
         return new ObjectBinding<>(() -> get(key), this);
     }
@@ -66,19 +60,19 @@ public abstract class MapExpression<K, V> implements ObservableMapValue<K, V> {
     }
 
     public BooleanBinding isEqualTo(final ObservableMap<?, ?> other) {
-        return Bindings.equal(this, other);
+        return new BooleanBinding(() -> get().equals(other), this, other);
     }
 
     public BooleanBinding isNotEqualTo(final ObservableMap<?, ?> other) {
-        return Bindings.notEqual(this, other);
+        return new BooleanBinding(() -> !get().equals(other), this, other);
     }
 
     public BooleanBinding isNull() {
-        return Bindings.isNull(this);
+        return new BooleanBinding(() -> get() == null, this);
     }
 
     public BooleanBinding isNotNull() {
-        return Bindings.isNotNull(this);
+        return new BooleanBinding(() -> get() != null, this);
     }
 
     public StringBinding asString() {

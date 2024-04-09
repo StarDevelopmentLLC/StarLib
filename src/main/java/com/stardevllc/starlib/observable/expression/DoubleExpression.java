@@ -25,11 +25,9 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.binding.Bindings;
 import com.stardevllc.starlib.observable.binding.DoubleBinding;
 import com.stardevllc.starlib.observable.binding.ObjectBinding;
 import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
-import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 
 public abstract class DoubleExpression extends NumberExpressionBase implements ObservableDoubleValue {
     public DoubleExpression() {
@@ -63,106 +61,6 @@ public abstract class DoubleExpression extends NumberExpressionBase implements O
     @Override
     public DoubleBinding negate() {
         return new DoubleBinding(() -> -this.get());
-    }
-
-    @Override
-    public DoubleBinding add(final ObservableNumberValue other) {
-        return (DoubleBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public DoubleBinding add(final double other) {
-        return Bindings.add(this, other);
-    }
-
-    @Override
-    public DoubleBinding add(final float other) {
-        return (DoubleBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public DoubleBinding add(final long other) {
-        return (DoubleBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public DoubleBinding add(final int other) {
-        return (DoubleBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public DoubleBinding subtract(final ObservableNumberValue other) {
-        return (DoubleBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public DoubleBinding subtract(final double other) {
-        return Bindings.subtract(this, other);
-    }
-
-    @Override
-    public DoubleBinding subtract(final float other) {
-        return (DoubleBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public DoubleBinding subtract(final long other) {
-        return (DoubleBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public DoubleBinding subtract(final int other) {
-        return (DoubleBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public DoubleBinding multiply(final ObservableNumberValue other) {
-        return (DoubleBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public DoubleBinding multiply(final double other) {
-        return Bindings.multiply(this, other);
-    }
-
-    @Override
-    public DoubleBinding multiply(final float other) {
-        return (DoubleBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public DoubleBinding multiply(final long other) {
-        return (DoubleBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public DoubleBinding multiply(final int other) {
-        return (DoubleBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public DoubleBinding divide(final ObservableNumberValue other) {
-        return (DoubleBinding) Bindings.divide(this, other);
-    }
-
-    @Override
-    public DoubleBinding divide(final double other) {
-        return Bindings.divide(this, other);
-    }
-
-    @Override
-    public DoubleBinding divide(final float other) {
-        return (DoubleBinding) Bindings.divide(this, other);
-    }
-
-    @Override
-    public DoubleBinding divide(final long other) {
-        return (DoubleBinding) Bindings.divide(this, other);
-    }
-
-    @Override
-    public DoubleBinding divide(final int other) {
-        return (DoubleBinding) Bindings.divide(this, other);
     }
 
     public ObjectExpression<Double> asObject() {

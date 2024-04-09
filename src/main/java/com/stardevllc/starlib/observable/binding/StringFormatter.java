@@ -25,15 +25,12 @@
 
 package com.stardevllc.starlib.observable.binding;
 
-import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.constants.StringConstant;
 import com.stardevllc.starlib.observable.expression.StringExpression;
-import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class StringFormatter extends StringBinding {
 
@@ -67,27 +64,10 @@ public abstract class StringFormatter extends StringBinding {
         if (observableValue instanceof StringExpression) {
             return (StringExpression) observableValue;
         } else {
-            return new StringBinding() {
-                {
-                    super.bind(observableValue);
-                }
-
-                @Override
-                public void dispose() {
-                    super.unbind(observableValue);
-                }
-
-                @Override
-                protected String computeValue() {
-                    final Object value = observableValue.getValue();
-                    return (value == null)? "null" : value.toString();
-                }
-
-                @Override
-                public ObservableList<ObservableValue<?>> getDependencies() {
-                    return StarCollections.singletonObservableList(observableValue);
-                }
-            };
+            return new StringBinding(() -> {
+                Object value = observableValue.getValue();
+                return (value == null) ? "null" : value.toString();
+            });
         }
     }
 
@@ -97,8 +77,7 @@ public abstract class StringFormatter extends StringBinding {
         }
         if (args.length == 1) {
             final Object cur = args[0];
-            return cur instanceof ObservableValue ? convert((ObservableValue<?>) cur)
-                    : StringConstant.valueOf(cur.toString());
+            return cur instanceof ObservableValue ? convert((ObservableValue<?>) cur) : StringConstant.valueOf(cur.toString());
         }
         if (extractDependencies(args).length == 0) {
             final StringBuilder builder = new StringBuilder();
@@ -107,65 +86,14 @@ public abstract class StringFormatter extends StringBinding {
             }
             return StringConstant.valueOf(builder.toString());
         }
-        return new StringFormatter() {
-            {
-                super.bind(extractDependencies(args));
+        
+        return new StringBinding(() -> {
+            StringBuilder builder = new StringBuilder();
+            for (Object arg : args) {
+                builder.append(extractValue(arg));
             }
-
-            @Override
-            public void dispose() {
-                super.unbind(extractDependencies(args));
-            }
-
-            @Override
-            protected String computeValue() {
-                final StringBuilder builder = new StringBuilder();
-                for (final Object obj : args) {
-                    builder.append(extractValue(obj));
-                }
-                return builder.toString();
-            }
-
-            @Override
-            public ObservableList<ObservableValue<?>> getDependencies() {
-                return StarCollections.unmodifiableObservableList(StarCollections
-                        .observableArrayList(extractDependencies(args)));
-            }
-        };
-    }
-
-    public static StringExpression format(final Locale locale, final String format, final Object... args) {
-        if (format == null) {
-            throw new NullPointerException("Format cannot be null.");
-        }
-        if (extractDependencies(args).length == 0) {
-            return StringConstant.valueOf(String.format(locale, format, args));
-        }
-        final StringFormatter formatter = new StringFormatter() {
-            {
-                super.bind(extractDependencies(args));
-            }
-
-            @Override
-            public void dispose() {
-                super.unbind(extractDependencies(args));
-            }
-
-            @Override
-            protected String computeValue() {
-                final Object[] values = extractValues(args);
-                return String.format(locale, format, values);
-            }
-
-            @Override
-            public ObservableList<ObservableValue<?>> getDependencies() {
-                return StarCollections.unmodifiableObservableList(StarCollections
-                        .observableArrayList(extractDependencies(args)));
-            }
-        };
-        // Force calculation to check format
-        formatter.get();
-        return formatter;
+            return builder.toString();
+        }, extractDependencies(args));
     }
 
     public static StringExpression format(final String format, final Object... args) {
@@ -175,30 +103,9 @@ public abstract class StringFormatter extends StringBinding {
         if (extractDependencies(args).length == 0) {
             return StringConstant.valueOf(String.format(format, args));
         }
-        final StringFormatter formatter = new StringFormatter() {
-            {
-                super.bind(extractDependencies(args));
-            }
-
-            @Override
-            public void dispose() {
-                super.unbind(extractDependencies(args));
-            }
-
-            @Override
-            protected String computeValue() {
-                final Object[] values = extractValues(args);
-                return String.format(format, values);
-            }
-
-            @Override
-            public ObservableList<ObservableValue<?>> getDependencies() {
-                return StarCollections.unmodifiableObservableList(StarCollections
-                        .observableArrayList(extractDependencies(args)));
-            }
-        };
-        // Force calculation to check format
-        formatter.get();
-        return formatter;
+        
+        StringBinding stringBinding = new StringBinding(() -> String.format(format, extractValues(args)), extractDependencies(args));
+        stringBinding.get();
+        return stringBinding;
     }
 }

@@ -39,7 +39,6 @@ import java.lang.ref.WeakReference;
 public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Property<ObservableMap<K, V>>, WritableMapValue<K, V> {
 
     protected final MapChangeListener<K, V> mapChangeListener = change -> {
-        invalidateProperties();
         invalidated();
         fireValueChangedEvent(change);
     };
@@ -77,22 +76,12 @@ public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Prop
         BidirectionalBinding.unbind(this, other);
     }
 
-    private void invalidateProperties() {
-        if (size0 != null) {
-            size0.fireValueChangedEvent();
-        }
-        if (empty0 != null) {
-            empty0.fireValueChangedEvent();
-        }
-    }
-
     private void markInvalid(ObservableMap<K, V> oldValue) {
         if (valid) {
             if (oldValue != null) {
                 oldValue.removeListener(mapChangeListener);
             }
             valid = false;
-            invalidateProperties();
             invalidated();
             fireValueChangedEvent();
         }

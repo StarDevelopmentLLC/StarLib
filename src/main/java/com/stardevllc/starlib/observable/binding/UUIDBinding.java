@@ -25,11 +25,11 @@
 
 package com.stardevllc.starlib.observable.binding;
 
+import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.collections.StarCollections;
+import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.expression.UUIDExpression;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.collections.list.ObservableList;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -92,7 +92,7 @@ public class UUIDBinding extends UUIDExpression implements Binding<UUID> {
     
     @Override
     public ObservableList<?> getDependencies() {
-        return StarCollections.emptyObservableList();
+        return dependencies;
     }
     
     @Override

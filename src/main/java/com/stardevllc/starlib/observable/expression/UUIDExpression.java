@@ -27,6 +27,7 @@ package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.constants.UUIDConstant;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableUUIDValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
@@ -46,27 +47,27 @@ public abstract class UUIDExpression implements ObservableUUIDValue {
     }
     
     public BooleanBinding isEqualTo(final ObservableUUIDValue other) {
-        return Bindings.equal(this, other);
+        return new BooleanBinding(() -> get().equals(other.get()), this, other);
     }
     
     public BooleanBinding isEqualTo(final UUID other) {
-        return Bindings.equal(this, other);
+        return isEqualTo(UUIDConstant.valueOf(other));
     }
     
     public BooleanBinding isNotEqualTo(final ObservableUUIDValue other) {
-        return Bindings.notEqual(this, other);
+        return isEqualTo(other).not();
     }
     
     public BooleanBinding isNotEqualTo(final UUID other) {
-        return Bindings.notEqual(this, other);
+        return isNotEqualTo(UUIDConstant.valueOf(other));
     }
     
     public BooleanBinding isNull() {
-        return Bindings.isNull(this);
+        return new BooleanBinding(() -> get() == null, this, this);
     }
     
     public BooleanBinding isNotNull() {
-        return Bindings.isNotNull(this);
+        return isNull().not();
     }
 
     public ObjectExpression<UUID> asObject() {

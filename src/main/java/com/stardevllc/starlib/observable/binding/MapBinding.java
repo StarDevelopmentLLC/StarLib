@@ -25,16 +25,15 @@
 
 package com.stardevllc.starlib.observable.binding;
 
-import com.stardevllc.starlib.observable.collections.StarCollections;
-import com.stardevllc.starlib.observable.expression.MapExpression;
-import com.stardevllc.starlib.observable.expression.MapExpressionHelper;
-import com.stardevllc.starlib.observable.property.ReadOnlyBooleanProperty;
-import com.stardevllc.starlib.observable.property.ReadOnlyIntegerProperty;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
+import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.collections.map.MapChangeListener;
 import com.stardevllc.starlib.observable.collections.map.ObservableMap;
+import com.stardevllc.starlib.observable.expression.MapExpression;
+import com.stardevllc.starlib.observable.expression.MapExpressionHelper;
+import com.stardevllc.starlib.observable.property.ReadOnlyBooleanProperty;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 
 import java.util.Arrays;
@@ -49,11 +48,7 @@ public class MapBinding<K, V> extends MapExpression<K, V> implements Binding<Obs
     private Callable<ObservableMap<K, V>> callable;
     private ObservableList<Observable> dependencies;
 
-    private SizeProperty size0;
-    private EmptyProperty empty0;
-
     private final MapChangeListener<K, V> mapChangeListener = change -> {
-        invalidateProperties();
         onInvalidating();
         MapExpressionHelper.fireValueChangedEvent(helper, change);
     };
@@ -75,44 +70,6 @@ public class MapBinding<K, V> extends MapExpression<K, V> implements Binding<Obs
     public MapBinding(ObservableMap<K, V> value, Observable... dependencies) {
         this(dependencies);
         this.value = value;
-    }
-
-    @Override
-    public ReadOnlyIntegerProperty sizeProperty() {
-        if (size0 == null) {
-            size0 = new SizeProperty();
-        }
-        return size0;
-    }
-
-    private class SizeProperty extends ReadOnlyIntegerProperty {
-        @Override
-        public int get() {
-            return size();
-        }
-
-        @Override
-        public Object getBean() {
-            return MapBinding.this;
-        }
-
-        @Override
-        public String getName() {
-            return "size";
-        }
-
-        @Override
-        protected void fireValueChangedEvent() {
-            super.fireValueChangedEvent();
-        }
-    }
-
-    @Override
-    public ReadOnlyBooleanProperty emptyProperty() {
-        if (empty0 == null) {
-            empty0 = new EmptyProperty();
-        }
-        return empty0;
     }
 
     private class EmptyProperty extends ReadOnlyBooleanProperty {
@@ -235,15 +192,6 @@ public class MapBinding<K, V> extends MapExpression<K, V> implements Binding<Obs
         //no-op
     }
 
-    private void invalidateProperties() {
-        if (size0 != null) {
-            size0.fireValueChangedEvent();
-        }
-        if (empty0 != null) {
-            empty0.fireValueChangedEvent();
-        }
-    }
-
     @Override
     public final void invalidate() {
         if (valid) {
@@ -251,7 +199,6 @@ public class MapBinding<K, V> extends MapExpression<K, V> implements Binding<Obs
                 value.removeListener(mapChangeListener);
             }
             valid = false;
-            invalidateProperties();
             onInvalidating();
             MapExpressionHelper.fireValueChangedEvent(helper);
         }

@@ -42,9 +42,6 @@ public class ReadOnlyListProperty<E> extends ListExpression<E> implements ReadOn
 
     protected ObservableList<E> value;
 
-    protected SizeProperty size0;
-    protected EmptyProperty empty0;
-
     public ReadOnlyListProperty() {
         this(DEFAULT_BEAN, DEFAULT_NAME);
     }
@@ -146,58 +143,7 @@ public class ReadOnlyListProperty<E> extends ListExpression<E> implements ReadOn
     }
 
     @Override
-    public ReadOnlyIntegerProperty sizeProperty() {
-        if (size0 == null) {
-            size0 = new ReadOnlyListProperty.SizeProperty();
-        }
-        return size0;
-    }
-
-    @Override
     public ObservableList<E> get() {
         return value;
-    }
-
-    protected class SizeProperty extends ReadOnlyIntegerProperty {
-        @Override
-        public int get() {
-            return size();
-        }
-
-        @Override
-        public Object getBean() {
-            return ReadOnlyListProperty.this;
-        }
-
-        @Override
-        public String getName() {
-            return "size";
-        }
-    }
-
-    @Override
-    public ReadOnlyBooleanProperty emptyProperty() {
-        if (empty0 == null) {
-            empty0 = new ReadOnlyListProperty.EmptyProperty();
-        }
-        return empty0;
-    }
-
-    protected class EmptyProperty extends ReadOnlyBooleanProperty {
-
-        @Override
-        public boolean get() {
-            return isEmpty();
-        }
-
-        @Override
-        public Object getBean() {
-            return ReadOnlyListProperty.this;
-        }
-
-        @Override
-        public String getName() {
-            return "empty";
-        }
     }
 }

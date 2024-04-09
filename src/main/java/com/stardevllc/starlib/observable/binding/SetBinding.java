@@ -25,15 +25,13 @@
 
 package com.stardevllc.starlib.observable.binding;
 
-import com.stardevllc.starlib.observable.collections.StarCollections;
-import com.stardevllc.starlib.observable.expression.SetExpression;
-import com.stardevllc.starlib.observable.expression.SetExpressionHelper;
-import com.stardevllc.starlib.observable.property.ReadOnlyBooleanProperty;
-import com.stardevllc.starlib.observable.property.ReadOnlyIntegerProperty;
 import com.stardevllc.starlib.observable.Observable;
+import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.collections.set.ObservableSet;
 import com.stardevllc.starlib.observable.collections.set.SetChangeListener;
+import com.stardevllc.starlib.observable.expression.SetExpression;
+import com.stardevllc.starlib.observable.expression.SetExpressionHelper;
 
 import java.util.Arrays;
 import java.util.concurrent.Callable;
@@ -45,9 +43,6 @@ public class SetBinding<E> extends SetExpression<E> implements Binding<Observabl
     private ObservableSet<E> value;
     private boolean valid = false;
     private BindingHelperObserver observer;
-
-    private SizeProperty size0;
-    private EmptyProperty empty0;
 
     public SetBinding(Observable... dependencies) {
         if (dependencies == null) {
@@ -69,71 +64,9 @@ public class SetBinding<E> extends SetExpression<E> implements Binding<Observabl
     }
 
     private final SetChangeListener<E> setChangeListener = change -> {
-        invalidateProperties();
         onInvalidating();
         SetExpressionHelper.fireValueChangedEvent(helper, change);
     };
-
-    @Override
-    public ReadOnlyIntegerProperty sizeProperty() {
-        if (size0 == null) {
-            size0 = new SizeProperty();
-        }
-        return size0;
-    }
-
-    private class SizeProperty extends ReadOnlyIntegerProperty {
-        @Override
-        public int get() {
-            return size();
-        }
-
-        @Override
-        public Object getBean() {
-            return SetBinding.this;
-        }
-
-        @Override
-        public String getName() {
-            return "size";
-        }
-
-        @Override
-        protected void fireValueChangedEvent() {
-            super.fireValueChangedEvent();
-        }
-    }
-
-    @Override
-    public ReadOnlyBooleanProperty emptyProperty() {
-        if (empty0 == null) {
-            empty0 = new EmptyProperty();
-        }
-        return empty0;
-    }
-
-    private class EmptyProperty extends ReadOnlyBooleanProperty {
-
-        @Override
-        public boolean get() {
-            return isEmpty();
-        }
-
-        @Override
-        public Object getBean() {
-            return SetBinding.this;
-        }
-
-        @Override
-        public String getName() {
-            return "empty";
-        }
-
-        @Override
-        protected void fireValueChangedEvent() {
-            super.fireValueChangedEvent();
-        }
-    }
 
     protected final void bind(Observable... dependencies) {
         if ((dependencies != null) && (dependencies.length > 0)) {
@@ -187,15 +120,6 @@ public class SetBinding<E> extends SetExpression<E> implements Binding<Observabl
         //no-op
     }
 
-    private void invalidateProperties() {
-        if (size0 != null) {
-            size0.fireValueChangedEvent();
-        }
-        if (empty0 != null) {
-            empty0.fireValueChangedEvent();
-        }
-    }
-
     @Override
     public final void invalidate() {
         if (valid) {
@@ -203,7 +127,6 @@ public class SetBinding<E> extends SetExpression<E> implements Binding<Observabl
                 value.removeListener(setChangeListener);
             }
             valid = false;
-            invalidateProperties();
             onInvalidating();
             SetExpressionHelper.fireValueChangedEvent(helper);
         }

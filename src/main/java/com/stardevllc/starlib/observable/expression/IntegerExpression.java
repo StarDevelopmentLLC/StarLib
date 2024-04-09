@@ -25,7 +25,8 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.IntegerBinding;
+import com.stardevllc.starlib.observable.binding.ObjectBinding;
 import com.stardevllc.starlib.observable.value.ObservableIntegerValue;
 
 public abstract class IntegerExpression extends NumberExpressionBase implements ObservableIntegerValue {
@@ -60,86 +61,6 @@ public abstract class IntegerExpression extends NumberExpressionBase implements 
     @Override
     public IntegerBinding negate() {
         return new IntegerBinding(() -> -this.get());
-    }
-
-    @Override
-    public DoubleBinding add(final double other) {
-        return Bindings.add(this, other);
-    }
-
-    @Override
-    public FloatBinding add(final float other) {
-        return (FloatBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public LongBinding add(final long other) {
-        return (LongBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public IntegerBinding add(final int other) {
-        return (IntegerBinding) Bindings.add(this, other);
-    }
-
-    @Override
-    public DoubleBinding subtract(final double other) {
-        return Bindings.subtract(this, other);
-    }
-
-    @Override
-    public FloatBinding subtract(final float other) {
-        return (FloatBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public LongBinding subtract(final long other) {
-        return (LongBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public IntegerBinding subtract(final int other) {
-        return (IntegerBinding) Bindings.subtract(this, other);
-    }
-
-    @Override
-    public DoubleBinding multiply(final double other) {
-        return Bindings.multiply(this, other);
-    }
-
-    @Override
-    public FloatBinding multiply(final float other) {
-        return (FloatBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public LongBinding multiply(final long other) {
-        return (LongBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public IntegerBinding multiply(final int other) {
-        return (IntegerBinding) Bindings.multiply(this, other);
-    }
-
-    @Override
-    public DoubleBinding divide(final double other) {
-        return Bindings.divide(this, other);
-    }
-
-    @Override
-    public FloatBinding divide(final float other) {
-        return (FloatBinding) Bindings.divide(this, other);
-    }
-
-    @Override
-    public LongBinding divide(final long other) {
-        return (LongBinding) Bindings.divide(this, other);
-    }
-
-    @Override
-    public IntegerBinding divide(final int other) {
-        return (IntegerBinding) Bindings.divide(this, other);
     }
 
     public ObjectExpression<Integer> asObject() {

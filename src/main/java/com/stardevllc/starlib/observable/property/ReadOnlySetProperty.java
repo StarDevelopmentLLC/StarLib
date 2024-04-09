@@ -38,8 +38,6 @@ public class ReadOnlySetProperty<E> extends SetExpression<E> implements ReadOnly
     protected final Object bean;
     protected final String name;
     protected ObservableSet<E> value;
-    protected SizeProperty size0;
-    protected EmptyProperty empty0;
 
     public ReadOnlySetProperty() {
         this(DEFAULT_BEAN, DEFAULT_NAME);
@@ -129,22 +127,6 @@ public class ReadOnlySetProperty<E> extends SetExpression<E> implements ReadOnly
     }
 
     @Override
-    public ReadOnlyIntegerProperty sizeProperty() {
-        if (size0 == null) {
-            size0 = new SizeProperty();
-        }
-        return size0;
-    }
-
-    @Override
-    public ReadOnlyBooleanProperty emptyProperty() {
-        if (empty0 == null) {
-            empty0 = new EmptyProperty();
-        }
-        return empty0;
-    }
-
-    @Override
     public ObservableSet<E> get() {
         return value;
     }
@@ -157,40 +139,5 @@ public class ReadOnlySetProperty<E> extends SetExpression<E> implements ReadOnly
     @Override
     public String getName() {
         return name;
-    }
-
-    protected class SizeProperty extends ReadOnlyIntegerProperty {
-        @Override
-        public int get() {
-            return size();
-        }
-
-        @Override
-        public Object getBean() {
-            return ReadOnlySetProperty.this;
-        }
-
-        @Override
-        public String getName() {
-            return "size";
-        }
-    }
-
-    protected class EmptyProperty extends ReadOnlyBooleanProperty {
-
-        @Override
-        public boolean get() {
-            return isEmpty();
-        }
-
-        @Override
-        public Object getBean() {
-            return ReadOnlySetProperty.this;
-        }
-
-        @Override
-        public String getName() {
-            return "empty";
-        }
     }
 }

@@ -25,13 +25,12 @@
 
 package com.stardevllc.starlib.observable.binding;
 
-import com.stardevllc.starlib.observable.collections.StarCollections;
-import com.stardevllc.starlib.observable.expression.ListExpression;
-import com.stardevllc.starlib.observable.property.ReadOnlyBooleanProperty;
-import com.stardevllc.starlib.observable.property.ReadOnlyIntegerProperty;
 import com.stardevllc.starlib.observable.Observable;
+import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.list.ListChangeListener;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
+import com.stardevllc.starlib.observable.expression.ListExpression;
+import com.stardevllc.starlib.observable.expression.ListExpressionHelper;
 
 import java.util.Arrays;
 import java.util.concurrent.Callable;
@@ -44,9 +43,6 @@ public class ListBinding<E> extends ListExpression<E> implements Binding<Observa
     private boolean valid = false;
 
     private BindingHelperObserver observer;
-
-    private SizeProperty size0;
-    private EmptyProperty empty0;
 
     public ListBinding(Observable... dependencies) {
         if (dependencies == null) {
@@ -68,71 +64,9 @@ public class ListBinding<E> extends ListExpression<E> implements Binding<Observa
     }
 
     private final ListChangeListener<E> listChangeListener = change -> {
-        invalidateProperties();
         onInvalidating();
         ListExpressionHelper.fireValueChangedEvent(helper, change);
     };
-
-    @Override
-    public ReadOnlyIntegerProperty sizeProperty() {
-        if (size0 == null) {
-            size0 = new SizeProperty();
-        }
-        return size0;
-    }
-
-    private class SizeProperty extends ReadOnlyIntegerProperty {
-        @Override
-        public int get() {
-            return size();
-        }
-
-        @Override
-        public Object getBean() {
-            return ListBinding.this;
-        }
-
-        @Override
-        public String getName() {
-            return "size";
-        }
-
-        @Override
-        protected void fireValueChangedEvent() {
-            super.fireValueChangedEvent();
-        }
-    }
-
-    @Override
-    public ReadOnlyBooleanProperty emptyProperty() {
-        if (empty0 == null) {
-            empty0 = new EmptyProperty();
-        }
-        return empty0;
-    }
-
-    private class EmptyProperty extends ReadOnlyBooleanProperty {
-
-        @Override
-        public boolean get() {
-            return isEmpty();
-        }
-
-        @Override
-        public Object getBean() {
-            return ListBinding.this;
-        }
-
-        @Override
-        public String getName() {
-            return "empty";
-        }
-
-        @Override
-        protected void fireValueChangedEvent() {
-            super.fireValueChangedEvent();
-        }
-    }
 
     protected final void bind(Observable... dependencies) {
         if ((dependencies != null) && (dependencies.length > 0)) {
@@ -185,15 +119,6 @@ public class ListBinding<E> extends ListExpression<E> implements Binding<Observa
         //no-op
     }
 
-    private void invalidateProperties() {
-        if (size0 != null) {
-            size0.fireValueChangedEvent();
-        }
-        if (empty0 != null) {
-            empty0.fireValueChangedEvent();
-        }
-    }
-
     @Override
     public final void invalidate() {
         if (valid) {
@@ -201,7 +126,6 @@ public class ListBinding<E> extends ListExpression<E> implements Binding<Observa
                 value.removeListener(listChangeListener);
             }
             valid = false;
-            invalidateProperties();
             onInvalidating();
             ListExpressionHelper.fireValueChangedEvent(helper);
         }

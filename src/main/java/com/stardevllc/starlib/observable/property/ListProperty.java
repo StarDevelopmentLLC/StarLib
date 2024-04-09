@@ -39,7 +39,6 @@ import java.lang.ref.WeakReference;
 public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property<ObservableList<E>>, WritableListValue<E> {
 
     private final ListChangeListener<E> listChangeListener = change -> {
-        invalidateProperties();
         invalidated();
         fireValueChangedEvent(change);
     };
@@ -82,22 +81,12 @@ public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property
         BidirectionalBinding.unbind(this, other);
     }
 
-    private void invalidateProperties() {
-        if (size0 != null) {
-            size0.fireValueChangedEvent();
-        }
-        if (empty0 != null) {
-            empty0.fireValueChangedEvent();
-        }
-    }
-
     private void markInvalid(ObservableList<E> oldValue) {
         if (valid) {
             if (oldValue != null) {
                 oldValue.removeListener(listChangeListener);
             }
             valid = false;
-            invalidateProperties();
             invalidated();
             fireValueChangedEvent();
         }
