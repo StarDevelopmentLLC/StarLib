@@ -33,8 +33,6 @@ import com.stardevllc.starlib.observable.constants.IntegerConstant;
 import com.stardevllc.starlib.observable.constants.LongConstant;
 import com.stardevllc.starlib.observable.value.*;
 
-import java.util.function.Function;
-
 public abstract class NumberExpressionBase implements NumberExpression {
     protected ExpressionHelper<Number> helper;
     
@@ -63,26 +61,6 @@ public abstract class NumberExpressionBase implements NumberExpression {
 
     protected void fireValueChangedEvent() {
         ExpressionHelper.fireValueChangedEvent(helper);
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super Number, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<Number> orElse(Number number) {
-        return new OrElseBinding<>(this, number);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super Number, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<Number> when(ObservableValue<Boolean> observableValue) {
-        return new ConditionalBinding<>(this, observableValue);
     }
 
     public NumberBinding add(ObservableNumberValue other) {

@@ -26,12 +26,11 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.BooleanBinding;
+import com.stardevllc.starlib.observable.binding.StringBinding;
+import com.stardevllc.starlib.observable.binding.StringFormatter;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableBooleanValue;
-import com.stardevllc.starlib.observable.value.ObservableValue;
-
-import java.util.function.Function;
 
 public abstract class BooleanExpression implements ObservableBooleanValue {
     protected ExpressionHelper<Boolean> helper;
@@ -42,26 +41,6 @@ public abstract class BooleanExpression implements ObservableBooleanValue {
     @Override
     public Boolean getValue() {
         return get();
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super Boolean, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<Boolean> orElse(Boolean aBoolean) {
-        return new OrElseBinding<>(this, aBoolean);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super Boolean, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<Boolean> when(ObservableValue<Boolean> condition) {
-        return new ConditionalBinding<>(this, condition);
     }
 
     public BooleanBinding and(final ObservableBooleanValue other) {
@@ -86,10 +65,6 @@ public abstract class BooleanExpression implements ObservableBooleanValue {
 
     public StringBinding asString() {
         return (StringBinding) StringFormatter.convert(this);
-    }
-
-    public ObjectExpression<Boolean> asObject() {
-        return new ObjectBinding<>(this::getValue, this);
     }
 
     @Override

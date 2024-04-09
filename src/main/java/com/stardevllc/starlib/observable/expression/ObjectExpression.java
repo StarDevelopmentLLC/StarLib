@@ -26,13 +26,12 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.BooleanBinding;
+import com.stardevllc.starlib.observable.binding.StringBinding;
+import com.stardevllc.starlib.observable.binding.StringFormatter;
 import com.stardevllc.starlib.observable.constants.ObjectConstant;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableObjectValue;
-import com.stardevllc.starlib.observable.value.ObservableValue;
-
-import java.util.function.Function;
 
 public abstract class ObjectExpression<T> implements ObservableObjectValue<T> {
     protected ExpressionHelper<T> helper;
@@ -43,26 +42,6 @@ public abstract class ObjectExpression<T> implements ObservableObjectValue<T> {
     }
 
     public ObjectExpression() {
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super T, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<T> orElse(T t) {
-        return new OrElseBinding<>(this, t);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super T, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<T> when(ObservableValue<Boolean> observableValue) {
-        return new ConditionalBinding<>(this, observableValue);
     }
 
     public BooleanBinding isEqualTo(final ObservableObjectValue<?> other) {

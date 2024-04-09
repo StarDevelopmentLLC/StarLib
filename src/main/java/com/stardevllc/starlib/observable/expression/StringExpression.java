@@ -26,13 +26,12 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.BooleanBinding;
+import com.stardevllc.starlib.observable.binding.IntegerBinding;
+import com.stardevllc.starlib.observable.binding.StringFormatter;
 import com.stardevllc.starlib.observable.constants.StringConstant;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableStringValue;
-import com.stardevllc.starlib.observable.value.ObservableValue;
-
-import java.util.function.Function;
 
 import static com.stardevllc.starlib.helper.StringHelper.getStringSafe;
 
@@ -105,26 +104,6 @@ public abstract class StringExpression implements ObservableStringValue {
 
     public BooleanBinding isNotEmpty() {
         return new BooleanBinding(() -> !getValueSafe().isEmpty(), this);
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super String, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<String> orElse(String string) {
-        return new OrElseBinding<>(this, string);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super String, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<String> when(ObservableValue<Boolean> observableValue) {
-        return new ConditionalBinding<>(this, observableValue);
     }
 
     @Override

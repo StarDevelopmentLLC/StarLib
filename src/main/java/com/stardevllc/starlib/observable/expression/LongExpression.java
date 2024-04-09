@@ -26,7 +26,6 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.binding.LongBinding;
-import com.stardevllc.starlib.observable.binding.ObjectBinding;
 import com.stardevllc.starlib.observable.value.ObservableLongValue;
 
 public abstract class LongExpression extends NumberExpressionBase implements ObservableLongValue {
@@ -61,9 +60,5 @@ public abstract class LongExpression extends NumberExpressionBase implements Obs
     @Override
     public LongBinding negate() {
         return new LongBinding(() -> -this.get());
-    }
-
-    public ObjectExpression<Long> asObject() {
-        return new ObjectBinding<>(this::get, this);
     }
 }

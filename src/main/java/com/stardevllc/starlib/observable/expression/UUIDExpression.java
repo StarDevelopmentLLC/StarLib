@@ -26,14 +26,12 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.BooleanBinding;
 import com.stardevllc.starlib.observable.constants.UUIDConstant;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableUUIDValue;
-import com.stardevllc.starlib.observable.value.ObservableValue;
 
 import java.util.UUID;
-import java.util.function.Function;
 
 public abstract class UUIDExpression implements ObservableUUIDValue {
     protected ExpressionHelper<UUID> helper;
@@ -68,30 +66,6 @@ public abstract class UUIDExpression implements ObservableUUIDValue {
     
     public BooleanBinding isNotNull() {
         return isNull().not();
-    }
-
-    public ObjectExpression<UUID> asObject() {
-        return new ObjectBinding<>(this::get, this);
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super UUID, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<UUID> orElse(UUID uuid) {
-        return new OrElseBinding<>(this, uuid);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super UUID, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<UUID> when(ObservableValue<Boolean> observableValue) {
-        return new ConditionalBinding<>(this, observableValue);
     }
 
     @Override

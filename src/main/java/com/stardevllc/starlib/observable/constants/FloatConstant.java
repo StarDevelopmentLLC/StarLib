@@ -25,16 +25,9 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.binding.ConditionalBinding;
-import com.stardevllc.starlib.observable.binding.FlatMappedBinding;
-import com.stardevllc.starlib.observable.binding.MappedBinding;
-import com.stardevllc.starlib.observable.binding.OrElseBinding;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableFloatValue;
-import com.stardevllc.starlib.observable.value.ObservableValue;
-
-import java.util.function.Function;
 
 public final class FloatConstant implements ObservableFloatValue {
 
@@ -56,26 +49,6 @@ public final class FloatConstant implements ObservableFloatValue {
     @Override
     public Float getValue() {
         return value;
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super Number, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<Number> orElse(Number number) {
-        return new OrElseBinding<>(this, number);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super Number, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<Number> when(ObservableValue<Boolean> observableValue) {
-        return new ConditionalBinding<>(this, observableValue);
     }
 
     @Override

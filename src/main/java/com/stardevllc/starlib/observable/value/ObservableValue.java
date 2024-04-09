@@ -27,6 +27,8 @@ package com.stardevllc.starlib.observable.value;
 
 import com.stardevllc.starlib.Subscription;
 import com.stardevllc.starlib.observable.Observable;
+import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.expression.ObjectExpression;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -40,14 +42,26 @@ public interface ObservableValue<T> extends Observable {
     void removeListener(ChangeListener<? super T> listener);
 
     T getValue();
+    
+    default ObjectExpression<? extends T> asObject() {
+        return new ObjectBinding<>(this::getValue, this);
+    }
 
-    <U> ObservableValue<U> map(Function<? super T, ? extends U> mapper);
+    default <U> ObservableValue<U> map(Function<? super T, ? extends U> mapper) {
+        return new MappedBinding<>(this, mapper);
+    }
 
-    ObservableValue<T> orElse(T constant);
+    default ObservableValue<T> orElse(T constant) {
+        return new OrElseBinding<>(this, constant);
+    }
 
-    <U> ObservableValue<U> flatMap(Function<? super T, ? extends ObservableValue<? extends U>> mapper);
+    default <U> ObservableValue<U> flatMap(Function<? super T, ? extends ObservableValue<? extends U>> mapper) {
+        return new FlatMappedBinding<>(this, mapper);
+    }
 
-    ObservableValue<T> when(ObservableValue<Boolean> condition);
+    default ObservableValue<T> when(ObservableValue<Boolean> condition) {
+        return new ConditionalBinding<>(this, condition);
+    }
 
     default Subscription subscribe(BiConsumer<? super T, ? super T> changeSubscriber) {
         Objects.requireNonNull(changeSubscriber, "changeSubscriber cannot be null");

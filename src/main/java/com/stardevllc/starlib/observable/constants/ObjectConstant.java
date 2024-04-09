@@ -25,16 +25,9 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.binding.ConditionalBinding;
-import com.stardevllc.starlib.observable.binding.FlatMappedBinding;
-import com.stardevllc.starlib.observable.binding.MappedBinding;
-import com.stardevllc.starlib.observable.binding.OrElseBinding;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableObjectValue;
-import com.stardevllc.starlib.observable.value.ObservableValue;
-
-import java.util.function.Function;
 
 public final class ObjectConstant<T> implements ObservableObjectValue<T> {
 
@@ -56,26 +49,6 @@ public final class ObjectConstant<T> implements ObservableObjectValue<T> {
     @Override
     public T getValue() {
         return value;
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super T, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<T> orElse(T t) {
-        return new OrElseBinding<>(this, t);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super T, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<T> when(ObservableValue<Boolean> observableValue) {
-        return new ConditionalBinding<>(this, observableValue);
     }
 
     @Override

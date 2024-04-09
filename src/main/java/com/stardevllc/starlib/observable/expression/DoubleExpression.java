@@ -26,7 +26,6 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.binding.DoubleBinding;
-import com.stardevllc.starlib.observable.binding.ObjectBinding;
 import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
 
 public abstract class DoubleExpression extends NumberExpressionBase implements ObservableDoubleValue {
@@ -61,9 +60,5 @@ public abstract class DoubleExpression extends NumberExpressionBase implements O
     @Override
     public DoubleBinding negate() {
         return new DoubleBinding(() -> -this.get());
-    }
-
-    public ObjectExpression<Double> asObject() {
-        return new ObjectBinding<>(this::get, this);
     }
 }

@@ -26,7 +26,6 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.binding.FloatBinding;
-import com.stardevllc.starlib.observable.binding.ObjectBinding;
 import com.stardevllc.starlib.observable.value.ObservableFloatValue;
 
 public abstract class FloatExpression extends NumberExpressionBase implements ObservableFloatValue {
@@ -61,9 +60,5 @@ public abstract class FloatExpression extends NumberExpressionBase implements Ob
     @Override
     public FloatBinding negate() {
         return new FloatBinding(() -> -this.get());
-    }
-
-    public ObjectExpression<Float> asObject() {
-        return new ObjectBinding<>(this::get, this);
     }
 }

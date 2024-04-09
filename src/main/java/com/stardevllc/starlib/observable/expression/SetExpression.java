@@ -26,17 +26,17 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.BooleanBinding;
+import com.stardevllc.starlib.observable.binding.StringBinding;
+import com.stardevllc.starlib.observable.binding.StringFormatter;
 import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.set.ObservableSet;
 import com.stardevllc.starlib.observable.collections.set.SetChangeListener;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableSetValue;
-import com.stardevllc.starlib.observable.value.ObservableValue;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.function.Function;
 
 public abstract class SetExpression<E> implements ObservableSetValue<E> {
     protected SetExpressionHelper<E> helper;
@@ -142,26 +142,6 @@ public abstract class SetExpression<E> implements ObservableSetValue<E> {
         ObservableSet<E> set = get();
 
         return set == null ? StarCollections.emptyObservableSet() : set;
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super ObservableSet<E>, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<ObservableSet<E>> orElse(ObservableSet<E> es) {
-        return new OrElseBinding<>(this, es);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super ObservableSet<E>, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<ObservableSet<E>> when(ObservableValue<Boolean> observableValue) {
-        return new ConditionalBinding<>(this, observableValue);
     }
 
     @Override

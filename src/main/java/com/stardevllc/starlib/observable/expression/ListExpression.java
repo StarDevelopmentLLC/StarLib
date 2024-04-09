@@ -26,17 +26,18 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.BooleanBinding;
+import com.stardevllc.starlib.observable.binding.ObjectBinding;
+import com.stardevllc.starlib.observable.binding.StringBinding;
+import com.stardevllc.starlib.observable.binding.StringFormatter;
 import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.list.ListChangeListener;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableIntegerValue;
 import com.stardevllc.starlib.observable.value.ObservableListValue;
-import com.stardevllc.starlib.observable.value.ObservableValue;
 
 import java.util.*;
-import java.util.function.Function;
 
 public abstract class ListExpression<E> implements ObservableListValue<E> {
     protected ListExpressionHelper<E> helper = null;
@@ -230,26 +231,6 @@ public abstract class ListExpression<E> implements ObservableListValue<E> {
         ObservableList<E> list = get();
 
         return list == null ? StarCollections.emptyObservableList() : list;
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super ObservableList<E>, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<ObservableList<E>> orElse(ObservableList<E> es) {
-        return new OrElseBinding<>(this, es);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super ObservableList<E>, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<ObservableList<E>> when(ObservableValue<Boolean> observableValue) {
-        return new ConditionalBinding<>(this, observableValue);
     }
 
     @Override

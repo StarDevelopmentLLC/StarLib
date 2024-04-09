@@ -25,7 +25,10 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.BooleanBinding;
+import com.stardevllc.starlib.observable.binding.ObjectBinding;
+import com.stardevllc.starlib.observable.binding.StringBinding;
+import com.stardevllc.starlib.observable.binding.StringFormatter;
 import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.map.ObservableMap;
 import com.stardevllc.starlib.observable.value.ObservableMapValue;
@@ -34,7 +37,6 @@ import com.stardevllc.starlib.observable.value.ObservableValue;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 public abstract class MapExpression<K, V> implements ObservableMapValue<K, V> {
     protected MapExpressionHelper<K, V> helper;
@@ -143,25 +145,5 @@ public abstract class MapExpression<K, V> implements ObservableMapValue<K, V> {
         ObservableMap<K, V> map = get();
 
         return map == null ? StarCollections.emptyObservableMap() : map;
-    }
-
-    @Override
-    public <U> ObservableValue<U> map(Function<? super ObservableMap<K, V>, ? extends U> function) {
-        return new MappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<ObservableMap<K, V>> orElse(ObservableMap<K, V> kvObservableMap) {
-        return new OrElseBinding<>(this, kvObservableMap);
-    }
-
-    @Override
-    public <U> ObservableValue<U> flatMap(Function<? super ObservableMap<K, V>, ? extends ObservableValue<? extends U>> function) {
-        return new FlatMappedBinding<>(this, function);
-    }
-
-    @Override
-    public ObservableValue<ObservableMap<K, V>> when(ObservableValue<Boolean> observableValue) {
-        return new ConditionalBinding<>(this, observableValue);
     }
 }

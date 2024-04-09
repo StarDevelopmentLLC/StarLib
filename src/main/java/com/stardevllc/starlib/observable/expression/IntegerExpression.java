@@ -26,7 +26,6 @@
 package com.stardevllc.starlib.observable.expression;
 
 import com.stardevllc.starlib.observable.binding.IntegerBinding;
-import com.stardevllc.starlib.observable.binding.ObjectBinding;
 import com.stardevllc.starlib.observable.value.ObservableIntegerValue;
 
 public abstract class IntegerExpression extends NumberExpressionBase implements ObservableIntegerValue {
@@ -61,9 +60,5 @@ public abstract class IntegerExpression extends NumberExpressionBase implements 
     @Override
     public IntegerBinding negate() {
         return new IntegerBinding(() -> -this.get());
-    }
-
-    public ObjectExpression<Integer> asObject() {
-        return new ObjectBinding<>(this::get, this);
     }
 }
