@@ -22,11 +22,11 @@ dependencies {
 }
 
 group = "com.stardevllc"
-version = "1.0.0-alpha.8"
+version = "1.0.0-alpha.9"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
