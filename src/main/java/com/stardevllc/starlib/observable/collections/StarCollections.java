@@ -45,16 +45,14 @@ public class StarCollections {
         if (list == null) {
             throw new NullPointerException();
         }
-        return list instanceof RandomAccess ? new ObservableListWrapper<>(list) :
-                new ObservableSequentialList<>(list);
+        return new ObservableListWrapper<>(list);
     }
 
     public static <E> ObservableList<E> observableList(List<E> list, Function<E, Observable[]> extractor) {
         if (list == null || extractor == null) {
             throw new NullPointerException();
         }
-        return list instanceof RandomAccess ? new ObservableListWrapper<>(list, extractor) :
-            new ObservableSequentialList<>(list, extractor);
+        return new ObservableListWrapper<>(list, extractor);
     }
 
     public static <K, V> ObservableMap<K, V> observableMap(Map<K, V> map) {

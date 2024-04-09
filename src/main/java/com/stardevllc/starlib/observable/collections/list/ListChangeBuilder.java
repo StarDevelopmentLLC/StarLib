@@ -56,7 +56,7 @@ final class ListChangeBuilder<E> {
         int to = list.size() - 1;
 
         while (from <= to) {
-            int changeIdx  = (from + to) / 2;
+            int changeIdx = (from + to) / 2;
             SubChange<E> change = list.get(changeIdx);
 
             if (idx >= change.to) {
@@ -97,7 +97,7 @@ final class ListChangeBuilder<E> {
             } else if (idx < addRemoveChanges.size() && (change = addRemoveChanges.get(idx)).from == pos + 1) {
                 change.from--;
                 change.to--;
-                change.removed.add(0, removed);
+                change.removed.addFirst(removed);
             } else {
                 ArrayList<E> removedList = new ArrayList<>();
                 removedList.add(removed);
@@ -107,7 +107,7 @@ final class ListChangeBuilder<E> {
             SubChange<E> change = addRemoveChanges.get(idx);
             change.to--; // Removed one element from the previously added list
             if (change.from == change.to && (change.removed == null || change.removed.isEmpty())) {
-                    addRemoveChanges.remove(idx);
+                addRemoveChanges.remove(idx);
             }
         }
         for (int i = idx + 1; i < addRemoveChanges.size(); ++i) {
@@ -146,7 +146,7 @@ final class ListChangeBuilder<E> {
     private int compress(List<SubChange<E>> list) {
         int removed = 0;
 
-        SubChange<E> prev = list.get(0);
+        SubChange<E> prev = list.getFirst();
         for (int i = 1, sz = list.size(); i < sz; ++i) {
             SubChange<E> cur = list.get(i);
             if (prev.to == cur.from) {
@@ -191,15 +191,14 @@ final class ListChangeBuilder<E> {
         checkState();
         checkAddRemoveList();
 
-        final SubChange<E> last = addRemoveChanges.isEmpty() ? null
-                : addRemoveChanges.get(addRemoveChanges.size() - 1);
+        final SubChange<E> last = addRemoveChanges.isEmpty() ? null : addRemoveChanges.getLast();
 
         if (last != null && last.to == idx) {
             last.removed.add(removed);
         } else if (last != null && last.from == idx + 1) {
             last.from--;
             last.to--;
-            last.removed.add(0, removed);
+            last.removed.addFirst(removed);
         } else {
             insertRemoved(idx, removed);
         }
@@ -236,8 +235,7 @@ final class ListChangeBuilder<E> {
     public void nextAdd(int from, int to) {
         checkState();
         checkAddRemoveList();
-        final SubChange<E> last = addRemoveChanges.isEmpty() ? null :
-                addRemoveChanges.get(addRemoveChanges.size() - 1);
+        final SubChange<E> last = addRemoveChanges.isEmpty() ? null : addRemoveChanges.getLast();
         final int numberOfAdded = to - from;
 
         if (last != null && last.to == from) {
@@ -317,7 +315,7 @@ final class ListChangeBuilder<E> {
                 if (removed.contains(i)) {
                     newPerm[i] = i;
                 } else {
-                    while(mapToOriginal[mapPtr] == -1) {
+                    while (mapToOriginal[mapPtr] == -1) {
                         mapPtr++;
                     }
                     newPerm[mapToOriginal[mapPtr++]] = i;
@@ -330,7 +328,6 @@ final class ListChangeBuilder<E> {
             prePermTo = newPerm.length;
             prePerm = newPerm;
         }
-
 
 
         if (permutationChange != null) {
@@ -402,10 +399,10 @@ final class ListChangeBuilder<E> {
                 }
             }
 
-            for(Map.Entry<Integer, List<E>> e : newRemoved.entrySet()) {
+            for (Map.Entry<Integer, List<E>> e : newRemoved.entrySet()) {
                 final Integer at = e.getKey();
                 int idx = findSubChange(at, addRemoveChanges);
-                assert(idx < 0);
+                assert (idx < 0);
                 addRemoveChanges.add(~idx, new SubChange<>(at, at, e.getValue(), new int[0], false));
             }
         }
@@ -451,7 +448,7 @@ final class ListChangeBuilder<E> {
         if (updateChanges == null) {
             updateChanges = new ArrayList<>();
         }
-        final SubChange<E> last = updateChanges.isEmpty() ? null : updateChanges.get(updateChanges.size() - 1);
+        final SubChange<E> last = updateChanges.isEmpty() ? null : updateChanges.getLast();
         if (last != null && last.to == idx) {
             last.to = idx + 1;
         } else {
@@ -470,10 +467,10 @@ final class ListChangeBuilder<E> {
                     (addRemoveChanges != null ? addRemoveChanges.size() : 0) + (permutationChange != null ? 1 : 0);
             if (totalSize == 1) {
                 if (addRemoveNotEmpty) {
-                    list.fireChange(new SingleChange<>(finalizeSubChange(addRemoveChanges.get(0)), list));
+                    list.fireChange(new SingleChange<>(finalizeSubChange(addRemoveChanges.getFirst()), list));
                     addRemoveChanges.clear();
                 } else if (updateNotEmpty) {
-                    list.fireChange(new SingleChange<>(finalizeSubChange(updateChanges.get(0)), list));
+                    list.fireChange(new SingleChange<>(finalizeSubChange(updateChanges.getFirst()), list));
                     updateChanges.clear();
                 } else {
                     list.fireChange(new SingleChange<>(finalizeSubChange(permutationChange), list));
