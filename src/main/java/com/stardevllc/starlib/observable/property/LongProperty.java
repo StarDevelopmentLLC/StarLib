@@ -131,22 +131,12 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
         if (rawObservable instanceof ObservableLongValue) {
             newObservable = (ObservableLongValue)rawObservable;
         } else if (rawObservable instanceof ObservableNumberValue numberValue) {
-            newObservable = new ValueWrapper(rawObservable) {
-
-                @Override
-                protected long computeValue() {
-                    return numberValue.longValue();
-                }
-            };
+            newObservable = new LongBinding(numberValue::longValue, rawObservable);
         } else {
-            newObservable = new ValueWrapper(rawObservable) {
-
-                @Override
-                protected long computeValue() {
-                    final Number value = rawObservable.getValue();
-                    return (value == null)? 0L : value.longValue();
-                }
-            };
+            newObservable = new LongBinding(() -> {
+                Number value = rawObservable.getValue();
+                return (value == null)? 0L : value.longValue();
+            }, rawObservable);
         }
 
         if (!newObservable.equals(observable)) {
@@ -165,8 +155,8 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
         if (observable != null) {
             value = observable.get();
             observable.removeListener(listener);
-            if (observable instanceof ValueWrapper) {
-                ((ValueWrapper)observable).dispose();
+            if (observable instanceof LongBinding longBinding) {
+                longBinding.dispose();
             }
             observable = null;
         }
@@ -218,21 +208,6 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
         @Override
         public boolean wasGarbageCollected() {
             return wref.get() == null;
-        }
-    }
-
-    private abstract static class ValueWrapper extends LongBinding {
-
-        private ObservableValue<? extends Number> observable;
-
-        public ValueWrapper(ObservableValue<? extends Number> observable) {
-            this.observable = observable;
-            bind(observable);
-        }
-
-        @Override
-        public void dispose() {
-            unbind(observable);
         }
     }
 }

@@ -101,8 +101,7 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
             throw new NullPointerException("Cannot bind to null");
         }
 
-        final ObservableBooleanValue newObservable = (rawObservable instanceof ObservableBooleanValue) ? (ObservableBooleanValue) rawObservable
-                : new ValueWrapper(rawObservable);
+        ObservableBooleanValue newObservable = (rawObservable instanceof ObservableBooleanValue obv) ? obv : new BooleanBinding(rawObservable::getValue, rawObservable);
 
         if (!newObservable.equals(observable)) {
             unbind();
@@ -120,8 +119,8 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
         if (observable != null) {
             value = observable.get();
             observable.removeListener(listener);
-            if (observable instanceof BooleanProperty.ValueWrapper) {
-                ((BooleanProperty.ValueWrapper)observable).dispose();
+            if (observable instanceof BooleanBinding booleanBinding) {
+                booleanBinding.dispose();
             }
             observable = null;
         }
@@ -173,26 +172,6 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
         @Override
         public boolean wasGarbageCollected() {
             return wref.get() == null;
-        }
-    }
-
-    private static class ValueWrapper extends BooleanBinding {
-        private ObservableValue<? extends Boolean> observable;
-
-        public ValueWrapper(ObservableValue<? extends Boolean> observable) {
-            this.observable = observable;
-            bind(observable);
-        }
-
-        @Override
-        protected boolean computeValue() {
-            final Boolean value = observable.getValue();
-            return value != null && value;
-        }
-
-        @Override
-        public void dispose() {
-            unbind(observable);
         }
     }
 

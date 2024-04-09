@@ -28,9 +28,9 @@ package com.stardevllc.starlib.observable.property;
 import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.WeakListener;
-import com.stardevllc.starlib.observable.binding.*;
+import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
+import com.stardevllc.starlib.observable.binding.IntegerBinding;
 import com.stardevllc.starlib.observable.expression.ExpressionHelper;
-import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableIntegerValue;
 import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
@@ -44,8 +44,7 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements Property
     private ObservableIntegerValue observable = null;
     private InvalidationListener listener = null;
     private boolean valid = true;
-    private ExpressionHelper<Number> helper = null;
-    
+
     public IntegerProperty() {
         super();
     }
@@ -62,26 +61,6 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements Property
         super(bean, name, initialValue);
     }
 
-    @Override
-    public void addListener(InvalidationListener listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
-    }
-    
     protected void fireValueChangedEvent() {
         ExpressionHelper.fireValueChangedEvent(helper);
     }
@@ -93,22 +72,22 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements Property
             fireValueChangedEvent();
         }
     }
-    
+
     protected void invalidated() {
         //no-op
     }
-    
+
     @Override
     public int get() {
         valid = true;
         return observable == null ? value : observable.get();
     }
-    
+
     @Override
     public void set(int newValue) {
         if (isBound()) {
             throw new java.lang.RuntimeException((getBean() != null && getName() != null ?
-                    getBean().getClass().getSimpleName() + "." + getName() + " : ": "") + "A bound value cannot be set.");
+                    getBean().getClass().getSimpleName() + "." + getName() + " : " : "") + "A bound value cannot be set.");
         }
         if (value != newValue) {
             value = newValue;
@@ -124,12 +103,12 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements Property
             set(v.intValue());
         }
     }
-    
+
     @Override
     public boolean isBound() {
         return observable != null;
     }
-    
+
     @Override
     public void bind(final ObservableValue<? extends Number> rawObservable) {
         if (rawObservable == null) {
@@ -138,24 +117,14 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements Property
 
         ObservableIntegerValue newObservable;
         if (rawObservable instanceof ObservableIntegerValue) {
-            newObservable = (ObservableIntegerValue)rawObservable;
+            newObservable = (ObservableIntegerValue) rawObservable;
         } else if (rawObservable instanceof ObservableNumberValue numberValue) {
-            newObservable = new IntegerProperty.ValueWrapper(rawObservable) {
-
-                @Override
-                protected int computeValue() {
-                    return numberValue.intValue();
-                }
-            };
+            newObservable = new IntegerBinding(numberValue::intValue, rawObservable);
         } else {
-            newObservable = new IntegerProperty.ValueWrapper(rawObservable) {
-
-                @Override
-                protected int computeValue() {
-                    final Number value = rawObservable.getValue();
-                    return (value == null)? 0 : value.intValue();
-                }
-            };
+            newObservable = new IntegerBinding(() -> {
+                Number value = rawObservable.getValue();
+                return (value == null) ? 0 : value.intValue();
+            }, rawObservable);
         }
 
         if (!newObservable.equals(observable)) {
@@ -169,21 +138,18 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements Property
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unbind() {
         if (observable != null) {
             value = observable.get();
             observable.removeListener(listener);
-            if (observable instanceof IntegerProperty.ValueWrapper) {
-                ((IntegerProperty.ValueWrapper)observable).dispose();
+            if (observable instanceof IntegerBinding integerBinding) {
+                integerBinding.dispose();
             }
             observable = null;
         }
     }
-    
+
     @Override
     public String toString() {
         final Object bean = getBean();
@@ -233,38 +199,23 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements Property
         }
     }
 
-    private abstract static class ValueWrapper extends IntegerBinding {
-
-        private ObservableValue<? extends Number> observable;
-
-        public ValueWrapper(ObservableValue<? extends Number> observable) {
-            this.observable = observable;
-            bind(observable);
-        }
-
-        @Override
-        public void dispose() {
-            unbind(observable);
-        }
-    }
-    
     @Override
     public void bindBidirectional(Property<Number> other) {
         BidirectionalBinding.bind(this, other);
     }
-    
+
     @Override
     public void unbindBidirectional(Property<Number> other) {
         BidirectionalBinding.unbind(this, other);
     }
-    
+
     public static IntegerProperty integerProperty(final Property<Integer> property) {
         Objects.requireNonNull(property, "Property cannot be null");
         IntegerProperty integerProperty = new IntegerProperty(null, property.getName());
         BidirectionalBinding.bindNumber(integerProperty, property);
         return integerProperty;
     }
-    
+
     @Override
     public ObjectProperty<Integer> asObject() {
         ObjectProperty<Integer> objectProperty = new ObjectProperty<>(null, getName(), get());

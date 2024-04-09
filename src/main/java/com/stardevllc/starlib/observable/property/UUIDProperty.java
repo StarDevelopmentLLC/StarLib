@@ -72,8 +72,6 @@ public class UUIDProperty extends ReadOnlyUUIDProperty implements Property<UUID>
     public void unbindBidirectional(Property<UUID> other) {
         BidirectionalBinding.unbind(this, other);
     }
-    
-
 
     private void markInvalid() {
         if (valid) {

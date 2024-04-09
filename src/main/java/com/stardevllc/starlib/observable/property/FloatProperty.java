@@ -138,22 +138,12 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
         if (rawObservable instanceof ObservableFloatValue) {
             newObservable = (ObservableFloatValue) rawObservable;
         } else if (rawObservable instanceof ObservableNumberValue numberValue) {
-            newObservable = new FloatProperty.ValueWrapper(rawObservable) {
-
-                @Override
-                protected float computeValue() {
-                    return numberValue.floatValue();
-                }
-            };
+            newObservable = new FloatBinding(numberValue::floatValue, rawObservable);
         } else {
-            newObservable = new FloatProperty.ValueWrapper(rawObservable) {
-
-                @Override
-                protected float computeValue() {
-                    final Number value = rawObservable.getValue();
-                    return (value == null) ? 0.0f : value.floatValue();
-                }
-            };
+            newObservable = new FloatBinding(() -> {
+                Number value = rawObservable.getValue();
+                return (value == null) ? 0.0f : value.floatValue();
+            }, rawObservable);
         }
 
 
@@ -173,8 +163,8 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
         if (observable != null) {
             value = observable.get();
             observable.removeListener(listener);
-            if (observable instanceof FloatProperty.ValueWrapper) {
-                ((FloatProperty.ValueWrapper) observable).dispose();
+            if (observable instanceof FloatBinding floatBinding) {
+                floatBinding.dispose();
             }
             observable = null;
         }
@@ -226,21 +216,6 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
         @Override
         public boolean wasGarbageCollected() {
             return wref.get() == null;
-        }
-    }
-
-    private abstract static class ValueWrapper extends FloatBinding {
-
-        private ObservableValue<? extends Number> observable;
-
-        public ValueWrapper(ObservableValue<? extends Number> observable) {
-            this.observable = observable;
-            bind(observable);
-        }
-
-        @Override
-        public void dispose() {
-            unbind(observable);
         }
     }
 }

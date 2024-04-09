@@ -124,22 +124,12 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
         if (rawObservable instanceof ObservableDoubleValue) {
             newObservable = (ObservableDoubleValue) rawObservable;
         } else if (rawObservable instanceof ObservableNumberValue numberValue) {
-            newObservable = new DoubleProperty.ValueWrapper(rawObservable) {
-
-                @Override
-                protected double computeValue() {
-                    return numberValue.doubleValue();
-                }
-            };
+            newObservable = new DoubleBinding(numberValue::doubleValue, rawObservable);
         } else {
-            newObservable = new DoubleProperty.ValueWrapper(rawObservable) {
-
-                @Override
-                protected double computeValue() {
-                    final Number value = rawObservable.getValue();
-                    return (value == null) ? 0.0 : value.doubleValue();
-                }
-            };
+            newObservable = new DoubleBinding(() -> {
+                Number value = rawObservable.getValue();
+                return (value == null) ? 0.0 : value.doubleValue();
+            }, rawObservable);
         }
 
         if (!newObservable.equals(observable)) {
@@ -153,26 +143,18 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unbind() {
         if (observable != null) {
             value = observable.get();
             observable.removeListener(listener);
-            if (observable instanceof DoubleProperty.ValueWrapper) {
-                ((DoubleProperty.ValueWrapper) observable).dispose();
+            if (observable instanceof DoubleBinding doubleBinding) {
+                doubleBinding.dispose();
             }
             observable = null;
         }
     }
 
-    /**
-     * Returns a string representation of this {@code DoublePropertyBase} object.
-     *
-     * @return a string representation of this {@code DoublePropertyBase} object.
-     */
     @Override
     public String toString() {
         final Object bean = getBean();
@@ -219,21 +201,6 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
         @Override
         public boolean wasGarbageCollected() {
             return wref.get() == null;
-        }
-    }
-
-    private abstract static class ValueWrapper extends DoubleBinding {
-
-        private ObservableValue<? extends Number> observable;
-
-        public ValueWrapper(ObservableValue<? extends Number> observable) {
-            this.observable = observable;
-            bind(observable);
-        }
-
-        @Override
-        public void dispose() {
-            unbind(observable);
         }
     }
 
