@@ -1,5 +1,7 @@
 package com.stardevllc.starlib.helper;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -27,6 +29,35 @@ public class StringHelper {
         }
 
         return name.toString();
+    }
+
+    public static String join(Collection<?> collection, String separator) {
+        Iterator<?> iterator = collection.iterator();
+        if (!iterator.hasNext()) {
+            return "";
+        } else {
+            Object first = iterator.next();
+            if (first == null) {
+                return "";
+            }
+            if (!iterator.hasNext()) {
+                return first.toString();
+            } else {
+                StringBuilder buf = new StringBuilder();
+                buf.append(first);
+
+                while (iterator.hasNext()) {
+                    buf.append(separator);
+
+                    Object obj = iterator.next();
+                    if (obj != null) {
+                        buf.append(obj);
+                    }
+                }
+
+                return buf.toString();
+            }
+        }
     }
 
     public static UUID toUUID(String id) {
