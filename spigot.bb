@@ -15,18 +15,18 @@ I strongly encourage the use of a build tool like Gradle or Maven. You can find 
 [B]Repository[/B]: [URL]https://www.jitpack.io[/URL]
 [B]Group[/B]: com.github.StarDevelopmentLLC
 [B]Artifact[/B]: StarLib
-[B]Version[/B]: 1.0.0-alpha.12
+[B]Version[/B]: 1.0.0-alpha.13
 
 [B][SIZE=5]Tools, Utilities and Systems[/SIZE][/B]
 StarLib provides tools, utilities and systems that have been gathered mostly from my past projects. Links are provided to the source code directly, take a look at the arguments and how things function.
 
 [B]Singleton Classes[/B]
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/CodeGenerator.java']CodeGenerator [/URL]- Allows generating a code made out of letters and numbers. Options are provided in the method parameters
-[URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/Numbers.java']Numbers [/URL]- Utility methods to parse numbers from Objects without having to worry about the Exceptions.
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/Pair.java']Pair [/URL]- A Java Record that holds Key and a Value. This is just like an entry in a Map, but using the Entry class from Map is a bit of a hassle, so this exists. Plans to make it so that you can set the value, but not the key.
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/reflection/ReflectionHelper.java']ReflectionHelper [/URL]- A class that makes it easier to search in classes and parent classes for methods and fields. This is recursive and it stops when it finds the method or field, or if the parent class is Object directly. This class also allows retriving a Property from a class using Reflelction. It is planned to add caching to this class.
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/helper/FileHelper.java']FileHelper [/URL]- A class that makes working with NIO and paths a bit easier as it silences exceptions and makes it cleaner to do things recursively with directories. Be very careful with the deleteDirectory() method. I do use it for a project that I am working on though.
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/helper/StringHelper.java']StringHelper [/URL]- A class that has some utilities to make working with Strings a bit easier. More things will be added as time goes on.
+[URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/helper/NumberHelper.java']NumberHelper [/URL]- A class with some number based utilities and helpers to parse numbers, convert to roman numerals, convert member bytes to higher values etc...
 
 [B]Systems[/B]
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/converter/StringConverter.java']StringConverter [/URL]- This provides an easy way to convert between Strings and Objects. The static getConverter method in StringConverter would be a good way to go here. If you want to add a converter, just add it to the converters Map, providing the Object Class and the Converter Class.
