@@ -1,12 +1,7 @@
-package com.stardevllc.starlib;
+package com.stardevllc.starlib.helper;
 
-/**
- * Just some number utilities that are useful. <br>
- * The toXXX() methods check against the Number instance to get the value or parse it while silently catching the exceptions <br>
- * The default return of each method is 0
- */
-public final class Numbers {
-    private Numbers() {}
+public final class NumberHelper {
+    private NumberHelper() {}
     public static int toInt(Object object) {
         if (object instanceof Number) {
             return ((Number) object).intValue();
