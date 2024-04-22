@@ -19,7 +19,7 @@ dependencies {
 }
 
 group = "com.github.StarMediaDevelopmentLLC"
-version = "1.0.0-alpha.12"
+version = "1.0.0-alpha.13"
 
 java {
     toolchain {

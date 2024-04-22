@@ -77,4 +77,8 @@ public class StringHelper {
     public static String getStringSafe(String value) {
         return value == null ? "" : value;
     }
+    
+    public static boolean isEmpty(String str) {
+        return str == null || str.isEmpty();
+    }
 }
