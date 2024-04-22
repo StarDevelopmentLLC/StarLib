@@ -2,6 +2,7 @@ package com.stardevllc.starlib.helper;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 
 public final class NumberHelper {
     private NumberHelper() {}
@@ -32,6 +33,14 @@ public final class NumberHelper {
             number = number % entry.getValue();
         }
         return res.toString();
+    }
+
+    public static int randomInRange(int min, int max) {
+        return randomInRange(new Random(), min, max);
+    }
+
+    public static int randomInRange(Random random, int min, int max) {
+        return random.nextInt(max - min) + min;
     }
     
     public static int toInt(Object object) {
