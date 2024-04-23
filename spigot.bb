@@ -27,6 +27,9 @@ StarLib provides tools, utilities and systems that have been gathered mostly fro
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/helper/FileHelper.java']FileHelper [/URL]- A class that makes working with NIO and paths a bit easier as it silences exceptions and makes it cleaner to do things recursively with directories. Be very careful with the deleteDirectory() method. I do use it for a project that I am working on though.
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/helper/StringHelper.java']StringHelper [/URL]- A class that has some utilities to make working with Strings a bit easier. More things will be added as time goes on.
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/helper/NumberHelper.java']NumberHelper [/URL]- A class with some number based utilities and helpers to parse numbers, convert to roman numerals, convert member bytes to higher values etc...
+[URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/Operator.java']Operator [/URL]- This is an enum, mainly used for parsing user - input with these kinds of things, used in a couple of other plugins of mine.
+[URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/Range.java']Range [/URL]- This is a simple class that represents a value in between two integers (The min and max are both inclusive)
+
 
 [B]Systems[/B]
 [URL='https://github.com/StarDevelopmentLLC/StarLib/blob/main/src/main/java/com/stardevllc/starlib/converter/StringConverter.java']StringConverter [/URL]- This provides an easy way to convert between Strings and Objects. The static getConverter method in StringConverter would be a good way to go here. If you want to add a converter, just add it to the converters Map, providing the Object Class and the Converter Class.
