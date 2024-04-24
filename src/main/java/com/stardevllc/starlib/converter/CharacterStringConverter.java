@@ -30,7 +30,8 @@ public class CharacterStringConverter extends StringConverter<Character> {
     public CharacterStringConverter() {
     }
 
-    @Override public Character fromString(String value) {
+    @Override
+    public Character fromString(String value) {
         // If the specified value is null or zero-length, return null
         if (value == null) {
             return null;
@@ -45,7 +46,8 @@ public class CharacterStringConverter extends StringConverter<Character> {
         return value.charAt(0);
     }
 
-    @Override public String toString(Character value) {
+    @Override
+    public String toString(Character value) {
         // If the specified value is null, return a zero-length String
         if (value == null) {
             return "";

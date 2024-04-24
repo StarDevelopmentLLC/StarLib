@@ -30,7 +30,8 @@ public class ShortStringConverter extends StringConverter<Short> {
     public ShortStringConverter() {
     }
 
-    @Override public Short fromString(String text) {
+    @Override
+    public Short fromString(String text) {
         // If the specified value is null or zero-length, return null
         if (text == null) {
             return null;
@@ -45,7 +46,8 @@ public class ShortStringConverter extends StringConverter<Short> {
         return Short.valueOf(text);
     }
 
-    @Override public String toString(Short value) {
+    @Override
+    public String toString(Short value) {
         // If the specified value is null, return a
         // zero-length String
         if (value == null) {

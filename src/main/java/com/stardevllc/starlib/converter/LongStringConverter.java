@@ -30,7 +30,8 @@ public class LongStringConverter extends StringConverter<Long> {
     public LongStringConverter() {
     }
 
-    @Override public Long fromString(String value) {
+    @Override
+    public Long fromString(String value) {
         // If the specified value is null or zero-length, return null
         if (value == null) {
             return null;
@@ -45,7 +46,8 @@ public class LongStringConverter extends StringConverter<Long> {
         return Long.valueOf(value);
     }
 
-    @Override public String toString(Long value) {
+    @Override
+    public String toString(Long value) {
         // If the specified value is null, return a zero-length String
         if (value == null) {
             return "";

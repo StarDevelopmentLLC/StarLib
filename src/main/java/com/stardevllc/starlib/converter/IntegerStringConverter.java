@@ -30,7 +30,8 @@ public class IntegerStringConverter extends StringConverter<Integer> {
     public IntegerStringConverter() {
     }
 
-    @Override public Integer fromString(String value) {
+    @Override
+    public Integer fromString(String value) {
         // If the specified value is null or zero-length, return null
         if (value == null) {
             return null;
@@ -45,7 +46,8 @@ public class IntegerStringConverter extends StringConverter<Integer> {
         return Integer.valueOf(value);
     }
 
-    @Override public String toString(Integer value) {
+    @Override
+    public String toString(Integer value) {
         // If the specified value is null, return a zero-length String
         if (value == null) {
             return "";

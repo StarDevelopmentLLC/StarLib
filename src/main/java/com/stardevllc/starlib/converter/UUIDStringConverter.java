@@ -16,11 +16,11 @@ public class UUIDStringConverter extends StringConverter<UUID> {
         if (string == null) {
             return null;
         }
-        
+
         if (string.isEmpty()) {
             return null;
         }
-        
+
         return UUID.fromString(string);
     }
 }

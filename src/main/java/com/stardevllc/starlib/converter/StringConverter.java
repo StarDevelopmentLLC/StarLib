@@ -30,9 +30,9 @@ import java.util.Map;
 import java.util.UUID;
 
 public abstract class StringConverter<T> {
-    
+
     public static final Map<Class<?>, Class<? extends StringConverter<?>>> converters = new HashMap<>();
-    
+
     static {
         converters.put(boolean.class, BooleanStringConverter.class);
         converters.put(Boolean.class, BooleanStringConverter.class);
@@ -52,7 +52,7 @@ public abstract class StringConverter<T> {
         converters.put(Short.class, ShortStringConverter.class);
         converters.put(UUID.class, UUIDStringConverter.class);
     }
-    
+
     public static StringConverter<?> getConverter(Class<?> clazz) {
         Class<? extends StringConverter<?>> converterClass = converters.get(clazz);
         if (converterClass == null) {

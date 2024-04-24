@@ -30,11 +30,13 @@ public class DefaultStringConverter extends StringConverter<String> {
     public DefaultStringConverter() {
     }
 
-    @Override public String toString(String value) {
+    @Override
+    public String toString(String value) {
         return (value != null) ? value : "";
     }
 
-    @Override public String fromString(String value) {
+    @Override
+    public String fromString(String value) {
         return value;
     }
 }

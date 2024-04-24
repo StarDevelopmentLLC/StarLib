@@ -30,7 +30,8 @@ public class ByteStringConverter extends StringConverter<Byte> {
     public ByteStringConverter() {
     }
 
-    @Override public Byte fromString(String value) {
+    @Override
+    public Byte fromString(String value) {
         // If the specified value is null or zero-length, return null
         if (value == null) {
             return null;
@@ -45,7 +46,8 @@ public class ByteStringConverter extends StringConverter<Byte> {
         return Byte.valueOf(value);
     }
 
-    @Override public String toString(Byte value) {
+    @Override
+    public String toString(Byte value) {
         // If the specified value is null, return a zero-length String
         if (value == null) {
             return "";
