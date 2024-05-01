@@ -1,0 +1,87 @@
+1.0.0-alpha.15
+- Make the registry return the value
+- Add a registerAll() for the value object of the registry
+- Rename the "Normalizer" class
+- Rename the "Register" class
+- Change "deregister" method
+- Make the Registry Class implement SortedMap
+- Add a RangeSet class
+- Remove the Invalidation and Weak stuff from the Observable Package
+
+1.0.0-alpha.14
+- Added an Operator enum
+- Added a Range Class
+
+1.0.0-alpha.13
+- Added an isEmpty method to StringHelper, this is null-safe
+- Renamed the Numbers class to NumberHelper and moved to the helper package
+- Added helper methods to convert an int into roman numberal strings
+- Added helper methods to generate a random number in a range
+- Added a way to convert memory bites to higher prefixed values
+
+1.0.0-alpha.12
+- Added HTTP Post and Get request classes
+
+1.0.0-alpha.11
+- Added a join() method to the StringHelper class
+- Changed Gradle group to match auto-generated group from JitPack
+
+1.0.0-alpha.10
+- Made teh flatMap, map and the orElse methods in ObservableValue default
+
+1.0.0-alpha.9
+- Downgraded to Java 17
+
+1.0.0-alpha.8
+- Large amounts of refactoring behind the scenes with the observable classes
+
+1.0.0-alpha.7
+- Fixed a bug where the getProperty method cared about case sensitivity
+- Added a getProperties method to get all properties in a class or parent
+
+1.0.0-alpha.6
+- Added a method in the ReflectionHelper class that allows you get a property within an instance of a class
+
+1.0.0-alpha.5
+- Moved StarBeans to StarLib
+
+1.0.0-alpha.4
+- Fixed some dependency issues
+
+1.0.0-alpha.3
+- Removed old property stuff and replaced with new observable interfaces
+- Deprecated the old Value class
+
+1.0.0-alpha.2
+- Added a NamespacedKey type and also added a Registry implementation for it
+- Added a CodeGenerator
+- Copied the FileHelper class from NexusReborn
+- Copied some of the StringHelper methods from NexusReborn
+
+1.0.0-alpha.1
+- Moved to an alpha release stage, removed old stuff
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
