@@ -6,15 +6,6 @@ import com.stardevllc.starlib.registry.functions.Register;
 import java.util.*;
 import java.util.function.Consumer;
 
-/**
- * This class represents a list of objects that are mapped to keys. Yes, there is the Java Map and this uses a TreeMap behind the scenes. <br>
- * This does provide a way to "normalize" keys to make them all the same. This function is fine to be null as there are checks where it would normally be used. <br>
- * Another thing though is that this class implements the Iterable interface for the values, so you can use this in enhanced for-loops directly. <br>
- * Changes made to returned collections do not affect the underlying Map as these methods return a copy of the underlying collection(s) <br>
- * That makes it safe to modify the Registry if you are iterating over the contents technically.
- * @param <K> The Key Type, Must implement the Comparable interface
- * @param <V> The Value Type
- */
 public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
     protected final TreeMap<K, V> objects = new TreeMap<>();
     protected final Normalizer<K> keyNormalizer;
@@ -56,20 +47,21 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
         this(null, null, registerFunction);
     }
 
-    public void register(V object) {
+    public V register(V object) {
         if (registerFunction == null) {
-            return;
+            return null;
         }
 
         K key = registerFunction.apply(object);
-        register(key, object);
+        return register(key, object);
     }
     
-    public void register(K key, V object) {
+    public V register(K key, V object) {
         if (keyNormalizer != null) {
             key = keyNormalizer.apply(key);
         }
         this.objects.put(key, object);
+        return object;
     }
 
     public void registerAll(Map<K, V> map) {
