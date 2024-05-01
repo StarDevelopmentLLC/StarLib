@@ -98,11 +98,20 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
         return objects.containsKey(key);
     }
 
-    public void deregister(K key) {
+    public V unregister(K key) {
         if (keyNormalizer != null) {
             key = keyNormalizer.apply(key);
         }
-        objects.remove(key);
+        return objects.remove(key);
+    }
+    
+    public V unregister(V object) {
+        if (keyRetriever == null) {
+            return null;
+        }
+        
+        K key = keyRetriever.apply(object);
+        return unregister(key);
     }
 
     @Override
