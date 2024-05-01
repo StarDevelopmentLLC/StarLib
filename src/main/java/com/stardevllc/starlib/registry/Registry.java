@@ -4,9 +4,12 @@ import com.stardevllc.starlib.registry.functions.KeyNormalizer;
 import com.stardevllc.starlib.registry.functions.KeyRetriever;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
-public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
+public class Registry<K extends Comparable<K>, V> implements Iterable<V>, SortedMap<K, V> {
     protected final TreeMap<K, V> objects = new TreeMap<>();
     protected final KeyNormalizer<K> keyNormalizer;
     protected final KeyRetriever<V, K> keyRetriever;
@@ -127,5 +130,178 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
     @Override
     public Spliterator<V> spliterator() {
         return new ArrayList<>(objects.values()).spliterator();
+    }
+
+    @Override
+    public int size() {
+        return objects.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return objects.isEmpty();
+    }
+
+    @Override
+    public boolean containsKey(Object o) {
+        return objects.containsKey(o);
+    }
+
+    @Override
+    public boolean containsValue(Object o) {
+        return objects.containsValue(o);
+    }
+
+    @Override
+    public V get(Object o) {
+        return get((K) o);
+    }
+
+    @Override
+    public V put(K k, V v) {
+        return register(k, v);
+    }
+
+    @Override
+    public V remove(Object o) {
+        return unregister((K) o);
+    }
+
+    @Override
+    public void putAll(Map<? extends K, ? extends V> map) {
+        registerAll((Map<K, V>) map);
+    }
+
+    @Override
+    public void clear() {
+        this.objects.clear();
+    }
+
+    @Override
+    public Comparator<? super K> comparator() {
+        return this.objects.comparator();
+    }
+
+    @Override
+    public SortedMap<K, V> subMap(K k, K k1) {
+        return this.objects.subMap(k, k1);
+    }
+
+    @Override
+    public SortedMap<K, V> headMap(K k) {
+        return this.objects.headMap(k);
+    }
+
+    @Override
+    public SortedMap<K, V> tailMap(K k) {
+        return this.objects.tailMap(k);
+    }
+
+    @Override
+    public K firstKey() {
+        return this.objects.firstKey();
+    }
+
+    @Override
+    public K lastKey() {
+        return this.objects.lastKey();
+    }
+
+    @Override
+    public Set<K> keySet() {
+        return new HashSet<>(this.objects.keySet());
+    }
+
+    @Override
+    public Collection<V> values() {
+        return new LinkedList<>(this.objects.values());
+    }
+
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        return new HashSet<>(this.objects.entrySet());
+    }
+
+    @Override
+    public V getOrDefault(Object key, V defaultValue) {
+        if (keyNormalizer != null) {
+            key = keyNormalizer.apply((K) key);
+        }
+        
+        return this.objects.getOrDefault(key, defaultValue);
+    }
+
+    @Override
+    public void forEach(BiConsumer<? super K, ? super V> action) {
+        this.objects.forEach(action);
+    }
+
+    @Override
+    public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
+        this.objects.replaceAll(function);
+    }
+
+    @Override
+    public V putIfAbsent(K key, V value) {
+        if (keyNormalizer != null) {
+            key = keyNormalizer.apply(key);
+        }
+        return this.objects.putIfAbsent(key, value);
+    }
+
+    @Override
+    public boolean remove(Object key, Object value) {
+        if (keyNormalizer != null) {
+            key = keyNormalizer.apply((K) key);
+        }
+        return this.objects.remove(key, value);
+    }
+
+    @Override
+    public boolean replace(K key, V oldValue, V newValue) {
+        if (keyNormalizer != null) {
+            key = keyNormalizer.apply(key);
+        }
+        return this.objects.replace(key, oldValue, newValue);
+    }
+
+    @Override
+    public V replace(K key, V value) {
+        if (keyNormalizer != null) {
+            key = keyNormalizer.apply(key);
+        }
+        return this.objects.replace(key, value);
+    }
+
+    @Override
+    public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+        if (keyNormalizer != null) {
+            key = keyNormalizer.apply(key);
+        }
+        return this.objects.computeIfAbsent(key, mappingFunction);
+    }
+
+    @Override
+    public V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        if (keyNormalizer != null) {
+            key = keyNormalizer.apply(key);
+        }
+        return this.objects.computeIfPresent(key, remappingFunction);
+    }
+
+    @Override
+    public V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        if (keyNormalizer != null) {
+            key = keyNormalizer.apply(key);
+        }
+        return this.objects.compute(key, remappingFunction);
+    }
+
+    @Override
+    public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+        if (keyNormalizer != null) {
+            key = keyNormalizer.apply(key);
+        }
+        return this.objects.merge(key, value, remappingFunction);
     }
 }
