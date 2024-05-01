@@ -67,6 +67,18 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
     public void registerAll(Map<K, V> map) {
         map.forEach(this::register);
     }
+    
+    public void registerAll(Collection<V> collection) {
+        collection.forEach(this::register);
+    }
+    
+    public void registerAll(V... values) {
+        if (values != null) {
+            for (V value : values) {
+                register(value);
+            }
+        }
+    }
 
     public V get(K key) {
         if (keyNormalizer != null) {
