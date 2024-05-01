@@ -1,12 +1,12 @@
 package com.stardevllc.starlib.registry;
 
 import com.stardevllc.starlib.registry.functions.KeyNormalizer;
-import com.stardevllc.starlib.registry.functions.Register;
+import com.stardevllc.starlib.registry.functions.KeyRetriever;
 
 import java.util.Map;
 
 public class IntegerRegistry<V> extends Registry<Integer, V> {
-    public IntegerRegistry(Map<Integer, V> initialObjects, KeyNormalizer<Integer> keyNormalizer, Register<V, Integer> registerFunction) {
+    public IntegerRegistry(Map<Integer, V> initialObjects, KeyNormalizer<Integer> keyNormalizer, KeyRetriever<V, Integer> registerFunction) {
         super(initialObjects, keyNormalizer, registerFunction);
     }
 
@@ -21,11 +21,11 @@ public class IntegerRegistry<V> extends Registry<Integer, V> {
         super(initialObjects, normalizer);
     }
 
-    public IntegerRegistry(Map<Integer, V> initialObjects, Register<V, Integer> register) {
+    public IntegerRegistry(Map<Integer, V> initialObjects, KeyRetriever<V, Integer> register) {
         super(initialObjects, register);
     }
 
-    public IntegerRegistry(KeyNormalizer<Integer> keyNormalizer, Register<V, Integer> registerFunction) {
+    public IntegerRegistry(KeyNormalizer<Integer> keyNormalizer, KeyRetriever<V, Integer> registerFunction) {
         super(keyNormalizer, registerFunction);
     }
 
@@ -33,7 +33,7 @@ public class IntegerRegistry<V> extends Registry<Integer, V> {
         super(keyNormalizer);
     }
 
-    public IntegerRegistry(Register<V, Integer> registerFunction) {
+    public IntegerRegistry(KeyRetriever<V, Integer> registerFunction) {
         super(registerFunction);
     }
 }

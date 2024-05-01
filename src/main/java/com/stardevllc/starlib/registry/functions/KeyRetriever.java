@@ -2,5 +2,5 @@ package com.stardevllc.starlib.registry.functions;
 
 import java.util.function.Function;
 
-public interface Register<V, K extends Comparable<K>> extends Function<V, K>  {
+public interface KeyRetriever<V, K extends Comparable<K>> extends Function<V, K>  {
 }

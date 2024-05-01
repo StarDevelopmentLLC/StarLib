@@ -1,12 +1,12 @@
 package com.stardevllc.starlib.registry;
 
 import com.stardevllc.starlib.registry.functions.KeyNormalizer;
-import com.stardevllc.starlib.registry.functions.Register;
+import com.stardevllc.starlib.registry.functions.KeyRetriever;
 
 import java.util.Map;
 
 public class LongRegistry<V> extends Registry<Long, V> {
-    public LongRegistry(Map<Long, V> initialObjects, KeyNormalizer<Long> keyNormalizer, Register<V, Long> registerFunction) {
+    public LongRegistry(Map<Long, V> initialObjects, KeyNormalizer<Long> keyNormalizer, KeyRetriever<V, Long> registerFunction) {
         super(initialObjects, keyNormalizer, registerFunction);
     }
 
@@ -21,11 +21,11 @@ public class LongRegistry<V> extends Registry<Long, V> {
         super(initialObjects, normalizer);
     }
 
-    public LongRegistry(Map<Long, V> initialObjects, Register<V, Long> register) {
+    public LongRegistry(Map<Long, V> initialObjects, KeyRetriever<V, Long> register) {
         super(initialObjects, register);
     }
 
-    public LongRegistry(KeyNormalizer<Long> keyNormalizer, Register<V, Long> registerFunction) {
+    public LongRegistry(KeyNormalizer<Long> keyNormalizer, KeyRetriever<V, Long> registerFunction) {
         super(keyNormalizer, registerFunction);
     }
 
@@ -33,7 +33,7 @@ public class LongRegistry<V> extends Registry<Long, V> {
         super(keyNormalizer);
     }
 
-    public LongRegistry(Register<V, Long> registerFunction) {
+    public LongRegistry(KeyRetriever<V, Long> registerFunction) {
         super(registerFunction);
     }
 }

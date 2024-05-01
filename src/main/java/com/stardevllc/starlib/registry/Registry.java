@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.registry;
 
 import com.stardevllc.starlib.registry.functions.KeyNormalizer;
-import com.stardevllc.starlib.registry.functions.Register;
+import com.stardevllc.starlib.registry.functions.KeyRetriever;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -9,14 +9,14 @@ import java.util.function.Consumer;
 public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
     protected final TreeMap<K, V> objects = new TreeMap<>();
     protected final KeyNormalizer<K> keyNormalizer;
-    protected final Register<V, K> registerFunction;
+    protected final KeyRetriever<V, K> keyRetriever;
 
-    public Registry(Map<K, V> initialObjects, KeyNormalizer<K> keyNormalizer, Register<V, K> registerFunction) {
+    public Registry(Map<K, V> initialObjects, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever) {
         if (initialObjects != null && !initialObjects.isEmpty()) {
             objects.putAll(initialObjects);
         }
         this.keyNormalizer = keyNormalizer;
-        this.registerFunction = registerFunction;
+        this.keyRetriever = keyRetriever;
     }
 
     public Registry() {
@@ -31,28 +31,28 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
         this(initialObjects, normalizer, null);
     }
 
-    public Registry(Map<K, V> initialObjects, Register<V, K> register) {
-        this(initialObjects, null, register);
+    public Registry(Map<K, V> initialObjects, KeyRetriever<V, K> keyRetriever) {
+        this(initialObjects, null, keyRetriever);
     }
 
-    public Registry(KeyNormalizer<K> keyNormalizer, Register<V, K> registerFunction) {
-        this(null, keyNormalizer, registerFunction);
+    public Registry(KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever) {
+        this(null, keyNormalizer, keyRetriever);
     }
 
     public Registry(KeyNormalizer<K> keyNormalizer) {
         this(null, keyNormalizer, null);
     }
 
-    public Registry(Register<V, K> registerFunction) {
-        this(null, null, registerFunction);
+    public Registry(KeyRetriever<V, K> keyRetriever) {
+        this(null, null, keyRetriever);
     }
 
     public V register(V object) {
-        if (registerFunction == null) {
+        if (keyRetriever == null) {
             return null;
         }
 
-        K key = registerFunction.apply(object);
+        K key = keyRetriever.apply(object);
         return register(key, object);
     }
     
