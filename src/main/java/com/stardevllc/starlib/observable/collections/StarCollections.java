@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.collections;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.collections.array.ObservableFloatArray;
 import com.stardevllc.starlib.observable.collections.array.ObservableFloatArrayImpl;
@@ -52,7 +51,7 @@ public class StarCollections {
         if (list == null || extractor == null) {
             throw new NullPointerException();
         }
-        return new ObservableListWrapper<>(list, extractor);
+        return new ObservableListWrapper<>(list);
     }
 
     public static <K, V> ObservableMap<K, V> observableMap(Map<K, V> map) {
@@ -517,13 +516,10 @@ public class StarCollections {
         private ListListenerHelper<T> helper;
 
         private final ObservableList<T> backingList;
-        private final ListChangeListener<T> listener;
 
         SynchronizedObservableList(ObservableList<T> seq) {
             super(seq);
             this.backingList = seq;
-            listener = c -> ListListenerHelper.fireValueChangedEvent(helper, new SourceAdapterChange<>(SynchronizedObservableList.this, c));
-            backingList.addListener(new WeakListChangeListener<>(listener));
         }
 
         @Override
@@ -569,20 +565,6 @@ public class StarCollections {
         }
 
         @Override
-        public final void addListener(InvalidationListener listener) {
-            synchronized (mutex) {
-                helper = ListListenerHelper.addListener(helper, listener);
-            }
-        }
-
-        @Override
-        public final void removeListener(InvalidationListener listener) {
-            synchronized (mutex) {
-                helper = ListListenerHelper.removeListener(helper, listener);
-            }
-        }
-
-        @Override
         public void addListener(ListChangeListener<? super T> listener) {
             synchronized (mutex) {
                 helper = ListListenerHelper.addListener(helper, listener);
@@ -617,14 +599,6 @@ public class StarCollections {
         };
 
         public EmptyObservableSet() {
-        }
-
-        @Override
-        public void addListener(InvalidationListener listener) {
-        }
-
-        @Override
-        public void removeListener(InvalidationListener listener) {
         }
 
         @Override
@@ -687,7 +661,6 @@ public class StarCollections {
         private void initListener() {
             if (listener == null) {
                 listener = c -> callObservers(new SetAdapterChange<>(UnmodifiableObservableSet.this, c));
-                this.backingSet.addListener(new WeakSetChangeListener<>(listener));
             }
         }
 
@@ -725,17 +698,6 @@ public class StarCollections {
         @Override
         public boolean contains(Object o) {
             return backingSet.contains(o);
-        }
-
-        @Override
-        public void addListener(InvalidationListener listener) {
-            initListener();
-            listenerHelper = SetListenerHelper.addListener(listenerHelper, listener);
-        }
-
-        @Override
-        public void removeListener(InvalidationListener listener) {
-            listenerHelper = SetListenerHelper.removeListener(listenerHelper, listener);
         }
 
         @Override
@@ -904,30 +866,12 @@ public class StarCollections {
 
     private static class SynchronizedObservableSet<E> extends SynchronizedSet<E> implements ObservableSet<E> {
 
-        private final ObservableSet<E> backingSet;
         private SetListenerHelper<E> listenerHelper;
-        private final SetChangeListener<E> listener;
 
         SynchronizedObservableSet(ObservableSet<E> set) {
             super(set);
-            backingSet = set;
-            listener = c -> SetListenerHelper.fireValueChangedEvent(listenerHelper, new SetAdapterChange<>(SynchronizedObservableSet.this, c));
-            backingSet.addListener(new WeakSetChangeListener<>(listener));
         }
-
-        @Override
-        public void addListener(InvalidationListener listener) {
-            synchronized (mutex) {
-                listenerHelper = SetListenerHelper.addListener(listenerHelper, listener);
-            }
-        }
-
-        @Override
-        public void removeListener(InvalidationListener listener) {
-            synchronized (mutex) {
-                listenerHelper = SetListenerHelper.removeListener(listenerHelper, listener);
-            }
-        }
+        
         @Override
         public void addListener(SetChangeListener<? super E> listener) {
             synchronized (mutex) {
@@ -1067,29 +1011,10 @@ public class StarCollections {
 
     private static class SynchronizedObservableMap<K, V> extends SynchronizedMap<K, V> implements ObservableMap<K, V> {
 
-        private final ObservableMap<K, V> backingMap;
         private MapListenerHelper<K, V> listenerHelper;
-        private final MapChangeListener<K, V> listener;
 
         SynchronizedObservableMap(ObservableMap<K, V> map) {
             super(map);
-            backingMap = map;
-            listener = c -> MapListenerHelper.fireValueChangedEvent(listenerHelper, new MapAdapterChange<>(SynchronizedObservableMap.this, c));
-            backingMap.addListener(new WeakMapChangeListener<>(listener));
-        }
-
-        @Override
-        public void addListener(InvalidationListener listener) {
-            synchronized (mutex) {
-                listenerHelper = MapListenerHelper.addListener(listenerHelper, listener);
-            }
-        }
-
-        @Override
-        public void removeListener(InvalidationListener listener) {
-            synchronized (mutex) {
-                listenerHelper = MapListenerHelper.removeListener(listenerHelper, listener);
-            }
         }
 
         @Override

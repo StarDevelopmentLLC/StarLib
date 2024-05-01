@@ -69,12 +69,7 @@ public class ConditionalBinding<T> extends LazyObjectBinding<T> {
     }
 
     private void updateSubscription() {
-        if (isObserved() && isActive()) {
-            if (subscription == null) {
-                subscription = source.subscribe(this::invalidate);
-            }
-        }
-        else {
+        if (!(isObserved() && isActive())) {
             unsubscribe();
         }
     }

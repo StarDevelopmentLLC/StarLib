@@ -25,20 +25,15 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableStringValue;
 
-import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 public class StringProperty extends ReadOnlyStringProperty implements Property<String>, WritableStringValue {
 
     private ObservableValue<? extends String> observable = null;
-    private InvalidationListener listener = null;
     private boolean valid = true;
 
     public StringProperty() {
@@ -75,18 +70,6 @@ public class StringProperty extends ReadOnlyStringProperty implements Property<S
         BidirectionalBinding.unbind(this, other);
     }
 
-    private void markInvalid() {
-        if (valid) {
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-
-    protected void invalidated() {
-        //no-op
-    }
-
     @Override
     public String get() {
         valid = true;
@@ -101,7 +84,7 @@ public class StringProperty extends ReadOnlyStringProperty implements Property<S
         }
         if (!Objects.equals(value, newValue)) {
             value = newValue;
-            markInvalid();
+            fireValueChangedEvent();
         }
     }
 
@@ -118,11 +101,6 @@ public class StringProperty extends ReadOnlyStringProperty implements Property<S
         if (!newObservable.equals(observable)) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new Listener(this);
-            }
-            observable.addListener(listener);
-            markInvalid();
         }
     }
 
@@ -130,7 +108,6 @@ public class StringProperty extends ReadOnlyStringProperty implements Property<S
     public void unbind() {
         if (observable != null) {
             value = observable.getValue();
-            observable.removeListener(listener);
             observable = null;
         }
     }
@@ -158,29 +135,5 @@ public class StringProperty extends ReadOnlyStringProperty implements Property<S
         }
         result.append("]");
         return result.toString();
-    }
-
-    private static class Listener implements InvalidationListener, WeakListener {
-
-        private final WeakReference<StringProperty> wref;
-
-        public Listener(StringProperty ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            StringProperty ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid();
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 }

@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.binding;
 
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.collections.list.ListChangeListener;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.collections.map.MapChangeListener;
@@ -97,7 +96,7 @@ public class BidirectionalContentBinding {
         }
     }
 
-    private static class ListContentBinding<E> implements ListChangeListener<E>, WeakListener {
+    private static class ListContentBinding<E> implements ListChangeListener<E> {
 
         private final WeakReference<ObservableList<E>> propertyRef1;
         private final WeakReference<ObservableList<E>> propertyRef2;
@@ -147,11 +146,6 @@ public class BidirectionalContentBinding {
         }
 
         @Override
-        public boolean wasGarbageCollected() {
-            return (propertyRef1.get() == null) || (propertyRef2.get() == null);
-        }
-
-        @Override
         public int hashCode() {
             final ObservableList<E> list1 = propertyRef1.get();
             final ObservableList<E> list2 = propertyRef2.get();
@@ -188,7 +182,7 @@ public class BidirectionalContentBinding {
         }
     }
 
-    private static class SetContentBinding<E> implements SetChangeListener<E>, WeakListener {
+    private static class SetContentBinding<E> implements SetChangeListener<E> {
 
         private final WeakReference<ObservableSet<E>> propertyRef1;
         private final WeakReference<ObservableSet<E>> propertyRef2;
@@ -230,11 +224,6 @@ public class BidirectionalContentBinding {
         }
 
         @Override
-        public boolean wasGarbageCollected() {
-            return (propertyRef1.get() == null) || (propertyRef2.get() == null);
-        }
-
-        @Override
         public int hashCode() {
             final ObservableSet<E> set1 = propertyRef1.get();
             final ObservableSet<E> set2 = propertyRef2.get();
@@ -271,7 +260,7 @@ public class BidirectionalContentBinding {
         }
     }
 
-    private static class MapContentBinding<K, V> implements MapChangeListener<K, V>, WeakListener {
+    private static class MapContentBinding<K, V> implements MapChangeListener<K, V> {
 
         private final WeakReference<ObservableMap<K, V>> propertyRef1;
         private final WeakReference<ObservableMap<K, V>> propertyRef2;
@@ -311,11 +300,6 @@ public class BidirectionalContentBinding {
                     }
                 }
             }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return (propertyRef1.get() == null) || (propertyRef2.get() == null);
         }
 
         @Override

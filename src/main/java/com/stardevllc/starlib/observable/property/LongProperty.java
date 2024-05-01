@@ -25,9 +25,6 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.binding.LongBinding;
 import com.stardevllc.starlib.observable.value.ObservableLongValue;
@@ -35,12 +32,9 @@ import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableLongValue;
 
-import java.lang.ref.WeakReference;
-
 public class LongProperty extends ReadOnlyLongProperty implements Property<Number>, WritableLongValue {
 
     protected ObservableLongValue observable = null;
-    protected InvalidationListener listener = null;
     protected boolean valid = true;
 
     public LongProperty() {
@@ -85,18 +79,6 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
         return objectProperty;
     }
 
-    private void markInvalid() {
-        if (valid) {
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-
-    protected void invalidated() {
-        //no-op
-    }
-
     @Override
     public void set(long newValue) {
         if (isBound()) {
@@ -105,7 +87,7 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
         }
         if (value != newValue) {
             value = newValue;
-            markInvalid();
+            fireValueChangedEvent();
         }
     }
 
@@ -135,11 +117,6 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
         if (!newObservable.equals(observable)) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new Listener(this);
-            }
-            observable.addListener(listener);
-            markInvalid();
         }
     }
 
@@ -147,7 +124,6 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
     public void unbind() {
         if (observable != null) {
             value = observable.get();
-            observable.removeListener(listener);
             if (observable instanceof LongBinding longBinding) {
                 longBinding.dispose();
             }
@@ -178,29 +154,5 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
         }
         result.append("]");
         return result.toString();
-    }
-
-    private static class Listener implements InvalidationListener, WeakListener {
-
-        private final WeakReference<LongProperty> wref;
-
-        public Listener(LongProperty ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            LongProperty ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid();
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 }

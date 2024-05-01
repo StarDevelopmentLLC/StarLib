@@ -25,8 +25,6 @@
 
 package com.stardevllc.starlib.observable.collections.set;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -115,16 +113,6 @@ public class ObservableSetWrapper<E> implements ObservableSet<E> {
 
     private void callObservers(SetChangeListener.Change<E> change) {
         SetListenerHelper.fireValueChangedEvent(listenerHelper, change);
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        listenerHelper = SetListenerHelper.addListener(listenerHelper, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        listenerHelper = SetListenerHelper.removeListener(listenerHelper, listener);
     }
 
     @Override

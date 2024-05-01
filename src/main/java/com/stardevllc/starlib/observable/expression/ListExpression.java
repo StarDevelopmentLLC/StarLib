@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.BooleanBinding;
 import com.stardevllc.starlib.observable.binding.ObjectBinding;
 import com.stardevllc.starlib.observable.binding.StringBinding;
@@ -231,16 +230,6 @@ public abstract class ListExpression<E> implements ObservableListValue<E> {
         ObservableList<E> list = get();
 
         return list == null ? StarCollections.emptyObservableList() : list;
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        helper = ListExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = ListExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

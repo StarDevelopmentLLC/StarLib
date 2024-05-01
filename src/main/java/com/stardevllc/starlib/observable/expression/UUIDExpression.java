@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.BooleanBinding;
 import com.stardevllc.starlib.observable.constants.UUIDConstant;
 import com.stardevllc.starlib.observable.value.ChangeListener;
@@ -66,16 +65,6 @@ public abstract class UUIDExpression implements ObservableUUIDValue {
     
     public BooleanBinding isNotNull() {
         return isNull().not();
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

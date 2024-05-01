@@ -25,9 +25,6 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.binding.FloatBinding;
 import com.stardevllc.starlib.observable.value.ObservableFloatValue;
@@ -35,12 +32,9 @@ import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableFloatValue;
 
-import java.lang.ref.WeakReference;
-
 public class FloatProperty extends ReadOnlyFloatProperty implements Property<Number>, WritableFloatValue {
 
     protected ObservableFloatValue observable = null;
-    protected InvalidationListener listener = null;
     protected boolean valid = true;
 
     public FloatProperty() {
@@ -85,18 +79,6 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
         return objectProperty;
     }
 
-    private void markInvalid() {
-        if (valid) {
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-
-    protected void invalidated() {
-        //no-op
-    }
-
     @Override
     public float get() {
         valid = true;
@@ -111,7 +93,7 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
         }
         if (value != newValue) {
             value = newValue;
-            markInvalid();
+            fireValueChangedEvent();
         }
     }
 
@@ -142,11 +124,6 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
         if (!newObservable.equals(observable)) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new FloatProperty.Listener(this);
-            }
-            observable.addListener(listener);
-            markInvalid();
         }
     }
 
@@ -154,7 +131,6 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
     public void unbind() {
         if (observable != null) {
             value = observable.get();
-            observable.removeListener(listener);
             if (observable instanceof FloatBinding floatBinding) {
                 floatBinding.dispose();
             }
@@ -185,29 +161,5 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
         }
         result.append("]");
         return result.toString();
-    }
-
-    private static class Listener implements InvalidationListener, WeakListener {
-
-        private final WeakReference<FloatProperty> wref;
-
-        public Listener(FloatProperty ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            FloatProperty ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid();
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 }

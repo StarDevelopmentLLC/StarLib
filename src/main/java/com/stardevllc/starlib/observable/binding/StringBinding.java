@@ -41,8 +41,6 @@ public class StringBinding extends StringExpression implements Binding<String> {
     private String value;
     private boolean valid = false;
 
-    private BindingHelperObserver observer;
-
     public StringBinding(Observable... dependencies) {
         if (dependencies == null) {
             this.dependencies = StarCollections.emptyObservableList();
@@ -63,22 +61,11 @@ public class StringBinding extends StringExpression implements Binding<String> {
     }
 
     protected final void bind(Observable... dependencies) {
-        if ((dependencies != null) && (dependencies.length > 0)) {
-            if (observer == null) {
-                observer = new BindingHelperObserver(this);
-            }
-            for (final Observable dep : dependencies) {
-                dep.addListener(observer);
-            }
-        }
+        
     }
 
     protected final void unbind(Observable... dependencies) {
-        if (observer != null) {
-            for (final Observable dep : dependencies) {
-                dep.removeListener(observer);
-            }
-        }
+        
     }
 
     @Override

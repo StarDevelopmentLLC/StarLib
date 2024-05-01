@@ -50,6 +50,6 @@ public class MappedBinding<S, T> extends LazyObjectBinding<T> {
 
     @Override
     protected Subscription observeSources() {
-        return source.subscribe(this::invalidate); // start observing source
+        return source.subscribe(s -> this.invalidate()); // start observing source
     }
 }

@@ -25,25 +25,16 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.collections.set.ObservableSet;
 import com.stardevllc.starlib.observable.collections.set.SetChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableSetValue;
 
-import java.lang.ref.WeakReference;
-
 public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<ObservableSet<E>>, WritableSetValue<E> {
 
-    protected final SetChangeListener<E> setChangeListener = change -> {
-        invalidated();
-        fireValueChangedEvent(change);
-    };
+    protected final SetChangeListener<E> setChangeListener = this::fireValueChangedEvent;
     protected ObservableValue<? extends ObservableSet<E>> observable = null;
-    protected InvalidationListener listener = null;
     protected boolean valid = true;
 
     public SetProperty() {
@@ -77,21 +68,6 @@ public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<O
         BidirectionalBinding.unbind(this, other);
     }
 
-    private void markInvalid(ObservableSet<E> oldValue) {
-        if (valid) {
-            if (oldValue != null) {
-                oldValue.removeListener(setChangeListener);
-            }
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-
-    protected void invalidated() {
-        //no-op
-    }
-
     @Override
     public ObservableSet<E> get() {
         if (!valid) {
@@ -111,9 +87,8 @@ public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<O
                     getBean().getClass().getSimpleName() + "." + getName() + " : ": "") + "A bound value cannot be set.");
         }
         if (value != newValue) {
-            final ObservableSet<E> oldValue = value;
             value = newValue;
-            markInvalid(oldValue);
+            fireValueChangedEvent();
         }
     }
 
@@ -131,11 +106,6 @@ public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<O
         if (newObservable != this.observable) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new Listener<>(this);
-            }
-            observable.addListener(listener);
-            markInvalid(value);
         }
     }
 
@@ -143,7 +113,6 @@ public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<O
     public void unbind() {
         if (observable != null) {
             value = observable.getValue();
-            observable.removeListener(listener);
             observable = null;
         }
     }
@@ -171,29 +140,5 @@ public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<O
         }
         result.append("]");
         return result.toString();
-    }
-
-    private static class Listener<E> implements InvalidationListener, WeakListener {
-
-        private final WeakReference<SetProperty<E>> wref;
-
-        public Listener(SetProperty<E> ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            SetProperty<E> ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid(ref.value);
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 }

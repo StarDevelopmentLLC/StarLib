@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.BooleanBinding;
 import com.stardevllc.starlib.observable.binding.StringBinding;
 import com.stardevllc.starlib.observable.binding.StringFormatter;
@@ -142,16 +141,6 @@ public abstract class SetExpression<E> implements ObservableSetValue<E> {
         ObservableSet<E> set = get();
 
         return set == null ? StarCollections.emptyObservableSet() : set;
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        helper = SetExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = SetExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

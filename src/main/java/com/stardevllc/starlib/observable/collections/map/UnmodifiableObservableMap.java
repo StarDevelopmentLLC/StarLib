@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.collections.map;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.collections.map.MapChangeListener.Change;
 
 import java.util.AbstractMap;
@@ -45,7 +44,6 @@ public class UnmodifiableObservableMap<K, V> extends AbstractMap<K, V> implement
     public UnmodifiableObservableMap(ObservableMap<K, V> map) {
         this.backingMap = map;
         listener = c -> callObservers(new MapAdapterChange<>(UnmodifiableObservableMap.this, c));
-        this.backingMap.addListener(new WeakMapChangeListener<>(listener));
     }
     
     public UnmodifiableObservableMap() {
@@ -56,14 +54,8 @@ public class UnmodifiableObservableMap<K, V> extends AbstractMap<K, V> implement
         MapListenerHelper.fireValueChangedEvent(listenerHelper, c);
     }
 
-    @Override
-    public void addListener(InvalidationListener listener) {
-        listenerHelper = MapListenerHelper.addListener(listenerHelper, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        listenerHelper = MapListenerHelper.removeListener(listenerHelper, listener);
+    public MapChangeListener<K, V> getListener() {
+        return listener;
     }
 
     @Override

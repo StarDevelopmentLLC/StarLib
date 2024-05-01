@@ -25,23 +25,18 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.binding.BooleanBinding;
 import com.stardevllc.starlib.observable.value.ObservableBooleanValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableBooleanValue;
 
-import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 
 public class BooleanProperty extends ReadOnlyBooleanProperty implements Property<Boolean>, WritableBooleanValue {
 
     private ObservableBooleanValue observable = null;
-    private InvalidationListener listener = null;
     private boolean valid = true;
     
     public BooleanProperty() {
@@ -60,18 +55,6 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
         super(bean, name, initialValue);
     }
 
-    private void markInvalid() {
-        if (valid) {
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-    
-    protected void invalidated() {
-        //no-op
-    }
-
     @Override
     public boolean get() {
         valid = true;
@@ -86,7 +69,7 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
         }
         if (value != newValue) {
             value = newValue;
-            markInvalid();
+            fireValueChangedEvent();
         }
     }
 
@@ -106,11 +89,6 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
         if (!newObservable.equals(observable)) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new BooleanProperty.Listener(this);
-            }
-            observable.addListener(listener);
-            markInvalid();
         }
     }
     
@@ -118,7 +96,6 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
     public void unbind() {
         if (observable != null) {
             value = observable.get();
-            observable.removeListener(listener);
             if (observable instanceof BooleanBinding booleanBinding) {
                 booleanBinding.dispose();
             }
@@ -149,30 +126,6 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
         }
         result.append("]");
         return result.toString();
-    }
-
-    private static class Listener implements InvalidationListener, WeakListener {
-
-        private final WeakReference<BooleanProperty> wref;
-
-        public Listener(BooleanProperty ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            BooleanProperty ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid();
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 
     @Override

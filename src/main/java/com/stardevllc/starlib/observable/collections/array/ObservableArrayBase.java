@@ -24,8 +24,6 @@
  */
 package com.stardevllc.starlib.observable.collections.array;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-
 public abstract class ObservableArrayBase<T extends ObservableArray<T>> implements ObservableArray<T> {
 
     private ArrayListenerHelper<T> listenerHelper;
@@ -87,14 +85,6 @@ public abstract class ObservableArrayBase<T extends ObservableArray<T>> implemen
         } else if (length > 0 && minCapacity < 0) {
             throw new OutOfMemoryError(); // overflow
         }
-    }
-
-    @Override public final void addListener(InvalidationListener listener) {
-        listenerHelper = ArrayListenerHelper.addListener(listenerHelper, (T) this, listener);
-    }
-
-    @Override public final void removeListener(InvalidationListener listener) {
-        listenerHelper = ArrayListenerHelper.removeListener(listenerHelper, listener);
     }
 
     @Override public final void addListener(ArrayChangeListener<T> listener) {

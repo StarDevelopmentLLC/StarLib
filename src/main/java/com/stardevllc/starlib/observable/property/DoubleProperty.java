@@ -25,9 +25,6 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.binding.DoubleBinding;
 import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
@@ -35,12 +32,9 @@ import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableDoubleValue;
 
-import java.lang.ref.WeakReference;
-
 public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<Number>, WritableDoubleValue {
 
     private ObservableDoubleValue observable = null;
-    private InvalidationListener listener = null;
     private boolean valid = true;
 
     public DoubleProperty() {
@@ -78,18 +72,6 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
         BidirectionalBinding.unbind(this, other);
     }
 
-    private void markInvalid() {
-        if (valid) {
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-
-    protected void invalidated() {
-        //no-op
-    }
-
     @Override
     public double get() {
         valid = true;
@@ -104,7 +86,7 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
         }
         if (value != newValue) {
             value = newValue;
-            markInvalid();
+            fireValueChangedEvent();
         }
     }
 
@@ -134,11 +116,6 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
         if (!newObservable.equals(observable)) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new DoubleProperty.Listener(this);
-            }
-            observable.addListener(listener);
-            markInvalid();
         }
     }
 
@@ -146,7 +123,6 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
     public void unbind() {
         if (observable != null) {
             value = observable.get();
-            observable.removeListener(listener);
             if (observable instanceof DoubleBinding doubleBinding) {
                 doubleBinding.dispose();
             }
@@ -177,30 +153,6 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
         }
         result.append("]");
         return result.toString();
-    }
-
-    private static class Listener implements InvalidationListener, WeakListener {
-
-        private final WeakReference<DoubleProperty> wref;
-
-        public Listener(DoubleProperty ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            DoubleProperty ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid();
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 
     @Override

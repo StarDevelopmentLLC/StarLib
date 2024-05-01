@@ -25,12 +25,11 @@
 
 package com.stardevllc.starlib.observable.binding;
 
+import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.collections.StarCollections;
+import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.expression.ObjectExpression;
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 
 import java.util.Arrays;
@@ -43,8 +42,6 @@ public class ObjectBinding<T> extends ObjectExpression<T> implements Binding<T> 
     private T value;
     private boolean valid = false;
     private boolean observed;
-
-    private BindingHelperObserver observer;
 
     public ObjectBinding(Observable... dependencies) {
         if (dependencies == null) {
@@ -66,18 +63,6 @@ public class ObjectBinding<T> extends ObjectExpression<T> implements Binding<T> 
     }
 
     @Override
-    public void addListener(InvalidationListener listener) {
-        observed = observed || listener != null;
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
-        observed = helper != null;
-    }
-
-    @Override
     public void addListener(ChangeListener<? super T> listener) {
         observed = observed || listener != null;
         helper = ExpressionHelper.addListener(helper, this, listener);
@@ -90,22 +75,11 @@ public class ObjectBinding<T> extends ObjectExpression<T> implements Binding<T> 
     }
 
     protected final void bind(Observable... dependencies) {
-        if ((dependencies != null) && (dependencies.length > 0)) {
-            if (observer == null) {
-                observer = new BindingHelperObserver(this);
-            }
-            for (final Observable dep : dependencies) {
-                dep.addListener(observer);
-            }
-        }
+        
     }
 
     protected final void unbind(Observable... dependencies) {
-        if (observer != null) {
-            for (final Observable dep : dependencies) {
-                dep.removeListener(observer);
-            }
-        }
+        
     }
 
     @Override

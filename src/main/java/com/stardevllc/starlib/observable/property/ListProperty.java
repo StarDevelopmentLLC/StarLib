@@ -25,26 +25,17 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.collections.list.ListChangeListener;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableListValue;
 
-import java.lang.ref.WeakReference;
-
 public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property<ObservableList<E>>, WritableListValue<E> {
 
-    private final ListChangeListener<E> listChangeListener = change -> {
-        invalidated();
-        fireValueChangedEvent(change);
-    };
+    private final ListChangeListener<E> listChangeListener = this::fireValueChangedEvent;
 
     protected ObservableValue<? extends ObservableList<E>> observable = null;
-    protected InvalidationListener listener = null;
     protected boolean valid = true;
     
     public ListProperty() {
@@ -81,21 +72,6 @@ public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property
         BidirectionalBinding.unbind(this, other);
     }
 
-    private void markInvalid(ObservableList<E> oldValue) {
-        if (valid) {
-            if (oldValue != null) {
-                oldValue.removeListener(listChangeListener);
-            }
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-
-    protected void invalidated() {
-        //no-op
-    }
-
     @Override
     public ObservableList<E> get() {
         if (!valid) {
@@ -115,9 +91,8 @@ public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property
                     getBean().getClass().getSimpleName() + "." + getName() + " : " : "") + "A bound value cannot be set.");
         }
         if (value != newValue) {
-            final ObservableList<E> oldValue = value;
             value = newValue;
-            markInvalid(oldValue);
+            fireValueChangedEvent();
         }
     }
 
@@ -135,11 +110,6 @@ public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property
         if (newObservable != observable) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new ListProperty.Listener<>(this);
-            }
-            observable.addListener(listener);
-            markInvalid(value);
         }
     }
 
@@ -147,7 +117,6 @@ public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property
     public void unbind() {
         if (observable != null) {
             value = observable.getValue();
-            observable.removeListener(listener);
             observable = null;
         }
     }
@@ -175,29 +144,5 @@ public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property
         }
         result.append("]");
         return result.toString();
-    }
-
-    private static class Listener<E> implements InvalidationListener, WeakListener {
-
-        private final WeakReference<ListProperty<E>> wref;
-
-        public Listener(ListProperty<E> ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            ListProperty<E> ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid(ref.value);
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 }

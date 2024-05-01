@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.*;
 import com.stardevllc.starlib.observable.constants.DoubleConstant;
 import com.stardevllc.starlib.observable.constants.FloatConstant;
@@ -37,16 +36,6 @@ public abstract class NumberExpressionBase implements NumberExpression {
     protected ExpressionHelper<Number> helper;
     
     public NumberExpressionBase() {
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

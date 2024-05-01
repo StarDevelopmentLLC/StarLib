@@ -25,41 +25,17 @@
 
 package com.stardevllc.starlib.observable.collections.list;
 
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.collections.ElementObserver;
 import com.stardevllc.starlib.observable.collections.SortHelper;
 
 import java.util.*;
-import java.util.function.Function;
 
 public class ObservableListWrapper<E> extends ModifiableObservableList<E> implements SortableList<E>, RandomAccess {
 
     private final List<E> backingList;
-    private final ElementObserver<E> elementObserver;
 
     public ObservableListWrapper(List<E> list) {
         backingList = list;
-        elementObserver = null;
     }
-
-    public ObservableListWrapper(List<E> list, Function<E, Observable[]> extractor) {
-        backingList = list;
-        this.elementObserver = new ElementObserver<>(extractor, e -> observable -> {
-            beginChange();
-            int i = 0;
-            final int size = size();
-            for (; i < size; ++i) {
-                if (get(i) == e) {
-                    nextUpdate(i);
-                }
-            }
-            endChange();
-        }, this);
-        for (E e : backingList) {
-            elementObserver.attachListener(e);
-        }
-    }
-
 
     @Override
     public E get(int index) {
@@ -74,27 +50,17 @@ public class ObservableListWrapper<E> extends ModifiableObservableList<E> implem
     @Override
     protected void doAdd(int index, E element) {
         Objects.checkIndex(index, size() + 1);
-        if (elementObserver != null)
-            elementObserver.attachListener(element);
         backingList.add(index, element);
     }
 
     @Override
     protected E doSet(int index, E element) {
-        E removed =  backingList.set(index, element);
-        if (elementObserver != null) {
-            elementObserver.detachListener(removed);
-            elementObserver.attachListener(element);
-        }
-        return removed;
+        return backingList.set(index, element);
     }
 
     @Override
     protected E doRemove(int index) {
-        E removed =  backingList.remove(index);
-        if (elementObserver != null)
-            elementObserver.detachListener(removed);
-        return removed;
+        return backingList.remove(index);
     }
 
     @Override
@@ -119,11 +85,6 @@ public class ObservableListWrapper<E> extends ModifiableObservableList<E> implem
 
     @Override
     public void clear() {
-        if (elementObserver != null) {
-            for (E e : this) {
-                elementObserver.detachListener(e);
-            }
-        }
         if (hasListeners()) {
             beginChange();
             nextRemove(0, this);

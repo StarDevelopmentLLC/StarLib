@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.BooleanBinding;
 import com.stardevllc.starlib.observable.binding.StringBinding;
 import com.stardevllc.starlib.observable.binding.StringFormatter;
@@ -74,16 +73,6 @@ public abstract class ObjectExpression<T> implements ObservableObjectValue<T> {
 
     public StringBinding asString(String format) {
         return (StringBinding) StringFormatter.format(format, this);
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

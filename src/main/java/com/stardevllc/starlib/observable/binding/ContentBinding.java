@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.binding;
 
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.collections.list.ListChangeListener;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
 import com.stardevllc.starlib.observable.collections.map.MapChangeListener;
@@ -103,7 +102,7 @@ public class ContentBinding {
         }
     }
 
-    private static class ListContentBinding<E> implements ListChangeListener<E>, WeakListener {
+    private static class ListContentBinding<E> implements ListChangeListener<E> {
 
         private final WeakReference<List<E>> listRef;
 
@@ -134,11 +133,6 @@ public class ContentBinding {
         }
 
         @Override
-        public boolean wasGarbageCollected() {
-            return listRef.get() == null;
-        }
-
-        @Override
         public int hashCode() {
             final List<E> list = listRef.get();
             return (list == null)? 0 : list.hashCode();
@@ -163,7 +157,7 @@ public class ContentBinding {
         }
     }
 
-    private static class SetContentBinding<E> implements SetChangeListener<E>, WeakListener {
+    private static class SetContentBinding<E> implements SetChangeListener<E> {
 
         private final WeakReference<Set<E>> setRef;
 
@@ -183,11 +177,6 @@ public class ContentBinding {
                     set.add(change.getElementAdded());
                 }
             }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return setRef.get() == null;
         }
 
         @Override
@@ -215,7 +204,7 @@ public class ContentBinding {
         }
     }
 
-    private static class MapContentBinding<K, V> implements MapChangeListener<K, V>, WeakListener {
+    private static class MapContentBinding<K, V> implements MapChangeListener<K, V> {
 
         private final WeakReference<Map<K, V>> mapRef;
 
@@ -236,11 +225,6 @@ public class ContentBinding {
                     map.put(change.getKey(), change.getValueAdded());
                 }
             }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return mapRef.get() == null;
         }
 
         @Override

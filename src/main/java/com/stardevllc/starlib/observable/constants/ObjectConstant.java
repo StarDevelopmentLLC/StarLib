@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableObjectValue;
 
@@ -52,17 +51,7 @@ public final class ObjectConstant<T> implements ObservableObjectValue<T> {
     }
 
     @Override
-    public void addListener(InvalidationListener observer) {
-        // no-op
-    }
-
-    @Override
     public void addListener(ChangeListener<? super T> observer) {
-        // no-op
-    }
-
-    @Override
-    public void removeListener(InvalidationListener observer) {
         // no-op
     }
 

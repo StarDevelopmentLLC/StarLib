@@ -25,8 +25,6 @@
 
 package com.stardevllc.starlib.observable.collections.list;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-
 import java.util.*;
 
 public class ImmutableObservableList<E> extends AbstractList<E> implements ObservableList<E> {
@@ -101,16 +99,6 @@ public class ImmutableObservableList<E> extends AbstractList<E> implements Obser
     
     public ImmutableObservableList(Collection<E> collection) {
         elements = (E[]) collection.toArray(new Object[0]);
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        // no-op
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        // no-op
     }
 
     @Override

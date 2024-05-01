@@ -25,22 +25,6 @@
 
 package com.stardevllc.starlib.observable;
 
-import com.stardevllc.starlib.Subscription;
-
-import java.util.Objects;
-
 public interface Observable {
     
-    void addListener(InvalidationListener listener);
-    
-    void removeListener(InvalidationListener listener);
-    
-    default Subscription subscribe(Runnable invalidationSubscriber) {
-        Objects.requireNonNull(invalidationSubscriber, "invalidationSubscriber cannot be null");
-        InvalidationListener listener = obs -> invalidationSubscriber.run();
-
-        addListener(listener);
-
-        return () -> removeListener(listener);
-    }
 }

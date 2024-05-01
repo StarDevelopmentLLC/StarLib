@@ -26,7 +26,6 @@
 package com.stardevllc.starlib.observable.collections.map;
 
 import com.stardevllc.starlib.observable.collections.map.MapChangeListener.Change;
-import com.stardevllc.starlib.observable.collections.map.ObservableMap;
 
 public class MapAdapterChange<K, V> extends Change<K, V> {
     private final Change<? extends K, ? extends V> change;

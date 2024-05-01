@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableLongValue;
 
@@ -52,17 +51,7 @@ public final class LongConstant implements ObservableLongValue {
     }
 
     @Override
-    public void addListener(InvalidationListener observer) {
-        // no-op
-    }
-
-    @Override
     public void addListener(ChangeListener<? super Number> observer) {
-        // no-op
-    }
-
-    @Override
-    public void removeListener(InvalidationListener observer) {
         // no-op
     }
 

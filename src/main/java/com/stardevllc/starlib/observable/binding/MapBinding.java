@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.binding;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.Observable;
 import com.stardevllc.starlib.observable.collections.StarCollections;
 import com.stardevllc.starlib.observable.collections.list.ObservableList;
@@ -33,7 +32,6 @@ import com.stardevllc.starlib.observable.collections.map.MapChangeListener;
 import com.stardevllc.starlib.observable.collections.map.ObservableMap;
 import com.stardevllc.starlib.observable.expression.MapExpression;
 import com.stardevllc.starlib.observable.expression.MapExpressionHelper;
-import com.stardevllc.starlib.observable.property.ReadOnlyBooleanProperty;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 
 import java.util.Arrays;
@@ -43,7 +41,6 @@ public class MapBinding<K, V> extends MapExpression<K, V> implements Binding<Obs
 
     private ObservableMap<K, V> value;
     private boolean valid = false;
-    private BindingHelperObserver observer;
     private MapExpressionHelper<K, V> helper = null;
     private Callable<ObservableMap<K, V>> callable;
     private ObservableList<Observable> dependencies;
@@ -72,39 +69,6 @@ public class MapBinding<K, V> extends MapExpression<K, V> implements Binding<Obs
         this.value = value;
     }
 
-    private class EmptyProperty extends ReadOnlyBooleanProperty {
-
-        @Override
-        public boolean get() {
-            return isEmpty();
-        }
-
-        @Override
-        public Object getBean() {
-            return MapBinding.this;
-        }
-
-        @Override
-        public String getName() {
-            return "empty";
-        }
-
-        @Override
-        protected void fireValueChangedEvent() {
-            super.fireValueChangedEvent();
-        }
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        helper = MapExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = MapExpressionHelper.removeListener(helper, listener);
-    }
-
     @Override
     public void addListener(ChangeListener<? super ObservableMap<K, V>> listener) {
         helper = MapExpressionHelper.addListener(helper, this, listener);
@@ -126,27 +90,11 @@ public class MapBinding<K, V> extends MapExpression<K, V> implements Binding<Obs
     }
 
     protected final void bind(Observable... dependencies) {
-        if ((dependencies != null) && (dependencies.length > 0)) {
-            if (observer == null) {
-                observer = new BindingHelperObserver(this);
-            }
-            for (final Observable dep : dependencies) {
-                if (dep != null) {
-                    dep.addListener(observer);
-                }
-            }
-        }
+        
     }
 
     protected final void unbind(Observable... dependencies) {
-        if (observer != null) {
-            for (final Observable dep : dependencies) {
-                if (dep != null) {
-                    dep.removeListener(observer);
-                }
-            }
-            observer = null;
-        }
+        
     }
 
     @Override

@@ -40,8 +40,6 @@ public class UUIDBinding extends UUIDExpression implements Binding<UUID> {
     private UUID value;
     private boolean valid = false;
     
-    private BindingHelperObserver observer;
-
     private Callable<UUID> callable;
     private ObservableList<Observable> dependencies;
 
@@ -65,22 +63,11 @@ public class UUIDBinding extends UUIDExpression implements Binding<UUID> {
     }
     
     protected final void bind(Observable... dependencies) {
-        if ((dependencies != null) && (dependencies.length > 0)) {
-            if (observer == null) {
-                observer = new BindingHelperObserver(this);
-            }
-            for (final Observable dep : dependencies) {
-                dep.addListener(observer);
-            }
-        }
+        
     }
     
     protected final void unbind(Observable... dependencies) {
-        if (observer != null) {
-            for (final Observable dep : dependencies) {
-                dep.removeListener(observer);
-            }
-        }
+        
     }
     
     @Override

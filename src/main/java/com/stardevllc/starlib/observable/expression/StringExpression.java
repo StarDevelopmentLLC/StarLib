@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.expression;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.BooleanBinding;
 import com.stardevllc.starlib.observable.binding.IntegerBinding;
 import com.stardevllc.starlib.observable.binding.StringFormatter;
@@ -104,16 +103,6 @@ public abstract class StringExpression implements ObservableStringValue {
 
     public BooleanBinding isNotEmpty() {
         return new BooleanBinding(() -> !getValueSafe().isEmpty(), this);
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

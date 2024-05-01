@@ -25,20 +25,14 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableObjectValue;
 
-import java.lang.ref.WeakReference;
-
 public class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
 
     protected ObservableValue<? extends T> observable = null;
-    protected InvalidationListener listener = null;
     protected boolean valid = true;
 
     public ObjectProperty() {
@@ -77,17 +71,6 @@ public class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements Prop
         return value;
     }
 
-    private void markInvalid() {
-        if (valid) {
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-
-    protected void invalidated() {
-    }
-
     @Override
     public T get() {
         valid = true;
@@ -102,7 +85,7 @@ public class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements Prop
         }
         if (value != newValue) {
             value = newValue;
-            markInvalid();
+            fireValueChangedEvent();
         }
     }
 
@@ -120,11 +103,6 @@ public class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements Prop
         if (!newObservable.equals(this.observable)) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new Listener(this);
-            }
-            observable.addListener(listener);
-            markInvalid();
         }
     }
 
@@ -132,7 +110,6 @@ public class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements Prop
     public void unbind() {
         if (observable != null) {
             value = observable.getValue();
-            observable.removeListener(listener);
             observable = null;
         }
     }
@@ -164,29 +141,5 @@ public class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements Prop
 
     protected void fireValueChangedEvent() {
         ExpressionHelper.fireValueChangedEvent(helper);
-    }
-
-    private static class Listener implements InvalidationListener, WeakListener {
-
-        private final WeakReference<ObjectProperty<?>> wref;
-
-        public Listener(ObjectProperty<?> ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            ObjectProperty<?> ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid();
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 }

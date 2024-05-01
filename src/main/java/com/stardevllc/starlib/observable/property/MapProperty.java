@@ -25,25 +25,16 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.collections.map.MapChangeListener;
 import com.stardevllc.starlib.observable.collections.map.ObservableMap;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableMapValue;
 
-import java.lang.ref.WeakReference;
-
 public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Property<ObservableMap<K, V>>, WritableMapValue<K, V> {
 
-    protected final MapChangeListener<K, V> mapChangeListener = change -> {
-        invalidated();
-        fireValueChangedEvent(change);
-    };
+    protected final MapChangeListener<K, V> mapChangeListener = this::fireValueChangedEvent;
     protected ObservableValue<? extends ObservableMap<K, V>> observable = null;
-    protected InvalidationListener listener = null;
     protected boolean valid = true;
 
     public MapProperty() {
@@ -76,21 +67,6 @@ public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Prop
         BidirectionalBinding.unbind(this, other);
     }
 
-    private void markInvalid(ObservableMap<K, V> oldValue) {
-        if (valid) {
-            if (oldValue != null) {
-                oldValue.removeListener(mapChangeListener);
-            }
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-
-    protected void invalidated() {
-        //no-op
-    }
-
     @Override
     public void set(ObservableMap<K, V> newValue) {
         if (isBound()) {
@@ -98,9 +74,8 @@ public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Prop
                     getBean().getClass().getSimpleName() + "." + getName() + " : ": "") + "A bound value cannot be set.");
         }
         if (value != newValue) {
-            final ObservableMap<K, V> oldValue = value;
             value = newValue;
-            markInvalid(oldValue);
+            fireValueChangedEvent();
         }
     }
 
@@ -117,11 +92,6 @@ public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Prop
         if (newObservable != observable) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new Listener<>(this);
-            }
-            observable.addListener(listener);
-            markInvalid(value);
         }
     }
 
@@ -129,7 +99,6 @@ public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Prop
     public void unbind() {
         if (observable != null) {
             value = observable.getValue();
-            observable.removeListener(listener);
             observable = null;
         }
     }
@@ -157,29 +126,5 @@ public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Prop
         }
         result.append("]");
         return result.toString();
-    }
-
-    private static class Listener<K,V> implements InvalidationListener, WeakListener {
-
-        private final WeakReference<MapProperty<K,V>> wref;
-
-        public Listener(MapProperty<K,V> ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            MapProperty<K,V> ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid(ref.value);
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 }

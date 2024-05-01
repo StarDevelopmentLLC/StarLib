@@ -42,7 +42,6 @@ public class SetBinding<E> extends SetExpression<E> implements Binding<Observabl
 
     private ObservableSet<E> value;
     private boolean valid = false;
-    private BindingHelperObserver observer;
 
     public SetBinding(Observable... dependencies) {
         if (dependencies == null) {
@@ -69,27 +68,11 @@ public class SetBinding<E> extends SetExpression<E> implements Binding<Observabl
     };
 
     protected final void bind(Observable... dependencies) {
-        if ((dependencies != null) && (dependencies.length > 0)) {
-            if (observer == null) {
-                observer = new BindingHelperObserver(this);
-            }
-            for (final Observable dep : dependencies) {
-                if (dep != null) {
-                    dep.addListener(observer);
-                }
-            }
-        }
+        
     }
 
     protected final void unbind(Observable... dependencies) {
-        if (observer != null) {
-            for (final Observable dep : dependencies) {
-                if (dep != null) {
-                    dep.removeListener(observer);
-                }
-            }
-            observer = null;
-        }
+        
     }
 
     @Override

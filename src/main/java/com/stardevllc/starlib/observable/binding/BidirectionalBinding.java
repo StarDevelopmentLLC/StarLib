@@ -25,16 +25,14 @@
 
 package com.stardevllc.starlib.observable.binding;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.property.*;
+import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-public class BidirectionalBinding<E, T extends Property<E>> implements InvalidationListener, WeakListener {
+public class BidirectionalBinding<E, T extends Property<E>> implements ChangeListener<E> {
 
     private WeakReference<T> propertyRef1;
     private WeakReference<T> propertyRef2;
@@ -54,7 +52,7 @@ public class BidirectionalBinding<E, T extends Property<E>> implements Invalidat
     }
 
     @Override
-    public void invalidated(Observable sourceProperty) {
+    public void changed(ObservableValue<? extends E> sourceProperty, E oldValue, E newValue) {
         if (!updating) {
             final T property1 = propertyRef1.get();
             final T property2 = propertyRef2.get();
@@ -68,24 +66,21 @@ public class BidirectionalBinding<E, T extends Property<E>> implements Invalidat
             } else {
                 try {
                     updating = true;
-                    E newValue;
                     if (property1 == sourceProperty) {
-                        newValue = property1.getValue();
                         property2.setValue(newValue);
                         property2.getValue();
                     } else {
-                        newValue = property2.getValue();
                         property1.setValue(newValue);
                         property1.getValue();
                     }
-                    oldValue = newValue;
+                    this.oldValue = newValue;
                 } catch (RuntimeException e) {
                     try {
                         if (property1 == sourceProperty) {
-                            property1.setValue(oldValue);
+                            property1.setValue(this.oldValue);
                             property1.getValue();
                         } else {
-                            property2.setValue(oldValue);
+                            property2.setValue(this.oldValue);
                             property2.getValue();
                         }
                     } catch (Exception e2) {
@@ -209,11 +204,6 @@ public class BidirectionalBinding<E, T extends Property<E>> implements Invalidat
     @Override
     public int hashCode() {
         return cachedHashCode;
-    }
-
-    @Override
-    public boolean wasGarbageCollected() {
-        return (getProperty1() == null) || (getProperty2() == null);
     }
 
     @Override

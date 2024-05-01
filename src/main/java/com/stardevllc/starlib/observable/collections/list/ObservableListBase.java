@@ -25,8 +25,6 @@
 
 package com.stardevllc.starlib.observable.collections.list;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -83,16 +81,6 @@ public abstract class ObservableListBase<E> extends AbstractList<E>  implements 
         }
 
         return changeBuilder;
-    }
-
-    @Override
-    public final void addListener(InvalidationListener listener) {
-        listenerHelper = ListListenerHelper.addListener(listenerHelper, listener);
-    }
-
-    @Override
-    public final void removeListener(InvalidationListener listener) {
-        listenerHelper = ListListenerHelper.removeListener(listenerHelper, listener);
     }
 
     @Override

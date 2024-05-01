@@ -41,8 +41,6 @@ public class DoubleBinding extends DoubleExpression implements NumberBinding {
     private double value;
     private boolean valid;
 
-    private BindingHelperObserver observer;
-
     public DoubleBinding(Observable... dependencies) {
         if (dependencies == null) {
             this.dependencies = StarCollections.emptyObservableList();
@@ -63,22 +61,11 @@ public class DoubleBinding extends DoubleExpression implements NumberBinding {
     }
 
     protected final void bind(Observable... dependencies) {
-        if ((dependencies != null) && (dependencies.length > 0)) {
-            if (observer == null) {
-                observer = new BindingHelperObserver(this);
-            }
-            for (final Observable dep : dependencies) {
-                dep.addListener(observer);
-            }
-        }
+        
     }
 
     protected final void unbind(Observable... dependencies) {
-        if (observer != null) {
-            for (final Observable dep : dependencies) {
-                dep.removeListener(observer);
-            }
-        }
+        
     }
 
     @Override

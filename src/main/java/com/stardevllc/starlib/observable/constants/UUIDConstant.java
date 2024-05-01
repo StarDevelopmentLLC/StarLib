@@ -26,7 +26,6 @@
 package com.stardevllc.starlib.observable.constants;
 
 import com.stardevllc.starlib.observable.expression.UUIDExpression;
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 
 import java.util.UUID;
@@ -54,17 +53,7 @@ public final class UUIDConstant extends UUIDExpression {
     }
 
     @Override
-    public void addListener(InvalidationListener observer) {
-        // no-op
-    }
-
-    @Override
     public void addListener(ChangeListener<? super UUID> observer) {
-        // no-op
-    }
-
-    @Override
-    public void removeListener(InvalidationListener observer) {
         // no-op
     }
 

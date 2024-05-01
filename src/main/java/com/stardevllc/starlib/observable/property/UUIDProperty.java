@@ -25,21 +25,16 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.WeakListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 import com.stardevllc.starlib.observable.writable.WritableUUIDValue;
 
-import java.lang.ref.WeakReference;
 import java.util.Objects;
 import java.util.UUID;
 
 public class UUIDProperty extends ReadOnlyUUIDProperty implements Property<UUID>, WritableUUIDValue {
 
     private ObservableValue<? extends UUID> observable = null;
-    private InvalidationListener listener = null;
     private boolean valid = true;
 
     public UUIDProperty() {
@@ -73,18 +68,6 @@ public class UUIDProperty extends ReadOnlyUUIDProperty implements Property<UUID>
         BidirectionalBinding.unbind(this, other);
     }
 
-    private void markInvalid() {
-        if (valid) {
-            valid = false;
-            invalidated();
-            fireValueChangedEvent();
-        }
-    }
-
-    protected void invalidated() {
-        //no-op
-    }
-
     @Override
     public UUID get() {
         valid = true;
@@ -99,7 +82,7 @@ public class UUIDProperty extends ReadOnlyUUIDProperty implements Property<UUID>
         }
         if (!Objects.equals(value, newValue)) {
             value = newValue;
-            markInvalid();
+            fireValueChangedEvent();
         }
     }
 
@@ -116,11 +99,6 @@ public class UUIDProperty extends ReadOnlyUUIDProperty implements Property<UUID>
         if (!newObservable.equals(observable)) {
             unbind();
             observable = newObservable;
-            if (listener == null) {
-                listener = new Listener(this);
-            }
-            observable.addListener(listener);
-            markInvalid();
         }
     }
 
@@ -128,7 +106,6 @@ public class UUIDProperty extends ReadOnlyUUIDProperty implements Property<UUID>
     public void unbind() {
         if (observable != null) {
             value = observable.getValue();
-            observable.removeListener(listener);
             observable = null;
         }
     }
@@ -156,29 +133,5 @@ public class UUIDProperty extends ReadOnlyUUIDProperty implements Property<UUID>
         }
         result.append("]");
         return result.toString();
-    }
-
-    private static class Listener implements InvalidationListener, WeakListener {
-
-        private final WeakReference<UUIDProperty> wref;
-
-        public Listener(UUIDProperty ref) {
-            this.wref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void invalidated(Observable observable) {
-            UUIDProperty ref = wref.get();
-            if (ref == null) {
-                observable.removeListener(this);
-            } else {
-                ref.markInvalid();
-            }
-        }
-
-        @Override
-        public boolean wasGarbageCollected() {
-            return wref.get() == null;
-        }
     }
 }

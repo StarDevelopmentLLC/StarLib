@@ -25,8 +25,6 @@
 
 package com.stardevllc.starlib.observable.collections.map;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
-
 import java.util.*;
 
 public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
@@ -108,16 +106,6 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
 
     protected void callObservers(MapChangeListener.Change<K,V> change) {
         MapListenerHelper.fireValueChangedEvent(listenerHelper, change);
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        listenerHelper = MapListenerHelper.addListener(listenerHelper, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        listenerHelper = MapListenerHelper.removeListener(listenerHelper, listener);
     }
 
     @Override

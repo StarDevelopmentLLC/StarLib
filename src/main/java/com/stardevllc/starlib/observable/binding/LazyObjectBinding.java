@@ -26,7 +26,6 @@
 package com.stardevllc.starlib.observable.binding;
 
 import com.stardevllc.starlib.Subscription;
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 
 abstract class LazyObjectBinding<T> extends ObjectBinding<T> {
@@ -43,20 +42,6 @@ abstract class LazyObjectBinding<T> extends ObjectBinding<T> {
 
     @Override
     public void removeListener(ChangeListener<? super T> listener) {
-        super.removeListener(listener);
-
-        updateSubscriptionAfterRemove();
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        super.addListener(listener);
-
-        updateSubscriptionAfterAdd();
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
         super.removeListener(listener);
 
         updateSubscriptionAfterRemove();

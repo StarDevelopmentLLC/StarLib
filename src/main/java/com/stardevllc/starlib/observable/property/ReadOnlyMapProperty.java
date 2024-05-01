@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.observable.InvalidationListener;
 import com.stardevllc.starlib.observable.binding.BidirectionalContentBinding;
 import com.stardevllc.starlib.observable.binding.ContentBinding;
 import com.stardevllc.starlib.observable.collections.map.MapChangeListener;
@@ -143,16 +142,6 @@ public class ReadOnlyMapProperty<K, V> extends MapExpression<K, V> implements Re
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        helper = MapExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        helper = MapExpressionHelper.removeListener(helper, listener);
     }
 
     @Override
