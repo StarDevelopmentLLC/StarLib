@@ -1,13 +1,13 @@
 package com.stardevllc.starlib.registry;
 
-import com.stardevllc.starlib.registry.functions.Normalizer;
+import com.stardevllc.starlib.registry.functions.KeyNormalizer;
 import com.stardevllc.starlib.registry.functions.Register;
 
 import java.util.Map;
 import java.util.UUID;
 
 public class UUIDRegistry<V> extends Registry<UUID, V> {
-    public UUIDRegistry(Map<UUID, V> initialObjects, Normalizer<UUID> keyNormalizer, Register<V, UUID> registerFunction) {
+    public UUIDRegistry(Map<UUID, V> initialObjects, KeyNormalizer<UUID> keyNormalizer, Register<V, UUID> registerFunction) {
         super(initialObjects, keyNormalizer, registerFunction);
     }
 
@@ -18,7 +18,7 @@ public class UUIDRegistry<V> extends Registry<UUID, V> {
         super(initialObjects);
     }
 
-    public UUIDRegistry(Map<UUID, V> initialObjects, Normalizer<UUID> normalizer) {
+    public UUIDRegistry(Map<UUID, V> initialObjects, KeyNormalizer<UUID> normalizer) {
         super(initialObjects, normalizer);
     }
 
@@ -26,11 +26,11 @@ public class UUIDRegistry<V> extends Registry<UUID, V> {
         super(initialObjects, register);
     }
 
-    public UUIDRegistry(Normalizer<UUID> keyNormalizer, Register<V, UUID> registerFunction) {
+    public UUIDRegistry(KeyNormalizer<UUID> keyNormalizer, Register<V, UUID> registerFunction) {
         super(keyNormalizer, registerFunction);
     }
 
-    public UUIDRegistry(Normalizer<UUID> keyNormalizer) {
+    public UUIDRegistry(KeyNormalizer<UUID> keyNormalizer) {
         super(keyNormalizer);
     }
 

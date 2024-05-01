@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.registry;
 
-import com.stardevllc.starlib.registry.functions.Normalizer;
+import com.stardevllc.starlib.registry.functions.KeyNormalizer;
 import com.stardevllc.starlib.registry.functions.Register;
 
 import java.util.*;
@@ -8,10 +8,10 @@ import java.util.function.Consumer;
 
 public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
     protected final TreeMap<K, V> objects = new TreeMap<>();
-    protected final Normalizer<K> keyNormalizer;
+    protected final KeyNormalizer<K> keyNormalizer;
     protected final Register<V, K> registerFunction;
 
-    public Registry(Map<K, V> initialObjects, Normalizer<K> keyNormalizer, Register<V, K> registerFunction) {
+    public Registry(Map<K, V> initialObjects, KeyNormalizer<K> keyNormalizer, Register<V, K> registerFunction) {
         if (initialObjects != null && !initialObjects.isEmpty()) {
             objects.putAll(initialObjects);
         }
@@ -27,7 +27,7 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
         this(initialObjects, null, null);
     }
     
-    public Registry(Map<K, V> initialObjects, Normalizer<K> normalizer) {
+    public Registry(Map<K, V> initialObjects, KeyNormalizer<K> normalizer) {
         this(initialObjects, normalizer, null);
     }
 
@@ -35,11 +35,11 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V> {
         this(initialObjects, null, register);
     }
 
-    public Registry(Normalizer<K> keyNormalizer, Register<V, K> registerFunction) {
+    public Registry(KeyNormalizer<K> keyNormalizer, Register<V, K> registerFunction) {
         this(null, keyNormalizer, registerFunction);
     }
 
-    public Registry(Normalizer<K> keyNormalizer) {
+    public Registry(KeyNormalizer<K> keyNormalizer) {
         this(null, keyNormalizer, null);
     }
 
