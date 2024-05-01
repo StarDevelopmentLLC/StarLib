@@ -4,6 +4,7 @@ import com.stardevllc.starlib.registry.functions.KeyNormalizer;
 import com.stardevllc.starlib.registry.functions.KeyRetriever;
 
 import java.util.Map;
+import java.util.SortedMap;
 
 public class StringRegistry<V> extends Registry<String, V> {
     public StringRegistry(Map<String, V> initialObjects, KeyNormalizer<String> keyNormalizer, KeyRetriever<V, String> registerFunction) {
@@ -35,5 +36,20 @@ public class StringRegistry<V> extends Registry<String, V> {
 
     public StringRegistry(KeyRetriever<V, String> registerFunction) {
         super(registerFunction);
+    }
+
+    @Override
+    public SortedMap<String, V> subMap(String k1, String k2) {
+        return new StringRegistry<>(this.objects.subMap(k1, k2), this.keyNormalizer, this.keyRetriever);
+    }
+
+    @Override
+    public SortedMap<String, V> headMap(String k1) {
+        return new StringRegistry<>(this.objects.headMap(k1), this.keyNormalizer, this.keyRetriever);
+    }
+
+    @Override
+    public SortedMap<String, V> tailMap(String k1) {
+        return new StringRegistry<>(this.objects.tailMap(k1), this.keyNormalizer, this.keyRetriever);
     }
 }

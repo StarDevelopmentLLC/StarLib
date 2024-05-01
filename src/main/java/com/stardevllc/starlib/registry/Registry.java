@@ -184,17 +184,17 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
 
     @Override
     public SortedMap<K, V> subMap(K k, K k1) {
-        return this.objects.subMap(k, k1);
+        return new Registry<>(this.objects.subMap(k, k1), this.keyNormalizer, this.keyRetriever);
     }
 
     @Override
     public SortedMap<K, V> headMap(K k) {
-        return this.objects.headMap(k);
+        return new Registry<>(this.objects.headMap(k), this.keyNormalizer, this.keyRetriever);
     }
 
     @Override
     public SortedMap<K, V> tailMap(K k) {
-        return this.objects.tailMap(k);
+        return new Registry<>(this.objects.tailMap(k), this.keyNormalizer, this.keyRetriever);
     }
 
     @Override

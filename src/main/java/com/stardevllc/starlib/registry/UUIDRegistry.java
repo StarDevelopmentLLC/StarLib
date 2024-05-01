@@ -4,6 +4,7 @@ import com.stardevllc.starlib.registry.functions.KeyNormalizer;
 import com.stardevllc.starlib.registry.functions.KeyRetriever;
 
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.UUID;
 
 public class UUIDRegistry<V> extends Registry<UUID, V> {
@@ -36,5 +37,20 @@ public class UUIDRegistry<V> extends Registry<UUID, V> {
 
     public UUIDRegistry(KeyRetriever<V, UUID> registerFunction) {
         super(registerFunction);
+    }
+
+    @Override
+    public SortedMap<UUID, V> subMap(UUID k1, UUID k2) {
+        return new UUIDRegistry<>(this.objects.subMap(k1, k2), this.keyNormalizer, this.keyRetriever);
+    }
+
+    @Override
+    public SortedMap<UUID, V> headMap(UUID k1) {
+        return new UUIDRegistry<>(this.objects.headMap(k1), this.keyNormalizer, this.keyRetriever);
+    }
+
+    @Override
+    public SortedMap<UUID, V> tailMap(UUID k1) {
+        return new UUIDRegistry<>(this.objects.tailMap(k1), this.keyNormalizer, this.keyRetriever);
     }
 }
