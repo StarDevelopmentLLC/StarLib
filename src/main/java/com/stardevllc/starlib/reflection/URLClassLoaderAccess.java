@@ -6,18 +6,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collection;
 
-/**
- * Allows access to a URLClassLoader's addUrl method. <br>
- * Use the create() method to initialize<br>
- * Mainly intended for use with Spigot's plugin class loaders
- */
 public abstract class URLClassLoaderAccess {
 
-    /**
-     * Creates an access instance for the given classLoader
-     * @param classLoader The class loader
-     * @return The access implementation
-     */
     public static URLClassLoaderAccess create(URLClassLoader classLoader) {
         if (classLoader == null) {
             return null;

@@ -6,18 +6,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.stream.Stream;
 
-/**
- * A class to parse a time string. This is taken from other projects and made into a utility class.
- * This is the reverse of the {@link TimeFormat} class
- */
 public class TimeParser {
-    /**
-     * Parses a String based time into milliseconds. This is mainly intended to parse user input
-     * The time format must be in {number + unit alias}. There cannot be a space between the number or the alias.
-     * Aliases are taken from {@link TimeUnit} and can be anything for any of the units.
-     * @param rawTime The time as a string
-     * @return The time in milliseconds
-     */
     public long parseTime(String rawTime) {
         Pair<Long, String> years = extractRawTime(rawTime, TimeUnit.YEARS);
         Pair<Long, String> months = extractRawTime(years.value(), TimeUnit.MONTHS);
@@ -28,14 +17,7 @@ public class TimeParser {
         Pair<Long, String> seconds = extractRawTime(minutes.value(), TimeUnit.SECONDS);
         return Stream.of(years, months, weeks, days, hours, minutes, seconds).mapToLong(Pair::key).sum();
     }
-
-    /**
-     * Parses a date that is split with colons. Please note: You must have Years, Months, Days. <br>
-     * Hour minute and seconds are optional, but all must be present if they exist. 
-     * @param rawDate The date
-     * @return The time in milliseconds in UTC
-     * @throws IllegalArgumentException If the format is wrong
-     */
+    
     public long parseDate(String rawDate) throws IllegalArgumentException {
         ParsedDate parsedDate = parseRawDate(rawDate);
         if (parsedDate == null) {
@@ -44,13 +26,7 @@ public class TimeParser {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(parsedDate.getYear(), parsedDate.getMonth(), parsedDate.getDay(), parsedDate.getHour(), parsedDate.getMinute(), parsedDate.getSecond(), 0, ZoneOffset.UTC);
         return zonedDateTime.toInstant().toEpochMilli();
     }
-
-    /**
-     * See the other documentation, just returns it as an object instead of a time
-     * @param rawDate The date
-     * @return The time in milliseconds in UTC
-     * @throws IllegalArgumentException If the format is wrong
-     */
+    
     public ParsedDate parseRawDate(String rawDate) throws IllegalArgumentException {
         String[] inputArray = rawDate.split(" ");
         if (inputArray.length < 1) {
