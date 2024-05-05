@@ -15,7 +15,7 @@ I strongly encourage the use of a build tool like Gradle or Maven. You can find 
 [B]Repository[/B]: [URL]https://www.jitpack.io[/URL]
 [B]Group[/B]: com.github.StarDevelopmentLLC
 [B]Artifact[/B]: StarLib
-[B]Version[/B]: 1.0.0-alpha.15
+[B]Version[/B]: 1.0.0-alpha.16
 
 [B][SIZE=5]Tools, Utilities and Systems[/SIZE][/B]
 StarLib provides tools, utilities and systems that have been gathered mostly from my past projects. Links are provided to the source code directly, take a look at the arguments and how things function.

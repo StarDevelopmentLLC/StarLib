@@ -1,3 +1,7 @@
+1.0.0-alpha.16
+- Refactored the Observable System again to remove some of the abstract classes
+- Renamed the Operator enum to MathOperator
+
 1.0.0-alpha.15
 - Make the registry return the value
 - Add a registerAll() for the value object of the registry
