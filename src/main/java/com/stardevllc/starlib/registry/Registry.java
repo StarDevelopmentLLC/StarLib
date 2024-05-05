@@ -4,6 +4,8 @@ import com.stardevllc.starlib.registry.functions.KeyNormalizer;
 import com.stardevllc.starlib.registry.functions.KeyRetriever;
 
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -13,6 +15,8 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
     protected final TreeMap<K, V> objects = new TreeMap<>();
     protected final KeyNormalizer<K> keyNormalizer;
     protected final KeyRetriever<V, K> keyRetriever;
+    
+    protected Lock lock = new ReentrantLock();
 
     public Registry(Map<K, V> initialObjects, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever) {
         if (initialObjects != null && !initialObjects.isEmpty()) {
@@ -63,7 +67,9 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         if (keyNormalizer != null) {
             key = keyNormalizer.apply(key);
         }
+        lock.lock();
         this.objects.put(key, object);
+        lock.unlock();
         return object;
     }
 
@@ -105,7 +111,10 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         if (keyNormalizer != null) {
             key = keyNormalizer.apply(key);
         }
-        return objects.remove(key);
+        lock.lock();
+        V removed = objects.remove(key);
+        lock.unlock();
+        return removed;
     }
     
     public V unregister(V object) {
