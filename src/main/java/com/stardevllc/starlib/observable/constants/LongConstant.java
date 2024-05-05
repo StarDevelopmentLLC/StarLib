@@ -25,10 +25,9 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableLongValue;
 
-public final class LongConstant implements ObservableLongValue {
+public final class LongConstant extends NumberConstant implements ObservableLongValue {
 
     private final long value;
 
@@ -48,16 +47,6 @@ public final class LongConstant implements ObservableLongValue {
     @Override
     public Long getValue() {
         return value;
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super Number> observer) {
-        // no-op
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Number> observer) {
-        // no-op
     }
 
     @Override

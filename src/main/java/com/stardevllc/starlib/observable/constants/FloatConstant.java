@@ -25,10 +25,9 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableFloatValue;
 
-public final class FloatConstant implements ObservableFloatValue {
+public final class FloatConstant extends NumberConstant implements ObservableFloatValue {
 
     private final float value;
 
@@ -48,16 +47,6 @@ public final class FloatConstant implements ObservableFloatValue {
     @Override
     public Float getValue() {
         return value;
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super Number> listener) {
-        // no-op
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Number> listener) {
-        // no-op
     }
 
     @Override

@@ -25,38 +25,15 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.expression.StringExpression;
-import com.stardevllc.starlib.observable.value.ChangeListener;
+import com.stardevllc.starlib.observable.value.ObservableStringValue;
 
-public final class StringConstant extends StringExpression {
-
-    private final String value;
+public final class StringConstant extends ObjectConstant<String> implements ObservableStringValue {
 
     private StringConstant(String value) {
-        this.value = value;
+        super(value);
     }
 
     public static StringConstant valueOf(String value) {
         return new StringConstant(value);
-    }
-
-    @Override
-    public String get() {
-        return value;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super String> observer) {
-        // no-op
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super String> observer) {
-        // no-op
     }
 }

@@ -25,40 +25,17 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.expression.UUIDExpression;
-import com.stardevllc.starlib.observable.value.ChangeListener;
+import com.stardevllc.starlib.observable.value.ObservableUUIDValue;
 
 import java.util.UUID;
 
-public final class UUIDConstant extends UUIDExpression {
-
-    private final UUID value;
+public final class UUIDConstant extends ObjectConstant<UUID> implements ObservableUUIDValue {
 
     private UUIDConstant(UUID value) {
-        this.value = value;
+        super(value);
     }
 
     public static UUIDConstant valueOf(UUID value) {
         return new UUIDConstant(value);
-    }
-
-    @Override
-    public UUID get() {
-        return value;
-    }
-
-    @Override
-    public UUID getValue() {
-        return value;
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super UUID> observer) {
-        // no-op
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super UUID> observer) {
-        // no-op
     }
 }

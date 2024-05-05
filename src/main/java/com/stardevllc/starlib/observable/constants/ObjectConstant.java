@@ -25,14 +25,14 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.value.ChangeListener;
-import com.stardevllc.starlib.observable.value.ObservableObjectValue;
+import com.stardevllc.starlib.observable.binding.StringFormatter;
+import com.stardevllc.starlib.observable.value.*;
 
-public final class ObjectConstant<T> implements ObservableObjectValue<T> {
+public class ObjectConstant<T> implements ObservableObjectValue<T> {
 
-    private final T value;
+    protected final T value;
 
-    private ObjectConstant(T value) {
+    protected ObjectConstant(T value) {
         this.value = value;
     }
 
@@ -48,6 +48,47 @@ public final class ObjectConstant<T> implements ObservableObjectValue<T> {
     @Override
     public T getValue() {
         return value;
+    }
+
+    @Override
+    public ObservableBooleanValue isNull() {
+        return BooleanConstant.valueOf(value == null);
+    }
+
+    @Override
+    public ObservableBooleanValue isNotNull() {
+        return BooleanConstant.valueOf(value != null);
+    }
+
+    @Override
+    public ObservableBooleanValue isEqualTo(ObservableValue<T> other) {
+        if (value == null) {
+            return BooleanConstant.FALSE;
+        }
+        
+        return BooleanConstant.valueOf(value.equals(other.getValue()));
+    }
+
+    @Override
+    public ObservableBooleanValue isNotEqualTo(ObservableValue<T> other) {
+        if (value == null) {
+            return BooleanConstant.FALSE;
+        }
+        
+        return BooleanConstant.valueOf(!value.equals(other.getValue()));
+    }
+
+    @Override
+    public ObservableStringValue asString() {
+        if (value == null) {
+            return StringConstant.valueOf("null");
+        }
+        return StringConstant.valueOf(value.toString());
+    }
+
+    @Override
+    public ObservableStringValue asString(String format) {
+        return StringFormatter.format(format, this);
     }
 
     @Override

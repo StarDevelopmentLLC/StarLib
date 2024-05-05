@@ -338,5 +338,4 @@ public class BidirectionalContentBinding {
             return false;
         }
     }
-
 }

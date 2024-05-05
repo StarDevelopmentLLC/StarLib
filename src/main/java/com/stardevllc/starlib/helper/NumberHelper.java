@@ -134,4 +134,26 @@ public final class NumberHelper {
         }
         return 0;
     }
+    
+    public static Number negate(Number number) {
+        if (number == null) {
+            return 0;
+        }
+        
+        if (number instanceof Integer) {
+            return -number.intValue();
+        } else if (number instanceof Long) {
+            return -number.longValue();
+        } else if (number instanceof Double) {
+            return -number.doubleValue();
+        } else if (number instanceof Float) {
+            return -number.floatValue();
+        } else if (number instanceof Short) {
+            return -number.shortValue();
+        } else if (number instanceof Byte) {
+            return -number.byteValue();
+        }
+        
+        return 0;
+    }
 }

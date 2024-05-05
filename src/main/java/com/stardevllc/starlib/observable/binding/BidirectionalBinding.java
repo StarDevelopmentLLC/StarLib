@@ -25,7 +25,7 @@
 
 package com.stardevllc.starlib.observable.binding;
 
-import com.stardevllc.starlib.observable.property.*;
+import com.stardevllc.starlib.observable.property.writable.*;
 import com.stardevllc.starlib.observable.value.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 

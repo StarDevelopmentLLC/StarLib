@@ -25,14 +25,9 @@
 
 package com.stardevllc.starlib.observable.value;
 
-import com.stardevllc.starlib.Subscription;
 import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.binding.*;
-import com.stardevllc.starlib.observable.expression.ObjectExpression;
+import com.stardevllc.starlib.observable.property.readonly.ReadOnlyObjectProperty;
 
-import java.util.Objects;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface ObservableValue<T> extends Observable {
@@ -42,43 +37,28 @@ public interface ObservableValue<T> extends Observable {
     void removeListener(ChangeListener<? super T> listener);
 
     T getValue();
+
+    ObservableValue<Boolean> isNull();
+
+    ObservableValue<Boolean> isNotNull();
+
+    ObservableValue<Boolean> isEqualTo(ObservableValue<T> other);
+
+    ObservableValue<Boolean> isNotEqualTo(ObservableValue<T> other);
+
+    ObservableValue<String> asString();
+
+    ObservableValue<String> asString(String format);
     
-    default ObjectExpression<? extends T> asObject() {
-        return new ObjectBinding<>(this::getValue, this);
+    default ObservableValue<? extends T> asObject() {
+        return new ReadOnlyObjectProperty<>(this.getValue());
     }
 
     default <U> ObservableValue<U> map(Function<? super T, ? extends U> mapper) {
-        return new MappedBinding<>(this, mapper);
+        return new ReadOnlyObjectProperty<>(getValue() == null ? null : mapper.apply(getValue()));
     }
 
     default ObservableValue<T> orElse(T constant) {
-        return new OrElseBinding<>(this, constant);
-    }
-
-    default <U> ObservableValue<U> flatMap(Function<? super T, ? extends ObservableValue<? extends U>> mapper) {
-        return new FlatMappedBinding<>(this, mapper);
-    }
-
-    default ObservableValue<T> when(ObservableValue<Boolean> condition) {
-        return new ConditionalBinding<>(this, condition);
-    }
-
-    default Subscription subscribe(BiConsumer<? super T, ? super T> changeSubscriber) {
-        Objects.requireNonNull(changeSubscriber, "changeSubscriber cannot be null");
-        ChangeListener<T> listener = (obs, old, current) -> changeSubscriber.accept(old, current);
-
-        addListener(listener);
-
-        return () -> removeListener(listener);
-    }
-
-    default Subscription subscribe(Consumer<? super T> valueSubscriber) {
-        Objects.requireNonNull(valueSubscriber, "valueSubscriber cannot be null");
-        ChangeListener<T> listener = (obs, old, current) -> valueSubscriber.accept(current);
-
-        valueSubscriber.accept(getValue());  // eagerly send current value
-        addListener(listener);
-
-        return () -> removeListener(listener);
+        return new ReadOnlyObjectProperty<>(getValue() == null ? constant : getValue());
     }
 }

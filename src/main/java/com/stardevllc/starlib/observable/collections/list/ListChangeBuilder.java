@@ -33,7 +33,7 @@ import java.util.*;
 final class ListChangeBuilder<E> {
 
     private static final int[] EMPTY_PERM = new int[0];
-    private final ObservableListBase<E> list;
+    private final AbstractObservableList<E> list;
     private int changeLock;
     private List<SubChange<E>> addRemoveChanges;
     private List<SubChange<E>> updateChanges;
@@ -183,7 +183,7 @@ final class ListChangeBuilder<E> {
         }
     }
 
-    ListChangeBuilder(ObservableListBase<E> list) {
+    ListChangeBuilder(AbstractObservableList<E> list) {
         this.list = list;
     }
 
@@ -548,7 +548,7 @@ final class ListChangeBuilder<E> {
         private final SubChange<E> change;
         private boolean onChange;
 
-        public SingleChange(SubChange<E> change, ObservableListBase<E> list) {
+        public SingleChange(SubChange<E> change, AbstractObservableList<E> list) {
             super(list);
             this.change = change;
         }

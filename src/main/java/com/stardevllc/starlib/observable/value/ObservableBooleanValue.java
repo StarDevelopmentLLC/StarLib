@@ -27,4 +27,12 @@ package com.stardevllc.starlib.observable.value;
 
 public interface ObservableBooleanValue extends ObservableValue<Boolean> {
     boolean get();
+
+    ObservableValue<Boolean> and(final ObservableBooleanValue other);
+
+    ObservableValue<Boolean> or(final ObservableBooleanValue other);
+
+    ObservableValue<Boolean> not();
+
+    ObservableValue<String> asString();
 }

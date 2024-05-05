@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.reflection;
 
-import com.stardevllc.starlib.observable.property.ReadOnlyProperty;
+import com.stardevllc.starlib.observable.property.readonly.ReadOnlyProperty;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

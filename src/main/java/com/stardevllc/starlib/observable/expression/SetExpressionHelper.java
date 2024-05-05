@@ -32,33 +32,33 @@ import com.stardevllc.starlib.observable.value.ObservableSetValue;
 
 import java.util.Arrays;
 
-public abstract class SetExpressionHelper<E> extends ExpressionHelperBase {
+public class SetExpressionHelper<E> {
     public static <E> SetExpressionHelper<E> addListener(SetExpressionHelper<E> helper, ObservableSetValue<E> observable, ChangeListener<? super ObservableSet<E>> listener) {
         if ((observable == null) || (listener == null)) {
             throw new NullPointerException();
         }
-        return (helper == null)? new SingleChange<>(observable, listener) : helper.addListener(listener);
+        return (helper == null) ? new SetExpressionHelper<>(observable, listener) : helper.addListener(listener);
     }
 
     public static <E> SetExpressionHelper<E> removeListener(SetExpressionHelper<E> helper, ChangeListener<? super ObservableSet<E>> listener) {
         if (listener == null) {
             throw new NullPointerException();
         }
-        return (helper == null)? null : helper.removeListener(listener);
+        return (helper == null) ? null : helper.removeListener(listener);
     }
 
     public static <E> SetExpressionHelper<E> addListener(SetExpressionHelper<E> helper, ObservableSetValue<E> observable, SetChangeListener<? super E> listener) {
         if ((observable == null) || (listener == null)) {
             throw new NullPointerException();
         }
-        return (helper == null)? new SingleSetChange<>(observable, listener) : helper.addListener(listener);
+        return (helper == null) ? new SetExpressionHelper<>(observable, listener) : helper.addListener(listener);
     }
 
     public static <E> SetExpressionHelper<E> removeListener(SetExpressionHelper<E> helper, SetChangeListener<? super E> listener) {
         if (listener == null) {
             throw new NullPointerException();
         }
-        return (helper == null)? null : helper.removeListener(listener);
+        return (helper == null) ? null : helper.removeListener(listener);
     }
 
     public static <E> void fireValueChangedEvent(SetExpressionHelper<E> helper) {
@@ -79,369 +79,236 @@ public abstract class SetExpressionHelper<E> extends ExpressionHelperBase {
         this.observable = observable;
     }
 
-    protected abstract SetExpressionHelper<E> addListener(ChangeListener<? super ObservableSet<E>> listener);
-    protected abstract SetExpressionHelper<E> removeListener(ChangeListener<? super ObservableSet<E>> listener);
+    private ChangeListener<? super ObservableSet<E>>[] changeListeners;
+    private SetChangeListener<? super E>[] setChangeListeners;
+    private int changeSize;
+    private int setChangeSize;
+    private boolean locked;
+    private ObservableSet<E> currentValue;
 
-    protected abstract SetExpressionHelper<E> addListener(SetChangeListener<? super E> listener);
-    protected abstract SetExpressionHelper<E> removeListener(SetChangeListener<? super E> listener);
-
-    protected abstract void fireValueChangedEvent();
-    protected abstract void fireValueChangedEvent(SetChangeListener.Change<? extends E> change);
-
-    private static class SingleChange<E> extends SetExpressionHelper<E> {
-
-        private final ChangeListener<? super ObservableSet<E>> listener;
-        private ObservableSet<E> currentValue;
-
-        private SingleChange(ObservableSetValue<E> observable, ChangeListener<? super ObservableSet<E>> listener) {
-            super(observable);
-            this.listener = listener;
-            this.currentValue = observable.getValue();
-        }
-        
-        @Override
-        protected SetExpressionHelper<E> addListener(ChangeListener<? super ObservableSet<E>> listener) {
-            return new Generic<>(observable, this.listener, listener);
-        }
-
-        @Override
-        protected SetExpressionHelper<E> removeListener(ChangeListener<? super ObservableSet<E>> listener) {
-            return (listener.equals(this.listener))? null : this;
-        }
-
-        @Override
-        protected SetExpressionHelper<E> addListener(SetChangeListener<? super E> listener) {
-            return new Generic<>(observable, this.listener, listener);
-        }
-
-        @Override
-        protected SetExpressionHelper<E> removeListener(SetChangeListener<? super E> listener) {
-            return this;
-        }
-
-        @Override
-        protected void fireValueChangedEvent() {
-            final ObservableSet<E> oldValue = currentValue;
-            currentValue = observable.getValue();
-            if (currentValue != oldValue) {
-                listener.changed(observable, oldValue, currentValue);
-            }
-        }
-
-        @Override
-        protected void fireValueChangedEvent(SetChangeListener.Change<? extends E> change) {
-            listener.changed(observable, currentValue, currentValue);
-        }
+    private SetExpressionHelper(ObservableSetValue<E> observable, ChangeListener<? super ObservableSet<E>> listener0, ChangeListener<? super ObservableSet<E>> listener1) {
+        this(observable);
+        this.changeListeners = new ChangeListener[]{listener0, listener1};
+        this.changeSize = 2;
+        this.currentValue = observable.getValue();
     }
 
-    private static class SingleSetChange<E> extends SetExpressionHelper<E> {
-
-        private final SetChangeListener<? super E> listener;
-        private ObservableSet<E> currentValue;
-
-        private SingleSetChange(ObservableSetValue<E> observable, SetChangeListener<? super E> listener) {
-            super(observable);
-            this.listener = listener;
-            this.currentValue = observable.getValue();
-        }
-
-        @Override
-        protected SetExpressionHelper<E> addListener(ChangeListener<? super ObservableSet<E>> listener) {
-            return new Generic<>(observable, listener, this.listener);
-        }
-
-        @Override
-        protected SetExpressionHelper<E> removeListener(ChangeListener<? super ObservableSet<E>> listener) {
-            return this;
-        }
-
-        @Override
-        protected SetExpressionHelper<E> addListener(SetChangeListener<? super E> listener) {
-            return new Generic<>(observable, this.listener, listener);
-        }
-
-        @Override
-        protected SetExpressionHelper<E> removeListener(SetChangeListener<? super E> listener) {
-            return (listener.equals(this.listener))? null : this;
-        }
-
-        @Override
-        protected void fireValueChangedEvent() {
-            final ObservableSet<E> oldValue = currentValue;
-            currentValue = observable.getValue();
-            if (currentValue != oldValue) {
-                final SimpleChange<E> change = new SimpleChange<>(observable);
-                if (currentValue == null) {
-                    for (final E element : oldValue) {
-                        listener.onChanged(change.setRemoved(element));
-                    }
-                } else if (oldValue == null) {
-                    for (final E element : currentValue) {
-                        listener.onChanged(change.setAdded(element));
-                    }
-                } else {
-                    for (final E element : oldValue) {
-                        if (!currentValue.contains(element)) {
-                            listener.onChanged(change.setRemoved(element));
-                        }
-                    }
-                    for (final E element : currentValue) {
-                        if (!oldValue.contains(element)) {
-                            listener.onChanged(change.setAdded(element));
-                        }
-                    }
-                }
-            }
-        }
-
-        @Override
-        protected void fireValueChangedEvent(final SetChangeListener.Change<? extends E> change) {
-            listener.onChanged(new SimpleChange<>(observable, change));
-        }
+    private SetExpressionHelper(ObservableSetValue<E> observable, SetChangeListener<? super E> listener0, SetChangeListener<? super E> listener1) {
+        this(observable);
+        this.setChangeListeners = new SetChangeListener[]{listener0, listener1};
+        this.setChangeSize = 2;
+        this.currentValue = observable.getValue();
     }
 
-    private static class Generic<E> extends SetExpressionHelper<E> {
+    private SetExpressionHelper(ObservableSetValue<E> observable, ChangeListener<? super ObservableSet<E>> changeListener) {
+        this(observable);
+        this.changeListeners = new ChangeListener[]{changeListener};
+        this.changeSize = 1;
+        this.currentValue = observable.getValue();
+    }
 
-        private ChangeListener<? super ObservableSet<E>>[] changeListeners;
-        private SetChangeListener<? super E>[] setChangeListeners;
-        private int changeSize;
-        private int setChangeSize;
-        private boolean locked;
-        private ObservableSet<E> currentValue;
+    private SetExpressionHelper(ObservableSetValue<E> observable, SetChangeListener<? super E> listChangeListener) {
+        this(observable);
+        this.setChangeListeners = new SetChangeListener[]{listChangeListener};
+        this.setChangeSize = 1;
+        this.currentValue = observable.getValue();
+    }
 
-        private Generic(ObservableSetValue<E> observable, ChangeListener<? super ObservableSet<E>> listener0, ChangeListener<? super ObservableSet<E>> listener1) {
-            super(observable);
-            this.changeListeners = new ChangeListener[] {listener0, listener1};
-            this.changeSize = 2;
-            this.currentValue = observable.getValue();
-        }
+    private SetExpressionHelper(ObservableSetValue<E> observable, ChangeListener<? super ObservableSet<E>> changeListener, SetChangeListener<? super E> listChangeListener) {
+        this(observable);
+        this.changeListeners = new ChangeListener[]{changeListener};
+        this.changeSize = 1;
+        this.setChangeListeners = new SetChangeListener[]{listChangeListener};
+        this.setChangeSize = 1;
+        this.currentValue = observable.getValue();
+    }
 
-        private Generic(ObservableSetValue<E> observable, SetChangeListener<? super E> listener0, SetChangeListener<? super E> listener1) {
-            super(observable);
-            this.setChangeListeners = new SetChangeListener[] {listener0, listener1};
-            this.setChangeSize = 2;
-            this.currentValue = observable.getValue();
-        }
-
-        private Generic(ObservableSetValue<E> observable, ChangeListener<? super ObservableSet<E>> changeListener) {
-            super(observable);
-            this.changeListeners = new ChangeListener[] {changeListener};
-            this.changeSize = 1;
-            this.currentValue = observable.getValue();
-        }
-
-        private Generic(ObservableSetValue<E> observable, SetChangeListener<? super E> listChangeListener) {
-            super(observable);
-            this.setChangeListeners = new SetChangeListener[] {listChangeListener};
-            this.setChangeSize = 1;
-            this.currentValue = observable.getValue();
-        }
-
-        private Generic(ObservableSetValue<E> observable, ChangeListener<? super ObservableSet<E>> changeListener, SetChangeListener<? super E> listChangeListener) {
-            super(observable);
-            this.changeListeners = new ChangeListener[] {changeListener};
-            this.changeSize = 1;
-            this.setChangeListeners = new SetChangeListener[] {listChangeListener};
-            this.setChangeSize = 1;
-            this.currentValue = observable.getValue();
-        }
-
-        @Override
-        protected SetExpressionHelper<E> addListener(ChangeListener<? super ObservableSet<E>> listener) {
-            if (changeListeners == null) {
-                changeListeners = new ChangeListener[] {listener};
-                changeSize = 1;
-            } else {
-                final int oldCapacity = changeListeners.length;
-                if (locked) {
-                    final int newCapacity = (changeSize < oldCapacity)? oldCapacity : (oldCapacity * 3)/2 + 1;
+    protected SetExpressionHelper<E> addListener(ChangeListener<? super ObservableSet<E>> listener) {
+        if (changeListeners == null) {
+            changeListeners = new ChangeListener[]{listener};
+            changeSize = 1;
+        } else {
+            final int oldCapacity = changeListeners.length;
+            if (locked) {
+                final int newCapacity = (changeSize < oldCapacity) ? oldCapacity : (oldCapacity * 3) / 2 + 1;
+                changeListeners = Arrays.copyOf(changeListeners, newCapacity);
+            } else if (changeSize == oldCapacity) {
+                if (changeSize == oldCapacity) {
+                    final int newCapacity = (oldCapacity * 3) / 2 + 1;
                     changeListeners = Arrays.copyOf(changeListeners, newCapacity);
-                } else if (changeSize == oldCapacity) {
-                    changeSize = trim(changeSize, changeListeners);
-                    if (changeSize == oldCapacity) {
-                        final int newCapacity = (oldCapacity * 3)/2 + 1;
-                        changeListeners = Arrays.copyOf(changeListeners, newCapacity);
-                    }
                 }
-                changeListeners[changeSize++] = listener;
             }
-            if (changeSize == 1) {
-                currentValue = observable.getValue();
-            }
-            return this;
+            changeListeners[changeSize++] = listener;
         }
+        if (changeSize == 1) {
+            currentValue = observable.getValue();
+        }
+        return this;
+    }
 
-        @Override
-        protected SetExpressionHelper<E> removeListener(ChangeListener<? super ObservableSet<E>> listener) {
-            if (changeListeners != null) {
-                for (int index = 0; index < changeSize; index++) {
-                    if (listener.equals(changeListeners[index])) {
-                        if (changeSize == 1) {
-                           if ((setChangeSize == 1)) {
-                                return new SingleSetChange<>(observable, setChangeListeners[0]);
-                            }
-                            changeListeners = null;
-                            changeSize = 0;
-                        } else if ((changeSize == 2) && (setChangeSize == 0)) {
-                            return new SingleChange<>(observable, changeListeners[1-index]);
-                        } else {
-                            final int numMoved = changeSize - index - 1;
-                            final ChangeListener<? super ObservableSet<E>>[] oldListeners = changeListeners;
-                            if (locked) {
-                                changeListeners = new ChangeListener[changeListeners.length];
-                                System.arraycopy(oldListeners, 0, changeListeners, 0, index+1);
-                            }
-                            if (numMoved > 0) {
-                                System.arraycopy(oldListeners, index+1, changeListeners, index, numMoved);
-                            }
-                            changeSize--;
-                            if (!locked) {
-                                changeListeners[changeSize] = null; // Let gc do its work
-                            }
+    protected SetExpressionHelper<E> removeListener(ChangeListener<? super ObservableSet<E>> listener) {
+        if (changeListeners != null) {
+            for (int index = 0; index < changeSize; index++) {
+                if (listener.equals(changeListeners[index])) {
+                    if (changeSize == 1) {
+                        if ((setChangeSize == 1)) {
+                            return new SetExpressionHelper<>(observable, setChangeListeners[0]);
                         }
-                        break;
+                        changeListeners = null;
+                        changeSize = 0;
+                    } else if ((changeSize == 2) && (setChangeSize == 0)) {
+                        return new SetExpressionHelper<>(observable, changeListeners[1 - index]);
+                    } else {
+                        final int numMoved = changeSize - index - 1;
+                        final ChangeListener<? super ObservableSet<E>>[] oldListeners = changeListeners;
+                        if (locked) {
+                            changeListeners = new ChangeListener[changeListeners.length];
+                            System.arraycopy(oldListeners, 0, changeListeners, 0, index + 1);
+                        }
+                        if (numMoved > 0) {
+                            System.arraycopy(oldListeners, index + 1, changeListeners, index, numMoved);
+                        }
+                        changeSize--;
+                        if (!locked) {
+                            changeListeners[changeSize] = null; // Let gc do its work
+                        }
                     }
+                    break;
                 }
             }
-            return this;
         }
+        return this;
+    }
 
-        @Override
-        protected SetExpressionHelper<E> addListener(SetChangeListener<? super E> listener) {
-            if (setChangeListeners == null) {
-                setChangeListeners = new SetChangeListener[] {listener};
-                setChangeSize = 1;
-            } else {
-                final int oldCapacity = setChangeListeners.length;
-                if (locked) {
-                    final int newCapacity = (setChangeSize < oldCapacity)? oldCapacity : (oldCapacity * 3)/2 + 1;
+    protected SetExpressionHelper<E> addListener(SetChangeListener<? super E> listener) {
+        if (setChangeListeners == null) {
+            setChangeListeners = new SetChangeListener[]{listener};
+            setChangeSize = 1;
+        } else {
+            final int oldCapacity = setChangeListeners.length;
+            if (locked) {
+                final int newCapacity = (setChangeSize < oldCapacity) ? oldCapacity : (oldCapacity * 3) / 2 + 1;
+                setChangeListeners = Arrays.copyOf(setChangeListeners, newCapacity);
+            } else if (setChangeSize == oldCapacity) {
+                if (setChangeSize == oldCapacity) {
+                    final int newCapacity = (oldCapacity * 3) / 2 + 1;
                     setChangeListeners = Arrays.copyOf(setChangeListeners, newCapacity);
-                } else if (setChangeSize == oldCapacity) {
-                    setChangeSize = trim(setChangeSize, setChangeListeners);
-                    if (setChangeSize == oldCapacity) {
-                        final int newCapacity = (oldCapacity * 3)/2 + 1;
-                        setChangeListeners = Arrays.copyOf(setChangeListeners, newCapacity);
-                    }
                 }
-                setChangeListeners[setChangeSize++] = listener;
             }
-            if (setChangeSize == 1) {
-                currentValue = observable.getValue();
-            }
-            return this;
+            setChangeListeners[setChangeSize++] = listener;
         }
+        if (setChangeSize == 1) {
+            currentValue = observable.getValue();
+        }
+        return this;
+    }
 
-        @Override
-        protected SetExpressionHelper<E> removeListener(SetChangeListener<? super E> listener) {
-            if (setChangeListeners != null) {
-                for (int index = 0; index < setChangeSize; index++) {
-                    if (listener.equals(setChangeListeners[index])) {
-                        if (setChangeSize == 1) {
-                            if ((changeSize == 1)) {
-                                return new SingleChange<>(observable, changeListeners[0]);
-                            }
-                            setChangeListeners = null;
-                            setChangeSize = 0;
-                        } else if ((setChangeSize == 2) && (changeSize == 0)) {
-                            return new SingleSetChange<>(observable, setChangeListeners[1-index]);
-                        } else {
-                            final int numMoved = setChangeSize - index - 1;
-                            final SetChangeListener<? super E>[] oldListeners = setChangeListeners;
-                            if (locked) {
-                                setChangeListeners = new SetChangeListener[setChangeListeners.length];
-                                System.arraycopy(oldListeners, 0, setChangeListeners, 0, index+1);
-                            }
-                            if (numMoved > 0) {
-                                System.arraycopy(oldListeners, index+1, setChangeListeners, index, numMoved);
-                            }
-                            setChangeSize--;
-                            if (!locked) {
-                                setChangeListeners[setChangeSize] = null; // Let gc do its work
-                            }
+    protected SetExpressionHelper<E> removeListener(SetChangeListener<? super E> listener) {
+        if (setChangeListeners != null) {
+            for (int index = 0; index < setChangeSize; index++) {
+                if (listener.equals(setChangeListeners[index])) {
+                    if (setChangeSize == 1) {
+                        if ((changeSize == 1)) {
+                            return new SetExpressionHelper<>(observable, changeListeners[0]);
                         }
-                        break;
+                        setChangeListeners = null;
+                        setChangeSize = 0;
+                    } else if ((setChangeSize == 2) && (changeSize == 0)) {
+                        return new SetExpressionHelper<>(observable, setChangeListeners[1 - index]);
+                    } else {
+                        final int numMoved = setChangeSize - index - 1;
+                        final SetChangeListener<? super E>[] oldListeners = setChangeListeners;
+                        if (locked) {
+                            setChangeListeners = new SetChangeListener[setChangeListeners.length];
+                            System.arraycopy(oldListeners, 0, setChangeListeners, 0, index + 1);
+                        }
+                        if (numMoved > 0) {
+                            System.arraycopy(oldListeners, index + 1, setChangeListeners, index, numMoved);
+                        }
+                        setChangeSize--;
+                        if (!locked) {
+                            setChangeListeners[setChangeSize] = null; // Let gc do its work
+                        }
                     }
+                    break;
                 }
             }
-            return this;
         }
+        return this;
+    }
 
-        @Override
-        protected void fireValueChangedEvent() {
-            if ((changeSize == 0) && (setChangeSize == 0)) {
-                notifyListeners(currentValue, null);
-            } else {
-                final ObservableSet<E> oldValue = currentValue;
-                currentValue = observable.getValue();
-                notifyListeners(oldValue, null);
-            }
+    protected void fireValueChangedEvent() {
+        if ((changeSize == 0) && (setChangeSize == 0)) {
+            notifyListeners(currentValue, null);
+        } else {
+            final ObservableSet<E> oldValue = currentValue;
+            currentValue = observable.getValue();
+            notifyListeners(oldValue, null);
         }
+    }
 
-        @Override
-        protected void fireValueChangedEvent(final SetChangeListener.Change<? extends E> change) {
-            final SimpleChange<E> mappedChange = (setChangeSize == 0)? null : new SimpleChange<>(observable, change);
-            notifyListeners(currentValue, mappedChange);
-        }
+    protected void fireValueChangedEvent(final SetChangeListener.Change<? extends E> change) {
+        final SimpleChange<E> mappedChange = (setChangeSize == 0) ? null : new SimpleChange<>(observable, change);
+        notifyListeners(currentValue, mappedChange);
+    }
 
-        private void notifyListeners(ObservableSet<E> oldValue, SimpleChange<E> change) {
-            final ChangeListener<? super ObservableSet<E>>[] curChangeList = changeListeners;
-            final int curChangeSize = changeSize;
-            final SetChangeListener<? super E>[] curListChangeList = setChangeListeners;
-            final int curListChangeSize = setChangeSize;
-            try {
-                locked = true;
-                if ((currentValue != oldValue) || (change != null)) {
-                    for (int i = 0; i < curChangeSize; i++) {
-                        curChangeList[i].changed(observable, oldValue, currentValue);
-                    }
-                    if (curListChangeSize > 0) {
-                        if (change != null) {
-                            for (int i = 0; i < curListChangeSize; i++) {
-                                curListChangeList[i].onChanged(change);
+    private void notifyListeners(ObservableSet<E> oldValue, SimpleChange<E> change) {
+        final ChangeListener<? super ObservableSet<E>>[] curChangeList = changeListeners;
+        final int curChangeSize = changeSize;
+        final SetChangeListener<? super E>[] curListChangeList = setChangeListeners;
+        final int curListChangeSize = setChangeSize;
+        try {
+            locked = true;
+            if ((currentValue != oldValue) || (change != null)) {
+                for (int i = 0; i < curChangeSize; i++) {
+                    curChangeList[i].changed(observable, oldValue, currentValue);
+                }
+                if (curListChangeSize > 0) {
+                    if (change != null) {
+                        for (int i = 0; i < curListChangeSize; i++) {
+                            curListChangeList[i].onChanged(change);
+                        }
+                    } else {
+                        change = new SimpleChange<>(observable);
+                        if (currentValue == null) {
+                            for (final E element : oldValue) {
+                                change.setRemoved(element);
+                                for (int i = 0; i < curListChangeSize; i++) {
+                                    curListChangeList[i].onChanged(change);
+                                }
+                            }
+                        } else if (oldValue == null) {
+                            for (final E element : currentValue) {
+                                change.setAdded(element);
+                                for (int i = 0; i < curListChangeSize; i++) {
+                                    curListChangeList[i].onChanged(change);
+                                }
                             }
                         } else {
-                            change = new SimpleChange<>(observable);
-                            if (currentValue == null) {
-                                for (final E element : oldValue) {
+                            for (final E element : oldValue) {
+                                if (!currentValue.contains(element)) {
                                     change.setRemoved(element);
                                     for (int i = 0; i < curListChangeSize; i++) {
                                         curListChangeList[i].onChanged(change);
                                     }
                                 }
-                            } else if (oldValue == null) {
-                                for (final E element : currentValue) {
+                            }
+                            for (final E element : currentValue) {
+                                if (!oldValue.contains(element)) {
                                     change.setAdded(element);
                                     for (int i = 0; i < curListChangeSize; i++) {
                                         curListChangeList[i].onChanged(change);
                                     }
                                 }
-                            } else {
-                                for (final E element : oldValue) {
-                                    if (!currentValue.contains(element)) {
-                                        change.setRemoved(element);
-                                        for (int i = 0; i < curListChangeSize; i++) {
-                                            curListChangeList[i].onChanged(change);
-                                        }
-                                    }
-                                }
-                                for (final E element : currentValue) {
-                                    if (!oldValue.contains(element)) {
-                                        change.setAdded(element);
-                                        for (int i = 0; i < curListChangeSize; i++) {
-                                            curListChangeList[i].onChanged(change);
-                                        }
-                                    }
-                                }
                             }
-
                         }
+
                     }
                 }
-            } finally {
-                locked = false;
             }
+        } finally {
+            locked = false;
         }
-
     }
 
     public static class SimpleChange<E> extends SetChangeListener.Change<E> {

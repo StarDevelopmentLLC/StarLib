@@ -25,11 +25,9 @@
 
 package com.stardevllc.starlib.observable.collections.map;
 
-import com.stardevllc.starlib.observable.expression.ExpressionHelperBase;
-
 import java.util.Arrays;
 
-public abstract class MapListenerHelper<K, V> extends ExpressionHelperBase {
+public abstract class MapListenerHelper<K, V> {
 
     public static <K, V> MapListenerHelper<K, V> addListener(MapListenerHelper<K, V> helper, MapChangeListener<? super K, ? super V> listener) {
         if (listener == null) {
@@ -115,7 +113,6 @@ public abstract class MapListenerHelper<K, V> extends ExpressionHelperBase {
                     final int newCapacity = (changeSize < oldCapacity)? oldCapacity : (oldCapacity * 3)/2 + 1;
                     changeListeners = Arrays.copyOf(changeListeners, newCapacity);
                 } else if (changeSize == oldCapacity) {
-                    changeSize = trim(changeSize, changeListeners);
                     if (changeSize == oldCapacity) {
                         final int newCapacity = (oldCapacity * 3)/2 + 1;
                         changeListeners = Arrays.copyOf(changeListeners, newCapacity);

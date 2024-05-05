@@ -26,5 +26,12 @@
 package com.stardevllc.starlib.observable;
 
 public interface Observable {
+    @Override
+    boolean equals(Object other);
     
+    @Override
+    int hashCode();
+    
+    @Override
+    String toString();
 }

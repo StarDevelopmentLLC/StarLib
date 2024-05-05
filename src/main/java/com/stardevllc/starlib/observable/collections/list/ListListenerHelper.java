@@ -25,11 +25,9 @@
 
 package com.stardevllc.starlib.observable.collections.list;
 
-import com.stardevllc.starlib.observable.expression.ExpressionHelperBase;
-
 import java.util.Arrays;
 
-public abstract class ListListenerHelper<E> extends ExpressionHelperBase {
+public abstract class ListListenerHelper<E> {
     public static <E> ListListenerHelper<E> addListener(ListListenerHelper<E> helper, ListChangeListener<? super E> listener) {
         if (listener == null) {
             throw new NullPointerException();
@@ -115,7 +113,6 @@ public abstract class ListListenerHelper<E> extends ExpressionHelperBase {
                     final int newCapacity = (changeSize < oldCapacity)? oldCapacity : (oldCapacity * 3)/2 + 1;
                     changeListeners = Arrays.copyOf(changeListeners, newCapacity);
                 } else if (changeSize == oldCapacity) {
-                    changeSize = trim(changeSize, changeListeners);
                     if (changeSize == oldCapacity) {
                         final int newCapacity = (oldCapacity * 3)/2 + 1;
                         changeListeners = Arrays.copyOf(changeListeners, newCapacity);

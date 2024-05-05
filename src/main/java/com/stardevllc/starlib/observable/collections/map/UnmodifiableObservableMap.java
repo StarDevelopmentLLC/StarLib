@@ -47,7 +47,7 @@ public class UnmodifiableObservableMap<K, V> extends AbstractMap<K, V> implement
     }
     
     public UnmodifiableObservableMap() {
-        this(new ObservableMapWrapper<>());
+        this(new ObservableHashMap<>());
     }
 
     private void callObservers(Change<? extends K, ? extends V> c) {

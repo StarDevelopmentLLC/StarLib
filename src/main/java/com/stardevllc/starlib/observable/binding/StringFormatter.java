@@ -26,13 +26,18 @@
 package com.stardevllc.starlib.observable.binding;
 
 import com.stardevllc.starlib.observable.constants.StringConstant;
-import com.stardevllc.starlib.observable.expression.StringExpression;
+import com.stardevllc.starlib.observable.property.readonly.ReadOnlyStringProperty;
+import com.stardevllc.starlib.observable.value.ObservableStringValue;
 import com.stardevllc.starlib.observable.value.ObservableValue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class StringFormatter extends StringBinding {
+public abstract class StringFormatter extends ReadOnlyStringProperty {
+
+    public StringFormatter() {
+        super(null);
+    }
 
     private static Object extractValue(Object obj) {
         return obj instanceof ObservableValue ? ((ObservableValue<?>)obj).getValue() : obj;
@@ -57,21 +62,18 @@ public abstract class StringFormatter extends StringBinding {
         return dependencies.toArray(new ObservableValue[0]);
     }
 
-    public static StringExpression convert(final ObservableValue<?> observableValue) {
+    public static ObservableStringValue convert(final ObservableValue<?> observableValue) {
         if (observableValue == null) {
             throw new NullPointerException("ObservableValue must be specified");
         }
-        if (observableValue instanceof StringExpression) {
-            return (StringExpression) observableValue;
+        if (observableValue instanceof ObservableStringValue) {
+            return (ObservableStringValue) observableValue;
         } else {
-            return new StringBinding(() -> {
-                Object value = observableValue.getValue();
-                return (value == null) ? "null" : value.toString();
-            });
+            return new ReadOnlyStringProperty((observableValue.getValue() == null) ? "null" : observableValue.getValue().toString());
         }
     }
 
-    public static StringExpression concat(final Object... args) {
+    public static ObservableStringValue concat(final Object... args) {
         if ((args == null) || (args.length == 0)) {
             return StringConstant.valueOf("");
         }
@@ -86,25 +88,24 @@ public abstract class StringFormatter extends StringBinding {
             }
             return StringConstant.valueOf(builder.toString());
         }
+
+        StringBuilder builder = new StringBuilder();
+        for (Object arg : args) {
+            builder.append(extractValue(arg));
+        }
         
-        return new StringBinding(() -> {
-            StringBuilder builder = new StringBuilder();
-            for (Object arg : args) {
-                builder.append(extractValue(arg));
-            }
-            return builder.toString();
-        }, extractDependencies(args));
+        return new ReadOnlyStringProperty(builder.toString());
     }
 
-    public static StringExpression format(final String format, final Object... args) {
+    public static ObservableStringValue format(final String format, final Object... args) {
         if (format == null) {
             throw new NullPointerException("Format cannot be null.");
         }
         if (extractDependencies(args).length == 0) {
             return StringConstant.valueOf(String.format(format, args));
         }
-        
-        StringBinding stringBinding = new StringBinding(() -> String.format(format, extractValues(args)), extractDependencies(args));
+
+        ReadOnlyStringProperty stringBinding = new ReadOnlyStringProperty(String.format(format, extractValues(args)));
         stringBinding.get();
         return stringBinding;
     }

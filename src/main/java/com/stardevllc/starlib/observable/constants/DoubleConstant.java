@@ -25,10 +25,9 @@
 
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.observable.value.ChangeListener;
-import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
+import com.stardevllc.starlib.observable.value.*;
 
-public final class DoubleConstant implements ObservableDoubleValue {
+public final class DoubleConstant extends NumberConstant implements ObservableDoubleValue {
 
     private final double value;
 
@@ -48,16 +47,6 @@ public final class DoubleConstant implements ObservableDoubleValue {
     @Override
     public Double getValue() {
         return value;
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super Number> listener) {
-        // no-op
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Number> listener) {
-        // no-op
     }
 
     @Override
