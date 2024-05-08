@@ -116,15 +116,6 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         lock.unlock();
         return removed;
     }
-    
-    public V unregister(V object) {
-        if (keyRetriever == null) {
-            return null;
-        }
-        
-        K key = keyRetriever.apply(object);
-        return unregister(key);
-    }
 
     @Override
     public Iterator<V> iterator() {
