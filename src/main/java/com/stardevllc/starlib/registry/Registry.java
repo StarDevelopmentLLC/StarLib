@@ -16,7 +16,7 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
     protected final KeyNormalizer<K> keyNormalizer;
     protected final KeyRetriever<V, K> keyRetriever;
     
-    protected Lock lock = new ReentrantLock();
+    protected final Lock lock = new ReentrantLock();
 
     public Registry(Map<K, V> initialObjects, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever) {
         if (initialObjects != null && !initialObjects.isEmpty()) {
