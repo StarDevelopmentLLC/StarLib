@@ -1,5 +1,6 @@
 package com.stardevllc.starlib.registry;
 
+import com.stardevllc.starlib.registry.functions.KeyGenerator;
 import com.stardevllc.starlib.registry.functions.KeyNormalizer;
 import com.stardevllc.starlib.registry.functions.KeyRetriever;
 
@@ -15,51 +16,34 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
     protected final TreeMap<K, V> objects = new TreeMap<>();
     protected final KeyNormalizer<K> keyNormalizer;
     protected final KeyRetriever<V, K> keyRetriever;
+    protected final KeyGenerator<V, K> keyGenerator;
     
     protected final Lock lock = new ReentrantLock();
 
-    public Registry(Map<K, V> initialObjects, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever) {
+    public Registry(Map<K, V> initialObjects, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever, KeyGenerator<V, K> keyGenerator) {
         if (initialObjects != null && !initialObjects.isEmpty()) {
             objects.putAll(initialObjects);
         }
         this.keyNormalizer = keyNormalizer;
         this.keyRetriever = keyRetriever;
+        this.keyGenerator = keyGenerator;
     }
 
     public Registry() {
-        this(null, null, null);
-    }
-
-    public Registry(Map<K, V> initialObjects) {
-        this(initialObjects, null, null);
-    }
-    
-    public Registry(Map<K, V> initialObjects, KeyNormalizer<K> normalizer) {
-        this(initialObjects, normalizer, null);
-    }
-
-    public Registry(Map<K, V> initialObjects, KeyRetriever<V, K> keyRetriever) {
-        this(initialObjects, null, keyRetriever);
-    }
-
-    public Registry(KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever) {
-        this(null, keyNormalizer, keyRetriever);
-    }
-
-    public Registry(KeyNormalizer<K> keyNormalizer) {
-        this(null, keyNormalizer, null);
-    }
-
-    public Registry(KeyRetriever<V, K> keyRetriever) {
-        this(null, null, keyRetriever);
+        this(null, null, null, null);
     }
 
     public V register(V object) {
-        if (keyRetriever == null) {
+        K key;
+        
+        if (keyRetriever != null) {
+            key = keyRetriever.apply(object);
+        } else if (keyGenerator != null) {
+            key = keyGenerator.apply(object);
+        } else {
             return null;
         }
-
-        K key = keyRetriever.apply(object);
+        
         return register(key, object);
     }
     
@@ -184,17 +168,17 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
 
     @Override
     public SortedMap<K, V> subMap(K k, K k1) {
-        return new Registry<>(this.objects.subMap(k, k1), this.keyNormalizer, this.keyRetriever);
+        return new Registry<>(this.objects.subMap(k, k1), this.keyNormalizer, this.keyRetriever, this.keyGenerator);
     }
 
     @Override
     public SortedMap<K, V> headMap(K k) {
-        return new Registry<>(this.objects.headMap(k), this.keyNormalizer, this.keyRetriever);
+        return new Registry<>(this.objects.headMap(k), this.keyNormalizer, this.keyRetriever, this.keyGenerator);
     }
 
     @Override
     public SortedMap<K, V> tailMap(K k) {
-        return new Registry<>(this.objects.tailMap(k), this.keyNormalizer, this.keyRetriever);
+        return new Registry<>(this.objects.tailMap(k), this.keyNormalizer, this.keyRetriever, this.keyGenerator);
     }
 
     @Override
@@ -303,5 +287,38 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
             key = keyNormalizer.apply(key);
         }
         return this.objects.merge(key, value, remappingFunction);
+    }
+    
+    public static class Builder<K extends Comparable<K>, V> {
+        protected TreeMap<K, V> objects = new TreeMap<>();
+        protected KeyNormalizer<K> keyNormalizer;
+        protected KeyRetriever<V, K> keyRetriever;
+        protected KeyGenerator<V, K> keyGenerator;
+        
+        public Builder() {}
+
+        public Builder<K, V> initialObjects(TreeMap<K, V> objects) {
+            this.objects = objects;
+            return this;
+        }
+
+        public Builder<K, V> keyNormalizer(KeyNormalizer<K> keyNormalizer) {
+            this.keyNormalizer = keyNormalizer;
+            return this;
+        }
+
+        public Builder<K, V> keyRetriever(KeyRetriever<V, K> keyRetriever) {
+            this.keyRetriever = keyRetriever;
+            return this;
+        }
+
+        public Builder<K, V> keyGenerator(KeyGenerator<V, K> keyGenerator) {
+            this.keyGenerator = keyGenerator;
+            return this;
+        }
+        
+        public Registry<K, V> build() {
+            return new Registry<>(objects, keyNormalizer, keyRetriever, keyGenerator);
+        }
     }
 }
