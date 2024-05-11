@@ -2,6 +2,8 @@
 - Added a KeyGenerator Function
 - Removed the many constructors except for all args and no args
 - Added a Builder sub class to allow easier building of it
+- Fixed a bug where using a sub class and the same key type creates a method confict
+- Made the Lock field final
 
 1.0.0-alpha.16
 - Refactored the Observable System again to remove some of the abstract classes
