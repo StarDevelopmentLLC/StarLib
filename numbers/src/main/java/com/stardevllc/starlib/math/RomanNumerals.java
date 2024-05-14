@@ -1,35 +1,56 @@
 package com.stardevllc.starlib.math;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public class RomanNumerals {
 
-    private static final Map<String, Integer> values = new LinkedHashMap<>();
-
-    static {
-        values.put("M", 1000);
-        values.put("CM", 900);
-        values.put("D", 500);
-        values.put("CD", 400);
-        values.put("C", 100);
-        values.put("XC", 90);
-        values.put("L", 50);
-        values.put("XL", 40);
-        values.put("X", 10);
-        values.put("IX", 9);
-        values.put("V", 5);
-        values.put("IV", 4);
-        values.put("I", 1);
+    public static String decimalToRoman(int num) {
+        return "I".repeat(num)
+                .replace("IIIII", "V")
+                .replace("IIII", "IV")
+                .replace("VV", "X")
+                .replace("VIV", "IX")
+                .replace("XXXXX", "L")
+                .replace("XXXX", "XL")
+                .replace("LL", "C")
+                .replace("LXL", "XC")
+                .replace("CCCCC", "D")
+                .replace("CCCC", "CD")
+                .replace("DD", "M")
+                .replace("DCD", "CM");
     }
 
-    public static String romanNumerals(int number) {
-        StringBuilder res = new StringBuilder();
-        for (Map.Entry<String, Integer> entry : values.entrySet()) {
-            int matches = number / entry.getValue();
-            res.append(String.valueOf(entry.getKey()).repeat(Math.max(0, matches)));
-            number = number % entry.getValue();
+    public static int value(char r) {
+        return switch (r) {
+            case 'I' -> 1;
+            case 'V' -> 5;
+            case 'X' -> 10;
+            case 'L' -> 50;
+            case 'C' -> 100;
+            case 'D' -> 500;
+            case 'M' -> 1000;
+            default -> -1;
+        };
+    }
+
+    public static int romanToDecimal(String str) {
+        int result = 0;
+
+        for (int i = 0; i < str.length(); i++) {
+            int s1 = value(str.charAt(i));
+
+            if (i + 1 < str.length()) {
+                int s2 = value(str.charAt(i + 1));
+
+                if (s1 >= s2) {
+                    result += s1;
+                } else {
+                    result += s2 - s1;
+                    i++;
+                }
+            } else {
+                result = result + s1;
+            }
         }
-        return res.toString();
+
+        return result;
     }
 }
