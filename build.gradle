@@ -20,7 +20,8 @@ def exportedProjects= [
         ":reflection",
         ":misc",
         ":task",
-        ":http"
+        ":http", 
+        ":clock"
 ]
 
 tasks.register('alljavadoc', Javadoc) {

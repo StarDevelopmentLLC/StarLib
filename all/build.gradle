@@ -32,6 +32,7 @@ dependencies {
     api project(':misc')
     api project(':task')
     api project(':http')
+    api project(':clock')
 }
 
 tasks.jar.finalizedBy(shadowJar)
