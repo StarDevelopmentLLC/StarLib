@@ -27,7 +27,7 @@ dependencies {
     api project(':time')
     api project(':registry')
     api project(':range')
-    api project(':math')
+    api project(':numbers')
     api project(':reflection')
     api project(':misc')
     api project(':task')

@@ -10,7 +10,7 @@ repositories {
 }
 
 jar {
-    archiveBaseName.set(rootProject.name + '-math')
+    archiveBaseName.set(rootProject.name + '-numbers')
     destinationDirectory.set(file("$rootProject.projectDir/build/libs"))
 }
 
