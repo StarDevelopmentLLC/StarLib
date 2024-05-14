@@ -1,39 +1,9 @@
-package com.stardevllc.starlib.helper;
+package com.stardevllc.starlib.math;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
 
 public final class NumberHelper {
     private NumberHelper() {}
-
-    private static final Map<String, Integer> romanNumerals = new LinkedHashMap<>();
-
-    static {
-        romanNumerals.put("M", 1000);
-        romanNumerals.put("CM", 900);
-        romanNumerals.put("D", 500);
-        romanNumerals.put("CD", 400);
-        romanNumerals.put("C", 100);
-        romanNumerals.put("XC", 90);
-        romanNumerals.put("L", 50);
-        romanNumerals.put("XL", 40);
-        romanNumerals.put("X", 10);
-        romanNumerals.put("IX", 9);
-        romanNumerals.put("V", 5);
-        romanNumerals.put("IV", 4);
-        romanNumerals.put("I", 1);
-    }
-
-    public static String romanNumerals(int number) {
-        StringBuilder res = new StringBuilder();
-        for (Map.Entry<String, Integer> entry : romanNumerals.entrySet()) {
-            int matches = number / entry.getValue();
-            res.append(String.valueOf(entry.getKey()).repeat(Math.max(0, matches)));
-            number = number % entry.getValue();
-        }
-        return res.toString();
-    }
 
     public static int randomInRange(int min, int max) {
         return randomInRange(new Random(), min, max);
@@ -43,26 +13,6 @@ public final class NumberHelper {
         return random.nextInt(max - min) + min;
     }
 
-    public static double toKiloBytes(long bytes) {
-        return bytes / 1024.0;
-    }
-
-    public static double toMegabytes(long bytes) {
-        return toKiloBytes(bytes) / 1024;
-    }
-
-    public static double toGigabytes(long bytes) {
-        return toMegabytes(bytes) / 1024;
-    }
-
-    public static double toTerabytes(long bytes) {
-        return toGigabytes(bytes) / 1024;
-    }
-
-    public static double toPetabytes(long bytes) {
-        return toTerabytes(bytes) / 1024;
-    }
-    
     public static int toInt(Object object) {
         if (object instanceof Number) {
             return ((Number) object).intValue();
@@ -132,28 +82,6 @@ public final class NumberHelper {
             return Byte.parseByte(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
         }
-        return 0;
-    }
-    
-    public static Number negate(Number number) {
-        if (number == null) {
-            return 0;
-        }
-        
-        if (number instanceof Integer) {
-            return -number.intValue();
-        } else if (number instanceof Long) {
-            return -number.longValue();
-        } else if (number instanceof Double) {
-            return -number.doubleValue();
-        } else if (number instanceof Float) {
-            return -number.floatValue();
-        } else if (number instanceof Short) {
-            return -number.shortValue();
-        } else if (number instanceof Byte) {
-            return -number.byteValue();
-        }
-        
         return 0;
     }
 }

@@ -1,7 +1,6 @@
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.helper.NumberHelper;
-import com.stardevllc.starlib.math.MathOperator;
+import com.stardevllc.starlib.math.Operations;
 import com.stardevllc.starlib.observable.binding.StringFormatter;
 import com.stardevllc.starlib.observable.value.*;
 
@@ -47,27 +46,27 @@ public abstract class NumberConstant implements ObservableNumberValue {
 
     @Override
     public ObservableValue<Number> negate() {
-        return of(NumberHelper.negate(getValue()));
+        return of(Operations.negate(getValue()));
     }
 
     @Override
     public ObservableValue<Number> add(ObservableValue<Number> other) {
-        return of(MathOperator.ADD.calculate(getValue(), other.getValue()));
+        return of(Operations.add(getValue(), other.getValue()));
     }
 
     @Override
     public ObservableValue<Number> subtract(ObservableValue<Number> other) {
-        return of(MathOperator.SUBTRACT.calculate(getValue(), other.getValue()));
+        return of(Operations.subtract(getValue(), other.getValue()));
     }
 
     @Override
     public ObservableValue<Number> multiply(ObservableValue<Number> other) {
-        return of(MathOperator.MULTIPLY.calculate(getValue(), other.getValue()));
+        return of(Operations.multiply(getValue(), other.getValue()));
     }
 
     @Override
     public ObservableValue<Number> divide(ObservableValue<Number> other) {
-        return of(MathOperator.DIVIDE.calculate(getValue(), other.getValue()));
+        return of(Operations.divide(getValue(), other.getValue()));
     }
 
     @Override
