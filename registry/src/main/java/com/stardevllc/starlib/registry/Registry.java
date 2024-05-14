@@ -3,6 +3,7 @@ package com.stardevllc.starlib.registry;
 import com.stardevllc.starlib.registry.functions.KeyGenerator;
 import com.stardevllc.starlib.registry.functions.KeyNormalizer;
 import com.stardevllc.starlib.registry.functions.KeyRetriever;
+import com.stardevllc.starlib.registry.functions.KeySetter;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -17,37 +18,46 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
     protected final KeyNormalizer<K> keyNormalizer;
     protected final KeyRetriever<V, K> keyRetriever;
     protected final KeyGenerator<V, K> keyGenerator;
+    protected final KeySetter<K, V> keySetter;
     
     protected final Lock lock = new ReentrantLock();
 
-    public Registry(Map<K, V> initialObjects, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever, KeyGenerator<V, K> keyGenerator) {
+    public Registry(Map<K, V> initialObjects, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever, KeyGenerator<V, K> keyGenerator, KeySetter<K, V> keySetter) {
         if (initialObjects != null && !initialObjects.isEmpty()) {
             objects.putAll(initialObjects);
         }
         this.keyNormalizer = keyNormalizer;
         this.keyRetriever = keyRetriever;
         this.keyGenerator = keyGenerator;
+        this.keySetter = keySetter;
     }
 
     public Registry() {
-        this(null, null, null, null);
+        this(null, null, null, null, null);
     }
 
     public V register(V object) {
-        K key;
+        K key = null;
         
         if (keyRetriever != null) {
             key = keyRetriever.apply(object);
-        } else if (keyGenerator != null) {
-            key = keyGenerator.apply(object);
-        } else {
-            return null;
         }
         
         return register(key, object);
     }
     
     public V register(K key, V object) {
+        if (key == null) {
+            if (keyGenerator != null) {
+                key = keyGenerator.apply(object);
+                if (keySetter != null) {
+                    keySetter.accept(key, object);
+                }
+            } else {
+                return null;
+            } 
+        }
+        
         if (keyNormalizer != null) {
             key = keyNormalizer.apply(key);
         }
@@ -168,17 +178,17 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
 
     @Override
     public SortedMap<K, V> subMap(K k, K k1) {
-        return new Registry<>(this.objects.subMap(k, k1), this.keyNormalizer, this.keyRetriever, this.keyGenerator);
+        return new Registry<>(this.objects.subMap(k, k1), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
     }
 
     @Override
     public SortedMap<K, V> headMap(K k) {
-        return new Registry<>(this.objects.headMap(k), this.keyNormalizer, this.keyRetriever, this.keyGenerator);
+        return new Registry<>(this.objects.headMap(k), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
     }
 
     @Override
     public SortedMap<K, V> tailMap(K k) {
-        return new Registry<>(this.objects.tailMap(k), this.keyNormalizer, this.keyRetriever, this.keyGenerator);
+        return new Registry<>(this.objects.tailMap(k), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
     }
 
     @Override
@@ -294,6 +304,7 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         protected KeyNormalizer<K> keyNormalizer;
         protected KeyRetriever<V, K> keyRetriever;
         protected KeyGenerator<V, K> keyGenerator;
+        protected KeySetter<K, V> keySetter;
         
         public Builder() {}
 
@@ -317,8 +328,13 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
             return this;
         }
         
+        public Builder<K, V> keySetter(KeySetter<K, V> keySetter) {
+            this.keySetter = keySetter;
+            return this;
+        }
+        
         public Registry<K, V> build() {
-            return new Registry<>(objects, keyNormalizer, keyRetriever, keyGenerator);
+            return new Registry<>(objects, keyNormalizer, keyRetriever, keyGenerator, keySetter);
         }
     }
 }
