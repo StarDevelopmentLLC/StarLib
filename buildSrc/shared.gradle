@@ -20,6 +20,18 @@ tasks.named('test', Test) {
     }
 }
 
+tasks.register('deleteBuildDir') {
+    delete file("$rootProject.projectDir/build/libs")
+}
+
+tasks.register('createBuildDir') {
+    def directory = file("$rootProject.projectDir/build/libs")
+
+    doLast {
+        directory.mkdirs()
+    }
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -27,4 +39,6 @@ java {
 }
 
 tasks.compileJava.dependsOn(clean)
+tasks.clean.dependsOn(deleteBuildDir)
+tasks.clean.finalizedBy(createBuildDir)
 tasks.build.finalizedBy(publishToMavenLocal)
