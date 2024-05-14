@@ -32,7 +32,6 @@ public class DoubleStringConverter extends StringConverter<Double> {
 
     @Override
     public Double fromString(String value) {
-        // If the specified value is null or zero-length, return null
         if (value == null) {
             return null;
         }
@@ -48,7 +47,6 @@ public class DoubleStringConverter extends StringConverter<Double> {
 
     @Override
     public String toString(Double value) {
-        // If the specified value is null, return a zero-length String
         if (value == null) {
             return "";
         }
