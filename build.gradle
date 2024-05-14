@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+def exportedProjects= [
+        ":",
+        ":converter",
+        ":helper",
+        ":observable",
+        ":observable:base",
+        ":observable:collections",
+        ":observable:constants",
+        ":observable:property",
+        ":observable:value",
+        ":observable:writable",
+        ":time",
+        ":registry",
+        ":range",
+        ":numbers",
+        ":reflection",
+        ":misc",
+        ":task",
+        ":http"
+]
+
+tasks.register('alljavadoc', Javadoc) {
+    source exportedProjects.collect { project(it).sourceSets.main.allJava }
+    classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
+    destinationDir = file("${rootProject.projectDir}/build/docs/javadoc")
+}
