@@ -1,3 +1,10 @@
+com.stardevllc.starlib.clock
+com.stardevllc.starlib.clock.callback
+com.stardevllc.starlib.clock.clocks
+com.stardevllc.starlib.clock.condition
+com.stardevllc.starlib.clock.condition.defaults
+com.stardevllc.starlib.clock.property
+com.stardevllc.starlib.clock.snapshot
 com.stardevllc.starlib.converter
 com.stardevllc.starlib.helper
 com.stardevllc.starlib.http
