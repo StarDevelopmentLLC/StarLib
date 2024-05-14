@@ -3,14 +3,15 @@ package com.stardevllc.starlib.registry;
 import com.stardevllc.starlib.registry.functions.KeyGenerator;
 import com.stardevllc.starlib.registry.functions.KeyNormalizer;
 import com.stardevllc.starlib.registry.functions.KeyRetriever;
+import com.stardevllc.starlib.registry.functions.KeySetter;
 
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class IntegerRegistry<V> extends Registry<Integer, V> {
-    public IntegerRegistry(Map<Integer, V> initialObjects, KeyNormalizer<Integer> keyNormalizer, KeyRetriever<V, Integer> keyRetriever, KeyGenerator<V, Integer> keyGenerator) {
-        super(initialObjects, keyNormalizer, keyRetriever, keyGenerator);
+    public IntegerRegistry(Map<Integer, V> initialObjects, KeyNormalizer<Integer> keyNormalizer, KeyRetriever<V, Integer> keyRetriever, KeyGenerator<V, Integer> keyGenerator, KeySetter<Integer, V> keySetter) {
+        super(initialObjects, keyNormalizer, keyRetriever, keyGenerator, keySetter);
     }
 
     public IntegerRegistry() {
@@ -18,17 +19,17 @@ public class IntegerRegistry<V> extends Registry<Integer, V> {
 
     @Override
     public SortedMap<Integer, V> subMap(Integer integer, Integer k1) {
-        return new IntegerRegistry<>(this.objects.subMap(integer, k1), this.keyNormalizer, this.keyRetriever, this.keyGenerator);
+        return new IntegerRegistry<>(this.objects.subMap(integer, k1), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
     }
 
     @Override
     public SortedMap<Integer, V> headMap(Integer integer) {
-        return new IntegerRegistry<>(this.objects.headMap(integer), this.keyNormalizer, this.keyRetriever, this.keyGenerator);
+        return new IntegerRegistry<>(this.objects.headMap(integer), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
     }
 
     @Override
     public SortedMap<Integer, V> tailMap(Integer integer) {
-        return new IntegerRegistry<>(this.objects.tailMap(integer), this.keyNormalizer, this.keyRetriever, this.keyGenerator);
+        return new IntegerRegistry<>(this.objects.tailMap(integer), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
     }
     
     public static class Builder<V> extends Registry.Builder<Integer, V> {
@@ -53,8 +54,13 @@ public class IntegerRegistry<V> extends Registry<Integer, V> {
         }
 
         @Override
+        public Builder<V> keySetter(KeySetter<Integer, V> keySetter) {
+            return (Builder<V>) super.keySetter(keySetter);
+        }
+
+        @Override
         public IntegerRegistry<V> build() {
-            return new IntegerRegistry<>(this.objects, this.keyNormalizer, this.keyRetriever, this.keyGenerator);
+            return new IntegerRegistry<>(this.objects, this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
         }
     }
 }
