@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 apply from: rootProject.file('buildSrc/shared.gradle')
@@ -9,20 +10,36 @@ repositories {
     mavenCentral()
 }
 
-jar {
-    archiveBaseName.set(rootProject.name + '-observable')
-    destinationDirectory.set(file("$rootProject.projectDir/build/libs"))
-}
-
 publishing {
     publications {
-        maven(MavenPublication) {
-            from components.java
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
         }
+    }
+}
+
+shadowJar {
+    archiveClassifier.set("")
+    archiveBaseName.set(rootProject.name + '-observable-all')
+    destinationDirectory.set(file("$rootProject.projectDir/build/libs"))
+    dependencies {
+        exclude(dependency(':helper'))
+        exclude(dependency(':numbers'))
+        exclude(dependency(':converter'))
     }
 }
 
 dependencies {
     api project(':helper')
     api project(':numbers')
+    api project(':converter')
+    api project(':observable:base')
+    api project(':observable:value')
+    api project(':observable:constants')
+    api project(':observable:writable')
+    api project(':observable:property')
+    api project(':observable:collections')
 }
+
+tasks.jar.finalizedBy(shadowJar)
+tasks.publishToMavenLocal.dependsOn(shadowJar)

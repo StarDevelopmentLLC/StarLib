@@ -6,7 +6,7 @@
 - Made the Lock field final
 
 1.0.0-alpha.16
-- Refactored the Observable System again to remove some of the abstract classes
+- Refactored the com.stardevllc.starlib.observable.Observable System again to remove some of the abstract classes
 - Renamed the Operator enum to MathOperator
 
 1.0.0-alpha.15
@@ -17,7 +17,7 @@
 - Change "deregister" method
 - Make the Registry Class implement SortedMap
 - Add a RangeSet class
-- Remove the Invalidation and Weak stuff from the Observable Package
+- Remove the Invalidation and Weak stuff from the com.stardevllc.starlib.observable.Observable Package
 
 1.0.0-alpha.14
 - Added an Operator enum

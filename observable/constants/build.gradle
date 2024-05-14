@@ -1,0 +1,30 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+apply from: rootProject.file('buildSrc/shared.gradle')
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    archiveBaseName.set(rootProject.name + '-observable-constants')
+    destinationDirectory.set(file("$rootProject.projectDir/build/libs"))
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+dependencies {
+    api project(':helper')
+    api project(':numbers')
+    api project(':observable:base')
+    api project(':observable:value')
+}
