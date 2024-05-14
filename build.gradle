@@ -1,44 +1,38 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-repositories {
-    mavenCentral()
-}
+apply from: rootProject.file('buildSrc/shared.gradle')
 
 publishing {
     publications {
-        maven(MavenPublication) {
-            from components.java
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
         }
     }
 }
 
+shadowJar {
+    archiveClassifier.set("")
+}
+
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0-M1'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    api project(':converter')
+    api project(':helper')
+    api project(':observable')
+    api project(':time')
+    api project(':registry')
+    api project(':range')
+    api project(':math')
+    api project(':reflection')
+    api project(':misc')
+    api project(':task')
+    api project(':http')
 }
 
-
-tasks.named('test', Test) {
-    useJUnitPlatform()
-
-    maxHeapSize = '1G'
-
-    testLogging {
-        events "passed"
-    }
-}
-
-group = "com.github.StarMediaDevelopmentLLC"
-version = "1.0.0-alpha.17"
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
+tasks.jar.finalizedBy(shadowJar)
+tasks.publishToMavenLocal.dependsOn(shadowJar)
 tasks.compileJava.dependsOn(clean)
 tasks.build.finalizedBy(publishToMavenLocal)

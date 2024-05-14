@@ -1,0 +1,30 @@
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0-M1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+group = "com.github.StarMediaDevelopmentLLC"
+version = "1.0.0-alpha.18"
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+
+    maxHeapSize = '1G'
+
+    testLogging {
+        events "passed"
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.compileJava.dependsOn(clean)
+tasks.build.finalizedBy(publishToMavenLocal)

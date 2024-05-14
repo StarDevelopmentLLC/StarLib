@@ -1,0 +1,18 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+apply from: rootProject.file('buildSrc/shared.gradle')
+
+repositories {
+    mavenCentral()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
