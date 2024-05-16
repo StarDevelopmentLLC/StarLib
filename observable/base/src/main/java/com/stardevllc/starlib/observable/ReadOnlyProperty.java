@@ -25,14 +25,7 @@
 
 package com.stardevllc.starlib.observable;
 
-public interface ReadOnlyProperty<T> extends ObservableValue<T> {
-    
-    Object DEFAULT_BEAN = null;
-    String DEFAULT_NAME = "";
-
-    Object getBean();
-    String getName();
-
+public interface ReadOnlyProperty<T> extends Property<T> {
     void bind(ObservableValue<? extends T> observable);
 
     void unbind();
