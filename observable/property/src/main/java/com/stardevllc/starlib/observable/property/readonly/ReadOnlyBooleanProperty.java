@@ -124,11 +124,6 @@ public class ReadOnlyBooleanProperty implements ReadOnlyProperty<Boolean>, Obser
     }
 
     @Override
-    public ObservableStringValue asString(String format) {
-        return null;
-    }
-
-    @Override
     public ObservableValue<Boolean> orElse(Boolean constant) {
         return this;
     }

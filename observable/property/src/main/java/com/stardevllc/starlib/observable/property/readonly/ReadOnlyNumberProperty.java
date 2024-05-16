@@ -55,12 +55,6 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
         return new ReadOnlyStringProperty(getValue().toString());
     }
 
-    @Override
-    public ObservableValue<String> asString(String format) {
-        return null;
-    }
-
-    
 
     @Override
     public ObservableValue<Boolean> isNull() {

@@ -138,11 +138,6 @@ public class ReadOnlyStringProperty implements ReadOnlyProperty<String>, Observa
     }
 
     @Override
-    public ObservableValue<String> asString(String format) {
-        return null;
-    }
-
-    @Override
     public ObservableValue<String> orElse(String constant) {
         return new ReadOnlyStringProperty(getValue() == null ? constant : getValueSafe());
     }

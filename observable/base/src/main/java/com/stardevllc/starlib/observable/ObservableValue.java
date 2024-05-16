@@ -38,7 +38,5 @@ public interface ObservableValue<T> extends Observable {
 
     ObservableValue<String> asString();
 
-    ObservableValue<String> asString(String format);
-    
     ObservableValue<T> orElse(T constant);
 }

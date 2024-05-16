@@ -4,8 +4,6 @@ import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.value.ObservableBooleanValue;
 import com.stardevllc.starlib.observable.value.ObservableStringValue;
 
-import java.util.function.Function;
-
 public final class BooleanConstant implements ObservableBooleanValue {
     
     public static final BooleanConstant TRUE = new BooleanConstant(true);
@@ -69,11 +67,6 @@ public final class BooleanConstant implements ObservableBooleanValue {
     @Override
     public ObservableStringValue asString() {
         return StringConstant.valueOf(String.valueOf(value));
-    }
-
-    @Override
-    public ObservableStringValue asString(String format) {
-        return StringConstant.valueOf(String.format(format, this));
     }
 
     @Override

@@ -143,11 +143,6 @@ public class ReadOnlyUUIDProperty implements ReadOnlyProperty<UUID>, ObservableU
     }
 
     @Override
-    public ObservableValue<String> asString(String format) {
-        return null;
-    }
-
-    @Override
     public ObservableValue<UUID> orElse(UUID constant) {
         return new ReadOnlyUUIDProperty(getValue() == null ? constant : getValue());
     }

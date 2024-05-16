@@ -89,11 +89,6 @@ public class ObjectConstant<T> implements ObservableObjectValue<T> {
     }
 
     @Override
-    public ObservableStringValue asString(String format) {
-        return StringConstant.valueOf(String.format(format, this));
-    }
-
-    @Override
     public ObservableValue<T> orElse(T constant) {
         return null;
     }

@@ -143,11 +143,6 @@ public class ReadOnlySetProperty<E> implements ReadOnlyProperty<ObservableSet<E>
     }
 
     @Override
-    public ObservableValue<String> asString(String format) {
-        return StringFormatter.format(format, this);
-    }
-
-    @Override
     public ObservableValue<ObservableSet<E>> orElse(ObservableSet<E> constant) {
         return null;
     }

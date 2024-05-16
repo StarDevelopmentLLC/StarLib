@@ -206,11 +206,6 @@ public class ReadOnlyMapProperty<K, V> implements ReadOnlyProperty<ObservableMap
     }
 
     @Override
-    public ObservableValue<String> asString(String format) {
-        return StringFormatter.format(format, this);
-    }
-
-    @Override
     public ObservableValue<ObservableMap<K, V>> orElse(ObservableMap<K, V> constant) {
         return null;
     }

@@ -92,11 +92,6 @@ public class ReadOnlyListProperty<E> implements ReadOnlyProperty<ObservableList<
     }
 
     @Override
-    public ObservableValue<String> asString(String format) {
-        return StringFormatter.format(format, this);
-    }
-
-    @Override
     public ObservableValue<ObservableList<E>> orElse(ObservableList<E> constant) {
         return getValue() == null || getValue().isEmpty() ? new ReadOnlyListProperty<>(constant) : this;
     }

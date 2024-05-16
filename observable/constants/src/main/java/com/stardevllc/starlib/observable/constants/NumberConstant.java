@@ -8,7 +8,6 @@ import com.stardevllc.starlib.observable.value.ObservableLongValue;
 import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 public abstract class NumberConstant implements ObservableNumberValue {
     
@@ -131,11 +130,6 @@ public abstract class NumberConstant implements ObservableNumberValue {
     @Override
     public ObservableValue<String> asString() {
         return StringConstant.valueOf(String.valueOf(getValue()));
-    }
-
-    @Override
-    public ObservableValue<String> asString(String format) {
-        return StringConstant.valueOf(String.format(format, this));
     }
 
     @Override

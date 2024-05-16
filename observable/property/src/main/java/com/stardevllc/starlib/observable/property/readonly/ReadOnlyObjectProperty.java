@@ -142,10 +142,6 @@ public class ReadOnlyObjectProperty<T> implements ReadOnlyProperty<T>, Observabl
         return null;
     }
 
-    public ObservableStringValue asString(String format) {
-        return null;
-    }
-
     @Override
     public ObservableValue<T> orElse(T constant) {
         return new ReadOnlyObjectProperty<>(getValue() == null ? constant : getValue());
