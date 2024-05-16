@@ -26,12 +26,13 @@
 package com.stardevllc.starlib.observable.property.writable;
 
 import com.stardevllc.starlib.observable.ChangeListener;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyObjectProperty;
 import com.stardevllc.starlib.observable.writable.WritableObjectValue;
 
-public class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
+public class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements ReadWriteProperty<T>, WritableObjectValue<T> {
 
     protected ExpressionHelper<T> helper;
     
@@ -57,12 +58,12 @@ public class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements Prop
     }
 
     @Override
-    public void bindBidirectional(Property<T> other) {
+    public void bindBidirectional(ReadWriteProperty<T> other) {
         BidirectionalBinding.bind(this, other);
     }
 
     @Override
-    public void unbindBidirectional(Property<T> other) {
+    public void unbindBidirectional(ReadWriteProperty<T> other) {
         BidirectionalBinding.unbind(this, other);
     }
 

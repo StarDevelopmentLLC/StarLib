@@ -26,6 +26,7 @@
 package com.stardevllc.starlib.observable.property.writable;
 
 import com.stardevllc.starlib.observable.ChangeListener;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyBooleanProperty;
@@ -33,7 +34,7 @@ import com.stardevllc.starlib.observable.writable.WritableBooleanValue;
 
 import java.util.Objects;
 
-public class BooleanProperty extends ReadOnlyBooleanProperty implements Property<Boolean>, WritableBooleanValue {
+public class BooleanProperty extends ReadOnlyBooleanProperty implements ReadWriteProperty<Boolean>, WritableBooleanValue {
     public BooleanProperty() {
         super();
     }
@@ -92,12 +93,12 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements Property
     }
 
     @Override
-    public void bindBidirectional(Property<Boolean> other) {
+    public void bindBidirectional(ReadWriteProperty<Boolean> other) {
         BidirectionalBinding.bind(this, other);
     }
 
     @Override
-    public void unbindBidirectional(Property<Boolean> other) {
+    public void unbindBidirectional(ReadWriteProperty<Boolean> other) {
         BidirectionalBinding.unbind(this, other);
     }
 

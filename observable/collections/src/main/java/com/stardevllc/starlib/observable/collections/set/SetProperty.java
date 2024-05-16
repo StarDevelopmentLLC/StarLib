@@ -27,9 +27,9 @@ package com.stardevllc.starlib.observable.collections.set;
 
 import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
-import com.stardevllc.starlib.observable.property.writable.Property;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 
-public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<ObservableSet<E>>, WritableSetValue<E> {
+public class SetProperty<E> extends ReadOnlySetProperty<E> implements ReadWriteProperty<ObservableSet<E>>, WritableSetValue<E> {
 
     public SetProperty() {
         super();
@@ -53,12 +53,12 @@ public class SetProperty<E> extends ReadOnlySetProperty<E> implements Property<O
     }
 
     @Override
-    public void bindBidirectional(Property<ObservableSet<E>> other) {
+    public void bindBidirectional(ReadWriteProperty<ObservableSet<E>> other) {
         BidirectionalBinding.bind(this, other);
     }
 
     @Override
-    public void unbindBidirectional(Property<ObservableSet<E>> other) {
+    public void unbindBidirectional(ReadWriteProperty<ObservableSet<E>> other) {
         BidirectionalBinding.unbind(this, other);
     }
 

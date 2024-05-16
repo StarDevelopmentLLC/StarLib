@@ -27,9 +27,9 @@ package com.stardevllc.starlib.observable.collections.map;
 
 import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
-import com.stardevllc.starlib.observable.property.writable.Property;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 
-public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Property<ObservableMap<K, V>>, WritableMapValue<K, V> {
+public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements ReadWriteProperty<ObservableMap<K, V>>, WritableMapValue<K, V> {
 
     public MapProperty() {
     }
@@ -40,12 +40,12 @@ public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Prop
     }
 
     @Override
-    public void bindBidirectional(Property<ObservableMap<K, V>> other) {
+    public void bindBidirectional(ReadWriteProperty<ObservableMap<K, V>> other) {
         BidirectionalBinding.bind(this, other);
     }
 
     @Override
-    public void unbindBidirectional(Property<ObservableMap<K, V>> other) {
+    public void unbindBidirectional(ReadWriteProperty<ObservableMap<K, V>> other) {
         BidirectionalBinding.unbind(this, other);
     }
 

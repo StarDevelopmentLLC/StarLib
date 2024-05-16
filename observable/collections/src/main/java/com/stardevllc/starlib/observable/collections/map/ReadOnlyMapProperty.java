@@ -32,7 +32,7 @@ import com.stardevllc.starlib.observable.collections.binding.ContentBinding;
 import com.stardevllc.starlib.observable.property.binding.StringFormatter;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyBooleanProperty;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyObjectProperty;
-import com.stardevllc.starlib.observable.property.readonly.ReadOnlyProperty;
+import com.stardevllc.starlib.observable.ReadOnlyProperty;
 import com.stardevllc.starlib.observable.value.ObservableBooleanValue;
 import com.stardevllc.starlib.observable.value.ObservableObjectValue;
 import com.stardevllc.starlib.observable.value.ObservableStringValue;

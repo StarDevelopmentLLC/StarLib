@@ -23,14 +23,11 @@
  * questions.
  */
 
-package com.stardevllc.starlib.observable.property.writable;
+package com.stardevllc.starlib.observable;
 
-import com.stardevllc.starlib.observable.WritableValue;
-import com.stardevllc.starlib.observable.property.readonly.ReadOnlyProperty;
+public interface ReadWriteProperty<T> extends ReadOnlyProperty<T>, WritableValue<T> {
 
-public interface Property<T> extends ReadOnlyProperty<T>, WritableValue<T> {
+    void bindBidirectional(ReadWriteProperty<T> other);
 
-    void bindBidirectional(Property<T> other);
-
-    void unbindBidirectional(Property<T> other);
+    void unbindBidirectional(ReadWriteProperty<T> other);
 }

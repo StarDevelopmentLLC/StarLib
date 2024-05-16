@@ -1,6 +1,7 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
 import com.stardevllc.starlib.observable.ObservableValue;
+import com.stardevllc.starlib.observable.ReadOnlyProperty;
 import com.stardevllc.starlib.observable.constants.BooleanConstant;
 import com.stardevllc.starlib.observable.constants.NumberConstant;
 import com.stardevllc.starlib.observable.value.*;

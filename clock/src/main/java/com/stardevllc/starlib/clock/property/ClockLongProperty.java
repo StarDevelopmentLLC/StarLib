@@ -3,7 +3,7 @@ package com.stardevllc.starlib.clock.property;
 import com.stardevllc.starlib.clock.Clock;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.property.writable.LongProperty;
-import com.stardevllc.starlib.observable.property.writable.Property;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 
 public class ClockLongProperty extends LongProperty {
     public ClockLongProperty(Clock<?> bean, String propertyName, long value) {
@@ -11,7 +11,7 @@ public class ClockLongProperty extends LongProperty {
     }
 
     @Override
-    public void bindBidirectional(Property<Number> other) {
+    public void bindBidirectional(ReadWriteProperty<Number> other) {
         //no-op
     }
 

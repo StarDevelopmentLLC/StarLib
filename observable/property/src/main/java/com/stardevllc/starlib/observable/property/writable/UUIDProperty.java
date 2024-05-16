@@ -26,6 +26,7 @@
 package com.stardevllc.starlib.observable.property.writable;
 
 import com.stardevllc.starlib.observable.ChangeListener;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyUUIDProperty;
@@ -34,7 +35,7 @@ import com.stardevllc.starlib.observable.writable.WritableUUIDValue;
 import java.util.Objects;
 import java.util.UUID;
 
-public class UUIDProperty extends ReadOnlyUUIDProperty implements Property<UUID>, WritableUUIDValue {
+public class UUIDProperty extends ReadOnlyUUIDProperty implements ReadWriteProperty<UUID>, WritableUUIDValue {
     protected ExpressionHelper<UUID> helper;
 
     public UUIDProperty() {
@@ -59,12 +60,12 @@ public class UUIDProperty extends ReadOnlyUUIDProperty implements Property<UUID>
     }
     
     @Override
-    public void bindBidirectional(Property<UUID> other) {
+    public void bindBidirectional(ReadWriteProperty<UUID> other) {
         BidirectionalBinding.bind(this, other);
     }
     
     @Override
-    public void unbindBidirectional(Property<UUID> other) {
+    public void unbindBidirectional(ReadWriteProperty<UUID> other) {
         BidirectionalBinding.unbind(this, other);
     }
 

@@ -27,9 +27,9 @@ package com.stardevllc.starlib.observable.collections.list;
 
 import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
-import com.stardevllc.starlib.observable.property.writable.Property;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 
-public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property<ObservableList<E>>, WritableListValue<E> {
+public class ListProperty<E> extends ReadOnlyListProperty<E> implements ReadWriteProperty<ObservableList<E>>, WritableListValue<E> {
     protected final ListChangeListener<E> listChangeListener = this::fireValueChangedEvent;
     
     public ListProperty() {
@@ -77,12 +77,12 @@ public class ListProperty<E> extends ReadOnlyListProperty<E> implements Property
     }
 
     @Override
-    public void bindBidirectional(Property<ObservableList<E>> other) {
+    public void bindBidirectional(ReadWriteProperty<ObservableList<E>> other) {
         BidirectionalBinding.bind(this, other);
     }
 
     @Override
-    public void unbindBidirectional(Property<ObservableList<E>> other) {
+    public void unbindBidirectional(ReadWriteProperty<ObservableList<E>> other) {
         BidirectionalBinding.unbind(this, other);
     }
 

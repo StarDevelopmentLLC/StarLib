@@ -26,12 +26,13 @@
 package com.stardevllc.starlib.observable.property.writable;
 
 import com.stardevllc.starlib.observable.ChangeListener;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyFloatProperty;
 import com.stardevllc.starlib.observable.writable.WritableFloatValue;
 
-public class FloatProperty extends ReadOnlyFloatProperty implements Property<Number>, WritableFloatValue {
+public class FloatProperty extends ReadOnlyFloatProperty implements ReadWriteProperty<Number>, WritableFloatValue {
     protected ExpressionHelper<Number> helper;
     
     public FloatProperty() {
@@ -70,12 +71,12 @@ public class FloatProperty extends ReadOnlyFloatProperty implements Property<Num
     }
 
     @Override
-    public void bindBidirectional(Property<Number> other) {
+    public void bindBidirectional(ReadWriteProperty<Number> other) {
         BidirectionalBinding.bind(this, other);
     }
 
     @Override
-    public void unbindBidirectional(Property<Number> other) {
+    public void unbindBidirectional(ReadWriteProperty<Number> other) {
         BidirectionalBinding.unbind(this, other);
     }
 

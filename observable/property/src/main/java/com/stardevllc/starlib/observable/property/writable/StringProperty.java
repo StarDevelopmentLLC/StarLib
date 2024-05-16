@@ -26,6 +26,7 @@
 package com.stardevllc.starlib.observable.property.writable;
 
 import com.stardevllc.starlib.observable.ChangeListener;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyStringProperty;
@@ -33,7 +34,7 @@ import com.stardevllc.starlib.observable.writable.WritableStringValue;
 
 import java.util.Objects;
 
-public class StringProperty extends ReadOnlyStringProperty implements Property<String>, WritableStringValue {
+public class StringProperty extends ReadOnlyStringProperty implements ReadWriteProperty<String>, WritableStringValue {
     protected ExpressionHelper<String> helper;
     
     public StringProperty() {
@@ -57,12 +58,12 @@ public class StringProperty extends ReadOnlyStringProperty implements Property<S
     }
     
     @Override
-    public void bindBidirectional(Property<String> other) {
+    public void bindBidirectional(ReadWriteProperty<String> other) {
         BidirectionalBinding.bind(this, other);
     }
     
     @Override
-    public void unbindBidirectional(Property<String> other) {
+    public void unbindBidirectional(ReadWriteProperty<String> other) {
         BidirectionalBinding.unbind(this, other);
     }
     

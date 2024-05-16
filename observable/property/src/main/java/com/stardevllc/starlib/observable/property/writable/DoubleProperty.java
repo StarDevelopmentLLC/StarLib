@@ -27,6 +27,7 @@ package com.stardevllc.starlib.observable.property.writable;
 
 import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyDoubleProperty;
@@ -34,7 +35,7 @@ import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
 import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 import com.stardevllc.starlib.observable.writable.WritableDoubleValue;
 
-public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<Number>, WritableDoubleValue {
+public class DoubleProperty extends ReadOnlyDoubleProperty implements ReadWriteProperty<Number>, WritableDoubleValue {
     protected ExpressionHelper helper;
     
     public DoubleProperty() {
@@ -73,12 +74,12 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements Property<N
     }
 
     @Override
-    public void bindBidirectional(Property<Number> other) {
+    public void bindBidirectional(ReadWriteProperty<Number> other) {
         BidirectionalBinding.bind(this, other);
     }
 
     @Override
-    public void unbindBidirectional(Property<Number> other) {
+    public void unbindBidirectional(ReadWriteProperty<Number> other) {
         BidirectionalBinding.unbind(this, other);
     }
 

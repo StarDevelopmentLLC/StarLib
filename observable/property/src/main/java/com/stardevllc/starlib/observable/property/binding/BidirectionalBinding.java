@@ -27,13 +27,14 @@ package com.stardevllc.starlib.observable.property.binding;
 
 import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.WritableValue;
 import com.stardevllc.starlib.observable.property.writable.*;
 
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-public class BidirectionalBinding<E, T extends Property<E>> implements ChangeListener<E> {
+public class BidirectionalBinding<E, T extends ReadWriteProperty<E>> implements ChangeListener<E> {
 
     private WeakReference<T> propertyRef1;
     private WeakReference<T> propertyRef2;
@@ -110,7 +111,7 @@ public class BidirectionalBinding<E, T extends Property<E>> implements ChangeLis
         }
     }
 
-    public static <T> BidirectionalBinding bind(Property<T> property1, Property<T> property2) {
+    public static <T> BidirectionalBinding bind(ReadWriteProperty<T> property1, ReadWriteProperty<T> property2) {
         checkParameters(property1, property2);
         BidirectionalBinding binding = new BidirectionalBinding(property1, property2);
         property1.setValue(property2.getValue());
@@ -120,7 +121,7 @@ public class BidirectionalBinding<E, T extends Property<E>> implements ChangeLis
         return binding;
     }
 
-    public static <T> void unbind(Property<T> property1, Property<T> property2) {
+    public static <T> void unbind(ReadWriteProperty<T> property1, ReadWriteProperty<T> property2) {
         checkParameters(property1, property2);
         final BidirectionalBinding binding = new BidirectionalBinding(property1, property2);
         property1.removeListener(binding);
@@ -138,39 +139,39 @@ public class BidirectionalBinding<E, T extends Property<E>> implements ChangeLis
         }
     }
 
-    public static BidirectionalBinding bindNumber(Property<Integer> property1, IntegerProperty property2) {
-        return bindNumber(property1, (Property<Number>)property2);
+    public static BidirectionalBinding bindNumber(ReadWriteProperty<Integer> property1, IntegerProperty property2) {
+        return bindNumber(property1, (ReadWriteProperty<Number>)property2);
     }
 
-    public static BidirectionalBinding bindNumber(Property<Long> property1, LongProperty property2) {
-        return bindNumber(property1, (Property<Number>)property2);
+    public static BidirectionalBinding bindNumber(ReadWriteProperty<Long> property1, LongProperty property2) {
+        return bindNumber(property1, (ReadWriteProperty<Number>)property2);
     }
 
-    public static BidirectionalBinding bindNumber(Property<Float> property1, FloatProperty property2) {
-        return bindNumber(property1, (Property<Number>)property2);
+    public static BidirectionalBinding bindNumber(ReadWriteProperty<Float> property1, FloatProperty property2) {
+        return bindNumber(property1, (ReadWriteProperty<Number>)property2);
     }
 
-    public static BidirectionalBinding bindNumber(Property<Double> property1, DoubleProperty property2) {
-        return bindNumber(property1, (Property<Number>)property2);
+    public static BidirectionalBinding bindNumber(ReadWriteProperty<Double> property1, DoubleProperty property2) {
+        return bindNumber(property1, (ReadWriteProperty<Number>)property2);
     }
 
-    public static BidirectionalBinding bindNumber(IntegerProperty property1, Property<Integer> property2) {
+    public static BidirectionalBinding bindNumber(IntegerProperty property1, ReadWriteProperty<Integer> property2) {
         return bindNumberObject(property1, property2);
     }
 
-    public static BidirectionalBinding bindNumber(LongProperty property1, Property<Long> property2) {
+    public static BidirectionalBinding bindNumber(LongProperty property1, ReadWriteProperty<Long> property2) {
         return bindNumberObject(property1, property2);
     }
 
-    public static BidirectionalBinding bindNumber(FloatProperty property1, Property<Float> property2) {
+    public static BidirectionalBinding bindNumber(FloatProperty property1, ReadWriteProperty<Float> property2) {
         return bindNumberObject(property1, property2);
     }
 
-    public static BidirectionalBinding bindNumber(DoubleProperty property1, Property<Double> property2) {
+    public static BidirectionalBinding bindNumber(DoubleProperty property1, ReadWriteProperty<Double> property2) {
         return bindNumberObject(property1, property2);
     }
 
-    private static <T extends Number> BidirectionalBinding bindNumberObject(Property<Number> property1, Property<T> property2) {
+    private static <T extends Number> BidirectionalBinding bindNumberObject(ReadWriteProperty<Number> property1, ReadWriteProperty<T> property2) {
         checkParameters(property1, property2);
 
         final BidirectionalBinding binding = new BidirectionalBinding(property2, property1);
@@ -182,7 +183,7 @@ public class BidirectionalBinding<E, T extends Property<E>> implements ChangeLis
         return binding;
     }
 
-    private static <T extends Number> BidirectionalBinding bindNumber(Property<T> property1, Property<Number> property2) {
+    private static <T extends Number> BidirectionalBinding bindNumber(ReadWriteProperty<T> property1, ReadWriteProperty<Number> property2) {
         checkParameters(property1, property2);
 
         final BidirectionalBinding binding = new BidirectionalBinding(property1, property2);

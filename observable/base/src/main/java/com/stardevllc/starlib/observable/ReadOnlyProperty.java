@@ -23,9 +23,7 @@
  * questions.
  */
 
-package com.stardevllc.starlib.observable.property.readonly;
-
-import com.stardevllc.starlib.observable.ObservableValue;
+package com.stardevllc.starlib.observable;
 
 public interface ReadOnlyProperty<T> extends ObservableValue<T> {
     

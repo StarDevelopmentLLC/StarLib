@@ -26,12 +26,13 @@
 package com.stardevllc.starlib.observable.property.writable;
 
 import com.stardevllc.starlib.observable.ChangeListener;
+import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyLongProperty;
 import com.stardevllc.starlib.observable.writable.WritableLongValue;
 
-public class LongProperty extends ReadOnlyLongProperty implements Property<Number>, WritableLongValue {
+public class LongProperty extends ReadOnlyLongProperty implements ReadWriteProperty<Number>, WritableLongValue {
     
     protected ExpressionHelper<Number> helper;
     
@@ -71,12 +72,12 @@ public class LongProperty extends ReadOnlyLongProperty implements Property<Numbe
     }
 
     @Override
-    public void bindBidirectional(Property<Number> other) {
+    public void bindBidirectional(ReadWriteProperty<Number> other) {
         BidirectionalBinding.bind(this, other);
     }
     
     @Override
-    public void unbindBidirectional(Property<Number> other) {
+    public void unbindBidirectional(ReadWriteProperty<Number> other) {
         BidirectionalBinding.unbind(this, other);
     }
 

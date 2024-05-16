@@ -16,6 +16,10 @@ public class StarLib {
         return logger;
     }
 
+    public static void main(String[] args) {
+        
+    }
+
     public static class Formatter extends SimpleFormatter {
 
         private String name;
