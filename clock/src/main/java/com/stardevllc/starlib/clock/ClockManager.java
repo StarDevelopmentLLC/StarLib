@@ -1,8 +1,11 @@
 package com.stardevllc.starlib.clock;
 
+import com.stardevllc.starlib.clock.callback.ClockCallback;
 import com.stardevllc.starlib.clock.clocks.Stopwatch;
 import com.stardevllc.starlib.clock.clocks.Timer;
 import com.stardevllc.starlib.clock.snapshot.ClockSnapshot;
+import com.stardevllc.starlib.clock.snapshot.StopwatchSnapshot;
+import com.stardevllc.starlib.clock.snapshot.TimerSnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,15 +36,36 @@ public class ClockManager {
         this.clocks.remove(clock);
     }
     
-    public Timer createTimer(long length) {
+    public Timer createTimer(long length, ClockCallback<? extends TimerSnapshot>... callbacks) {
         Timer timer = new Timer(length, countAmount);
         addClock(timer);
+        
+        if (callbacks != null) {
+            for (ClockCallback<? extends TimerSnapshot> callback : callbacks) {
+                timer.addCallback((ClockCallback<TimerSnapshot>) callback);
+            }
+        }
         return timer;
     }
     
-    public Stopwatch createStopwatch(long endTime) {
-        Stopwatch stopwatch = new Stopwatch(endTime, countAmount);
+    public Stopwatch createStopwatch(ClockCallback<? extends StopwatchSnapshot>... callbacks) {
+        return createStopwatch(0L, 0L, callbacks);
+    }
+    
+    public Stopwatch createStopwatch(long endTime, ClockCallback<? extends StopwatchSnapshot>... callbacks) {
+        return createStopwatch(0L, endTime, callbacks);
+    }
+
+    public Stopwatch createStopwatch(long startTime, long endTime, ClockCallback<? extends StopwatchSnapshot>... callbacks) {
+        Stopwatch stopwatch = new Stopwatch(startTime, endTime, countAmount);
         addClock(stopwatch);
+
+        if (callbacks != null) {
+            for (ClockCallback<? extends StopwatchSnapshot> callback : callbacks) {
+                stopwatch.addCallback((ClockCallback<StopwatchSnapshot>) callback);
+            }
+        }
+
         return stopwatch;
     }
     

@@ -51,7 +51,7 @@ public class Timer extends Clock<TimerSnapshot> {
 
     @Override
     protected void count() {
-        this.timeProperty.setValue(Math.max(0, getTime() - countAmount));
+        this.time.setValue(Math.max(0, getTime() - countAmount));
     }
 
     public long getLength() {
@@ -66,7 +66,7 @@ public class Timer extends Clock<TimerSnapshot> {
     public void setLength(long length) {
         long elapsed = this.getLength() - this.getTime();
         this.lengthProperty.setValue(length);
-        this.timeProperty.setValue(Math.max(this.getLength() - elapsed, 0));
+        this.time.setValue(Math.max(this.getLength() - elapsed, 0));
         this.callbacks.values().forEach(callback -> {
             if (callback.isRepeating()) {
                 callback.setLastRun(-1); //Reset last run if it is a repeating one

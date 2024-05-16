@@ -16,7 +16,7 @@ public final class ClockRunnable implements Runnable {
             clock.tick();
             
             if (clock.isCancelled()) {
-                clockManager.getClocks().remove(clock);
+                clockManager.removeClock(clock);
             }
         }
     }

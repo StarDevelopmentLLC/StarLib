@@ -15,20 +15,20 @@ import java.util.Map;
 import java.util.UUID;
 
 public abstract class Clock<T extends ClockSnapshot> {
-    protected final ClockLongProperty timeProperty;
-    protected final ClockBooleanProperty pausedProperty;
-    protected final ClockBooleanProperty cancelledProperty;
+    protected final ClockLongProperty time;
+    protected final ClockBooleanProperty paused;
+    protected final ClockBooleanProperty cancelled;
     protected Map<UUID, CallbackHolder<T>> callbacks = new HashMap<>();
     protected final long countAmount;
     protected ClockEndCondition<T> endCondition;
     
     public Clock(long time, long countAmount) {
-        this.timeProperty = new ClockLongProperty(this, "time", time);
-        this.pausedProperty = new ClockBooleanProperty(this, "paused", true);
-        this.cancelledProperty = new ClockBooleanProperty(this, "cancelled", false);
+        this.time = new ClockLongProperty(this, "time", time);
+        this.paused = new ClockBooleanProperty(this, "paused", true);
+        this.cancelled = new ClockBooleanProperty(this, "cancelled", false);
         this.countAmount = countAmount;
         
-        this.timeProperty.addListener((observable, oldValue, newValue) -> {
+        this.time.addListener((observable, oldValue, newValue) -> {
             if (!oldValue.equals(newValue)) {
                 unpause();
             }
@@ -39,12 +39,11 @@ public abstract class Clock<T extends ClockSnapshot> {
         if (isPaused() || isCancelled()) {
             return;
         }
-        
-        T snapshot = createSnapshot();
-        callback(snapshot);
-        long oldTime = timeProperty.get();
+
+        callback(createSnapshot());
+        long oldTime = time.get();
         count();
-        long newTime = timeProperty.get();
+        long newTime = time.get();
         
         if (oldTime != newTime) {
             unpause();
@@ -102,7 +101,7 @@ public abstract class Clock<T extends ClockSnapshot> {
                 continue;
             }
             
-            holder.setLastRun(timeProperty.get());
+            holder.setLastRun(time.get());
             callback.callback(snapshot);
         }
         
@@ -119,43 +118,43 @@ public abstract class Clock<T extends ClockSnapshot> {
     }
     
     public void pause() {
-        this.pausedProperty.set(true);
+        this.paused.set(true);
     }
     
     public void unpause() {
-        this.pausedProperty.set(false);
+        this.paused.set(false);
     }
     
     public void cancel() {
-        this.cancelledProperty.set(true);
+        this.cancelled.set(true);
     }
     
     public void uncancel() {
-        this.cancelledProperty.set(false);
+        this.cancelled.set(false);
     }
     
     public boolean isCancelled() {
-        return cancelledProperty.get();
+        return cancelled.get();
     }
     
     public long getTime() {
-        return timeProperty.get();
+        return time.get();
     }
     
     public boolean isPaused() {
-        return pausedProperty.get();
+        return paused.get();
     }
     
     public void addTime(long time) {
-        this.timeProperty.setValue(timeProperty.get() + time);
+        this.time.setValue(this.time.get() + time);
     }
     
     public void removeTime(long time) {
-        this.timeProperty.setValue(timeProperty.get() - time);
+        this.time.setValue(this.time.get() - time);
     }
     
     public void setTime(long time) {
-        this.timeProperty.setValue(time);
+        this.time.setValue(time);
     }
     
     public UUID addCallback(ClockCallback<T> callback, long runAtTime) {
@@ -213,14 +212,14 @@ public abstract class Clock<T extends ClockSnapshot> {
     }
     
     public LongProperty timeProperty() {
-        return this.timeProperty;
+        return this.time;
     }
     
     public BooleanProperty pausedProperty() {
-        return this.pausedProperty;
+        return this.paused;
     }
     
     public BooleanProperty cancelledProperty() {
-        return this.cancelledProperty;
+        return this.cancelled;
     }
 }

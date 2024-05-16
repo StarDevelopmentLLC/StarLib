@@ -7,27 +7,33 @@ import com.stardevllc.starlib.clock.snapshot.StopwatchSnapshot;
 import com.stardevllc.starlib.observable.property.writable.LongProperty;
 
 public class Stopwatch extends Clock<StopwatchSnapshot> {
-    protected final ClockLongProperty endTimeProperty;
+    protected final ClockLongProperty endTime;
+    protected final ClockLongProperty startTime;
     
-    public Stopwatch(long endTime, long countAmount) {
-        super(0L, countAmount);
-        this.endTimeProperty = new ClockLongProperty(this, "endTime", endTime);
-        this.endTimeProperty.addListener((observable, oldValue, newValue) -> {
+    public Stopwatch(long startTime, long endTime, long countAmount) {
+        super(startTime, countAmount);
+        this.startTime = new ClockLongProperty(this, "startTime", startTime);
+        this.endTime = new ClockLongProperty(this, "endTime", endTime);
+        this.endTime.addListener((observable, oldValue, newValue) -> {
             if (!oldValue.equals(newValue)) {
                 unpause();
             }
         });
+    }
+    
+    public Stopwatch(long endTime, long countAmount) {
+        this(0L, endTime, countAmount);
     }
 
     @Override
     protected boolean shouldCallback(CallbackHolder<StopwatchSnapshot> holder) {
         long lastRun = holder.getLastRun(); //Variable to easily access when it ran last
         if (!holder.isRepeating()) {
-            long run = holder.getPeriod(); //This is for when the non-repeating callback should run based on the length
+            long run = startTime.get() + holder.getPeriod(); //This is for when the non-repeating callback should run based on the length
             return lastRun == -1 && this.getTime() >= run;
         } else {
             if (holder.getLastRun() == -1) {
-                return holder.getPeriod() >= this.getTime();
+                return startTime.get() + holder.getPeriod() >= this.getTime();
             } else {
                 long nextRun = holder.getLastRun() + holder.getPeriod();
                 return this.getTime() >= nextRun;
@@ -42,7 +48,7 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
         }
 
         if (holder.getLastRun() == -1) {
-            return this.getTime() + holder.getPeriod();
+            return startTime.get() + holder.getPeriod();
         } else {
             return holder.getLastRun() + holder.getPeriod();
         }
@@ -55,7 +61,11 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
 
     @Override
     protected void count() {
-        this.timeProperty.setValue(Math.min(getTime() + countAmount, this.getEndTime()));
+        if (this.endTime.get() == 0L) {
+            this.time.setValue(this.time.get() + this.countAmount);
+        } else {
+            this.time.setValue(Math.min(getTime() + countAmount, this.getEndTime()));
+        }
     }
 
     @Override
@@ -64,14 +74,18 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
     }
     
     public long getEndTime() {
-        return endTimeProperty.get();
+        return endTime.get();
     }
     
     public void setEndTime(long endTime) {
-        this.endTimeProperty.setValue(endTime);
+        this.endTime.setValue(endTime);
     }
     
     public LongProperty endTimeProperty() {
-        return this.endTimeProperty;
+        return this.endTime;
+    }
+    
+    public LongProperty startTimeProperty() {
+        return this.startTime;
     }
 }
