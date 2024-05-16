@@ -26,32 +26,38 @@
 package com.stardevllc.starlib.observable.property.writable;
 
 import com.stardevllc.starlib.observable.ChangeListener;
-import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
-import com.stardevllc.starlib.observable.property.readonly.ReadOnlyDoubleProperty;
-import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
-import com.stardevllc.starlib.observable.value.ObservableNumberValue;
-import com.stardevllc.starlib.observable.writable.WritableDoubleValue;
+import com.stardevllc.starlib.observable.property.readonly.ReadOnlyFloatProperty;
+import com.stardevllc.starlib.observable.writable.WritableFloatValue;
 
-public class DoubleProperty extends ReadOnlyDoubleProperty implements ReadWriteProperty<Number>, WritableDoubleValue {
-    protected ExpressionHelper helper;
+public class ReadWriteFloatProperty extends ReadOnlyFloatProperty implements ReadWriteProperty<Number>, WritableFloatValue {
+    protected ExpressionHelper<Number> helper;
     
-    public DoubleProperty() {
+    public ReadWriteFloatProperty() {
         super();
     }
 
-    public DoubleProperty(double initialValue) {
+    public ReadWriteFloatProperty(float initialValue) {
         super(initialValue);
     }
 
-    public DoubleProperty(Object bean, String name) {
+    public ReadWriteFloatProperty(Object bean, String name) {
         super(bean, name);
     }
 
-    public DoubleProperty(Object bean, String name, double initialValue) {
+    public ReadWriteFloatProperty(Object bean, String name, float initialValue) {
         super(bean, name, initialValue);
+    }
+
+    @Override
+    public void setValue(Number v) {
+        if (v == null) {
+            set(0.0f);
+        } else {
+            set(v.floatValue());
+        }
     }
 
     @Override
@@ -65,15 +71,6 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements ReadWriteP
     }
 
     @Override
-    public void setValue(Number v) {
-        if (v == null) {
-            set(0.0);
-        } else {
-            set(v.doubleValue());
-        }
-    }
-
-    @Override
     public void bindBidirectional(ReadWriteProperty<Number> other) {
         BidirectionalBinding.bind(this, other);
     }
@@ -84,7 +81,7 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements ReadWriteP
     }
 
     @Override
-    public void set(double newValue) {
+    public void set(float newValue) {
         if (isBound()) {
             throw new RuntimeException((getBean() != null && getName() != null ?
                     getBean().getClass().getSimpleName() + "." + getName() + " : " : "") + "A bound value cannot be set.");
@@ -100,44 +97,10 @@ public class DoubleProperty extends ReadOnlyDoubleProperty implements ReadWriteP
     }
 
     @Override
-    public boolean isBound() {
-        return observable != null;
-    }
-
-    @Override
-    public void bind(final ObservableValue<? extends Number> rawObservable) {
-        if (rawObservable == null) {
-            throw new NullPointerException("Cannot bind to null");
-        }
-
-        ObservableDoubleValue newObservable;
-        if (rawObservable instanceof ObservableDoubleValue) {
-            newObservable = (ObservableDoubleValue) rawObservable;
-        } else if (rawObservable instanceof ObservableNumberValue numberValue) {
-            newObservable = new ReadOnlyDoubleProperty(numberValue.doubleValue());
-        } else {
-            newObservable = new ReadOnlyDoubleProperty((rawObservable.getValue() == null) ? 0.0 : rawObservable.getValue().doubleValue());
-        }
-
-        if (!newObservable.equals(observable)) {
-            unbind();
-            observable = newObservable;
-        }
-    }
-
-    @Override
-    public void unbind() {
-        if (observable != null) {
-            value = observable.get();
-            observable = null;
-        }
-    }
-
-    @Override
     public String toString() {
         final Object bean = getBean();
         final String name = getName();
-        final StringBuilder result = new StringBuilder("DoubleProperty [");
+        final StringBuilder result = new StringBuilder("FloatProperty [");
         if (bean != null) {
             result.append("bean: ").append(bean).append(", ");
         }

@@ -32,23 +32,23 @@ import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyLongProperty;
 import com.stardevllc.starlib.observable.writable.WritableLongValue;
 
-public class LongProperty extends ReadOnlyLongProperty implements ReadWriteProperty<Number>, WritableLongValue {
+public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadWriteProperty<Number>, WritableLongValue {
     
     protected ExpressionHelper<Number> helper;
     
-    public LongProperty() {
+    public ReadWriteLongProperty() {
         super();
     }
 
-    public LongProperty(long initialValue) {
+    public ReadWriteLongProperty(long initialValue) {
         super(initialValue);
     }
 
-    public LongProperty(Object bean, String name) {
+    public ReadWriteLongProperty(Object bean, String name) {
         super(bean, name);
     }
 
-    public LongProperty(Object bean, String name, long initialValue) {
+    public ReadWriteLongProperty(Object bean, String name, long initialValue) {
         super(bean, name, initialValue);
     }
 

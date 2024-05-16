@@ -29,50 +29,48 @@ import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
-import com.stardevllc.starlib.observable.property.readonly.ReadOnlyStringProperty;
-import com.stardevllc.starlib.observable.writable.WritableStringValue;
+import com.stardevllc.starlib.observable.property.readonly.ReadOnlyUUIDProperty;
+import com.stardevllc.starlib.observable.writable.WritableUUIDValue;
 
 import java.util.Objects;
+import java.util.UUID;
 
-public class StringProperty extends ReadOnlyStringProperty implements ReadWriteProperty<String>, WritableStringValue {
-    protected ExpressionHelper<String> helper;
-    
-    public StringProperty() {
+public class ReadWriteUUIDProperty extends ReadOnlyUUIDProperty implements ReadWriteProperty<UUID>, WritableUUIDValue {
+    protected ExpressionHelper<UUID> helper;
+
+    public ReadWriteUUIDProperty() {
+        super();
     }
 
-    public StringProperty(String initialValue) {
+    public ReadWriteUUIDProperty(UUID initialValue) {
         super(initialValue);
     }
 
-    public StringProperty(Object bean, String name) {
+    public ReadWriteUUIDProperty(Object bean, String name) {
         super(bean, name);
     }
 
-    public StringProperty(Object bean, String name, String initialValue) {
+    public ReadWriteUUIDProperty(Object bean, String name, UUID initialValue) {
         super(bean, name, initialValue);
     }
 
     @Override
-    public void setValue(String v) {
+    public void setValue(UUID v) {
         set(v);
     }
     
     @Override
-    public void bindBidirectional(ReadWriteProperty<String> other) {
+    public void bindBidirectional(ReadWriteProperty<UUID> other) {
         BidirectionalBinding.bind(this, other);
     }
     
     @Override
-    public void unbindBidirectional(ReadWriteProperty<String> other) {
-        BidirectionalBinding.unbind(this, other);
-    }
-    
-    public void unbindBidirectional(Object other) {
+    public void unbindBidirectional(ReadWriteProperty<UUID> other) {
         BidirectionalBinding.unbind(this, other);
     }
 
     @Override
-    public void set(String newValue) {
+    public void set(UUID newValue) {
         if (isBound()) {
             throw new RuntimeException((getBean() != null && getName() != null ?
                     getBean().getClass().getSimpleName() + "." + getName() + " : ": "") + "A bound value cannot be set.");
@@ -84,12 +82,12 @@ public class StringProperty extends ReadOnlyStringProperty implements ReadWriteP
     }
 
     @Override
-    public void addListener(ChangeListener<? super String> listener) {
+    public void addListener(ChangeListener<? super UUID> listener) {
         helper = ExpressionHelper.addListener(helper, this, listener);
     }
 
     @Override
-    public void removeListener(ChangeListener<? super String> listener) {
+    public void removeListener(ChangeListener<? super UUID> listener) {
         helper = ExpressionHelper.removeListener(helper, listener);
     }
 

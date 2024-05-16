@@ -6,8 +6,8 @@ import com.stardevllc.starlib.clock.condition.ClockEndCondition;
 import com.stardevllc.starlib.clock.property.ClockBooleanProperty;
 import com.stardevllc.starlib.clock.property.ClockLongProperty;
 import com.stardevllc.starlib.clock.snapshot.ClockSnapshot;
-import com.stardevllc.starlib.observable.property.writable.BooleanProperty;
-import com.stardevllc.starlib.observable.property.writable.LongProperty;
+import com.stardevllc.starlib.observable.property.writable.ReadWriteBooleanProperty;
+import com.stardevllc.starlib.observable.property.writable.ReadWriteLongProperty;
 import com.stardevllc.starlib.time.TimeUnit;
 
 import java.util.HashMap;
@@ -211,15 +211,15 @@ public abstract class Clock<T extends ClockSnapshot> {
         return null;
     }
     
-    public LongProperty timeProperty() {
+    public ReadWriteLongProperty timeProperty() {
         return this.time;
     }
     
-    public BooleanProperty pausedProperty() {
+    public ReadWriteBooleanProperty pausedProperty() {
         return this.paused;
     }
     
-    public BooleanProperty cancelledProperty() {
+    public ReadWriteBooleanProperty cancelledProperty() {
         return this.cancelled;
     }
 }

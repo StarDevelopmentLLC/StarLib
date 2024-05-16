@@ -4,7 +4,7 @@ import com.stardevllc.starlib.clock.Clock;
 import com.stardevllc.starlib.clock.callback.CallbackHolder;
 import com.stardevllc.starlib.clock.property.ClockLongProperty;
 import com.stardevllc.starlib.clock.snapshot.StopwatchSnapshot;
-import com.stardevllc.starlib.observable.property.writable.LongProperty;
+import com.stardevllc.starlib.observable.property.writable.ReadWriteLongProperty;
 
 public class Stopwatch extends Clock<StopwatchSnapshot> {
     protected final ClockLongProperty endTime;
@@ -81,11 +81,11 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
         this.endTime.setValue(endTime);
     }
     
-    public LongProperty endTimeProperty() {
+    public ReadWriteLongProperty endTimeProperty() {
         return this.endTime;
     }
     
-    public LongProperty startTimeProperty() {
+    public ReadWriteLongProperty startTimeProperty() {
         return this.startTime;
     }
 }

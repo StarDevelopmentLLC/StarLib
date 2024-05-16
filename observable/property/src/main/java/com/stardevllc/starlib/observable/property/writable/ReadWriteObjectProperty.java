@@ -29,30 +29,51 @@ import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
-import com.stardevllc.starlib.observable.property.readonly.ReadOnlyBooleanProperty;
-import com.stardevllc.starlib.observable.writable.WritableBooleanValue;
+import com.stardevllc.starlib.observable.property.readonly.ReadOnlyObjectProperty;
+import com.stardevllc.starlib.observable.writable.WritableObjectValue;
 
-import java.util.Objects;
+public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implements ReadWriteProperty<T>, WritableObjectValue<T> {
 
-public class BooleanProperty extends ReadOnlyBooleanProperty implements ReadWriteProperty<Boolean>, WritableBooleanValue {
-    public BooleanProperty() {
+    protected ExpressionHelper<T> helper;
+    
+    public ReadWriteObjectProperty() {
         super();
     }
-    
-    public BooleanProperty(boolean initialValue) {
+
+    public ReadWriteObjectProperty(T initialValue) {
         super(initialValue);
     }
-    
-    public BooleanProperty(Object bean, String name) {
+
+    public ReadWriteObjectProperty(Object bean, String name) {
         super(bean, name);
     }
-    
-    public BooleanProperty(Object bean, String name, boolean initialValue) {
+
+    public ReadWriteObjectProperty(Object bean, String name, T initialValue) {
         super(bean, name, initialValue);
     }
 
     @Override
-    public void set(boolean newValue) {
+    public void setValue(T v) {
+        set(v);
+    }
+
+    @Override
+    public void bindBidirectional(ReadWriteProperty<T> other) {
+        BidirectionalBinding.bind(this, other);
+    }
+
+    @Override
+    public void unbindBidirectional(ReadWriteProperty<T> other) {
+        BidirectionalBinding.unbind(this, other);
+    }
+
+    @Override
+    public T getValue() {
+        return value;
+    }
+
+    @Override
+    public void set(T newValue) {
         if (isBound()) {
             throw new RuntimeException((getBean() != null && getName() != null ?
                     getBean().getClass().getSimpleName() + "." + getName() + " : ": "") + "A bound value cannot be set.");
@@ -63,15 +84,11 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements ReadWrit
         }
     }
 
-    protected void fireValueChangedEvent() {
-        ExpressionHelper.fireValueChangedEvent(helper);
-    }
-
     @Override
     public String toString() {
         final Object bean = getBean();
         final String name = getName();
-        final StringBuilder result = new StringBuilder("BooleanProperty [");
+        final StringBuilder result = new StringBuilder("ObjectProperty [");
         if (bean != null) {
             result.append("bean: ").append(bean).append(", ");
         }
@@ -88,27 +105,16 @@ public class BooleanProperty extends ReadOnlyBooleanProperty implements ReadWrit
     }
 
     @Override
-    public void setValue(Boolean v) {
-        set(Objects.requireNonNullElse(v, false));
-    }
-
-    @Override
-    public void bindBidirectional(ReadWriteProperty<Boolean> other) {
-        BidirectionalBinding.bind(this, other);
-    }
-
-    @Override
-    public void unbindBidirectional(ReadWriteProperty<Boolean> other) {
-        BidirectionalBinding.unbind(this, other);
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super Boolean> listener) {
+    public void addListener(ChangeListener<? super T> listener) {
         helper = ExpressionHelper.addListener(helper, this, listener);
     }
 
     @Override
-    public void removeListener(ChangeListener<? super Boolean> listener) {
+    public void removeListener(ChangeListener<? super T> listener) {
         helper = ExpressionHelper.removeListener(helper, listener);
+    }
+
+    protected void fireValueChangedEvent() {
+        ExpressionHelper.fireValueChangedEvent(helper);
     }
 }

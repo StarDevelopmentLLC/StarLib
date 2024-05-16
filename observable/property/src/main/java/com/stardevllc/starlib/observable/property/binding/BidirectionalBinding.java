@@ -139,35 +139,35 @@ public class BidirectionalBinding<E, T extends ReadWriteProperty<E>> implements 
         }
     }
 
-    public static BidirectionalBinding bindNumber(ReadWriteProperty<Integer> property1, IntegerProperty property2) {
+    public static BidirectionalBinding bindNumber(ReadWriteProperty<Integer> property1, ReadWriteIntegerProperty property2) {
         return bindNumber(property1, (ReadWriteProperty<Number>)property2);
     }
 
-    public static BidirectionalBinding bindNumber(ReadWriteProperty<Long> property1, LongProperty property2) {
+    public static BidirectionalBinding bindNumber(ReadWriteProperty<Long> property1, ReadWriteLongProperty property2) {
         return bindNumber(property1, (ReadWriteProperty<Number>)property2);
     }
 
-    public static BidirectionalBinding bindNumber(ReadWriteProperty<Float> property1, FloatProperty property2) {
+    public static BidirectionalBinding bindNumber(ReadWriteProperty<Float> property1, ReadWriteFloatProperty property2) {
         return bindNumber(property1, (ReadWriteProperty<Number>)property2);
     }
 
-    public static BidirectionalBinding bindNumber(ReadWriteProperty<Double> property1, DoubleProperty property2) {
+    public static BidirectionalBinding bindNumber(ReadWriteProperty<Double> property1, ReadWriteDoubleProperty property2) {
         return bindNumber(property1, (ReadWriteProperty<Number>)property2);
     }
 
-    public static BidirectionalBinding bindNumber(IntegerProperty property1, ReadWriteProperty<Integer> property2) {
+    public static BidirectionalBinding bindNumber(ReadWriteIntegerProperty property1, ReadWriteProperty<Integer> property2) {
         return bindNumberObject(property1, property2);
     }
 
-    public static BidirectionalBinding bindNumber(LongProperty property1, ReadWriteProperty<Long> property2) {
+    public static BidirectionalBinding bindNumber(ReadWriteLongProperty property1, ReadWriteProperty<Long> property2) {
         return bindNumberObject(property1, property2);
     }
 
-    public static BidirectionalBinding bindNumber(FloatProperty property1, ReadWriteProperty<Float> property2) {
+    public static BidirectionalBinding bindNumber(ReadWriteFloatProperty property1, ReadWriteProperty<Float> property2) {
         return bindNumberObject(property1, property2);
     }
 
-    public static BidirectionalBinding bindNumber(DoubleProperty property1, ReadWriteProperty<Double> property2) {
+    public static BidirectionalBinding bindNumber(ReadWriteDoubleProperty property1, ReadWriteProperty<Double> property2) {
         return bindNumberObject(property1, property2);
     }
 

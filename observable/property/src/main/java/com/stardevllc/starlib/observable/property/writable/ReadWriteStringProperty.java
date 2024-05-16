@@ -29,26 +29,68 @@ import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
-import com.stardevllc.starlib.observable.property.readonly.ReadOnlyIntegerProperty;
-import com.stardevllc.starlib.observable.writable.WritableIntegerValue;
+import com.stardevllc.starlib.observable.property.readonly.ReadOnlyStringProperty;
+import com.stardevllc.starlib.observable.writable.WritableStringValue;
 
-public class IntegerProperty extends ReadOnlyIntegerProperty implements ReadWriteProperty<Number>, WritableIntegerValue {
-    protected ExpressionHelper<Number> helper;
+import java.util.Objects;
+
+public class ReadWriteStringProperty extends ReadOnlyStringProperty implements ReadWriteProperty<String>, WritableStringValue {
+    protected ExpressionHelper<String> helper;
     
-    public IntegerProperty() {
-        super();
+    public ReadWriteStringProperty() {
     }
 
-    public IntegerProperty(int initialValue) {
+    public ReadWriteStringProperty(String initialValue) {
         super(initialValue);
     }
 
-    public IntegerProperty(Object bean, String name) {
+    public ReadWriteStringProperty(Object bean, String name) {
         super(bean, name);
     }
 
-    public IntegerProperty(Object bean, String name, int initialValue) {
+    public ReadWriteStringProperty(Object bean, String name, String initialValue) {
         super(bean, name, initialValue);
+    }
+
+    @Override
+    public void setValue(String v) {
+        set(v);
+    }
+    
+    @Override
+    public void bindBidirectional(ReadWriteProperty<String> other) {
+        BidirectionalBinding.bind(this, other);
+    }
+    
+    @Override
+    public void unbindBidirectional(ReadWriteProperty<String> other) {
+        BidirectionalBinding.unbind(this, other);
+    }
+    
+    public void unbindBidirectional(Object other) {
+        BidirectionalBinding.unbind(this, other);
+    }
+
+    @Override
+    public void set(String newValue) {
+        if (isBound()) {
+            throw new RuntimeException((getBean() != null && getName() != null ?
+                    getBean().getClass().getSimpleName() + "." + getName() + " : ": "") + "A bound value cannot be set.");
+        }
+        if (!Objects.equals(value, newValue)) {
+            value = newValue;
+            fireValueChangedEvent();
+        }
+    }
+
+    @Override
+    public void addListener(ChangeListener<? super String> listener) {
+        helper = ExpressionHelper.addListener(helper, this, listener);
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super String> listener) {
+        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     protected void fireValueChangedEvent() {
@@ -56,41 +98,10 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements ReadWrit
     }
 
     @Override
-    public void addListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
-    }
-
-    @Override
-    public void set(int newValue) {
-        if (isBound()) {
-            throw new RuntimeException((getBean() != null && getName() != null ?
-                    getBean().getClass().getSimpleName() + "." + getName() + " : " : "") + "A bound value cannot be set.");
-        }
-        if (value != newValue) {
-            value = newValue;
-            fireValueChangedEvent();
-        }
-    }
-
-    @Override
-    public void setValue(Number v) {
-        if (v == null) {
-            set(0);
-        } else {
-            set(v.intValue());
-        }
-    }
-
-    @Override
     public String toString() {
         final Object bean = getBean();
         final String name = getName();
-        final StringBuilder result = new StringBuilder("IntegerProperty [");
+        final StringBuilder result = new StringBuilder("StringProperty [");
         if (bean != null) {
             result.append("bean: ").append(bean).append(", ");
         }
@@ -104,15 +115,5 @@ public class IntegerProperty extends ReadOnlyIntegerProperty implements ReadWrit
         }
         result.append("]");
         return result.toString();
-    }
-
-    @Override
-    public void bindBidirectional(ReadWriteProperty<Number> other) {
-        BidirectionalBinding.bind(this, other);
-    }
-
-    @Override
-    public void unbindBidirectional(ReadWriteProperty<Number> other) {
-        BidirectionalBinding.unbind(this, other);
     }
 }
