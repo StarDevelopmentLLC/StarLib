@@ -26,4 +26,5 @@ publishing {
 dependencies {
     api project(':helper')
     api project(':numbers')
+    api project(':reflection')
 }

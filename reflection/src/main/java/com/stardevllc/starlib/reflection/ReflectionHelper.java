@@ -61,37 +61,4 @@ public final class ReflectionHelper {
             getClassFields(clazz.getSuperclass(), fields);
         }
     }
-    
-//    public static <E, T extends ReadOnlyProperty<E>> List<T> getProperties(Class<T> propertyClass, Object object) {
-//        Set<Field> classFields = getClassFields(object.getClass());
-//        List<T> properties = new ArrayList<>();
-//        for (Field field : classFields) {
-//            if (propertyClass.isAssignableFrom(field.getType())) {
-//                field.setAccessible(true);
-//                try {
-//                    properties.add((T) field.get(object));
-//                } catch (IllegalAccessException e) {}
-//            }
-//        }
-//
-//        return properties;
-//    }
-//    
-//    public static <E, T extends ReadOnlyProperty<E>> T getProperty(Class<T> propertyClass, Object object, String name) {
-//        Set<Field> classFields = getClassFields(object.getClass());
-//        for (Field field : classFields) {
-//            if (propertyClass.isAssignableFrom(field.getType())) {
-//                field.setAccessible(true);
-//                try {
-//                    Object rawValue = field.get(object);
-//                    T property = (T) rawValue;
-//                    if (property.getName().equalsIgnoreCase(name)) {
-//                        return property;
-//                    }
-//                } catch (IllegalAccessException e) {}
-//            }
-//        }
-//
-//        return null;
-//    }
 }
