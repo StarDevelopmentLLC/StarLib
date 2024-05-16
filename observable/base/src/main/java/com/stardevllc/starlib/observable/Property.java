@@ -6,4 +6,10 @@ public interface Property<T> extends ObservableValue<T> {
 
     Object getBean();
     String getName();
+
+    void bind(ObservableValue<? extends T> observable);
+
+    void unbind();
+
+    boolean isBound();
 }

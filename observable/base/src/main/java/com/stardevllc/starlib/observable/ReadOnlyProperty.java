@@ -26,9 +26,5 @@
 package com.stardevllc.starlib.observable;
 
 public interface ReadOnlyProperty<T> extends Property<T> {
-    void bind(ObservableValue<? extends T> observable);
-
-    void unbind();
-
-    boolean isBound();
+    
 }

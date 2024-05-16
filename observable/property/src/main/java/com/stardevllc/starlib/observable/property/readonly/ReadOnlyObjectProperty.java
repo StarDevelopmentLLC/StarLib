@@ -150,6 +150,4 @@ public class ReadOnlyObjectProperty<T> implements ReadOnlyProperty<T>, Observabl
     public ObservableValue<T> orElse(T constant) {
         return new ReadOnlyObjectProperty<>(getValue() == null ? constant : getValue());
     }
-
-
 }

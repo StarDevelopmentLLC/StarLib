@@ -25,8 +25,6 @@
 
 package com.stardevllc.starlib.observable;
 
-import java.util.function.Function;
-
 public interface ObservableValue<T> extends Observable {
     T getValue();
 
