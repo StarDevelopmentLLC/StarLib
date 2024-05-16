@@ -34,8 +34,6 @@ import com.stardevllc.starlib.observable.value.ObservableStringValue;
 
 import java.util.Objects;
 
-import static com.stardevllc.starlib.helper.StringHelper.getStringSafe;
-
 public class ReadOnlyStringProperty implements ReadOnlyProperty<String>, ObservableStringValue {
     protected final Object bean;
     protected final String name;
@@ -141,17 +139,13 @@ public class ReadOnlyStringProperty implements ReadOnlyProperty<String>, Observa
     public ObservableValue<String> orElse(String constant) {
         return new ReadOnlyStringProperty(getValue() == null ? constant : getValueSafe());
     }
-
-    public final String getValueSafe() {
-        return getStringSafe(get());
-    }
-
+    
     public ObservableStringValue concat(Object other) {
         return null;
     }
 
     public ObservableBooleanValue isEqualTo(ObservableStringValue other) {
-        return new ReadOnlyBooleanProperty(getStringSafe(get()).equals(getStringSafe(get())));
+        return new ReadOnlyBooleanProperty(getValueSafe().equals(other.getValueSafe()));
     }
 
     public ObservableBooleanValue isEqualTo(final String other) {
@@ -159,7 +153,7 @@ public class ReadOnlyStringProperty implements ReadOnlyProperty<String>, Observa
     }
 
     public ObservableBooleanValue isNotEqualTo(final ObservableStringValue other) {
-        return new ReadOnlyBooleanProperty(!getStringSafe(get()).equals(getStringSafe(get())));
+        return new ReadOnlyBooleanProperty(!getValueSafe().equals(other.getValueSafe()));
     }
 
     public ObservableBooleanValue isNotEqualTo(final String other) {
@@ -167,7 +161,7 @@ public class ReadOnlyStringProperty implements ReadOnlyProperty<String>, Observa
     }
 
     public ObservableBooleanValue isEqualToIgnoreCase(final ObservableStringValue other) {
-        return new ReadOnlyBooleanProperty(getStringSafe(get()).equalsIgnoreCase(getStringSafe(get())));
+        return new ReadOnlyBooleanProperty(getValueSafe().equalsIgnoreCase(other.getValueSafe()));
     }
 
     public ObservableBooleanValue isEqualToIgnoreCase(final String other) {
@@ -175,7 +169,7 @@ public class ReadOnlyStringProperty implements ReadOnlyProperty<String>, Observa
     }
 
     public ObservableBooleanValue isNotEqualToIgnoreCase(final ObservableStringValue other) {
-        return new ReadOnlyBooleanProperty(!getStringSafe(get()).equalsIgnoreCase(getStringSafe(get())));
+        return new ReadOnlyBooleanProperty(!getValueSafe().equalsIgnoreCase(other.getValueSafe()));
     }
 
     public ObservableBooleanValue isNotEqualToIgnoreCase(final String other) {

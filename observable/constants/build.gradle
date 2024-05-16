@@ -24,8 +24,6 @@ publishing {
 }
 
 dependencies {
-    api project(':helper')
     api project(':numbers')
-    api project(':observable:base')
     api project(':observable:value')
 }

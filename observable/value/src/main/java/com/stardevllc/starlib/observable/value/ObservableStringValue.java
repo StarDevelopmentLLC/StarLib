@@ -25,10 +25,8 @@
 
 package com.stardevllc.starlib.observable.value;
 
-import static com.stardevllc.starlib.helper.StringHelper.getStringSafe;
-
 public interface ObservableStringValue extends ObservableObjectValue<String> {
     default String getValueSafe() {
-        return getStringSafe(get());
+        return get() == null ? "" : get();
     }
 }

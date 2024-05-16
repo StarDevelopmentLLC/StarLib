@@ -24,7 +24,5 @@ publishing {
 }
 
 dependencies {
-    api project(':observable:writable')
-    api project(':observable:constants')
     api project(':observable:property')
 }
