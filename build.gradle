@@ -3,7 +3,7 @@ plugins {
 }
 
 def exportedProjects= [
-        ":",
+        //":",
         ":converter",
         ":helper",
         ":observable",
