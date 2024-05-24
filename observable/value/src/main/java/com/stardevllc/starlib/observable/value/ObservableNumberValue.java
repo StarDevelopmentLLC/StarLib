@@ -28,47 +28,47 @@ package com.stardevllc.starlib.observable.value;
 import com.stardevllc.starlib.observable.ObservableValue;
 
 public interface ObservableNumberValue extends ObservableValue<Number> {
-    ObservableValue<Number> negate();
+    ObservableNumberValue negate();
 
-    ObservableValue<Number> add(ObservableValue<Number> other);
-    
-    ObservableValue<Number> add(Number other);
+    ObservableNumberValue add(ObservableValue<Number> other);
 
-    ObservableValue<Number> subtract(ObservableValue<Number> other);
+    ObservableNumberValue add(Number other);
 
-    ObservableValue<Number> subtract(Number other);
+    ObservableNumberValue subtract(ObservableValue<Number> other);
 
-    ObservableValue<Number> multiply(ObservableValue<Number> other);
-    
-    ObservableValue<Number> multiply(Number other);
+    ObservableNumberValue subtract(Number other);
 
-    ObservableValue<Number> divide(ObservableValue<Number> other);
-    
-    ObservableValue<Number> divide(Number other);
+    ObservableNumberValue multiply(ObservableValue<Number> other);
 
-    ObservableValue<Boolean> isEqualTo(ObservableValue<Number> other);
-    
-    ObservableValue<Boolean> isEqualTo(Number other);
+    ObservableNumberValue multiply(Number other);
 
-    ObservableValue<Boolean> isNotEqualTo(ObservableValue<Number> other);
-    
-    ObservableValue<Boolean> isNotEqualTo(Number other);
+    ObservableNumberValue divide(ObservableValue<Number> other);
 
-    ObservableValue<Boolean> greaterThan(ObservableValue<Number> other);
-    
-    ObservableValue<Boolean> greaterThan(Number other);
+    ObservableNumberValue divide(Number other);
 
-    ObservableValue<Boolean> lessThan(ObservableValue<Number> other);
-    
-    ObservableValue<Boolean> lessThan(Number other);
+    ObservableBooleanValue isEqualTo(ObservableValue<Number> other);
 
-    ObservableValue<Boolean> greaterThanOrEqualTo(ObservableValue<Number> other);
-    
-    ObservableValue<Boolean> greaterThanOrEqualTo(Number other);
+    ObservableBooleanValue isEqualTo(Number other);
 
-    ObservableValue<Boolean> lessThanOrEqualTo(ObservableValue<Number> other);
-    
-    ObservableValue<Boolean> lessThanOrEqualTo(Number other);
+    ObservableBooleanValue isNotEqualTo(ObservableValue<Number> other);
+
+    ObservableBooleanValue isNotEqualTo(Number other);
+
+    ObservableBooleanValue greaterThan(ObservableValue<Number> other);
+
+    ObservableBooleanValue greaterThan(Number other);
+
+    ObservableBooleanValue lessThan(ObservableValue<Number> other);
+
+    ObservableBooleanValue lessThan(Number other);
+
+    ObservableBooleanValue greaterThanOrEqualTo(ObservableValue<Number> other);
+
+    ObservableBooleanValue greaterThanOrEqualTo(Number other);
+
+    ObservableBooleanValue lessThanOrEqualTo(ObservableValue<Number> other);
+
+    ObservableBooleanValue lessThanOrEqualTo(Number other);
 
     int intValue();
 

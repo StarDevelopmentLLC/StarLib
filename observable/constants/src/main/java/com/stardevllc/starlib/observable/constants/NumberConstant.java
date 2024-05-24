@@ -2,10 +2,7 @@ package com.stardevllc.starlib.observable.constants;
 
 import com.stardevllc.starlib.math.Operations;
 import com.stardevllc.starlib.observable.ObservableValue;
-import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
-import com.stardevllc.starlib.observable.value.ObservableFloatValue;
-import com.stardevllc.starlib.observable.value.ObservableLongValue;
-import com.stardevllc.starlib.observable.value.ObservableNumberValue;
+import com.stardevllc.starlib.observable.value.*;
 
 import java.util.Objects;
 
@@ -28,52 +25,52 @@ public abstract class NumberConstant implements ObservableNumberValue {
     }
 
     @Override
-    public ObservableValue<Number> add(Number other) {
+    public ObservableNumberValue add(Number other) {
         return add(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Number> subtract(Number other) {
+    public ObservableNumberValue subtract(Number other) {
         return subtract(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Number> multiply(Number other) {
+    public ObservableNumberValue multiply(Number other) {
         return multiply(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Number> divide(Number other) {
+    public ObservableNumberValue divide(Number other) {
         return divide(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> isEqualTo(Number other) {
+    public ObservableBooleanValue isEqualTo(Number other) {
         return isEqualTo(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> isNotEqualTo(Number other) {
+    public ObservableBooleanValue isNotEqualTo(Number other) {
         return isNotEqualTo(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> greaterThan(Number other) {
+    public ObservableBooleanValue greaterThan(Number other) {
         return greaterThan(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> lessThan(Number other) {
+    public ObservableBooleanValue lessThan(Number other) {
         return lessThan(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> greaterThanOrEqualTo(Number other) {
+    public ObservableBooleanValue greaterThanOrEqualTo(Number other) {
         return greaterThanOrEqualTo(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> lessThanOrEqualTo(Number other) {
+    public ObservableBooleanValue lessThanOrEqualTo(Number other) {
         return lessThanOrEqualTo(NumberConstant.of(other));
     }
 
@@ -93,37 +90,37 @@ public abstract class NumberConstant implements ObservableNumberValue {
     }
 
     @Override
-    public ObservableValue<Number> negate() {
+    public ObservableNumberValue negate() {
         return of(Operations.negate(getValue()));
     }
 
     @Override
-    public ObservableValue<Number> add(ObservableValue<Number> other) {
+    public ObservableNumberValue add(ObservableValue<Number> other) {
         return of(Operations.add(getValue(), other.getValue()));
     }
 
     @Override
-    public ObservableValue<Number> subtract(ObservableValue<Number> other) {
+    public ObservableNumberValue subtract(ObservableValue<Number> other) {
         return of(Operations.subtract(getValue(), other.getValue()));
     }
 
     @Override
-    public ObservableValue<Number> multiply(ObservableValue<Number> other) {
+    public ObservableNumberValue multiply(ObservableValue<Number> other) {
         return of(Operations.multiply(getValue(), other.getValue()));
     }
 
     @Override
-    public ObservableValue<Number> divide(ObservableValue<Number> other) {
+    public ObservableNumberValue divide(ObservableValue<Number> other) {
         return of(Operations.divide(getValue(), other.getValue()));
     }
 
     @Override
-    public ObservableValue<Boolean> isEqualTo(ObservableValue<Number> other) {
+    public ObservableBooleanValue isEqualTo(ObservableValue<Number> other) {
         return BooleanConstant.valueOf(Objects.equals(getValue(), other.getValue()));
     }
 
     @Override
-    public ObservableValue<Boolean> isNotEqualTo(ObservableValue<Number> other) {
+    public ObservableBooleanValue isNotEqualTo(ObservableValue<Number> other) {
         return BooleanConstant.valueOf(Objects.equals(getValue(), other.getValue()));
     }
 
@@ -133,7 +130,7 @@ public abstract class NumberConstant implements ObservableNumberValue {
     }
 
     @Override
-    public ObservableValue<Boolean> greaterThan(ObservableValue<Number> other) {
+    public ObservableBooleanValue greaterThan(ObservableValue<Number> other) {
         if (getValue() == null || other.getValue() == null) {
             return BooleanConstant.FALSE;
         }
@@ -150,17 +147,17 @@ public abstract class NumberConstant implements ObservableNumberValue {
     }
 
     @Override
-    public ObservableValue<Boolean> lessThan(ObservableValue<Number> other) {
+    public ObservableBooleanValue lessThan(ObservableValue<Number> other) {
         return BooleanConstant.valueOf(getValue().doubleValue() < other.getValue().doubleValue());
     }
 
     @Override
-    public ObservableValue<Boolean> greaterThanOrEqualTo(ObservableValue<Number> other) {
+    public ObservableBooleanValue greaterThanOrEqualTo(ObservableValue<Number> other) {
         return BooleanConstant.valueOf(getValue().doubleValue() >= other.getValue().doubleValue());
     }
 
     @Override
-    public ObservableValue<Boolean> lessThanOrEqualTo(ObservableValue<Number> other) {
+    public ObservableBooleanValue lessThanOrEqualTo(ObservableValue<Number> other) {
         return BooleanConstant.valueOf(getValue().doubleValue() <= other.getValue().doubleValue());
     }
 }

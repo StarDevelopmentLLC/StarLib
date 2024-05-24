@@ -30,11 +30,9 @@ import com.stardevllc.starlib.observable.ObservableValue;
 public interface ObservableBooleanValue extends ObservableValue<Boolean> {
     boolean get();
 
-    ObservableValue<Boolean> and(final ObservableBooleanValue other);
+    ObservableBooleanValue and(final ObservableBooleanValue other);
 
-    ObservableValue<Boolean> or(final ObservableBooleanValue other);
+    ObservableBooleanValue or(final ObservableBooleanValue other);
 
-    ObservableValue<Boolean> not();
-
-    ObservableValue<String> asString();
+    ObservableBooleanValue not();
 }

@@ -80,7 +80,7 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     }
 
     @Override
-    public ObservableValue<Number> add(ObservableValue<Number> otherValue) {
+    public ObservableNumberValue add(ObservableValue<Number> otherValue) {
         if (getValue() == null || otherValue.getValue() == null) {
             return NumberConstant.of(0);
         }
@@ -99,7 +99,7 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     }
 
     @Override
-    public ObservableValue<Number> subtract(ObservableValue<Number> otherValue) {
+    public ObservableNumberValue subtract(ObservableValue<Number> otherValue) {
         if (getValue() == null || otherValue.getValue() == null) {
             return NumberConstant.of(0);
         }
@@ -118,7 +118,7 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     }
 
     @Override
-    public ObservableValue<Number> multiply(ObservableValue<Number> otherValue) {
+    public ObservableNumberValue multiply(ObservableValue<Number> otherValue) {
         if (getValue() == null || otherValue.getValue() == null) {
             return NumberConstant.of(0);
         }
@@ -137,7 +137,7 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     }
 
     @Override
-    public ObservableValue<Number> divide(ObservableValue<Number> otherValue) {
+    public ObservableNumberValue divide(ObservableValue<Number> otherValue) {
         if (getValue() == null || otherValue.getValue() == null) {
             return NumberConstant.of(0);
         }
@@ -156,7 +156,7 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     }
 
     @Override
-    public ObservableValue<Boolean> greaterThan(ObservableValue<Number> otherValue) {
+    public ObservableBooleanValue greaterThan(ObservableValue<Number> otherValue) {
         if (getValue() == null || otherValue.getValue() == null) {
             return BooleanConstant.FALSE;
         }
@@ -175,7 +175,7 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     }
 
     @Override
-    public ObservableValue<Boolean> lessThan(ObservableValue<Number> otherValue) {
+    public ObservableBooleanValue lessThan(ObservableValue<Number> otherValue) {
         if (getValue() == null || otherValue.getValue() == null) {
             return BooleanConstant.FALSE;
         }
@@ -194,7 +194,7 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     }
 
     @Override
-    public ObservableValue<Boolean> greaterThanOrEqualTo(ObservableValue<Number> otherValue) {
+    public ObservableBooleanValue greaterThanOrEqualTo(ObservableValue<Number> otherValue) {
         if (getValue() == null || otherValue.getValue() == null) {
             return BooleanConstant.FALSE;
         }
@@ -213,7 +213,7 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     }
 
     @Override
-    public ObservableValue<Boolean> lessThanOrEqualTo(ObservableValue<Number> otherValue) {
+    public ObservableBooleanValue lessThanOrEqualTo(ObservableValue<Number> otherValue) {
         if (getValue() == null || otherValue.getValue() == null) {
             return BooleanConstant.FALSE;
         }
@@ -251,57 +251,57 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     }
 
     @Override
-    public ObservableValue<Boolean> isNotEqualTo(ObservableValue<Number> other) {
+    public ObservableBooleanValue isNotEqualTo(ObservableValue<Number> other) {
         return isEqualTo(other).not();
     }
 
     @Override
-    public ObservableValue<Number> add(Number other) {
+    public ObservableNumberValue add(Number other) {
         return add(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Number> subtract(Number other) {
+    public ObservableNumberValue subtract(Number other) {
         return subtract(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Number> multiply(Number other) {
+    public ObservableNumberValue multiply(Number other) {
         return multiply(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Number> divide(Number other) {
+    public ObservableNumberValue divide(Number other) {
         return divide(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> isEqualTo(Number other) {
+    public ObservableBooleanValue isEqualTo(Number other) {
         return isEqualTo(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> isNotEqualTo(Number other) {
+    public ObservableBooleanValue isNotEqualTo(Number other) {
         return isNotEqualTo(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> greaterThan(Number other) {
+    public ObservableBooleanValue greaterThan(Number other) {
         return greaterThan(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> lessThan(Number other) {
+    public ObservableBooleanValue lessThan(Number other) {
         return lessThan(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> greaterThanOrEqualTo(Number other) {
+    public ObservableBooleanValue greaterThanOrEqualTo(Number other) {
         return greaterThanOrEqualTo(NumberConstant.of(other));
     }
 
     @Override
-    public ObservableValue<Boolean> lessThanOrEqualTo(Number other) {
+    public ObservableBooleanValue lessThanOrEqualTo(Number other) {
         return lessThanOrEqualTo(NumberConstant.of(other));
     }
 }
