@@ -140,12 +140,15 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="col-first even-row-color"><code>protected final <a href="functions/KeyRetriever.html" title="interface in com.stardevllc.starlib.registry.functions">KeyRetriever</a><wbr>&lt;<a href="Registry.html" title="type parameter in Registry">V</a>,<wbr><a href="Registry.html" title="type parameter in Registry">K</a>&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#keyRetriever" class="member-name-link">keyRetriever</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/locks/Lock.html" title="class or interface in java.util.concurrent.locks" class="external-link">Lock</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#lock" class="member-name-link">lock</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a><wbr>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>,<wbr><a href="Registry.html" title="type parameter in Registry">V</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#keySetter" class="member-name-link">keySetter</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.html" title="class or interface in java.util" class="external-link">TreeMap</a><wbr>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>,<wbr><a href="Registry.html" title="type parameter in Registry">V</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#objects" class="member-name-link">objects</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/locks/Lock.html" title="class or interface in java.util.concurrent.locks" class="external-link">Lock</a></code></div>
+<div class="col-second even-row-color"><code><a href="#lock" class="member-name-link">lock</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.html" title="class or interface in java.util" class="external-link">TreeMap</a><wbr>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>,<wbr><a href="Registry.html" title="type parameter in Registry">V</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#objects" class="member-name-link">objects</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -159,10 +162,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">Registry</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.util.Map,com.stardevllc.starlib.registry.functions.KeyNormalizer,com.stardevllc.starlib.registry.functions.KeyRetriever,com.stardevllc.starlib.registry.functions.KeyGenerator)" class="member-name-link">Registry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>,<wbr><a href="Registry.html" title="type parameter in Registry">V</a>&gt;&nbsp;initialObjects,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.util.Map,com.stardevllc.starlib.registry.functions.KeyNormalizer,com.stardevllc.starlib.registry.functions.KeyRetriever,com.stardevllc.starlib.registry.functions.KeyGenerator,com.stardevllc.starlib.registry.functions.KeySetter)" class="member-name-link">Registry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>,<wbr><a href="Registry.html" title="type parameter in Registry">V</a>&gt;&nbsp;initialObjects,
  <a href="functions/KeyNormalizer.html" title="interface in com.stardevllc.starlib.registry.functions">KeyNormalizer</a>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>&gt;&nbsp;keyNormalizer,
  <a href="functions/KeyRetriever.html" title="interface in com.stardevllc.starlib.registry.functions">KeyRetriever</a>&lt;<a href="Registry.html" title="type parameter in Registry">V</a>,<wbr><a href="Registry.html" title="type parameter in Registry">K</a>&gt;&nbsp;keyRetriever,
- <a href="functions/KeyGenerator.html" title="interface in com.stardevllc.starlib.registry.functions">KeyGenerator</a>&lt;<a href="Registry.html" title="type parameter in Registry">V</a>,<wbr><a href="Registry.html" title="type parameter in Registry">K</a>&gt;&nbsp;keyGenerator)</code></div>
+ <a href="functions/KeyGenerator.html" title="interface in com.stardevllc.starlib.registry.functions">KeyGenerator</a>&lt;<a href="Registry.html" title="type parameter in Registry">V</a>,<wbr><a href="Registry.html" title="type parameter in Registry">K</a>&gt;&nbsp;keyGenerator,
+ <a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>,<wbr><a href="Registry.html" title="type parameter in Registry">V</a>&gt;&nbsp;keySetter)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
@@ -366,6 +370,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 </section>
 </li>
 <li>
+<section class="detail" id="keySetter">
+<h3>keySetter</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a>&lt;<a href="Registry.html" title="type parameter in Registry">K</a> extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>&gt;,<wbr><a href="Registry.html" title="type parameter in Registry">V</a>&gt;</span>&nbsp;<span class="element-name">keySetter</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="lock">
 <h3>lock</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/locks/Lock.html" title="class or interface in java.util.concurrent.locks" class="external-link">Lock</a></span>&nbsp;<span class="element-name">lock</span></div>
@@ -380,12 +390,13 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.util.Map,com.stardevllc.starlib.registry.functions.KeyNormalizer,com.stardevllc.starlib.registry.functions.KeyRetriever,com.stardevllc.starlib.registry.functions.KeyGenerator)">
+<section class="detail" id="&lt;init&gt;(java.util.Map,com.stardevllc.starlib.registry.functions.KeyNormalizer,com.stardevllc.starlib.registry.functions.KeyRetriever,com.stardevllc.starlib.registry.functions.KeyGenerator,com.stardevllc.starlib.registry.functions.KeySetter)">
 <h3>Registry</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Registry</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>,<wbr><a href="Registry.html" title="type parameter in Registry">V</a>&gt;&nbsp;initialObjects,
  <a href="functions/KeyNormalizer.html" title="interface in com.stardevllc.starlib.registry.functions">KeyNormalizer</a>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>&gt;&nbsp;keyNormalizer,
  <a href="functions/KeyRetriever.html" title="interface in com.stardevllc.starlib.registry.functions">KeyRetriever</a>&lt;<a href="Registry.html" title="type parameter in Registry">V</a>,<wbr><a href="Registry.html" title="type parameter in Registry">K</a>&gt;&nbsp;keyRetriever,
- <a href="functions/KeyGenerator.html" title="interface in com.stardevllc.starlib.registry.functions">KeyGenerator</a>&lt;<a href="Registry.html" title="type parameter in Registry">V</a>,<wbr><a href="Registry.html" title="type parameter in Registry">K</a>&gt;&nbsp;keyGenerator)</span></div>
+ <a href="functions/KeyGenerator.html" title="interface in com.stardevllc.starlib.registry.functions">KeyGenerator</a>&lt;<a href="Registry.html" title="type parameter in Registry">V</a>,<wbr><a href="Registry.html" title="type parameter in Registry">K</a>&gt;&nbsp;keyGenerator,
+ <a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a>&lt;<a href="Registry.html" title="type parameter in Registry">K</a>,<wbr><a href="Registry.html" title="type parameter in Registry">V</a>&gt;&nbsp;keySetter)</span></div>
 </section>
 </li>
 <li>

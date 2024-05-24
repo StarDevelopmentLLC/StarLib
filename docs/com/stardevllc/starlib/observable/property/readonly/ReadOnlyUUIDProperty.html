@@ -91,16 +91,16 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../Observable.html" title="interface in com.stardevllc.starlib.observable">Observable</a></code>, <code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code>, <code><a href="ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable.property.readonly">ReadOnlyProperty</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code>, <code><a href="../../value/ObservableObjectValue.html" title="interface in com.stardevllc.starlib.observable.value">ObservableObjectValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code>, <code><a href="../../value/ObservableUUIDValue.html" title="interface in com.stardevllc.starlib.observable.value">ObservableUUIDValue</a></code></dd>
+<dd><code><a href="../../Observable.html" title="interface in com.stardevllc.starlib.observable">Observable</a></code>, <code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code>, <code><a href="../../Property.html" title="interface in com.stardevllc.starlib.observable">Property</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code>, <code><a href="../../ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable">ReadOnlyProperty</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code>, <code><a href="../../value/ObservableObjectValue.html" title="interface in com.stardevllc.starlib.observable.value">ObservableObjectValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code>, <code><a href="../../value/ObservableUUIDValue.html" title="interface in com.stardevllc.starlib.observable.value">ObservableUUIDValue</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../writable/UUIDProperty.html" title="class in com.stardevllc.starlib.observable.property.writable">UUIDProperty</a></code></dd>
+<dd><code><a href="../writable/ReadWriteUUIDProperty.html" title="class in com.stardevllc.starlib.observable.property.writable">ReadWriteUUIDProperty</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ReadOnlyUUIDProperty</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable.property.readonly">ReadOnlyProperty</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;, <a href="../../value/ObservableUUIDValue.html" title="interface in com.stardevllc.starlib.observable.value">ObservableUUIDValue</a></span></div>
+implements <a href="../../ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable">ReadOnlyProperty</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;, <a href="../../value/ObservableUUIDValue.html" title="interface in com.stardevllc.starlib.observable.value">ObservableUUIDValue</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -127,8 +127,8 @@ implements <a href="ReadOnlyProperty.html" title="interface in com.stardevllc.st
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-com.stardevllc.starlib.observable.property.readonly.ReadOnlyProperty">Fields inherited from interface&nbsp;com.stardevllc.starlib.observable.property.readonly.<a href="ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable.property.readonly">ReadOnlyProperty</a></h3>
-<code><a href="ReadOnlyProperty.html#DEFAULT_BEAN">DEFAULT_BEAN</a>, <a href="ReadOnlyProperty.html#DEFAULT_NAME">DEFAULT_NAME</a></code></div>
+<h3 id="fields-inherited-from-class-com.stardevllc.starlib.observable.Property">Fields inherited from interface&nbsp;com.stardevllc.starlib.observable.<a href="../../Property.html" title="interface in com.stardevllc.starlib.observable">Property</a></h3>
+<code><a href="../../Property.html#DEFAULT_BEAN">DEFAULT_BEAN</a>, <a href="../../Property.html#DEFAULT_NAME">DEFAULT_NAME</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -167,48 +167,45 @@ implements <a href="ReadOnlyProperty.html" title="interface in com.stardevllc.st
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asString()" class="member-name-link">asString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asString(java.lang.String)" class="member-name-link">asString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;format)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#bind(com.stardevllc.starlib.observable.ObservableValue)" class="member-name-link">bind</a><wbr>(<a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;? extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;newObservable)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get()" class="member-name-link">get</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBean()" class="member-name-link">getBean</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#bind(com.stardevllc.starlib.observable.ObservableValue)" class="member-name-link">bind</a><wbr>(<a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;? extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;newObservable)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValue()" class="member-name-link">getValue</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get()" class="member-name-link">get</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isBound()" class="member-name-link">isBound</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBean()" class="member-name-link">getBean</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEqualTo(com.stardevllc.starlib.observable.ObservableValue)" class="member-name-link">isEqualTo</a><wbr>(<a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;other)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValue()" class="member-name-link">getValue</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isBound()" class="member-name-link">isBound</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNotEqualTo(com.stardevllc.starlib.observable.ObservableValue)" class="member-name-link">isNotEqualTo</a><wbr>(<a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;other)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEqualTo(com.stardevllc.starlib.observable.ObservableValue)" class="member-name-link">isEqualTo</a><wbr>(<a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;other)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNotNull()" class="member-name-link">isNotNull</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNotEqualTo(com.stardevllc.starlib.observable.ObservableValue)" class="member-name-link">isNotEqualTo</a><wbr>(<a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;other)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNull()" class="member-name-link">isNull</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNotNull()" class="member-name-link">isNotNull</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#orElse(java.util.UUID)" class="member-name-link">orElse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;constant)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNull()" class="member-name-link">isNull</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#orElse(java.util.UUID)" class="member-name-link">orElse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;constant)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unbind()" class="member-name-link">unbind</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unbind()" class="member-name-link">unbind</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -322,7 +319,7 @@ implements <a href="ReadOnlyProperty.html" title="interface in com.stardevllc.st
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isBound</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ReadOnlyProperty.html#isBound()">isBound</a></code>&nbsp;in interface&nbsp;<code><a href="ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable.property.readonly">ReadOnlyProperty</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
+<dd><code><a href="../../Property.html#isBound()">isBound</a></code>&nbsp;in interface&nbsp;<code><a href="../../Property.html" title="interface in com.stardevllc.starlib.observable">Property</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
 </dl>
 </section>
 </li>
@@ -332,7 +329,7 @@ implements <a href="ReadOnlyProperty.html" title="interface in com.stardevllc.st
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">bind</span><wbr><span class="parameters">(<a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;? extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;newObservable)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ReadOnlyProperty.html#bind(com.stardevllc.starlib.observable.ObservableValue)">bind</a></code>&nbsp;in interface&nbsp;<code><a href="ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable.property.readonly">ReadOnlyProperty</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
+<dd><code><a href="../../Property.html#bind(com.stardevllc.starlib.observable.ObservableValue)">bind</a></code>&nbsp;in interface&nbsp;<code><a href="../../Property.html" title="interface in com.stardevllc.starlib.observable">Property</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
 </dl>
 </section>
 </li>
@@ -342,7 +339,7 @@ implements <a href="ReadOnlyProperty.html" title="interface in com.stardevllc.st
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">unbind</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ReadOnlyProperty.html#unbind()">unbind</a></code>&nbsp;in interface&nbsp;<code><a href="ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable.property.readonly">ReadOnlyProperty</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
+<dd><code><a href="../../Property.html#unbind()">unbind</a></code>&nbsp;in interface&nbsp;<code><a href="../../Property.html" title="interface in com.stardevllc.starlib.observable">Property</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
 </dl>
 </section>
 </li>
@@ -364,7 +361,7 @@ implements <a href="ReadOnlyProperty.html" title="interface in com.stardevllc.st
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getBean</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ReadOnlyProperty.html#getBean()">getBean</a></code>&nbsp;in interface&nbsp;<code><a href="ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable.property.readonly">ReadOnlyProperty</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
+<dd><code><a href="../../Property.html#getBean()">getBean</a></code>&nbsp;in interface&nbsp;<code><a href="../../Property.html" title="interface in com.stardevllc.starlib.observable">Property</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
 </dl>
 </section>
 </li>
@@ -374,7 +371,7 @@ implements <a href="ReadOnlyProperty.html" title="interface in com.stardevllc.st
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ReadOnlyProperty.html#getName()">getName</a></code>&nbsp;in interface&nbsp;<code><a href="ReadOnlyProperty.html" title="interface in com.stardevllc.starlib.observable.property.readonly">ReadOnlyProperty</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
+<dd><code><a href="../../Property.html#getName()">getName</a></code>&nbsp;in interface&nbsp;<code><a href="../../Property.html" title="interface in com.stardevllc.starlib.observable">Property</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
 </dl>
 </section>
 </li>
@@ -425,16 +422,6 @@ implements <a href="ReadOnlyProperty.html" title="interface in com.stardevllc.st
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../ObservableValue.html#asString()">asString</a></code>&nbsp;in interface&nbsp;<code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="asString(java.lang.String)">
-<h3>asString</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">asString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;format)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../ObservableValue.html#asString(java.lang.String)">asString</a></code>&nbsp;in interface&nbsp;<code><a href="../../ObservableValue.html" title="interface in com.stardevllc.starlib.observable">ObservableValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</code></dd>
 </dl>
 </section>
 </li>

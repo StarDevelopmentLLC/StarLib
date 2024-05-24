@@ -107,12 +107,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected final <a href="../property/ClockLongProperty.html" title="class in com.stardevllc.starlib.clock.property">ClockLongProperty</a></code></div>
-<div class="col-second even-row-color"><code><a href="#endTimeProperty" class="member-name-link">endTimeProperty</a></code></div>
+<div class="col-second even-row-color"><code><a href="#endTime" class="member-name-link">endTime</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="../property/ClockLongProperty.html" title="class in com.stardevllc.starlib.clock.property">ClockLongProperty</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#startTime" class="member-name-link">startTime</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-com.stardevllc.starlib.clock.Clock">Fields inherited from class&nbsp;com.stardevllc.starlib.clock.<a href="../Clock.html" title="class in com.stardevllc.starlib.clock">Clock</a></h3>
-<code><a href="../Clock.html#callbacks">callbacks</a>, <a href="../Clock.html#cancelledProperty">cancelledProperty</a>, <a href="../Clock.html#countAmount">countAmount</a>, <a href="../Clock.html#endCondition">endCondition</a>, <a href="../Clock.html#pausedProperty">pausedProperty</a>, <a href="../Clock.html#timeProperty">timeProperty</a></code></div>
+<code><a href="../Clock.html#callbacks">callbacks</a>, <a href="../Clock.html#cancelled">cancelled</a>, <a href="../Clock.html#countAmount">countAmount</a>, <a href="../Clock.html#endCondition">endCondition</a>, <a href="../Clock.html#paused">paused</a>, <a href="../Clock.html#time">time</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -126,6 +129,10 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(long,long)" class="member-name-link">Stopwatch</a><wbr>(long&nbsp;endTime,
  long&nbsp;countAmount)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(long,long,long)" class="member-name-link">Stopwatch</a><wbr>(long&nbsp;startTime,
+ long&nbsp;endTime,
+ long&nbsp;countAmount)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -146,7 +153,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../snapshot/StopwatchSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">StopwatchSnapshot</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSnapshot()" class="member-name-link">createSnapshot</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../observable/property/writable/LongProperty.html" title="class in com.stardevllc.starlib.observable.property.writable">LongProperty</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../observable/property/writable/ReadWriteLongProperty.html" title="class in com.stardevllc.starlib.observable.property.writable">ReadWriteLongProperty</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#endTimeProperty()" class="member-name-link">endTimeProperty</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
@@ -164,6 +171,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Stopwatch.html" title="class in com.stardevllc.starlib.clock.clocks">Stopwatch</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../observable/property/writable/ReadWriteLongProperty.html" title="class in com.stardevllc.starlib.observable.property.writable">ReadWriteLongProperty</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startTimeProperty()" class="member-name-link">startTimeProperty</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -185,9 +195,15 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="endTimeProperty">
-<h3>endTimeProperty</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../property/ClockLongProperty.html" title="class in com.stardevllc.starlib.clock.property">ClockLongProperty</a></span>&nbsp;<span class="element-name">endTimeProperty</span></div>
+<section class="detail" id="endTime">
+<h3>endTime</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../property/ClockLongProperty.html" title="class in com.stardevllc.starlib.clock.property">ClockLongProperty</a></span>&nbsp;<span class="element-name">endTime</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="startTime">
+<h3>startTime</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../property/ClockLongProperty.html" title="class in com.stardevllc.starlib.clock.property">ClockLongProperty</a></span>&nbsp;<span class="element-name">startTime</span></div>
 </section>
 </li>
 </ul>
@@ -198,6 +214,14 @@ loadScripts(document, 'script');</script>
 <section class="constructor-details" id="constructor-detail">
 <h2>Constructor Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="&lt;init&gt;(long,long,long)">
+<h3>Stopwatch</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Stopwatch</span><wbr><span class="parameters">(long&nbsp;startTime,
+ long&nbsp;endTime,
+ long&nbsp;countAmount)</span></div>
+</section>
+</li>
 <li>
 <section class="detail" id="&lt;init&gt;(long,long)">
 <h3>Stopwatch</h3>
@@ -278,7 +302,13 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="endTimeProperty()">
 <h3>endTimeProperty</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../observable/property/writable/LongProperty.html" title="class in com.stardevllc.starlib.observable.property.writable">LongProperty</a></span>&nbsp;<span class="element-name">endTimeProperty</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../observable/property/writable/ReadWriteLongProperty.html" title="class in com.stardevllc.starlib.observable.property.writable">ReadWriteLongProperty</a></span>&nbsp;<span class="element-name">endTimeProperty</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="startTimeProperty()">
+<h3>startTimeProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../observable/property/writable/ReadWriteLongProperty.html" title="class in com.stardevllc.starlib.observable.property.writable">ReadWriteLongProperty</a></span>&nbsp;<span class="element-name">startTimeProperty</span>()</div>
 </section>
 </li>
 </ul>

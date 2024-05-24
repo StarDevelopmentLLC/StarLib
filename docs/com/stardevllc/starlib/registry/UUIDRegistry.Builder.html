@@ -83,11 +83,11 @@ loadScripts(document, 'script');</script>
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">com.stardevllc.starlib.registry</a></div>
-<h1 title="Class UUIDRegistry.Builder" class="title">Class UUIDRegistry.Builder&lt;V,<wbr>K extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;K&gt;&gt;</h1>
+<h1 title="Class UUIDRegistry.Builder" class="title">Class UUIDRegistry.Builder&lt;V&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">com.stardevllc.starlib.registry.Registry.Builder</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr>V&gt;
-<div class="inheritance">com.stardevllc.starlib.registry.UUIDRegistry.Builder&lt;V,<wbr>K&gt;</div>
+<div class="inheritance">com.stardevllc.starlib.registry.UUIDRegistry.Builder&lt;V&gt;</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
@@ -96,7 +96,7 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="UUIDRegistry.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry</a>&lt;<a href="UUIDRegistry.html" title="type parameter in UUIDRegistry">V</a>&gt;</code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name type-name-label">UUIDRegistry.Builder&lt;V,<wbr>K extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;K&gt;&gt;</span>
+<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name type-name-label">UUIDRegistry.Builder&lt;V&gt;</span>
 <span class="extends-implements">extends <a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr>V&gt;</span></div>
 </section>
 <section class="summary">
@@ -107,7 +107,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-com.stardevllc.starlib.registry.Registry.Builder">Fields inherited from class&nbsp;com.stardevllc.starlib.registry.<a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a></h3>
-<code><a href="Registry.Builder.html#keyGenerator">keyGenerator</a>, <a href="Registry.Builder.html#keyNormalizer">keyNormalizer</a>, <a href="Registry.Builder.html#keyRetriever">keyRetriever</a>, <a href="Registry.Builder.html#objects">objects</a></code></div>
+<code><a href="Registry.Builder.html#keyGenerator">keyGenerator</a>, <a href="Registry.Builder.html#keyNormalizer">keyNormalizer</a>, <a href="Registry.Builder.html#keyRetriever">keyRetriever</a>, <a href="Registry.Builder.html#keySetter">keySetter</a>, <a href="Registry.Builder.html#objects">objects</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -137,12 +137,24 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UUIDRegistry.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry</a><wbr>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#build()" class="member-name-link">build</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a><wbr>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialObjects(java.util.TreeMap)" class="member-name-link">initialObjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.html" title="class or interface in java.util" class="external-link">TreeMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;&nbsp;objects)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a><wbr>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keyGenerator(com.stardevllc.starlib.registry.functions.KeyGenerator)" class="member-name-link">keyGenerator</a><wbr>(<a href="functions/KeyGenerator.html" title="interface in com.stardevllc.starlib.registry.functions">KeyGenerator</a>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;keyGenerator)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a><wbr>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keyNormalizer(com.stardevllc.starlib.registry.functions.KeyNormalizer)" class="member-name-link">keyNormalizer</a><wbr>(<a href="functions/KeyNormalizer.html" title="interface in com.stardevllc.starlib.registry.functions">KeyNormalizer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;keyNormalizer)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a><wbr>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keyRetriever(com.stardevllc.starlib.registry.functions.KeyRetriever)" class="member-name-link">keyRetriever</a><wbr>(<a href="functions/KeyRetriever.html" title="interface in com.stardevllc.starlib.registry.functions">KeyRetriever</a>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;keyRetriever)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a><wbr>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keySetter(com.stardevllc.starlib.registry.functions.KeySetter)" class="member-name-link">keySetter</a><wbr>(<a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;&nbsp;keySetter)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-com.stardevllc.starlib.registry.Registry.Builder">Methods inherited from class&nbsp;com.stardevllc.starlib.registry.<a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a></h3>
-<code><a href="Registry.Builder.html#initialObjects(java.util.TreeMap)">initialObjects</a>, <a href="Registry.Builder.html#keyGenerator(com.stardevllc.starlib.registry.functions.KeyGenerator)">keyGenerator</a>, <a href="Registry.Builder.html#keyNormalizer(com.stardevllc.starlib.registry.functions.KeyNormalizer)">keyNormalizer</a>, <a href="Registry.Builder.html#keyRetriever(com.stardevllc.starlib.registry.functions.KeyRetriever)">keyRetriever</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -171,6 +183,56 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="initialObjects(java.util.TreeMap)">
+<h3>initialObjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</span>&nbsp;<span class="element-name">initialObjects</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.html" title="class or interface in java.util" class="external-link">TreeMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;&nbsp;objects)</span></div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="Registry.Builder.html#initialObjects(java.util.TreeMap)">initialObjects</a></code>&nbsp;in class&nbsp;<code><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="keyNormalizer(com.stardevllc.starlib.registry.functions.KeyNormalizer)">
+<h3>keyNormalizer</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</span>&nbsp;<span class="element-name">keyNormalizer</span><wbr><span class="parameters">(<a href="functions/KeyNormalizer.html" title="interface in com.stardevllc.starlib.registry.functions">KeyNormalizer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;keyNormalizer)</span></div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="Registry.Builder.html#keyNormalizer(com.stardevllc.starlib.registry.functions.KeyNormalizer)">keyNormalizer</a></code>&nbsp;in class&nbsp;<code><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="keyRetriever(com.stardevllc.starlib.registry.functions.KeyRetriever)">
+<h3>keyRetriever</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</span>&nbsp;<span class="element-name">keyRetriever</span><wbr><span class="parameters">(<a href="functions/KeyRetriever.html" title="interface in com.stardevllc.starlib.registry.functions">KeyRetriever</a>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;keyRetriever)</span></div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="Registry.Builder.html#keyRetriever(com.stardevllc.starlib.registry.functions.KeyRetriever)">keyRetriever</a></code>&nbsp;in class&nbsp;<code><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="keyGenerator(com.stardevllc.starlib.registry.functions.KeyGenerator)">
+<h3>keyGenerator</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</span>&nbsp;<span class="element-name">keyGenerator</span><wbr><span class="parameters">(<a href="functions/KeyGenerator.html" title="interface in com.stardevllc.starlib.registry.functions">KeyGenerator</a>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;&nbsp;keyGenerator)</span></div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="Registry.Builder.html#keyGenerator(com.stardevllc.starlib.registry.functions.KeyGenerator)">keyGenerator</a></code>&nbsp;in class&nbsp;<code><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="keySetter(com.stardevllc.starlib.registry.functions.KeySetter)">
+<h3>keySetter</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="UUIDRegistry.Builder.html" title="class in com.stardevllc.starlib.registry">UUIDRegistry.Builder</a>&lt;<a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</span>&nbsp;<span class="element-name">keySetter</span><wbr><span class="parameters">(<a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;&nbsp;keySetter)</span></div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="Registry.Builder.html#keySetter(com.stardevllc.starlib.registry.functions.KeySetter)">keySetter</a></code>&nbsp;in class&nbsp;<code><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="UUIDRegistry.Builder.html" title="type parameter in UUIDRegistry.Builder">V</a>&gt;</code></dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="build()">
 <h3>build</h3>

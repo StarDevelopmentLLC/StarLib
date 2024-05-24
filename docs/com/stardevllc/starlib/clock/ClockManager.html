@@ -148,10 +148,20 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addClock(com.stardevllc.starlib.clock.Clock)" class="member-name-link">addClock</a><wbr>(<a href="Clock.html" title="class in com.stardevllc.starlib.clock">Clock</a>&lt;? extends <a href="snapshot/ClockSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">ClockSnapshot</a>&gt;&nbsp;clock)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="clocks/Stopwatch.html" title="class in com.stardevllc.starlib.clock.clocks">Stopwatch</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createStopwatch(long)" class="member-name-link">createStopwatch</a><wbr>(long&nbsp;endTime)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createStopwatch(long,long,com.stardevllc.starlib.clock.callback.ClockCallback...)" class="member-name-link">createStopwatch</a><wbr>(long&nbsp;startTime,
+ long&nbsp;endTime,
+ <a href="callback/ClockCallback.html" title="interface in com.stardevllc.starlib.clock.callback">ClockCallback</a>&lt;? extends <a href="snapshot/StopwatchSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">StopwatchSnapshot</a>&gt;...&nbsp;callbacks)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="clocks/Stopwatch.html" title="class in com.stardevllc.starlib.clock.clocks">Stopwatch</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createStopwatch(long,com.stardevllc.starlib.clock.callback.ClockCallback...)" class="member-name-link">createStopwatch</a><wbr>(long&nbsp;endTime,
+ <a href="callback/ClockCallback.html" title="interface in com.stardevllc.starlib.clock.callback">ClockCallback</a>&lt;? extends <a href="snapshot/StopwatchSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">StopwatchSnapshot</a>&gt;...&nbsp;callbacks)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="clocks/Stopwatch.html" title="class in com.stardevllc.starlib.clock.clocks">Stopwatch</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createStopwatch(com.stardevllc.starlib.clock.callback.ClockCallback...)" class="member-name-link">createStopwatch</a><wbr>(<a href="callback/ClockCallback.html" title="interface in com.stardevllc.starlib.clock.callback">ClockCallback</a>&lt;? extends <a href="snapshot/StopwatchSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">StopwatchSnapshot</a>&gt;...&nbsp;callbacks)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="clocks/Timer.html" title="class in com.stardevllc.starlib.clock.clocks">Timer</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createTimer(long)" class="member-name-link">createTimer</a><wbr>(long&nbsp;length)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createTimer(long,com.stardevllc.starlib.clock.callback.ClockCallback...)" class="member-name-link">createTimer</a><wbr>(long&nbsp;length,
+ <a href="callback/ClockCallback.html" title="interface in com.stardevllc.starlib.clock.callback">ClockCallback</a>&lt;? extends <a href="snapshot/TimerSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">TimerSnapshot</a>&gt;...&nbsp;callbacks)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="Clock.html" title="class in com.stardevllc.starlib.clock">Clock</a>&lt;? extends <a href="snapshot/ClockSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">ClockSnapshot</a>&gt;&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClocks()" class="member-name-link">getClocks</a>()</code></div>
@@ -254,15 +264,31 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createTimer(long)">
+<section class="detail" id="createTimer(long,com.stardevllc.starlib.clock.callback.ClockCallback...)">
 <h3>createTimer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="clocks/Timer.html" title="class in com.stardevllc.starlib.clock.clocks">Timer</a></span>&nbsp;<span class="element-name">createTimer</span><wbr><span class="parameters">(long&nbsp;length)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="clocks/Timer.html" title="class in com.stardevllc.starlib.clock.clocks">Timer</a></span>&nbsp;<span class="element-name">createTimer</span><wbr><span class="parameters">(long&nbsp;length,
+ <a href="callback/ClockCallback.html" title="interface in com.stardevllc.starlib.clock.callback">ClockCallback</a>&lt;? extends <a href="snapshot/TimerSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">TimerSnapshot</a>&gt;...&nbsp;callbacks)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="createStopwatch(long)">
+<section class="detail" id="createStopwatch(com.stardevllc.starlib.clock.callback.ClockCallback...)">
 <h3>createStopwatch</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="clocks/Stopwatch.html" title="class in com.stardevllc.starlib.clock.clocks">Stopwatch</a></span>&nbsp;<span class="element-name">createStopwatch</span><wbr><span class="parameters">(long&nbsp;endTime)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="clocks/Stopwatch.html" title="class in com.stardevllc.starlib.clock.clocks">Stopwatch</a></span>&nbsp;<span class="element-name">createStopwatch</span><wbr><span class="parameters">(<a href="callback/ClockCallback.html" title="interface in com.stardevllc.starlib.clock.callback">ClockCallback</a>&lt;? extends <a href="snapshot/StopwatchSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">StopwatchSnapshot</a>&gt;...&nbsp;callbacks)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="createStopwatch(long,com.stardevllc.starlib.clock.callback.ClockCallback...)">
+<h3>createStopwatch</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="clocks/Stopwatch.html" title="class in com.stardevllc.starlib.clock.clocks">Stopwatch</a></span>&nbsp;<span class="element-name">createStopwatch</span><wbr><span class="parameters">(long&nbsp;endTime,
+ <a href="callback/ClockCallback.html" title="interface in com.stardevllc.starlib.clock.callback">ClockCallback</a>&lt;? extends <a href="snapshot/StopwatchSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">StopwatchSnapshot</a>&gt;...&nbsp;callbacks)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="createStopwatch(long,long,com.stardevllc.starlib.clock.callback.ClockCallback...)">
+<h3>createStopwatch</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="clocks/Stopwatch.html" title="class in com.stardevllc.starlib.clock.clocks">Stopwatch</a></span>&nbsp;<span class="element-name">createStopwatch</span><wbr><span class="parameters">(long&nbsp;startTime,
+ long&nbsp;endTime,
+ <a href="callback/ClockCallback.html" title="interface in com.stardevllc.starlib.clock.callback">ClockCallback</a>&lt;? extends <a href="snapshot/StopwatchSnapshot.html" title="class in com.stardevllc.starlib.clock.snapshot">StopwatchSnapshot</a>&gt;...&nbsp;callbacks)</span></div>
 </section>
 </li>
 <li>

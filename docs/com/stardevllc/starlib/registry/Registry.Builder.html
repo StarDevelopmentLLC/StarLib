@@ -121,9 +121,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>protected <a href="functions/KeyRetriever.html" title="interface in com.stardevllc.starlib.registry.functions">KeyRetriever</a><wbr>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#keyRetriever" class="member-name-link">keyRetriever</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.html" title="class or interface in java.util" class="external-link">TreeMap</a><wbr>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#objects" class="member-name-link">objects</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a><wbr>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#keySetter" class="member-name-link">keySetter</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.html" title="class or interface in java.util" class="external-link">TreeMap</a><wbr>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#objects" class="member-name-link">objects</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -166,6 +169,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a><wbr>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keyRetriever(com.stardevllc.starlib.registry.functions.KeyRetriever)" class="member-name-link">keyRetriever</a><wbr>(<a href="functions/KeyRetriever.html" title="interface in com.stardevllc.starlib.registry.functions">KeyRetriever</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>&gt;&nbsp;keyRetriever)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a><wbr>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keySetter(com.stardevllc.starlib.registry.functions.KeySetter)" class="member-name-link">keySetter</a><wbr>(<a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;&nbsp;keySetter)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -205,6 +211,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="keyGenerator">
 <h3>keyGenerator</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="functions/KeyGenerator.html" title="interface in com.stardevllc.starlib.registry.functions">KeyGenerator</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a> extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>&gt;&gt;</span>&nbsp;<span class="element-name">keyGenerator</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="keySetter">
+<h3>keySetter</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a> extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>&gt;,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;</span>&nbsp;<span class="element-name">keySetter</span></div>
 </section>
 </li>
 </ul>
@@ -251,6 +263,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="keyGenerator(com.stardevllc.starlib.registry.functions.KeyGenerator)">
 <h3>keyGenerator</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;</span>&nbsp;<span class="element-name">keyGenerator</span><wbr><span class="parameters">(<a href="functions/KeyGenerator.html" title="interface in com.stardevllc.starlib.registry.functions">KeyGenerator</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>&gt;&nbsp;keyGenerator)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="keySetter(com.stardevllc.starlib.registry.functions.KeySetter)">
+<h3>keySetter</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Registry.Builder.html" title="class in com.stardevllc.starlib.registry">Registry.Builder</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;</span>&nbsp;<span class="element-name">keySetter</span><wbr><span class="parameters">(<a href="functions/KeySetter.html" title="interface in com.stardevllc.starlib.registry.functions">KeySetter</a>&lt;<a href="Registry.Builder.html" title="type parameter in Registry.Builder">K</a>,<wbr><a href="Registry.Builder.html" title="type parameter in Registry.Builder">V</a>&gt;&nbsp;keySetter)</span></div>
 </section>
 </li>
 <li>
