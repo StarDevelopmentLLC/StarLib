@@ -1,22 +1,45 @@
 package com.stardevllc.starlib.math;
 
 public enum LengthUnit {
-    MILLIMETER(1), //Base Unit
-    CENTIMETER(0.1), 
-    INCH(25.4), 
-    FOOT(304.8), 
-    YARD(914.4);
+    MILLIMETER(1, "millimeters", "mm"), //Base Unit
+    CENTIMETER(0.1, "centimeters", "cm"), 
+    INCH(25.4, "inch", "in"), 
+    FOOT(304.8, "feet", "ft"), 
+    YARD(914.4, "yard", "yd", "yds");
     
     private final double amountInBase;
+    private final String[] aliases;
 
-    LengthUnit(double amountInBase) {
+    LengthUnit(double amountInBase, String... aliases) {
         this.amountInBase = amountInBase;
+        this.aliases = aliases;
+    }
+    
+    public static LengthUnit matchUnit(String unit) {
+        try {
+            return LengthUnit.valueOf(unit.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            for (LengthUnit value : LengthUnit.values()) {
+                if (value.getAliases() != null) {
+                    for (String alias : value.getAliases()) {
+                        if (alias.equalsIgnoreCase(unit)) {
+                            return value;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public double getAmountInBase() {
         return amountInBase;
     }
-    
+
+    public String[] getAliases() {
+        return aliases;
+    }
+
     public double toMillimeters(double length) {
         return getAmountInBase() * length;
     }
