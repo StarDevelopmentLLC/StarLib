@@ -1,9 +1,6 @@
 package com.stardevllc.starlib.registry;
 
-import com.stardevllc.starlib.registry.functions.KeyGenerator;
-import com.stardevllc.starlib.registry.functions.KeyNormalizer;
-import com.stardevllc.starlib.registry.functions.KeyRetriever;
-import com.stardevllc.starlib.registry.functions.KeySetter;
+import com.stardevllc.starlib.registry.functions.*;
 
 import java.util.Map;
 import java.util.SortedMap;
@@ -57,10 +54,25 @@ public class IntegerRegistry<V> extends Registry<Integer, V> {
         public Builder<V> keySetter(KeySetter<Integer, V> keySetter) {
             return (Builder<V>) super.keySetter(keySetter);
         }
+        
+        @Override
+        public Builder<V> addRegisterListener(RegisterListener<Integer, V> listener) {
+            return (Builder<V>) super.addRegisterListener(listener);
+        }
+
+        @Override
+        public Builder<V> addUnregisterListener(UnregisterListener<Integer, V> listener) {
+            return (Builder<V>) super.addUnregisterListener(listener);
+        }
 
         @Override
         public IntegerRegistry<V> build() {
-            return new IntegerRegistry<>(this.objects, this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+            IntegerRegistry<V> registry = new IntegerRegistry<>(this.objects, this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+            
+            registerListeners.forEach(registry::addRegisterListener);
+            unregisterListeners.forEach(registry::addUnregisterListener);
+            
+            return registry;
         }
     }
 }

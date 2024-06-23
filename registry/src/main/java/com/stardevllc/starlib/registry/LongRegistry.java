@@ -1,9 +1,6 @@
 package com.stardevllc.starlib.registry;
 
-import com.stardevllc.starlib.registry.functions.KeyGenerator;
-import com.stardevllc.starlib.registry.functions.KeyNormalizer;
-import com.stardevllc.starlib.registry.functions.KeyRetriever;
-import com.stardevllc.starlib.registry.functions.KeySetter;
+import com.stardevllc.starlib.registry.functions.*;
 
 import java.util.Map;
 import java.util.SortedMap;
@@ -59,8 +56,23 @@ public class LongRegistry<V> extends Registry<Long, V> {
         }
 
         @Override
+        public Builder<V> addRegisterListener(RegisterListener<Long, V> listener) {
+            return (Builder<V>) super.addRegisterListener(listener);
+        }
+
+        @Override
+        public Builder<V> addUnregisterListener(UnregisterListener<Long, V> listener) {
+            return (Builder<V>) super.addUnregisterListener(listener);
+        }
+
+        @Override
         public LongRegistry<V> build() {
-            return new LongRegistry<>(this.objects, this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+            LongRegistry<V> registry = new LongRegistry<>(this.objects, this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+
+            registerListeners.forEach(registry::addRegisterListener);
+            unregisterListeners.forEach(registry::addUnregisterListener);
+            
+            return registry;
         }
     }
 }

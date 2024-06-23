@@ -8,7 +8,7 @@ dependencies {
 }
 
 group = "com.github.StarMediaDevelopmentLLC"
-version = "1.0.0-alpha.21"
+version = "1.0.0-alpha.22"
 
 tasks.named('test', Test) {
     useJUnitPlatform()

@@ -1,9 +1,6 @@
 package com.stardevllc.starlib.registry;
 
-import com.stardevllc.starlib.registry.functions.KeyGenerator;
-import com.stardevllc.starlib.registry.functions.KeyNormalizer;
-import com.stardevllc.starlib.registry.functions.KeyRetriever;
-import com.stardevllc.starlib.registry.functions.KeySetter;
+import com.stardevllc.starlib.registry.functions.*;
 
 import java.util.Map;
 import java.util.SortedMap;
@@ -60,8 +57,23 @@ public class UUIDRegistry<V> extends Registry<UUID, V> {
         }
 
         @Override
+        public Builder<V> addRegisterListener(RegisterListener<UUID, V> listener) {
+            return (Builder<V>) super.addRegisterListener(listener);
+        }
+
+        @Override
+        public Builder<V> addUnregisterListener(UnregisterListener<UUID, V> listener) {
+            return (Builder<V>) super.addUnregisterListener(listener);
+        }
+
+        @Override
         public UUIDRegistry<V> build() {
-            return new UUIDRegistry<>(this.objects, this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+            UUIDRegistry<V> registry = new UUIDRegistry<>(this.objects, this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+
+            registerListeners.forEach(registry::addRegisterListener);
+            unregisterListeners.forEach(registry::addUnregisterListener);
+            
+            return registry;
         }
     }
 }

@@ -1,9 +1,6 @@
 package com.stardevllc.starlib.registry;
 
-import com.stardevllc.starlib.registry.functions.KeyGenerator;
-import com.stardevllc.starlib.registry.functions.KeyNormalizer;
-import com.stardevllc.starlib.registry.functions.KeyRetriever;
-import com.stardevllc.starlib.registry.functions.KeySetter;
+import com.stardevllc.starlib.registry.functions.*;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -19,6 +16,8 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
     protected final KeyRetriever<V, K> keyRetriever;
     protected final KeyGenerator<V, K> keyGenerator;
     protected final KeySetter<K, V> keySetter;
+    protected final List<RegisterListener<K, V>> registerListeners = new ArrayList<>();
+    protected final List<UnregisterListener<K, V>> unregisterListeners = new ArrayList<>();
     
     protected final Lock lock = new ReentrantLock();
 
@@ -64,6 +63,9 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         lock.lock();
         this.objects.put(key, object);
         lock.unlock();
+        for (RegisterListener<K, V> registerListener : this.registerListeners) {
+            registerListener.onRegister(key, object);
+        }
         return object;
     }
 
@@ -108,7 +110,26 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         lock.lock();
         V removed = objects.remove(key);
         lock.unlock();
+        for (UnregisterListener<K, V> unregisterListener : this.unregisterListeners) {
+            unregisterListener.onUnregister(key, removed);
+        }
         return removed;
+    }
+    
+    public void addRegisterListener(RegisterListener<K, V> registerListener) {
+        this.registerListeners.add(registerListener);
+    }
+    
+    public void addUnregisterListener(UnregisterListener<K, V> unregisterListener) {
+        this.unregisterListeners.add(unregisterListener);
+    }
+    
+    public void removeRegisterListener(RegisterListener<K, V> registerListener) {
+        this.registerListeners.remove(registerListener);
+    }
+    
+    public void removeUnregisterListener(UnregisterListener<K, V> unregisterListener) {
+        this.unregisterListeners.remove(unregisterListener);
     }
 
     @Override
@@ -305,6 +326,8 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         protected KeyRetriever<V, K> keyRetriever;
         protected KeyGenerator<V, K> keyGenerator;
         protected KeySetter<K, V> keySetter;
+        protected List<RegisterListener<K, V>> registerListeners = new ArrayList<>();
+        protected List<UnregisterListener<K, V>> unregisterListeners = new ArrayList<>();
         
         public Builder() {}
 
@@ -333,8 +356,23 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
             return this;
         }
         
+        public Builder<K, V> addRegisterListener(RegisterListener<K, V> listener) {
+            this.registerListeners.add(listener);
+            return this;
+        }
+        
+        public Builder<K, V> addUnregisterListener(UnregisterListener<K, V> listener) {
+            this.unregisterListeners.add(listener);
+            return this;
+        }
+        
         public Registry<K, V> build() {
-            return new Registry<>(objects, keyNormalizer, keyRetriever, keyGenerator, keySetter);
+            Registry<K, V> registry = new Registry<>(objects, keyNormalizer, keyRetriever, keyGenerator, keySetter);
+            
+            this.registerListeners.forEach(registry::addRegisterListener);
+            this.unregisterListeners.forEach(registry::addUnregisterListener);
+            
+            return registry;
         }
     }
 }
