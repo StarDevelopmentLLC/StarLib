@@ -28,7 +28,7 @@ package com.stardevllc.starlib.observable.property.readonly;
 import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.ReadOnlyProperty;
-import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
+import com.stardevllc.starlib.observable.property.binding.ChangeHelper;
 import com.stardevllc.starlib.observable.value.ObservableUUIDValue;
 
 import java.util.Objects;
@@ -39,7 +39,7 @@ public class ReadOnlyUUIDProperty implements ReadOnlyProperty<UUID>, ObservableU
     protected final String name;
     protected UUID value;
     protected ObservableUUIDValue observable = null;
-    protected ExpressionHelper<UUID> helper;
+    protected ChangeHelper<UUID> helper;
 
     public ReadOnlyUUIDProperty() {
         this(DEFAULT_BEAN, DEFAULT_NAME);
@@ -77,12 +77,12 @@ public class ReadOnlyUUIDProperty implements ReadOnlyProperty<UUID>, ObservableU
 
     @Override
     public void addListener(ChangeListener<? super UUID> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
+        helper = ChangeHelper.addListener(helper, this, listener);
     }
 
     @Override
     public void removeListener(ChangeListener<? super UUID> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
+        helper = ChangeHelper.removeListener(helper, listener);
     }
 
     @Override

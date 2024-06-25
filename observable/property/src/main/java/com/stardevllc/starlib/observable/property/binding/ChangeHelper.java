@@ -23,7 +23,7 @@
  * questions.
  */
 
-package com.stardevllc.starlib.observable.property.expression;
+package com.stardevllc.starlib.observable.property.binding;
 
 import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
@@ -31,22 +31,22 @@ import com.stardevllc.starlib.observable.ObservableValue;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class ExpressionHelper<T> {
-    public static <T> ExpressionHelper<T> addListener(ExpressionHelper<T> helper, ObservableValue<T> observable, ChangeListener<? super T> listener) {
+public class ChangeHelper<T> {
+    public static <T> ChangeHelper<T> addListener(ChangeHelper<T> helper, ObservableValue<T> observable, ChangeListener<? super T> listener) {
         if ((observable == null) || (listener == null)) {
             throw new NullPointerException();
         }
-        return (helper == null) ? new ExpressionHelper<>(observable, observable.getValue(), listener) : helper.addListener(listener);
+        return (helper == null) ? new ChangeHelper<>(observable, observable.getValue(), listener) : helper.addListener(listener);
     }
 
-    public static <T> ExpressionHelper<T> removeListener(ExpressionHelper<T> helper, ChangeListener<? super T> listener) {
+    public static <T> ChangeHelper<T> removeListener(ChangeHelper<T> helper, ChangeListener<? super T> listener) {
         if (listener == null) {
             throw new NullPointerException();
         }
         return (helper == null) ? null : helper.removeListener(listener);
     }
 
-    public static <T> void fireValueChangedEvent(ExpressionHelper<T> helper) {
+    public static <T> void fireValueChangedEvent(ChangeHelper<T> helper) {
         if (helper != null) {
             helper.fireValueChangedEvent();
         }
@@ -59,18 +59,18 @@ public class ExpressionHelper<T> {
     private boolean locked;
     private T currentValue;
 
-    private ExpressionHelper(ObservableValue<T> observable) {
+    private ChangeHelper(ObservableValue<T> observable) {
         this.observable = observable;
     }
 
-    private ExpressionHelper(ObservableValue<T> observable, T currentValue, ChangeListener<? super T> changeListener) {
+    private ChangeHelper(ObservableValue<T> observable, T currentValue, ChangeListener<? super T> changeListener) {
         this(observable);
         this.changeListeners = new ChangeListener[]{changeListener};
         this.changeSize = 1;
         this.currentValue = currentValue;
     }
 
-    protected ExpressionHelper<T> addListener(ChangeListener<? super T> listener) {
+    protected ChangeHelper<T> addListener(ChangeListener<? super T> listener) {
         if (changeListeners == null) {
             changeListeners = new ChangeListener[]{listener};
             changeSize = 1;
@@ -93,7 +93,7 @@ public class ExpressionHelper<T> {
         return this;
     }
 
-    protected ExpressionHelper<T> removeListener(ChangeListener<? super T> listener) {
+    protected ChangeHelper<T> removeListener(ChangeListener<? super T> listener) {
         if (changeListeners != null) {
             for (int index = 0; index < changeSize; index++) {
                 if (listener.equals(changeListeners[index])) {
@@ -102,7 +102,7 @@ public class ExpressionHelper<T> {
                         changeSize = 0;
                         currentValue = null;  // clear current value to avoid stale reference
                     } else if ((changeSize == 2)) {
-                        return new ExpressionHelper<>(observable, currentValue, changeListeners[1 - index]);
+                        return new ChangeHelper<>(observable, currentValue, changeListeners[1 - index]);
                     } else {
                         final int numMoved = changeSize - index - 1;
                         final ChangeListener<? super T>[] oldListeners = changeListeners;

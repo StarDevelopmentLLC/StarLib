@@ -28,14 +28,14 @@ package com.stardevllc.starlib.observable.property.readonly;
 import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.ReadOnlyProperty;
-import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
+import com.stardevllc.starlib.observable.property.binding.ChangeHelper;
 import com.stardevllc.starlib.observable.value.ObservableBooleanValue;
 import com.stardevllc.starlib.observable.value.ObservableStringValue;
 
 import java.util.Objects;
 
 public class ReadOnlyBooleanProperty implements ReadOnlyProperty<Boolean>, ObservableBooleanValue{
-    protected ExpressionHelper<Boolean> helper;
+    protected ChangeHelper<Boolean> helper;
     
     protected boolean value;
     protected ObservableBooleanValue observable = null;
@@ -63,18 +63,18 @@ public class ReadOnlyBooleanProperty implements ReadOnlyProperty<Boolean>, Obser
     }
 
     protected void fireValueChangedEvent() {
-        ExpressionHelper.fireValueChangedEvent(helper);
+        ChangeHelper.fireValueChangedEvent(helper);
     }
 
 
     @Override
     public void addListener(ChangeListener<? super Boolean> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
+        helper = ChangeHelper.addListener(helper, this, listener);
     }
 
     @Override
     public void removeListener(ChangeListener<? super Boolean> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
+        helper = ChangeHelper.removeListener(helper, listener);
     }
 
     @Override

@@ -25,10 +25,9 @@
 
 package com.stardevllc.starlib.observable.property.writable;
 
-import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
-import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
+import com.stardevllc.starlib.observable.property.binding.ChangeHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyObjectProperty;
 import com.stardevllc.starlib.observable.writable.WritableObjectValue;
 
@@ -102,6 +101,6 @@ public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implem
     }
 
     protected void fireValueChangedEvent() {
-        ExpressionHelper.fireValueChangedEvent(helper);
+        ChangeHelper.fireValueChangedEvent(helper);
     }
 }

@@ -28,7 +28,7 @@ package com.stardevllc.starlib.observable.property.writable;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
-import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
+import com.stardevllc.starlib.observable.property.binding.ChangeHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyDoubleProperty;
 import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
 import com.stardevllc.starlib.observable.value.ObservableNumberValue;
@@ -83,7 +83,7 @@ public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements R
     }
     
     protected void fireValueChangedEvent() {
-        ExpressionHelper.fireValueChangedEvent(helper);
+        ChangeHelper.fireValueChangedEvent(helper);
     }
 
     @Override

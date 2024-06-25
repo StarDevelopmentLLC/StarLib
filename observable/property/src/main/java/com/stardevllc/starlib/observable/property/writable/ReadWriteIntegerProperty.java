@@ -27,7 +27,7 @@ package com.stardevllc.starlib.observable.property.writable;
 
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
-import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
+import com.stardevllc.starlib.observable.property.binding.ChangeHelper;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyIntegerProperty;
 import com.stardevllc.starlib.observable.writable.WritableIntegerValue;
 
@@ -49,7 +49,7 @@ public class ReadWriteIntegerProperty extends ReadOnlyIntegerProperty implements
     }
 
     protected void fireValueChangedEvent() {
-        ExpressionHelper.fireValueChangedEvent(helper);
+        ChangeHelper.fireValueChangedEvent(helper);
     }
 
     @Override
