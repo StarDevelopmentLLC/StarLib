@@ -33,9 +33,6 @@ import com.stardevllc.starlib.observable.property.readonly.ReadOnlyObjectPropert
 import com.stardevllc.starlib.observable.writable.WritableObjectValue;
 
 public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implements ReadWriteProperty<T>, WritableObjectValue<T> {
-
-    protected ExpressionHelper<T> helper;
-    
     public ReadWriteObjectProperty() {
         super();
     }
@@ -102,16 +99,6 @@ public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implem
         }
         result.append("]");
         return result.toString();
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super T> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super T> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     protected void fireValueChangedEvent() {

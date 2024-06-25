@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.property.writable;
 
-import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
@@ -33,8 +32,6 @@ import com.stardevllc.starlib.observable.property.readonly.ReadOnlyFloatProperty
 import com.stardevllc.starlib.observable.writable.WritableFloatValue;
 
 public class ReadWriteFloatProperty extends ReadOnlyFloatProperty implements ReadWriteProperty<Number>, WritableFloatValue {
-    protected ExpressionHelper<Number> helper;
-    
     public ReadWriteFloatProperty() {
         super();
     }
@@ -58,16 +55,6 @@ public class ReadWriteFloatProperty extends ReadOnlyFloatProperty implements Rea
         } else {
             set(v.floatValue());
         }
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

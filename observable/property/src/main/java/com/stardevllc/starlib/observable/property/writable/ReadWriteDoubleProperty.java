@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.property.writable;
 
-import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
@@ -36,8 +35,6 @@ import com.stardevllc.starlib.observable.value.ObservableNumberValue;
 import com.stardevllc.starlib.observable.writable.WritableDoubleValue;
 
 public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements ReadWriteProperty<Number>, WritableDoubleValue {
-    protected ExpressionHelper helper;
-    
     public ReadWriteDoubleProperty() {
         super();
     }
@@ -52,16 +49,6 @@ public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements R
 
     public ReadWriteDoubleProperty(Object bean, String name, double initialValue) {
         super(bean, name, initialValue);
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

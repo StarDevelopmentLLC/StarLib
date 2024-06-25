@@ -25,6 +25,7 @@
 
 package com.stardevllc.starlib.observable.constants;
 
+import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.value.ObservableIntegerValue;
 
 public final class IntegerConstant extends NumberConstant implements ObservableIntegerValue {
@@ -47,6 +48,16 @@ public final class IntegerConstant extends NumberConstant implements ObservableI
     @Override
     public Integer getValue() {
         return value;
+    }
+
+    @Override
+    public void addListener(ChangeListener<? super Number> listener) {
+        
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super Number> listener) {
+
     }
 
     @Override

@@ -25,6 +25,7 @@
 
 package com.stardevllc.starlib.observable.collections.map;
 
+import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.collections.ObservableCollections;
 import com.stardevllc.starlib.observable.collections.binding.BidirectionalContentBinding;
@@ -84,6 +85,16 @@ public class ReadOnlyMapProperty<K, V> implements ReadOnlyProperty<ObservableMap
     
     public void unbindContent(Object object) {
         ContentBinding.unbind(this, object);
+    }
+
+    @Override
+    public void addListener(ChangeListener<? super ObservableMap<K, V>> listener) {
+        helper = MapExpressionHelper.addListener(helper, this, listener);
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super ObservableMap<K, V>> listener) {
+        helper = MapExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

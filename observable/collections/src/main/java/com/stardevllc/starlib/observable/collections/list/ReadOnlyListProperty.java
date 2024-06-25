@@ -25,6 +25,7 @@
 
 package com.stardevllc.starlib.observable.collections.list;
 
+import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.collections.ObservableCollections;
 import com.stardevllc.starlib.observable.collections.binding.BidirectionalContentBinding;
@@ -69,6 +70,16 @@ public class ReadOnlyListProperty<E> implements ReadOnlyProperty<ObservableList<
         this.value = initialValue;
         this.bean = bean;
         this.name = (name == null) ? DEFAULT_NAME : name;
+    }
+
+    @Override
+    public void addListener(ChangeListener<? super ObservableList<E>> listener) {
+        helper = ListExpressionHelper.addListener(helper, this, listener);
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super ObservableList<E>> listener) {
+        helper = ListExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

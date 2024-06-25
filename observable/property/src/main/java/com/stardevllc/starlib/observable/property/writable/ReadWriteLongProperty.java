@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.property.writable;
 
-import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
@@ -33,9 +32,6 @@ import com.stardevllc.starlib.observable.property.readonly.ReadOnlyLongProperty;
 import com.stardevllc.starlib.observable.writable.WritableLongValue;
 
 public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadWriteProperty<Number>, WritableLongValue {
-    
-    protected ExpressionHelper<Number> helper;
-    
     public ReadWriteLongProperty() {
         super();
     }
@@ -59,16 +55,6 @@ public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadW
         } else {
             set(v.longValue());
         }
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Number> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.property.writable;
 
-import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
@@ -35,8 +34,6 @@ import com.stardevllc.starlib.observable.writable.WritableStringValue;
 import java.util.Objects;
 
 public class ReadWriteStringProperty extends ReadOnlyStringProperty implements ReadWriteProperty<String>, WritableStringValue {
-    protected ExpressionHelper<String> helper;
-    
     public ReadWriteStringProperty() {
     }
 
@@ -81,16 +78,6 @@ public class ReadWriteStringProperty extends ReadOnlyStringProperty implements R
             value = newValue;
             fireValueChangedEvent();
         }
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super String> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super String> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     protected void fireValueChangedEvent() {

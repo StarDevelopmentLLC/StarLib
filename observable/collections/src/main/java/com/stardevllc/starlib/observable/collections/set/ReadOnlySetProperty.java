@@ -25,6 +25,7 @@
 
 package com.stardevllc.starlib.observable.collections.set;
 
+import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.collections.ObservableCollections;
 import com.stardevllc.starlib.observable.collections.binding.BidirectionalContentBinding;
@@ -83,6 +84,16 @@ public class ReadOnlySetProperty<E> implements ReadOnlyProperty<ObservableSet<E>
     
     public void unbindContent(Object object) {
         ContentBinding.unbind(this, object);
+    }
+
+    @Override
+    public void addListener(ChangeListener<? super ObservableSet<E>> listener) {
+        helper = SetExpressionHelper.addListener(helper, this, listener);
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super ObservableSet<E>> listener) {
+        helper = SetExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

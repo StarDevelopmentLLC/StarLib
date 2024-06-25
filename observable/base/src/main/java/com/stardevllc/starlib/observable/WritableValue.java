@@ -27,8 +27,4 @@ package com.stardevllc.starlib.observable;
 
 public interface WritableValue<T> extends ObservableValue<T> {
     void setValue(T value);
-
-    void addListener(ChangeListener<? super T> listener);
-
-    void removeListener(ChangeListener<? super T> listener);
 }

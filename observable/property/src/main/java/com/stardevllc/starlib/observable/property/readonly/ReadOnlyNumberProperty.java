@@ -1,14 +1,18 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
+import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.ReadOnlyProperty;
 import com.stardevllc.starlib.observable.constants.BooleanConstant;
 import com.stardevllc.starlib.observable.constants.NumberConstant;
+import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.value.*;
 
 public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>, ObservableNumberValue {
     protected final Object bean;
     protected final String name;
+
+    protected ExpressionHelper helper;
 
     public ReadOnlyNumberProperty(Object bean, String name) {
         this.bean = bean;
@@ -28,6 +32,16 @@ public abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<Number>
     @Override
     public ObservableValue<Number> orElse(Number constant) {
         return this;
+    }
+
+    @Override
+    public void addListener(ChangeListener<? super Number> listener) {
+        helper = ExpressionHelper.addListener(helper, this, listener);
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super Number> listener) {
+        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

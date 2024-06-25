@@ -25,9 +25,8 @@
 
 package com.stardevllc.starlib.observable.collections.set;
 
-import com.stardevllc.starlib.observable.ChangeListener;
-import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
+import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 
 public class SetProperty<E> extends ReadOnlySetProperty<E> implements ReadWriteProperty<ObservableSet<E>>, WritableSetValue<E> {
 
@@ -72,16 +71,6 @@ public class SetProperty<E> extends ReadOnlySetProperty<E> implements ReadWriteP
             value = newValue;
             fireValueChangedEvent();
         }
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super ObservableSet<E>> listener) {
-        helper = SetExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super ObservableSet<E>> listener) {
-        helper = SetExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

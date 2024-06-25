@@ -25,9 +25,8 @@
 
 package com.stardevllc.starlib.observable.collections.list;
 
-import com.stardevllc.starlib.observable.ChangeListener;
-import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
+import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 
 public class ListProperty<E> extends ReadOnlyListProperty<E> implements ReadWriteProperty<ObservableList<E>>, WritableListValue<E> {
     protected final ListChangeListener<E> listChangeListener = this::fireValueChangedEvent;
@@ -54,16 +53,6 @@ public class ListProperty<E> extends ReadOnlyListProperty<E> implements ReadWrit
     @Override
     public void setValue(ObservableList<E> v) {
         set(v);
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super ObservableList<E>> listener) {
-        helper = ListExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super ObservableList<E>> listener) {
-        helper = ListExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

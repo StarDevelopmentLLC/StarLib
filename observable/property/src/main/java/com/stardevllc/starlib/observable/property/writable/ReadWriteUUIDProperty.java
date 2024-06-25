@@ -25,7 +25,6 @@
 
 package com.stardevllc.starlib.observable.property.writable;
 
-import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
 import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
@@ -36,8 +35,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ReadWriteUUIDProperty extends ReadOnlyUUIDProperty implements ReadWriteProperty<UUID>, WritableUUIDValue {
-    protected ExpressionHelper<UUID> helper;
-
     public ReadWriteUUIDProperty() {
         super();
     }
@@ -79,16 +76,6 @@ public class ReadWriteUUIDProperty extends ReadOnlyUUIDProperty implements ReadW
             value = newValue;
             fireValueChangedEvent();
         }
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super UUID> listener) {
-        helper = ExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super UUID> listener) {
-        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     protected void fireValueChangedEvent() {

@@ -25,9 +25,8 @@
 
 package com.stardevllc.starlib.observable.collections.map;
 
-import com.stardevllc.starlib.observable.ChangeListener;
-import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 import com.stardevllc.starlib.observable.ReadWriteProperty;
+import com.stardevllc.starlib.observable.property.binding.BidirectionalBinding;
 
 public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements ReadWriteProperty<ObservableMap<K, V>>, WritableMapValue<K, V> {
 
@@ -59,16 +58,6 @@ public class MapProperty<K, V> extends ReadOnlyMapProperty<K, V> implements Read
             value = newValue;
             fireValueChangedEvent();
         }
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super ObservableMap<K, V>> listener) {
-        helper = MapExpressionHelper.addListener(helper, this, listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super ObservableMap<K, V>> listener) {
-        helper = MapExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

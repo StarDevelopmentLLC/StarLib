@@ -25,6 +25,7 @@
 
 package com.stardevllc.starlib.observable.constants;
 
+import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.value.ObservableBooleanValue;
 import com.stardevllc.starlib.observable.value.ObservableObjectValue;
@@ -91,5 +92,15 @@ public class ObjectConstant<T> implements ObservableObjectValue<T> {
     @Override
     public ObservableValue<T> orElse(T constant) {
         return null;
+    }
+
+    @Override
+    public void addListener(ChangeListener<? super T> listener) {
+        
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super T> listener) {
+
     }
 }

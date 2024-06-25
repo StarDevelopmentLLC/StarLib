@@ -39,4 +39,8 @@ public interface ObservableValue<T> extends Observable {
     ObservableValue<String> asString();
 
     ObservableValue<T> orElse(T constant);
+
+    void addListener(ChangeListener<? super T> listener);
+
+    void removeListener(ChangeListener<? super T> listener);
 }

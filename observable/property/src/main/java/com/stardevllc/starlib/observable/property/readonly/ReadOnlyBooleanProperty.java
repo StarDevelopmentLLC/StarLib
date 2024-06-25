@@ -25,6 +25,7 @@
 
 package com.stardevllc.starlib.observable.property.readonly;
 
+import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.ReadOnlyProperty;
 import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
@@ -59,6 +60,21 @@ public class ReadOnlyBooleanProperty implements ReadOnlyProperty<Boolean>, Obser
         this.value = initialValue;
         this.bean = bean;
         this.name = (name == null) ? DEFAULT_NAME : name;
+    }
+
+    protected void fireValueChangedEvent() {
+        ExpressionHelper.fireValueChangedEvent(helper);
+    }
+
+
+    @Override
+    public void addListener(ChangeListener<? super Boolean> listener) {
+        helper = ExpressionHelper.addListener(helper, this, listener);
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super Boolean> listener) {
+        helper = ExpressionHelper.removeListener(helper, listener);
     }
 
     @Override

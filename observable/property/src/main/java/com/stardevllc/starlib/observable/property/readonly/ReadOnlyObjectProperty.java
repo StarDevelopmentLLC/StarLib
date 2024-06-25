@@ -25,8 +25,10 @@
 
 package com.stardevllc.starlib.observable.property.readonly;
 
+import com.stardevllc.starlib.observable.ChangeListener;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.ReadOnlyProperty;
+import com.stardevllc.starlib.observable.property.expression.ExpressionHelper;
 import com.stardevllc.starlib.observable.value.ObservableObjectValue;
 import com.stardevllc.starlib.observable.value.ObservableStringValue;
 
@@ -37,6 +39,7 @@ public class ReadOnlyObjectProperty<T> implements ReadOnlyProperty<T>, Observabl
     protected final String name;
     protected T value;
     protected ObservableValue<? extends T> observable = null;
+    protected ExpressionHelper<T> helper;
 
     public ReadOnlyObjectProperty() {
         this(DEFAULT_BEAN, DEFAULT_NAME);
@@ -86,6 +89,17 @@ public class ReadOnlyObjectProperty<T> implements ReadOnlyProperty<T>, Observabl
             observable = null;
         }
     }
+
+    @Override
+    public void addListener(ChangeListener<? super T> listener) {
+        helper = ExpressionHelper.addListener(helper, this, listener);
+    }
+
+    @Override
+    public void removeListener(ChangeListener<? super T> listener) {
+        helper = ExpressionHelper.removeListener(helper, listener);
+    }
+
 
     @Override
     public String toString() {
