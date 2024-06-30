@@ -53,7 +53,7 @@ public class TimeFormat {
                 continue;
             }
 
-            long unitLength = unit.fromMillis(totalTime);
+            long unitLength = (long) unit.fromMillis(totalTime);
             //totalTime -= unit.toMillis(unitLength);
             totalTime = totalTime % unit.getMsPerUnit();
 

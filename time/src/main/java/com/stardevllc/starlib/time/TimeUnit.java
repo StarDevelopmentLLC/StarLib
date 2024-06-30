@@ -42,40 +42,40 @@ public enum TimeUnit {
         return milliseconds / (this.msPerUnit * 1.0);
     }
 
-    public double toMillis(long duration) {
-        return (msPerUnit * 1.0) * duration;
+    public long toMillis(long duration) {
+        return msPerUnit * duration;
     }
 
     public double toTicks(long duration) {
-        return toMillis(duration) / TICKS.toMillis(1);
+        return toMillis(duration) / (TICKS.toMillis(1) * 1.0);
     }
 
     public double toSeconds(long duration) {
-        return toMillis(duration) / SECONDS.toMillis(1);
+        return toMillis(duration) / (SECONDS.toMillis(1) * 1.0);
     }
 
     public double toMinutes(long duration) {
-        return toMillis(duration) / MINUTES.toMillis(1);
+        return toMillis(duration) / (MINUTES.toMillis(1) * 1.0);
     }
 
     public double toHours(long duration) {
-        return toMillis(duration) / HOURS.toMillis(1);
+        return toMillis(duration) / (HOURS.toMillis(1) * 1.0);
     }
 
     public double toDays(long duration) {
-        return toMillis(duration) / DAYS.toMillis(1);
+        return toMillis(duration) / (DAYS.toMillis(1) * 1.0);
     }
 
     public double toWeeks(long duration) {
-        return toMillis(duration) / WEEKS.toMillis(1);
+        return toMillis(duration) / (WEEKS.toMillis(1) * 1.0);
     }
 
     public double toMonths(long duration) {
-        return toMillis(duration) / MONTHS.toMillis(1);
+        return toMillis(duration) / (MONTHS.toMillis(1) * 1.0);
     }
 
     public double toYears(long duration) {
-        return toMillis(duration) / YEARS.toMillis(1);
+        return toMillis(duration) / (YEARS.toMillis(1) * 1.0);
     }
 
     public long getMsPerUnit() {
