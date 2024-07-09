@@ -23,6 +23,16 @@ public class Duration {
         return this;
     }
     
+    public Duration add(Duration duration) {
+        this.time += duration.getTime();
+        return this;
+    }
+    
+    public Duration subtract(Duration duration) {
+        this.time -= duration.getTime();
+        return this;
+    }
+    
     public Duration abs() {
         this.time = Math.abs(this.time);
         return this;
