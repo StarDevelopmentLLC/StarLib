@@ -5,8 +5,12 @@ public class Duration {
     
     public Duration() {}
     
-    public long getTime() {
+    public long get() {
         return time;
+    }
+    
+    public double get(TimeUnit unit) {
+        return unit.fromMillis(time);
     }
     
     public Duration(TimeUnit unit, long time) {
@@ -24,12 +28,12 @@ public class Duration {
     }
     
     public Duration add(Duration duration) {
-        this.time += duration.getTime();
+        this.time += duration.get();
         return this;
     }
     
     public Duration subtract(Duration duration) {
-        this.time -= duration.getTime();
+        this.time -= duration.get();
         return this;
     }
     
