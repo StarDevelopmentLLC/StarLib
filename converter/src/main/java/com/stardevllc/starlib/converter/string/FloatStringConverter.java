@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2020, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,20 +23,34 @@
  * questions.
  */
 
-package com.stardevllc.starlib.converter;
+package com.stardevllc.starlib.converter.string;
 
-public class DefaultStringConverter extends StringConverter<String> {
+public class FloatStringConverter extends StringConverter<Float> {
 
-    public DefaultStringConverter() {
+    public FloatStringConverter() {
     }
 
     @Override
-    public String toString(String value) {
-        return (value != null) ? value : "";
+    public Float fromString(String value) {
+        if (value == null) {
+            return 0F;
+        }
+
+        value = value.trim();
+
+        if (value.isEmpty()) {
+            return 0F;
+        }
+
+        return Float.valueOf(value);
     }
 
     @Override
-    public String fromString(String value) {
-        return value;
+    public String toString(Float value) {
+        if (value == null) {
+            return "0.0";
+        }
+
+        return Float.toString(value);
     }
 }

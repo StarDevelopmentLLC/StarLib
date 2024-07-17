@@ -23,34 +23,34 @@
  * questions.
  */
 
-package com.stardevllc.starlib.converter;
+package com.stardevllc.starlib.converter.string;
 
-public class DoubleStringConverter extends StringConverter<Double> {
+public class ByteStringConverter extends StringConverter<Byte> {
 
-    public DoubleStringConverter() {
+    public ByteStringConverter() {
     }
 
     @Override
-    public Double fromString(String value) {
+    public Byte fromString(String value) {
         if (value == null) {
-            return null;
+            return (byte) 0;
         }
 
         value = value.trim();
 
         if (value.isEmpty()) {
-            return null;
+            return (byte) 0;
         }
 
-        return Double.valueOf(value);
+        return Byte.valueOf(value);
     }
 
     @Override
-    public String toString(Double value) {
+    public String toString(Byte value) {
         if (value == null) {
-            return "";
+            return "0";
         }
 
-        return Double.toString(value);
+        return Byte.toString(value);
     }
 }

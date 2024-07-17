@@ -23,7 +23,7 @@
  * questions.
  */
 
-package com.stardevllc.starlib.converter;
+package com.stardevllc.starlib.converter.string;
 
 public class IntegerStringConverter extends StringConverter<Integer> {
 
@@ -33,13 +33,13 @@ public class IntegerStringConverter extends StringConverter<Integer> {
     @Override
     public Integer fromString(String value) {
         if (value == null) {
-            return null;
+            return 0;
         }
 
         value = value.trim();
 
         if (value.isEmpty()) {
-            return null;
+            return 0;
         }
 
         return Integer.valueOf(value);
@@ -48,7 +48,7 @@ public class IntegerStringConverter extends StringConverter<Integer> {
     @Override
     public String toString(Integer value) {
         if (value == null) {
-            return "";
+            return "0";
         }
 
         return (Integer.toString(value));

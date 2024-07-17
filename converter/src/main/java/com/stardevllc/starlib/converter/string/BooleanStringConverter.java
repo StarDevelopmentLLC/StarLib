@@ -23,15 +23,15 @@
  * questions.
  */
 
-package com.stardevllc.starlib.converter;
+package com.stardevllc.starlib.converter.string;
 
-public class CharacterStringConverter extends StringConverter<Character> {
+public class BooleanStringConverter extends StringConverter<Boolean> {
 
-    public CharacterStringConverter() {
+    public BooleanStringConverter() {
     }
 
     @Override
-    public Character fromString(String value) {
+    public Boolean fromString(String value) {
         if (value == null) {
             return null;
         }
@@ -39,16 +39,22 @@ public class CharacterStringConverter extends StringConverter<Character> {
         value = value.trim();
 
         if (value.isEmpty()) {
-            return null;
+            return false;
+        }
+        
+        if (value.equals(1)) {
+            return true;
+        } else if (value.equals(0)) {
+            return false;
         }
 
-        return value.charAt(0);
+        return Boolean.valueOf(value);
     }
 
     @Override
-    public String toString(Character value) {
+    public String toString(Boolean value) {
         if (value == null) {
-            return "";
+            return "false";
         }
 
         return value.toString();

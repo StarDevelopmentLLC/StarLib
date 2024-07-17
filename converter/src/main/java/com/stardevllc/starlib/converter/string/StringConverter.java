@@ -23,15 +23,17 @@
  * questions.
  */
 
-package com.stardevllc.starlib.converter;
+package com.stardevllc.starlib.converter.string;
+
+import com.stardevllc.starlib.converter.Converter;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class StringConverter<T> {
+public abstract class StringConverter<T> implements Converter<T, String> {
 
-    public static final Map<Class<?>, Class<? extends StringConverter<?>>> converters = new HashMap<>();
+    private static final Map<Class<?>, Class<? extends Converter<?, ?>>> converters = new HashMap<>();
 
     static {
         converters.put(boolean.class, BooleanStringConverter.class);
@@ -54,7 +56,7 @@ public abstract class StringConverter<T> {
     }
 
     public static StringConverter<?> getConverter(Class<?> clazz) {
-        Class<? extends StringConverter<?>> converterClass = converters.get(clazz);
+        Class<? extends StringConverter<?>> converterClass = (Class<? extends StringConverter<?>>) converters.get(clazz);
         if (converterClass == null) {
             return null;
         }
@@ -66,7 +68,19 @@ public abstract class StringConverter<T> {
         }
     }
 
-    public StringConverter() {
+    @Override
+    public Map<Class<?>, Class<? extends Converter<?, ?>>> getConverters() {
+        return converters;
+    }
+
+    @Override
+    public String convertFrom(T fromObject) {
+        return toString(fromObject);
+    }
+
+    @Override
+    public T convertTo(String toObject) {
+        return fromString(toObject);
     }
 
     public abstract String toString(T object);

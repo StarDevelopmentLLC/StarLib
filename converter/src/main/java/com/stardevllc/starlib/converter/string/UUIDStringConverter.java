@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.converter;
+package com.stardevllc.starlib.converter.string;
 
 import java.util.UUID;
 

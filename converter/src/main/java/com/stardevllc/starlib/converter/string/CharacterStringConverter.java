@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,34 +23,34 @@
  * questions.
  */
 
-package com.stardevllc.starlib.converter;
+package com.stardevllc.starlib.converter.string;
 
-public class ShortStringConverter extends StringConverter<Short> {
+public class CharacterStringConverter extends StringConverter<Character> {
 
-    public ShortStringConverter() {
+    public CharacterStringConverter() {
     }
 
     @Override
-    public Short fromString(String text) {
-        if (text == null) {
+    public Character fromString(String value) {
+        if (value == null) {
             return null;
         }
 
-        text = text.trim();
+        value = value.trim();
 
-        if (text.isEmpty()) {
+        if (value.isEmpty()) {
             return null;
         }
 
-        return Short.valueOf(text);
+        return value.charAt(0);
     }
 
     @Override
-    public String toString(Short value) {
+    public String toString(Character value) {
         if (value == null) {
             return "";
         }
 
-        return Short.toString(value);
+        return value.toString();
     }
 }

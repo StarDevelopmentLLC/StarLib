@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2020, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,34 +23,34 @@
  * questions.
  */
 
-package com.stardevllc.starlib.converter;
+package com.stardevllc.starlib.converter.string;
 
-public class BooleanStringConverter extends StringConverter<Boolean> {
+public class LongStringConverter extends StringConverter<Long> {
 
-    public BooleanStringConverter() {
+    public LongStringConverter() {
     }
 
     @Override
-    public Boolean fromString(String value) {
+    public Long fromString(String value) {
         if (value == null) {
-            return null;
+            return 0L;
         }
 
         value = value.trim();
 
         if (value.isEmpty()) {
-            return null;
+            return 0L;
         }
 
-        return Boolean.valueOf(value);
+        return Long.valueOf(value);
     }
 
     @Override
-    public String toString(Boolean value) {
+    public String toString(Long value) {
         if (value == null) {
-            return "";
+            return "0";
         }
 
-        return value.toString();
+        return Long.toString(value);
     }
 }

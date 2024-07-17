@@ -23,34 +23,34 @@
  * questions.
  */
 
-package com.stardevllc.starlib.converter;
+package com.stardevllc.starlib.converter.string;
 
-public class LongStringConverter extends StringConverter<Long> {
+public class ShortStringConverter extends StringConverter<Short> {
 
-    public LongStringConverter() {
+    public ShortStringConverter() {
     }
 
     @Override
-    public Long fromString(String value) {
-        if (value == null) {
+    public Short fromString(String text) {
+        if (text == null) {
+            return (short) 0;
+        }
+
+        text = text.trim();
+
+        if (text.isEmpty()) {
             return null;
         }
 
-        value = value.trim();
-
-        if (value.isEmpty()) {
-            return null;
-        }
-
-        return Long.valueOf(value);
+        return Short.valueOf(text);
     }
 
     @Override
-    public String toString(Long value) {
+    public String toString(Short value) {
         if (value == null) {
-            return "";
+            return "0";
         }
 
-        return Long.toString(value);
+        return Short.toString(value);
     }
 }
