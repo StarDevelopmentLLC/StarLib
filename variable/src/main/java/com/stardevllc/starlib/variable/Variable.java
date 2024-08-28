@@ -32,6 +32,14 @@ public class Variable {
     public Variable(String id, char openingChar, char closingChar) {
         this(id, openingChar, closingChar, "");
     }
+    
+    public Variable(String id, VCharSet charSet, String description) {
+        this(id, charSet.opening(), charSet.closing(), description);
+    }
+
+    public Variable(String id, VCharSet charSet) {
+        this(id, charSet.opening(), charSet.closing(), "");
+    }
 
     @Override
     public String toString() {
