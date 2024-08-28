@@ -5,6 +5,7 @@ plugins {
 def exportedProjects= [
         //":",
         ":converter",
+        ":variable",
         ":helper",
         ":observable",
         ":observable:base",
