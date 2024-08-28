@@ -11,7 +11,7 @@ public class VariableHandler {
     private final Map<String, Variable> variables = new HashMap<>();
     
     public VariableHandler add(Variable variable) {
-        this.variables.put(variable.id(), variable);
+        this.variables.put(variable.getId(), variable);
         return this;
     }
     

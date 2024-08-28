@@ -1,17 +1,69 @@
 package com.stardevllc.starlib.variable;
 
+import java.util.Objects;
+
 /**
  * This represents a variable within a replacement structure
- * 
- * @param id This is used for the text between the opening and closing chars, and used for internal identification
- * @param openingChar The opening character used. This should be a non-alphanumeric charactar
- * @param closingChar The closing character used. This should be a non-alphanumeric character
- * @param description Just a description for help or documentation purposes (Like for a config)
  */
-public record Variable(String id, char openingChar, char closingChar, String description) {
+public class Variable {
+    private final String id;
+    private final char openingChar;
+    private final char closingChar;
+    private String description;
+
+    /**
+     * @param id          This is used for the text between the opening and closing chars, and used for internal identification
+     * @param openingChar The opening character used. This should be a non-alphanumeric charactar
+     * @param closingChar The closing character used. This should be a non-alphanumeric character
+     * @param description Just a description for help or documentation purposes (Like for a config)
+     */
+    public Variable(String id, char openingChar, char closingChar, String description) {
+        this.id = id;
+        this.openingChar = openingChar;
+        this.closingChar = closingChar;
+        this.description = description;
+    }
+
+    /**
+     * @param id          This is used for the text between the opening and closing chars, and used for internal identification
+     * @param openingChar The opening character used. This should be a non-alphanumeric charactar
+     * @param closingChar The closing character used. This should be a non-alphanumeric character
+     */
+    public Variable(String id, char openingChar, char closingChar) {
+        this(id, openingChar, closingChar, "");
+    }
 
     @Override
     public String toString() {
         return openingChar + id + closingChar;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public char getOpeningChar() {
+        return openingChar;
+    }
+
+    public char getClosingChar() {
+        return closingChar;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (Variable) obj;
+        return Objects.equals(this.id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, openingChar, closingChar, description);
     }
 }
