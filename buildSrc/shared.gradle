@@ -2,23 +2,8 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0-M1'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
 group = "com.github.StarMediaDevelopmentLLC"
-version = "1.0.0-alpha.23"
-
-tasks.named('test', Test) {
-    useJUnitPlatform()
-
-    maxHeapSize = '1G'
-
-    testLogging {
-        events "passed"
-    }
-}
+version = "1.0.0-alpha.24"
 
 tasks.register('deleteBuildDir') {
     delete file("$rootProject.projectDir/build/libs")
