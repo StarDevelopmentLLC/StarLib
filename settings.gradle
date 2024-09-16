@@ -3,5 +3,5 @@ plugins {
 }
 
 rootProject.name = 'StarLib'
-include ('registry', 'converter', 'time', 'helper', 'range', 'observable', 'numbers', 'reflection', 'misc', 'task', 'http', 'all', 'clock', 'variable')
+include ('registry', 'converter', 'time', 'helper', 'range', 'observable', 'numbers', 'reflection', 'misc', 'task', 'http', 'all', 'clock', 'variable', 'random')
 include ('observable:base', 'observable:writable', 'observable:value', 'observable:constants', 'observable:property', 'observable:collections')
