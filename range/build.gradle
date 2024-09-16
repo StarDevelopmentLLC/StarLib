@@ -14,6 +14,10 @@ jar {
     destinationDirectory.set(file("$rootProject.projectDir/build/libs"))
 }
 
+dependencies {
+    api project(':random')
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
