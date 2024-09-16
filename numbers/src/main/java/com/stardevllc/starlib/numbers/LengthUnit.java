@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.math;
+package com.stardevllc.starlib.numbers;
 
 public enum LengthUnit {
     MILLIMETER(1, "millimeters", "mm"), //Base Unit

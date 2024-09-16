@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.observable.constants;
 
-import com.stardevllc.starlib.math.Operations;
+import com.stardevllc.starlib.numbers.Operations;
 import com.stardevllc.starlib.observable.ObservableValue;
 import com.stardevllc.starlib.observable.value.*;
 
