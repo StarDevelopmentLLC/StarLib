@@ -2,7 +2,7 @@ package com.stardevllc.starlib.numbers;
 
 public enum LengthUnit {
     MILLIMETER(1, "millimeters", "mm"), //Base Unit
-    CENTIMETER(0.1, "centimeters", "cm"), 
+    CENTIMETER(10, "centimeters", "cm"), 
     INCH(25.4, "inch", "in"), 
     FOOT(304.8, "feet", "ft"), 
     YARD(914.4, "yard", "yd", "yds");
