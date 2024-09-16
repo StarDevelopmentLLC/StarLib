@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.range;
 
-public record Range<V> (int min, int max, V value) implements Comparable<Range<V>> {
-    public boolean contains(int number) {
+public record Range<V> (long min, long max, V value) implements Comparable<Range<V>> {
+    public boolean contains(long number) {
         return number >= min && number <= max;
     }
 
