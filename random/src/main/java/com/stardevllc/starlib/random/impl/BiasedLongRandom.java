@@ -11,8 +11,11 @@ public class BiasedLongRandom extends LongRandom implements BiasedRandom<Long, L
     protected long biasMin, biasMax;
     protected double biasThreshold;
     
-    public BiasedLongRandom(long minimum, long maximum) {
+    public BiasedLongRandom(long minimum, long maximum, long biasMin, long biasMax, double biasThreshold) {
         super(minimum, maximum);
+        this.biasMin = biasMin;
+        this.biasMax = biasMax;
+        this.biasThreshold = biasThreshold;
     }
 
     @Override
