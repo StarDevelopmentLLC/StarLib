@@ -38,13 +38,35 @@ public class RangeSet<V> {
         }
 
         for (Range<V> existing : this.ranges) {
-            if (existing.contains(range.min()) || existing.contains(range.max())) {
+            if (existing.contains(range.min()) || existing.contains(range.max()) || range.contains(existing.min()) || range.contains(existing.max())) {
                 return false;
             }
         }
 
         ranges.add(range);
         return true;
+    }
+
+    /**
+     * Replaces a range that already has overlapping mins and maxes. <br>
+     * If the range does not have any overlapping ranges, it is just added
+     *
+     * @param range The range to replace
+     */
+    public void replace(Range<V> range) {
+        if (this.ranges.isEmpty()) {
+            this.ranges.add(range);
+        }
+
+        for (Range<V> existing : new TreeSet<>(this.ranges)) {
+            if (existing.contains(range.min()) || existing.contains(range.max()) || range.contains(existing.min()) || range.contains(existing.max())) {
+                this.ranges.remove(existing);
+                this.ranges.add(range);
+                return;
+            }
+        }
+
+        ranges.add(range);
     }
 
     /**
@@ -184,7 +206,7 @@ public class RangeSet<V> {
 
     /**
      * Gets the absolute maximum that this RangeSet represents. This does not take any gaps into account.
-     * 
+     *
      * @return The maximum index or Long.MIN_VALUE if none was found (empty RangeSet)
      */
     public long getMax() {
