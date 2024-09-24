@@ -30,21 +30,20 @@ public class RangeSet<V> {
      * Adds a Range to this RangeSet. This checks for existing values and prevents overlapping ranges.
      *
      * @param range The range to add
-     * @return True if the new range does not overlap with any existing ranges. False if it does overlap
      */
-    public boolean add(Range<V> range) {
+    public RangeSet<V> add(Range<V> range) {
         if (this.ranges.isEmpty()) {
             this.ranges.add(range);
         }
 
         for (Range<V> existing : this.ranges) {
             if (existing.contains(range.min()) || existing.contains(range.max()) || range.contains(existing.min()) || range.contains(existing.max())) {
-                return false;
+                return this;
             }
         }
 
         ranges.add(range);
-        return true;
+        return this;
     }
 
     /**
@@ -53,7 +52,7 @@ public class RangeSet<V> {
      *
      * @param range The range to replace
      */
-    public void replace(Range<V> range) {
+    public RangeSet<V> replace(Range<V> range) {
         if (this.ranges.isEmpty()) {
             this.ranges.add(range);
         }
@@ -62,11 +61,12 @@ public class RangeSet<V> {
             if (existing.contains(range.min()) || existing.contains(range.max()) || range.contains(existing.min()) || range.contains(existing.max())) {
                 this.ranges.remove(existing);
                 this.ranges.add(range);
-                return;
+                return this;
             }
         }
 
         ranges.add(range);
+        return this;
     }
 
     /**
@@ -76,9 +76,8 @@ public class RangeSet<V> {
      * @param min   The minimum value of the range
      * @param max   The maximum value of the range
      * @param value The value to be represented by this range.
-     * @return Range.add(Range) return value
      */
-    public boolean add(long min, long max, V value) {
+    public RangeSet<V> add(long min, long max, V value) {
         return add(new Range<>(min, max, value));
     }
 
@@ -89,9 +88,8 @@ public class RangeSet<V> {
      *
      * @param max   The amount above the previous max + 1
      * @param value The value represented by the new range.
-     * @return Range.add(Range) return value
      */
-    public boolean addMax(long max, V value) {
+    public RangeSet<V> addMax(long max, V value) {
         Range<V> lastRange = ranges.last();
 
         long min = 0;
@@ -112,9 +110,8 @@ public class RangeSet<V> {
      *
      * @param min   The amount below the previous min - 1
      * @param value The value represented by the new range.
-     * @return Range.add(Range) return value
      */
-    public boolean addMin(long min, V value) {
+    public RangeSet<V> addMin(long min, V value) {
         Range<V> lastRange = ranges.last();
 
         long max = 0L;
@@ -132,7 +129,6 @@ public class RangeSet<V> {
      * Removes a range that has the <code>index</code> between the min and max values
      *
      * @param index An index between the min and max values of the range to be removed
-     * @return The Range that was removed or null if none was removed.
      */
     public Range<V> remove(long index) {
         for (Range<V> range : this.ranges) {
