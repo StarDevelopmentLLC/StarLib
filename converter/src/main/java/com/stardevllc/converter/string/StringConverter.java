@@ -25,7 +25,7 @@
 
 package com.stardevllc.converter.string;
 
-import com.stardevllc.starlib.converter.Converter;
+import com.stardevllc.converter.Converter;
 
 import java.util.HashMap;
 import java.util.Map;
