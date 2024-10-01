@@ -4,6 +4,7 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -17,6 +18,10 @@ publishing {
             from components.java
         }
     }
+}
+
+dependencies {
+    implementation 'com.github.StarDevelopmentLLC:eventbus:0.1.0'
 }
 
 group = "com.github.StarDevelopmentLLC"
