@@ -2,25 +2,26 @@ package com.stardevllc.converter.string;
 
 import java.util.UUID;
 
-public class UUIDStringConverter extends StringConverter<UUID> {
-    @Override
-    public String toString(UUID object) {
-        if (object == null) {
-            return null;
-        }
-        return object.toString();
+public class UUIDStringConverter implements StringConverter<UUID> {
+    protected UUIDStringConverter() {
+        StringConverters.addConverter(UUID.class, this);
     }
 
     @Override
-    public UUID fromString(String string) {
-        if (string == null) {
+    public String convertFrom(UUID fromObject) {
+        if (fromObject == null) {
+            return "";
+        }
+        
+        return fromObject.toString();
+    }
+
+    @Override
+    public UUID convertTo(String toObject) {
+        try {
+            return UUID.fromString(toObject);
+        } catch (IllegalArgumentException | NullPointerException e) {
             return null;
         }
-
-        if (string.isEmpty()) {
-            return null;
-        }
-
-        return UUID.fromString(string);
     }
 }
