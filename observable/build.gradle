@@ -22,6 +22,7 @@ publishing {
 
 dependencies {
     implementation 'com.github.StarDevelopmentLLC:eventbus:0.1.0'
+    implementation 'com.github.StarDevelopmentLLC:calculator:0.1.0'
 }
 
 group = "com.github.StarDevelopmentLLC"

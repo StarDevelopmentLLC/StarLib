@@ -29,30 +29,80 @@ import com.stardevllc.observable.ObservableValue;
 
 public interface ObservableNumberValue<T extends Number> extends ObservableValue<T> {
     ObservableNumberValue<T> negate();
-    ObservableNumberValue<T> add(ObservableValue<Number> other);
+
     ObservableNumberValue<T> add(Number other);
-    ObservableNumberValue<T> subtract(ObservableValue<Number> other);
+
+    default ObservableNumberValue<T> add(ObservableValue<Number> other) {
+        return add(other.getValue());
+    }
+
     ObservableNumberValue<T> subtract(Number other);
-    ObservableNumberValue<T> multiply(ObservableValue<Number> other);
+
+    default ObservableNumberValue<T> subtract(ObservableValue<Number> other) {
+        return subtract(other.getValue());
+    }
+
     ObservableNumberValue<T> multiply(Number other);
-    ObservableNumberValue<T> divide(ObservableValue<Number> other);
+
+    default ObservableNumberValue<T> multiply(ObservableValue<Number> other) {
+        return multiply(other.getValue());
+    }
+
     ObservableNumberValue<T> divide(Number other);
 
-    ObservableBooleanValue isEqualTo(ObservableValue<Number> other);
+    default ObservableNumberValue<T> divide(ObservableValue<Number> other) {
+        return divide(other.getValue());
+    }
+
     ObservableBooleanValue isEqualTo(Number other);
-    ObservableBooleanValue isNotEqualTo(ObservableValue<Number> other);
+
+    default ObservableBooleanValue isEqualTo(ObservableValue<Number> other) {
+        return isEqualTo(other.getValue());
+    }
+
     ObservableBooleanValue isNotEqualTo(Number other);
-    ObservableBooleanValue greaterThan(ObservableValue<Number> other);
+
+    default ObservableBooleanValue isNotEqualTo(ObservableValue<Number> other) {
+        return isNotEqualTo(other.getValue());
+    }
+
     ObservableBooleanValue greaterThan(Number other);
-    ObservableBooleanValue lessThan(ObservableValue<Number> other);
+
+    default ObservableBooleanValue greaterThan(ObservableValue<Number> other) {
+        return greaterThan(other.getValue());
+    }
+
     ObservableBooleanValue lessThan(Number other);
-    ObservableBooleanValue greaterThanOrEqualTo(ObservableValue<Number> other);
+
+    default ObservableBooleanValue lessThan(ObservableValue<Number> other) {
+        return lessThan(other.getValue());
+    }
+
     ObservableBooleanValue greaterThanOrEqualTo(Number other);
-    ObservableBooleanValue lessThanOrEqualTo(ObservableValue<Number> other);
+
+    default ObservableBooleanValue greaterThanOrEqualTo(ObservableValue<Number> other) {
+        return greaterThanOrEqualTo(other.getValue());
+    }
+
     ObservableBooleanValue lessThanOrEqualTo(Number other);
 
-    int intValue();
-    long longValue();
-    float floatValue();
-    double doubleValue();
+    default ObservableBooleanValue lessThanOrEqualTo(ObservableValue<Number> other) {
+        return lessThanOrEqualTo(other.getValue());
+    }
+
+    default int intValue() {
+        return getValue().intValue();
+    }
+
+    default long longValue() {
+        return getValue().longValue();
+    }
+
+    default float floatValue() {
+        return getValue().floatValue();
+    }
+
+    default double doubleValue() {
+        return getValue().doubleValue();
+    }
 }
