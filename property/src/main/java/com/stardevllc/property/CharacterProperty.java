@@ -65,12 +65,12 @@ public class CharacterProperty implements Property<Character>, WritableCharacter
 
     @Override
     public void addListener(ChangeListener<? super Character> changeListener) {
-        this.eventBus.registerListener(changeListener);
+        this.eventBus.subscribe(changeListener);
     }
 
     @Override
     public void removeListener(ChangeListener<? super Character> changeListener) {
-        this.eventBus.removeListener(changeListener);
+        this.eventBus.unsubscribe(changeListener);
     }
 
     @Override

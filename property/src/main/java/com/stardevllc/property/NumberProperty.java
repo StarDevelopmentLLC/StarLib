@@ -33,11 +33,11 @@ public abstract class NumberProperty<N extends Number> implements Property<N>, W
 
     @Override
     public void addListener(ChangeListener<? super N> changeListener) {
-        this.eventBus.registerListener(changeListener);
+        this.eventBus.subscribe(changeListener);
     }
 
     @Override
     public void removeListener(ChangeListener<? super N> changeListener) {
-        this.eventBus.removeListener(changeListener);
+        this.eventBus.unsubscribe(changeListener);
     }
 }

@@ -51,12 +51,12 @@ public class BooleanProperty implements Property<Boolean>, WritableBooleanValue 
 
     @Override
     public void addListener(ChangeListener<? super Boolean> changeListener) {
-        this.eventBus.registerListener(changeListener);
+        this.eventBus.subscribe(changeListener);
     }
 
     @Override
     public void removeListener(ChangeListener<? super Boolean> changeListener) {
-        this.eventBus.removeListener(changeListener);
+        this.eventBus.unsubscribe(changeListener);
     }
 
     @Override

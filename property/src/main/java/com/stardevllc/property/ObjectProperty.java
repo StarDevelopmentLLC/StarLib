@@ -70,12 +70,12 @@ public class ObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
 
     @Override
     public void addListener(ChangeListener<? super T> changeListener) {
-        this.eventBus.registerListener(changeListener);
+        this.eventBus.subscribe(changeListener);
     }
 
     @Override
     public void removeListener(ChangeListener<? super T> changeListener) {
-        this.eventBus.removeListener(changeListener);
+        this.eventBus.unsubscribe(changeListener);
     }
 
     @Override
