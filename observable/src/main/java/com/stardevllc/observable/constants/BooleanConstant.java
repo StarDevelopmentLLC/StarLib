@@ -1,7 +1,6 @@
 package com.stardevllc.observable.constants;
 
 import com.stardevllc.observable.ChangeListener;
-import com.stardevllc.observable.InvalidationListener;
 import com.stardevllc.observable.value.ObservableBooleanValue;
 
 public class BooleanConstant implements ObservableBooleanValue {
@@ -45,15 +44,5 @@ public class BooleanConstant implements ObservableBooleanValue {
     @Override
     public Boolean getValue() {
         return get();
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        //no-op (Cannot be changed)
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        //no-op (Cannot be changed)
     }
 }

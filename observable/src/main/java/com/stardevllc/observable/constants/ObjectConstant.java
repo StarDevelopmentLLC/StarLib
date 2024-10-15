@@ -1,7 +1,6 @@
 package com.stardevllc.observable.constants;
 
 import com.stardevllc.observable.ChangeListener;
-import com.stardevllc.observable.InvalidationListener;
 import com.stardevllc.observable.value.ObservableObjectValue;
 
 public class ObjectConstant<T> implements ObservableObjectValue<T> {
@@ -30,15 +29,5 @@ public class ObjectConstant<T> implements ObservableObjectValue<T> {
     @Override
     public T getValue() {
         return object;
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        //no-op (It cannot be changed)
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        //no-op (It cannot be changed)
     }
 }

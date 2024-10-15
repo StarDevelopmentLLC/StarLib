@@ -1,7 +1,6 @@
 package com.stardevllc.observable.constants;
 
 import com.stardevllc.observable.value.ObservableBooleanValue;
-import com.stardevllc.observable.value.ObservableIntegerValue;
 import com.stardevllc.observable.value.ObservableLongValue;
 
 public class LongConstant extends NumberConstant<Long> implements ObservableLongValue {
