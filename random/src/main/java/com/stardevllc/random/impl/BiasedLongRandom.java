@@ -78,4 +78,9 @@ public class BiasedLongRandom extends LongRandom implements BiasedRandom<Long, L
     public void setBiasMax(long biasMax) {
         this.biasMax = biasMax;
     }
+
+    @Override
+    public BiasedLongRandom clone() {
+        return new BiasedLongRandom(minimum, maximum, biasMin, biasMax, biasThreshold);
+    }
 }

@@ -55,4 +55,9 @@ public class LongRandom implements StarRandom<Long, Long> {
     public void setMax(long maximum) {
         this.maximum = maximum;
     }
+    
+    @Override
+    public LongRandom clone() {
+        return new LongRandom(this.minimum, this.maximum);
+    }
 }
