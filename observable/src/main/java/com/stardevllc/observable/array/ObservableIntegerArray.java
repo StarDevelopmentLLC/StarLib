@@ -47,11 +47,11 @@ public class ObservableIntegerArray implements ObservableArray<Integer>, Writabl
 
     @Override
     public void addListener(ArrayChangeListener<Integer> listener) {
-        eventBus.registerListener(listener);
+        eventBus.subscribe(listener);
     }
 
     @Override
     public void removeListener(ArrayChangeListener<Integer> listener) {
-        eventBus.registerListener(listener);
+        eventBus.unsubscribe(listener);
     }
 }
