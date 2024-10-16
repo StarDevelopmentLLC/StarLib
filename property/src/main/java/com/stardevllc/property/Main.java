@@ -16,9 +16,15 @@ public final class Main {
             }
 
             if (line.equalsIgnoreCase("true")) {
+                long start = System.currentTimeMillis();
                 booleanProperty.setValue(true);
+                long end = System.currentTimeMillis();
+                System.out.println("Time: " + (end - start));
             } else if (line.equalsIgnoreCase("false")) {
+                long start = System.currentTimeMillis();
                 booleanProperty.setValue(false);
+                long end = System.currentTimeMillis();
+                System.out.println("Time: " + (end - start));
             } else {
                 System.out.println("Invalid input");
             }

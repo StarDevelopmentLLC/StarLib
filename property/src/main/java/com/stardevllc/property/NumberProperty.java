@@ -10,7 +10,7 @@ public abstract class NumberProperty<N extends Number> implements Property<N>, W
     
     protected final Object bean;
     protected final String name;
-    protected final EventBus eventBus = new SimpleEventBus();
+    protected final EventBus<ChangeListener.ChangeEvent<N>> eventBus = new SimpleEventBus<>();
 
     public NumberProperty(Object bean, String name) {
         this.bean = bean;

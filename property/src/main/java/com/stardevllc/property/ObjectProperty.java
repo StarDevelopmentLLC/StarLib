@@ -13,7 +13,7 @@ public class ObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
     
     protected T value;
     
-    protected final EventBus eventBus = new SimpleEventBus();
+    protected final EventBus<ChangeListener.ChangeEvent<T>> eventBus = new SimpleEventBus<>();
 
     public ObjectProperty(Object bean, String name, T value) {
         this.bean = bean;

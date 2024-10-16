@@ -14,7 +14,7 @@ public class BooleanProperty implements Property<Boolean>, WritableBooleanValue 
     
     protected boolean value;
     
-    protected final EventBus eventBus = new SimpleEventBus();
+    protected final EventBus<ChangeListener.ChangeEvent<Boolean>> eventBus = new SimpleEventBus<>();
 
     public BooleanProperty(Object bean, String name, boolean value) {
         this.bean = bean;

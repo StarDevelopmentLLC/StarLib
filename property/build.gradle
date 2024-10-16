@@ -22,9 +22,9 @@ publishing {
 }
 
 dependencies {
-    api 'com.github.StarDevelopmentLLC:eventbus:0.1.0'
+    api 'com.github.StarDevelopmentLLC:eventbus:0.1.1'
+    api 'com.github.StarDevelopmentLLC:observable:0.1.1'
     api 'com.github.StarDevelopmentLLC:calculator:0.1.0'
-    api 'com.github.StarDevelopmentLLC:observable:0.1.0'
 }
 
 group = "com.github.StarDevelopmentLLC"

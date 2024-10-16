@@ -14,7 +14,7 @@ public class CharacterProperty implements Property<Character>, WritableCharacter
     
     protected char value;
     
-    protected final EventBus eventBus = new SimpleEventBus();
+    protected final EventBus<ChangeListener.ChangeEvent<Character>> eventBus = new SimpleEventBus<>();
 
     public CharacterProperty(Object bean, String name, char value) {
         this.bean = bean;
