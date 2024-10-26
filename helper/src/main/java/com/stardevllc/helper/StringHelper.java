@@ -7,6 +7,15 @@ import java.util.regex.Pattern;
 
 public class StringHelper {
     private static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
+
+    public static String pluralize(String word) {
+        if (word.charAt(word.length() - 1) == 's') {
+            word += "'";
+        } else {
+            word += "'s";
+        }
+        return word;
+    }
     
     public static String titlize(String string) {
         string = string.toLowerCase();
