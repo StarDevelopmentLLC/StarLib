@@ -5,6 +5,18 @@ import java.util.Random;
 public final class NumberHelper {
     private NumberHelper() {}
 
+    public static String getNumberSuffix(long number) {
+        if (number == 1) {
+            return "1st";
+        } else if (number == 2) {
+            return "2nd";
+        } else if (number == 3) {
+            return "3rd";
+        } else {
+            return number + "th";
+        }
+    }
+    
     public static int randomInRange(int min, int max) {
         return randomInRange(new Random(), min, max);
     }
