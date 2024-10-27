@@ -12,7 +12,9 @@ public class MapHelper {
         Map<K, V> map = new HashMap<>();
         map.put(firstKey, firstValue);
         for (int i = 0; i < rawValues.length; i += 2) {
-            map.put((K) rawValues[i], (V) rawValues[i + 1]);
+            try {
+                map.put((K) rawValues[i], (V) rawValues[i + 1]);
+            } catch (Throwable t) {}
         }
         return map;
     }
