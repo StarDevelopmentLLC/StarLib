@@ -58,7 +58,7 @@ public class ObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
             eventBus.post(event);
         }
         
-        if (!oldValue.equals(newValue)) {
+        if (oldValue != null && !oldValue.equals(newValue)) {
             eventBus.post(event);
         }
     }
