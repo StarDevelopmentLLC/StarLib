@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.ListIterator;
 
 public abstract class AbstractObservableList<E> extends AbstractObservableCollection<E> implements ObservableList<E> {
-
     @Override
     public boolean add(E e) {
         add(size(), e);
