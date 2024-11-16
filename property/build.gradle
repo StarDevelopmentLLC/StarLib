@@ -9,10 +9,6 @@ repositories {
     mavenCentral()
 }
 
-jar {
-//    destinationDirectory.set(file("$rootProject.projectDir/build/libs"))
-}
-
 publishing {
     publications {
         maven(MavenPublication) {
@@ -23,12 +19,12 @@ publishing {
 
 dependencies {
     api 'com.github.StarDevelopmentLLC:eventbus:0.1.1'
-    api 'com.github.StarDevelopmentLLC:observable:0.1.1'
+    api 'com.github.StarDevelopmentLLC:observable:0.1.2'
     api 'com.github.StarDevelopmentLLC:calculator:0.1.0'
 }
 
 group = "com.github.StarDevelopmentLLC"
-version = "0.1.3"
+version = "0.1.4"
 
 java {
     toolchain {

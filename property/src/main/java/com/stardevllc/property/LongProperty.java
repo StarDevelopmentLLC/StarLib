@@ -1,6 +1,6 @@
 package com.stardevllc.property;
 
-import com.stardevllc.observable.ChangeListener;
+import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.value.ObservableBooleanValue;
 import com.stardevllc.observable.value.ObservableNumberValue;
 import com.stardevllc.observable.writable.WritableLongValue;
@@ -32,7 +32,7 @@ public class LongProperty extends NumberProperty<Long> implements WritableLongVa
         long oldValue = value;
         value = newValue;
         if (oldValue != newValue) {
-            this.eventBus.post(new ChangeListener.ChangeEvent<>(this, oldValue, newValue));
+            this.eventBus.post(new ChangeEvent<>(this, oldValue, newValue));
         }
     }
 

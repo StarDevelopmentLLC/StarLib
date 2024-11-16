@@ -2,6 +2,7 @@ package com.stardevllc.property;
 
 import com.stardevllc.eventbus.EventBus;
 import com.stardevllc.eventbus.impl.SimpleEventBus;
+import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.ChangeListener;
 import com.stardevllc.observable.Property;
 import com.stardevllc.observable.writable.WritableObjectValue;
@@ -13,7 +14,7 @@ public class ObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
     
     protected T value;
     
-    protected final EventBus<ChangeListener.ChangeEvent<T>> eventBus = new SimpleEventBus<>();
+    protected final EventBus<ChangeEvent<T>> eventBus = new SimpleEventBus<>();
 
     public ObjectProperty(Object bean, String name, T value) {
         this.bean = bean;
@@ -52,7 +53,7 @@ public class ObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
     public void set(T newValue) {
         T oldValue = value;
         value = newValue;
-        ChangeListener.ChangeEvent<T> event = new ChangeListener.ChangeEvent<>(this, oldValue, newValue);
+        ChangeEvent<T> event = new ChangeEvent<>(this, oldValue, newValue);
         
         if ((oldValue == null && newValue != null) || (oldValue != null && newValue == null)) {
             eventBus.post(event);

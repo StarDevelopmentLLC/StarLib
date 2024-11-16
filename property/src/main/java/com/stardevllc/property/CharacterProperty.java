@@ -2,8 +2,8 @@ package com.stardevllc.property;
 
 import com.stardevllc.eventbus.EventBus;
 import com.stardevllc.eventbus.impl.SimpleEventBus;
+import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.ChangeListener;
-import com.stardevllc.observable.ChangeListener.ChangeEvent;
 import com.stardevllc.observable.Property;
 import com.stardevllc.observable.writable.WritableCharacterValue;
 
@@ -14,7 +14,7 @@ public class CharacterProperty implements Property<Character>, WritableCharacter
     
     protected char value;
     
-    protected final EventBus<ChangeListener.ChangeEvent<Character>> eventBus = new SimpleEventBus<>();
+    protected final EventBus<ChangeEvent<Character>> eventBus = new SimpleEventBus<>();
 
     public CharacterProperty(Object bean, String name, char value) {
         this.bean = bean;

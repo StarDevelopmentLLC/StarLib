@@ -2,6 +2,7 @@ package com.stardevllc.property;
 
 import com.stardevllc.eventbus.EventBus;
 import com.stardevllc.eventbus.impl.SimpleEventBus;
+import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.ChangeListener;
 import com.stardevllc.observable.Property;
 import com.stardevllc.observable.value.ObservableBooleanValue;
@@ -14,7 +15,7 @@ public class BooleanProperty implements Property<Boolean>, WritableBooleanValue 
     
     protected boolean value;
     
-    protected final EventBus<ChangeListener.ChangeEvent<Boolean>> eventBus = new SimpleEventBus<>();
+    protected final EventBus<ChangeEvent<Boolean>> eventBus = new SimpleEventBus<>();
 
     public BooleanProperty(Object bean, String name, boolean value) {
         this.bean = bean;
@@ -69,7 +70,7 @@ public class BooleanProperty implements Property<Boolean>, WritableBooleanValue 
         boolean oldValue = value;
         value = newValue;
         if (oldValue != value) {
-            this.eventBus.post(new ChangeListener.ChangeEvent<>(this, oldValue, newValue));
+            this.eventBus.post(new ChangeEvent<>(this, oldValue, newValue));
         }
     }
 
