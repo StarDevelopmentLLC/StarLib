@@ -6,5 +6,4 @@ import com.stardevllc.eventbus.SubscribeEvent;
 @FunctionalInterface
 public interface ChangeListener<T> {
     void changed(ChangeEvent<T> event);
-    record ChangeEvent<T>(ObservableValue<? extends T> observableValue, T oldValue, T newValue) {}
 }

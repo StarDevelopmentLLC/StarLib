@@ -12,7 +12,7 @@ public interface ObservableCollection<E> extends Observable, Collection<E> {
     void addListener(CollectionChangeListener listener);
     void removeListener(CollectionChangeListener listener);
     
-    EventBus<CollectionChangeEvent> eventBus();
+    EventBus<CollectionChangeEvent<E>> eventBus();
 
     @Override
     Stream<E> stream();

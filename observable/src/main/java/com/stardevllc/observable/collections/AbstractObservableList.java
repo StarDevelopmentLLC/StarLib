@@ -1,17 +1,18 @@
 package com.stardevllc.observable.collections;
 
 import com.stardevllc.observable.Observable;
-import com.stardevllc.observable.collections.event.CollectionAddEvent;
-import com.stardevllc.observable.collections.event.CollectionRemoveEvent;
+import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 
-import java.util.Collection;
-import java.util.ListIterator;
+import java.util.*;
+import java.util.function.UnaryOperator;
 
 public abstract class AbstractObservableList<E> extends AbstractObservableCollection<E> implements ObservableList<E> {
-    @Override
-    public boolean add(E e) {
-        add(size(), e);
-        return true;
+    
+    protected final List<E> backingList;
+    
+    public AbstractObservableList(List<E> collection) {
+        super(collection);
+        this.backingList = collection;
     }
 
     @Override
@@ -25,43 +26,103 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
     }
 
     @Override
+    public E get(int index) {
+        return this.backingList.get(index);
+    }
+
+    @Override
+    public E set(int index, E element) {
+        E replaced = this.backingList.set(index, element);
+        this.eventBus.post(new CollectionChangeEvent<>(this, element, replaced));
+        return replaced;
+    }
+
+    @Override
+    public void add(int index, E element) {
+        this.backingList.add(index, element);
+        this.eventBus.post(new CollectionChangeEvent<>(this, element, null));
+    }
+
+    @Override
+    public E remove(int index) {
+        E removed = this.backingList.remove(index);
+        this.eventBus.post(new CollectionChangeEvent(this, null, removed));
+        return removed;
+    }
+
+    @Override
     public int indexOf(Object o) {
-        ListIterator<E> it = listIterator();
-        if (o == null) {
-            while (it.hasNext()) {
-                if (it.next() == null) {
-                    return it.previousIndex();
-                }
-            }
-        } else {
-            while (it.hasNext()) {
-                if (o.equals(it.next())) {
-                    return it.previousIndex();
-                }
-            }
-        }
-        return -1;
+        return this.backingList.indexOf(o);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        ListIterator<E> it = listIterator(size());
-        if (o == null) {
-            while (it.hasPrevious()) {
-                if (it.previous() == null) {
-                    return it.nextIndex();
-                }
-            }
-        } else {
-            while (it.hasPrevious()) {
-                if (o.equals(it.previous())) {
-                    return it.nextIndex();
-                }
-            }
-        }
-        return -1;
+        return backingList.lastIndexOf(o);
     }
-    
+
+    @Override
+    public Iterator<E> iterator() {
+        return listIterator();
+    }
+
+    @Override
+    public ListIterator<E> listIterator() {
+        return new ObservableListIterator<>(this, this.backingList.listIterator());
+    }
+
+    @Override
+    public ListIterator<E> listIterator(int index) {
+        return new ObservableListIterator<>(this, this.backingList.listIterator(), index);
+    }
+
+    @Override
+    public void replaceAll(UnaryOperator<E> operator) {
+        final ListIterator<E> li = this.listIterator();
+        while (li.hasNext()) {
+            li.set(operator.apply(li.next()));
+        }
+    }
+
+    @Override
+    public void sort(Comparator<? super E> c) {
+        this.backingList.sort(c);
+    }
+
+    @Override
+    public Spliterator<E> spliterator() {
+        return this.backingList.spliterator();
+    }
+
+    @Override
+    public void addFirst(E e) {
+        this.add(0, e);
+    }
+
+    @Override
+    public void addLast(E e) {
+        this.add(e);
+    }
+
+    @Override
+    public E getFirst() {
+        return this.backingList.getFirst();
+    }
+
+    @Override
+    public E getLast() {
+        return this.backingList.getLast();
+    }
+
+    @Override
+    public E removeFirst() {
+        return this.remove(0);
+    }
+
+    @Override
+    public E removeLast() {
+        return this.remove(this.size() - 1);
+    }
+
     protected static class ObservableListIterator<E> implements Observable, ListIterator<E> {
         
         protected final ObservableList<E> backingList;
@@ -116,19 +177,19 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
         @Override
         public void remove() {
             backingIterator.remove();
-            backingList.eventBus().post(new CollectionRemoveEvent(backingList, current));
+            backingList.eventBus().post(new CollectionChangeEvent(backingList, null, current));
         }
 
         @Override
         public void set(E e) {
             backingIterator.set(e);
-            backingList.eventBus().post(new CollectionAddEvent<>(backingList, e, current));
+            backingList.eventBus().post(new CollectionChangeEvent<>(backingList, e, current));
         }
 
         @Override
         public void add(E e) {
             backingIterator.add(e);
-            backingList.eventBus().post(new CollectionAddEvent<>(backingList, e, null));
+            backingList.eventBus().post(new CollectionChangeEvent<>(backingList, e, null));
         }
     }
 }

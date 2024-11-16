@@ -12,4 +12,6 @@ public class ObservableHashSet<E> extends AbstractObservableSet<E> {
         this();
         this.backingSet.addAll(collection);
     }
+    
+    
 }

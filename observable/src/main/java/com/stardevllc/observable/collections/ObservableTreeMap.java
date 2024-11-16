@@ -1,7 +1,6 @@
 package com.stardevllc.observable.collections;
 
-import com.stardevllc.observable.collections.event.MapAddEvent;
-import com.stardevllc.observable.collections.event.MapRemoveEvent;
+import com.stardevllc.observable.collections.event.MapChangeEvent;
 
 import java.util.*;
 
@@ -73,14 +72,14 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
     @Override
     public Entry<K, V> pollFirstEntry() {
         Entry<K, V> entry = this.backingTreeMap.pollFirstEntry();
-        this.eventBus.post(new MapRemoveEvent<>(this, entry.getKey(), entry.getValue()));
+        this.eventBus.post(new MapChangeEvent<>(this, entry.getKey(), null, entry.getValue()));
         return entry;
     }
 
     @Override
     public Entry<K, V> pollLastEntry() {
         Entry<K, V> entry = this.backingTreeMap.pollLastEntry();
-        this.eventBus.post(new MapRemoveEvent<>(this, entry.getKey(), entry.getValue()));
+        this.eventBus.post(new MapChangeEvent<>(this, entry.getKey(), null, entry.getValue()));
         return entry;
     }
 
@@ -167,14 +166,14 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
     @Override
     public V putFirst(K k, V v) {
         V r = this.backingTreeMap.putFirst(k, v);
-        this.eventBus.post(new MapAddEvent<>(this, k, v, r));
+        this.eventBus.post(new MapChangeEvent<>(this, k, v, r));
         return r;
     }
 
     @Override
     public V putLast(K k, V v) {
         V r = this.backingTreeMap.putLast(k, v);
-        this.eventBus.post(new MapAddEvent<>(this, k, v, r));
+        this.eventBus.post(new MapChangeEvent<>(this, k, v, r));
         return r;
     }
 }

@@ -1,7 +1,6 @@
 package com.stardevllc.observable.collections;
 
-import com.stardevllc.observable.collections.event.CollectionAddEvent;
-import com.stardevllc.observable.collections.event.CollectionRemoveEvent;
+import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -29,13 +28,13 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
     @Override
     public void addFirst(E e) {
         backingLinkedSet.addFirst(e);
-        this.eventBus.post(new CollectionAddEvent<>(this, e, null));
+        this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
     }
 
     @Override
     public void addLast(E e) {
         backingLinkedSet.addLast(e);
-        this.eventBus.post(new CollectionAddEvent<>(this, e, null));
+        this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
     }
 
     @Override
@@ -51,14 +50,14 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
     @Override
     public E removeFirst() {
         E removed = backingLinkedSet.removeFirst();
-        this.eventBus.post(new CollectionRemoveEvent(this, removed));
+        this.eventBus.post(new CollectionChangeEvent<>(this, null, removed));
         return removed;
     }
 
     @Override
     public E removeLast() {
         E removed = backingLinkedSet.removeLast();
-        this.eventBus.post(new CollectionRemoveEvent(this, removed));
+        this.eventBus.post(new CollectionChangeEvent(this, null, removed));
         return removed;
     }
 }

@@ -5,6 +5,6 @@ import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 
 @SubscribeEvent
 @FunctionalInterface
-public interface CollectionChangeListener {
-    void changed(CollectionChangeEvent event);
+public interface CollectionChangeListener<E> {
+    void changed(CollectionChangeEvent<E> event);
 }

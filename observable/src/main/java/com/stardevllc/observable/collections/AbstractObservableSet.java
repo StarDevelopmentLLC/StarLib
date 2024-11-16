@@ -1,23 +1,19 @@
 package com.stardevllc.observable.collections;
 
 import com.stardevllc.observable.Observable;
-import com.stardevllc.observable.collections.event.CollectionAddEvent;
-import com.stardevllc.observable.collections.event.CollectionRemoveEvent;
+import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Spliterator;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public abstract class AbstractObservableSet<E> extends AbstractObservableCollection<E> implements ObservableSet<E> {
     protected final Set<E> backingSet;
     
     protected AbstractObservableSet(Set<E> backingSet) {
+        super(backingSet);
         this.backingSet = backingSet;
-    }
-
-    @Override
-    public int size() {
-        return backingSet.size();
     }
 
     @Override
@@ -26,52 +22,10 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
     }
 
     @Override
-    public Object[] toArray() {
-        return backingSet.toArray();
+    public Spliterator<E> spliterator() {
+        return backingSet.spliterator();
     }
 
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return backingSet.toArray(a);
-    }
-
-    @Override
-    public boolean add(E e) {
-        boolean result = this.backingSet.add(e);
-        if (result) {
-            this.eventBus.post(new CollectionAddEvent<>(this, e, null));
-        }
-        return result;
-    }
-
-    @Override
-    public Stream<E> stream() {
-        return backingSet.stream();
-    }
-
-    @Override
-    public Stream<E> parallelStream() {
-        return backingSet.parallelStream();
-    }
-    
-    public boolean removeAll(Collection<?> c) {
-        Objects.requireNonNull(c);
-        boolean modified = false;
-
-        if (size() > c.size()) {
-            for (Object e : c)
-                modified |= remove(e);
-        } else {
-            for (Iterator<?> i = iterator(); i.hasNext(); ) {
-                if (c.contains(i.next())) {
-                    i.remove();
-                    modified = true;
-                }
-            }
-        }
-        return modified;
-    }
-    
     protected static class ObservableSetIterator<E> implements Observable, Iterator<E> {
         
         protected final ObservableSet<E> backingSet;
@@ -98,7 +52,7 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
         @Override
         public void remove() {
             backingIterator.remove();
-            backingSet.eventBus().post(new CollectionRemoveEvent(backingSet, current));
+            backingSet.eventBus().post(new CollectionChangeEvent(backingSet, null, current));
         }
 
         @Override

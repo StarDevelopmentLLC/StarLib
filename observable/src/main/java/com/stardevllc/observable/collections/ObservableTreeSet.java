@@ -1,7 +1,6 @@
 package com.stardevllc.observable.collections;
 
-import com.stardevllc.observable.collections.event.CollectionAddEvent;
-import com.stardevllc.observable.collections.event.CollectionRemoveEvent;
+import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 
 import java.util.*;
 
@@ -42,14 +41,14 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E pollFirst() {
         E value = backingTreeSet.pollFirst();
-        this.eventBus.post(new CollectionRemoveEvent(this, value));
+        this.eventBus.post(new CollectionChangeEvent<>(this, null, value));
         return value;
     }
 
     @Override
     public E pollLast() {
         E value = backingTreeSet.pollLast();
-        this.eventBus.post(new CollectionRemoveEvent(this, value));
+        this.eventBus.post(new CollectionChangeEvent<>(this, null, value));
         return value;
     }
 
@@ -101,14 +100,14 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E removeFirst() {
         E removed = this.backingTreeSet.removeFirst();
-        this.eventBus.post(new CollectionRemoveEvent(this, removed));
+        this.eventBus.post(new CollectionChangeEvent(this, null, removed));
         return removed;
     }
 
     @Override
     public E removeLast() {
         E removed = this.backingTreeSet.removeLast();
-        this.eventBus.post(new CollectionRemoveEvent(this, removed));
+        this.eventBus.post(new CollectionChangeEvent(this, null, removed));
         return removed;
     }
 
@@ -130,13 +129,13 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public void addFirst(E e) {
         this.backingTreeSet.addFirst(e);
-        this.eventBus.post(new CollectionAddEvent<>(this, e, null));
+        this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
     }
 
     @Override
     public void addLast(E e) {
         this.backingTreeSet.addLast(e);
-        this.eventBus.post(new CollectionAddEvent<>(this, e, null));
+        this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
     }
 
     @Override
