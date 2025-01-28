@@ -6,15 +6,15 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Set;
 
 @SuppressWarnings("DuplicatedCode")
-public class PermissionHierarchy extends Hierarchy<String> {
+public class ConfigHierarchy extends Hierarchy<String> {
 
     private final ConfigurationSection section;
 
-    public PermissionHierarchy(ConfigurationSection section) {
+    public ConfigHierarchy(ConfigurationSection section) {
         this.section = section;
     }
     
-    public PermissionHierarchy() {
+    public ConfigHierarchy() {
         this(null);
     }
     
@@ -31,8 +31,8 @@ public class PermissionHierarchy extends Hierarchy<String> {
 
         for (String key : keys) {
             int weight = Integer.parseInt(key);
-            String permission = section.getString(key);
-            set(weight, permission);
+            String value = section.getString(key);
+            set(weight, value);
         }
     }
 }
