@@ -20,11 +20,10 @@ publishing {
 dependencies {
     api 'com.github.StarDevelopmentLLC:eventbus:0.1.1'
     api 'com.github.StarDevelopmentLLC:observable:0.1.2'
-    api 'com.github.StarDevelopmentLLC:calculator:0.1.0'
 }
 
 group = "com.github.StarDevelopmentLLC"
-version = "0.1.5"
+version = "0.1.6"
 
 java {
     toolchain {

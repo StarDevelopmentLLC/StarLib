@@ -1,24 +1,14 @@
 package com.stardevllc.property;
 
-import com.stardevllc.eventbus.EventBus;
-import com.stardevllc.eventbus.impl.SimpleEventBus;
 import com.stardevllc.observable.ChangeEvent;
-import com.stardevllc.observable.ChangeListener;
-import com.stardevllc.observable.Property;
 import com.stardevllc.observable.writable.WritableObjectValue;
 
-public class ObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
-    
-    protected final Object bean;
-    protected final String name;
+public class ObjectProperty<T> extends AbstractProperty<T> implements WritableObjectValue<T> {
     
     protected T value;
     
-    protected final EventBus<ChangeEvent<T>> eventBus = new SimpleEventBus<>();
-
     public ObjectProperty(Object bean, String name, T value) {
-        this.bean = bean;
-        this.name = name;
+        super(bean, name);
         this.value = value;
     }
     
@@ -32,16 +22,6 @@ public class ObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
     
     public ObjectProperty() {
         this(null);
-    }
-
-    @Override
-    public Object getBean() {
-        return bean;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -67,16 +47,6 @@ public class ObjectProperty<T> implements Property<T>, WritableObjectValue<T> {
     @Override
     public void setValue(T newValue) {
         set(newValue);
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super T> changeListener) {
-        this.eventBus.subscribe(changeListener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super T> changeListener) {
-        this.eventBus.unsubscribe(changeListener);
     }
 
     @Override

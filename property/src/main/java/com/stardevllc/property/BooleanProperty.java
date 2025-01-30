@@ -1,25 +1,15 @@
 package com.stardevllc.property;
 
-import com.stardevllc.eventbus.EventBus;
-import com.stardevllc.eventbus.impl.SimpleEventBus;
 import com.stardevllc.observable.ChangeEvent;
-import com.stardevllc.observable.ChangeListener;
-import com.stardevllc.observable.Property;
 import com.stardevllc.observable.value.ObservableBooleanValue;
 import com.stardevllc.observable.writable.WritableBooleanValue;
 
-public class BooleanProperty implements Property<Boolean>, WritableBooleanValue {
-    
-    protected final Object bean;
-    protected final String name;
+public class BooleanProperty extends AbstractProperty<Boolean> implements WritableBooleanValue {
     
     protected boolean value;
     
-    protected final EventBus<ChangeEvent<Boolean>> eventBus = new SimpleEventBus<>();
-
     public BooleanProperty(Object bean, String name, boolean value) {
-        this.bean = bean;
-        this.name = name;
+        super(bean, name);
         this.value = value;
     }
     
@@ -36,28 +26,8 @@ public class BooleanProperty implements Property<Boolean>, WritableBooleanValue 
     }
 
     @Override
-    public Object getBean() {
-        return bean;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
     public void setValue(Boolean newValue) {
         set(newValue);
-    }
-
-    @Override
-    public void addListener(ChangeListener<? super Boolean> changeListener) {
-        this.eventBus.subscribe(changeListener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Boolean> changeListener) {
-        this.eventBus.unsubscribe(changeListener);
     }
 
     @Override
