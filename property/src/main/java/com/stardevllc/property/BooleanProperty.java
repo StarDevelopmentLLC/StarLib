@@ -76,7 +76,7 @@ public class BooleanProperty implements Property<Boolean>, WritableBooleanValue 
 
     @Override
     public boolean get() {
-        return false;
+        return value;
     }
 
     @Override
