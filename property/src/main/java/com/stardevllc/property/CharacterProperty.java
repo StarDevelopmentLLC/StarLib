@@ -25,6 +25,11 @@ public class CharacterProperty extends AbstractProperty<Character> implements Wr
     }
 
     @Override
+    public Class<Character> getTypeClass() {
+        return Character.class;
+    }
+
+    @Override
     public void set(char newValue) {
         char oldValue = this.value;
         this.value = newValue;

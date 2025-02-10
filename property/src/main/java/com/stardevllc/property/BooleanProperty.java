@@ -26,6 +26,11 @@ public class BooleanProperty extends AbstractProperty<Boolean> implements Writab
     }
 
     @Override
+    public Class<Boolean> getTypeClass() {
+        return Boolean.class;
+    }
+
+    @Override
     public void setValue(Boolean newValue) {
         set(newValue);
     }

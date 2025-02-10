@@ -28,6 +28,11 @@ public class IntegerProperty extends NumberProperty<Integer> implements Writable
     }
 
     @Override
+    public Class<Integer> getTypeClass() {
+        return Integer.class;
+    }
+
+    @Override
     public void set(int newValue) {
         int oldValue = value;
         value = newValue;

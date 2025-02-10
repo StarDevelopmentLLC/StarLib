@@ -28,6 +28,11 @@ public class FloatProperty extends NumberProperty<Float> implements WritableFloa
     }
 
     @Override
+    public Class<Float> getTypeClass() {
+        return Float.class;
+    }
+
+    @Override
     public void set(float newValue) {
         float oldValue = value;
         value = newValue;

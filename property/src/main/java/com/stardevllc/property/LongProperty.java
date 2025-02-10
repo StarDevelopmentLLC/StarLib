@@ -28,6 +28,11 @@ public class LongProperty extends NumberProperty<Long> implements WritableLongVa
     }
 
     @Override
+    public Class<Long> getTypeClass() {
+        return Long.class;
+    }
+
+    @Override
     public void set(long newValue) {
         long oldValue = value;
         value = newValue;

@@ -28,6 +28,11 @@ public class DoubleProperty extends NumberProperty<Double> implements WritableDo
     }
 
     @Override
+    public Class<Double> getTypeClass() {
+        return Double.class;
+    }
+
+    @Override
     public void set(double newValue) {
         double oldValue = value;
         value = newValue;
