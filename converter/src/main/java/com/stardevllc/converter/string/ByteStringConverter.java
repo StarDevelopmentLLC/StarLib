@@ -8,12 +8,12 @@ public class ByteStringConverter implements StringConverter<Byte> {
     }
     
     @Override
-    public String convertFrom(Byte fromObject) {
+    public String convertFrom(Object fromObject) {
         if (fromObject == null) {
             return "0";
         }
         
-        return Byte.toString(fromObject);
+        return Byte.toString((byte) fromObject);
     }
 
     @Override

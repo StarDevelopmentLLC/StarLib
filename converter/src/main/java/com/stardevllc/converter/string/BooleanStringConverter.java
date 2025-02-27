@@ -7,12 +7,12 @@ public class BooleanStringConverter implements StringConverter<Boolean> {
     }
 
     @Override
-    public String convertFrom(Boolean fromObject) {
+    public String convertFrom(Object fromObject) {
         if (fromObject == null) {
             return "false";
         }
         
-        return Boolean.toString(fromObject);
+        return Boolean.toString((boolean) fromObject);
     }
 
     @Override

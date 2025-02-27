@@ -8,12 +8,12 @@ public class ShortStringConverter implements StringConverter<Short> {
     }
     
     @Override
-    public String convertFrom(Short fromObject) {
+    public String convertFrom(Object fromObject) {
         if (fromObject == null) {
             return "0";
         }
         
-        return Short.toString(fromObject);
+        return Short.toString((short) fromObject);
     }
 
     @Override

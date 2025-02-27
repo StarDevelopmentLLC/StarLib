@@ -8,11 +8,11 @@ public class CharacterStringConverter implements StringConverter<Character> {
     }
     
     @Override
-    public String convertFrom(Character fromObject) {
+    public String convertFrom(Object fromObject) {
         if (fromObject == null) {
             return "";
         }
-        return Character.toString(fromObject);
+        return Character.toString((char) fromObject);
     }
 
     @Override

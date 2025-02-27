@@ -8,12 +8,12 @@ public class LongStringConverter implements StringConverter<Long> {
     }
     
     @Override
-    public String convertFrom(Long fromObject) {
+    public String convertFrom(Object fromObject) {
         if (fromObject == null) {
             return "0";
         }
         
-        return Long.toString(fromObject);
+        return Long.toString((long) fromObject);
     }
 
     @Override

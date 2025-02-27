@@ -8,12 +8,12 @@ public class DoubleStringConverter implements StringConverter<Double> {
     }
     
     @Override
-    public String convertFrom(Double fromObject) {
+    public String convertFrom(Object fromObject) {
         if (fromObject == null) {
             return "0.0";
         }
         
-        return Double.toString(fromObject);
+        return Double.toString((double) fromObject);
     }
 
     @Override

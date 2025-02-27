@@ -8,7 +8,7 @@ public class UUIDStringConverter implements StringConverter<UUID> {
     }
 
     @Override
-    public String convertFrom(UUID fromObject) {
+    public String convertFrom(Object fromObject) {
         if (fromObject == null) {
             return "";
         }

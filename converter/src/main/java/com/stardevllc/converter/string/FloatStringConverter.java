@@ -8,12 +8,12 @@ public class FloatStringConverter implements StringConverter<Float> {
     }
     
     @Override
-    public String convertFrom(Float fromObject) {
+    public String convertFrom(Object fromObject) {
         if (fromObject == null) {
             return "0.0";
         }
         
-        return Float.toString(fromObject);
+        return Float.toString((float) fromObject);
     }
 
     @Override

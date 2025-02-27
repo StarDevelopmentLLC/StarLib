@@ -8,12 +8,12 @@ public class IntegerStringConverter implements StringConverter<Integer> {
     }
     
     @Override
-    public String convertFrom(Integer fromObject) {
+    public String convertFrom(Object fromObject) {
         if (fromObject == null) {
             return "0";
         }
         
-        return Integer.toString(fromObject);
+        return Integer.toString((int) fromObject);
     }
 
     @Override
