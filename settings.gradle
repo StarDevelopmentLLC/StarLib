@@ -5,4 +5,5 @@ plugins {
 rootProject.name = 'StarLib'
 include('calculator')
 include('eventbus')
-include('obserable')
+include('observable')
+include('property')
