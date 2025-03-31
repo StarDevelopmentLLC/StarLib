@@ -21,6 +21,9 @@ publishing {
 dependencies {
     api project(':calculator')
     api project(':eventbus')
+    api project(':observable')
+    api project(':property')
+    api project(':converter')
     
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
