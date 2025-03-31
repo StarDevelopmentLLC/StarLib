@@ -1,11 +1,9 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
 }
 
 repositories {
     mavenLocal()
-    maven { url 'https://jitpack.io' }
     mavenCentral()
 }
 
@@ -18,8 +16,9 @@ publishing {
 }
 
 dependencies {
-    api 'com.github.StarDevelopmentLLC:eventbus:0.1.1'
-    api 'com.github.StarDevelopmentLLC:calculator:0.1.0'
+    api project(':eventbus')
+    api project(':calculator')
+    api project(':observable')
 }
 
 group = "com.github.StarDevelopmentLLC"
