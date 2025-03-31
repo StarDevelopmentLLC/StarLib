@@ -26,6 +26,7 @@ dependencies {
     api project(':converter')
     api project(':units')
     api project(':helper')
+    api project(':hierarchy')
     
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
