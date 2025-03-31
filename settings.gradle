@@ -4,3 +4,4 @@ plugins {
 
 rootProject.name = 'StarLib'
 include('calculator')
+include('eventbus')

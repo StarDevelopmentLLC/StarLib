@@ -20,6 +20,7 @@ publishing {
 
 dependencies {
     api project(':calculator')
+    api project(':eventbus')
     
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
