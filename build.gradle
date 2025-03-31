@@ -29,6 +29,7 @@ dependencies {
     api project(':hierarchy')
     api project(':random')
     api project(':range')
+    api project(':time')
     
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
