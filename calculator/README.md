@@ -1,2 +1,0 @@
-# calculator
-Some simple calculators.
