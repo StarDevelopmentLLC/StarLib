@@ -1,34 +1,19 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
 }
 
 repositories {
     mavenLocal()
-    maven { url 'https://jitpack.io' }
     mavenCentral()
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
-        }
-    }
-}
-
 dependencies {
-    api 'com.github.StarDevelopmentLLC:property:0.1.4'
-    api 'com.github.StarDevelopmentLLC:time:0.1.0'
+    api project(':property')
+    api project(':time')
 }
-
-group = "com.github.StarDevelopmentLLC"
-version = "0.1.3"
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
-
-tasks.build.finalizedBy(publishToMavenLocal)

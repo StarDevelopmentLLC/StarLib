@@ -30,6 +30,7 @@ dependencies {
     api project(':random')
     api project(':range')
     api project(':time')
+    api project(':clock')
     
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
