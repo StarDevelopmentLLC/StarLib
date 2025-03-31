@@ -1,0 +1,27 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenCentral()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+group = "com.github.StarDevelopmentLLC"
+version = "0.1.1"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.build.finalizedBy(publishToMavenLocal)
