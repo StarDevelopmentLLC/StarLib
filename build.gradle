@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id("com.gradleup.shadow") version "9.0.0-beta11"
 }
 
 repositories {
@@ -32,6 +33,7 @@ dependencies {
     api project(':time')
     api project(':clock')
     api project(':registry')
+    api project(':fieldwatcher')
     
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
