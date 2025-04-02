@@ -1,8 +1,6 @@
 package com.stardevllc.helper;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -12,6 +10,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public final class FileHelper {
+    public static void createFileIfNotExists(File file) {
+        createFileIfNotExists(file.toPath());
+    }
+    
     public static void createFileIfNotExists(Path path) {
         createDirectoryIfNotExists(path.getParent());
 
@@ -23,11 +25,19 @@ public final class FileHelper {
             }
         }
     }
+    
+    public static File subPath(File parent, String... child) {
+        return subPath(parent.toPath(), child).toFile();
+    }
 
     public static Path subPath(Path parent, String... child) {
         return FileSystems.getDefault().getPath(parent.toString(), child);
     }
 
+    public static void createDirectoryIfNotExists(File file) {
+        createDirectoryIfNotExists(file.toPath());
+    }
+    
     public static void createDirectoryIfNotExists(Path path) {
         if (Files.notExists(path)) {
             try {
@@ -36,6 +46,10 @@ public final class FileHelper {
                 e.printStackTrace();
             }
         }
+    }
+    
+    public static File downloadFile(String downloadUrl, File downloadDir, String fileName, boolean userAgent) {
+        return downloadFile(downloadUrl, downloadDir.toPath(), fileName, userAgent).toFile();
     }
 
     public static Path downloadFile(String downloadUrl, Path downloadDir, String fileName, boolean userAgent) {
@@ -70,6 +84,10 @@ public final class FileHelper {
         }
         return null;
     }
+    
+    public static void copyFolder(File src, File dest) {
+        copyFolder(src.toPath(), dest.toPath());
+    }
 
     public static void copyFolder(Path src, Path dest) {
         try {
@@ -92,6 +110,10 @@ public final class FileHelper {
             e.printStackTrace();
         }
     }
+    
+    public static void copy(File source, File dest) {
+        copy(source.toPath(), dest.toPath());
+    }
 
     public static void copy(Path source, Path dest) {
         try {
@@ -99,6 +121,10 @@ public final class FileHelper {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+    }
+    
+    public static void deleteDirectory(File directory) {
+        deleteDirectory(directory.toPath());
     }
 
     public static void deleteDirectory(Path directory) {
@@ -114,7 +140,7 @@ public final class FileHelper {
                     return FileVisitResult.CONTINUE;
                 }
             });
-        } catch (IOException e) {
+        } catch (Exception e) {
             String osName = System.getProperty("os.name").toLowerCase();
             String[] cmd;
             if (osName.contains("windows")) {
