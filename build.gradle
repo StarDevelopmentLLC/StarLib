@@ -13,8 +13,8 @@ version '0.1.0'
 
 publishing {
     publications {
-        maven(MavenPublication) {
-            from components.java
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
         }
     }
 }
