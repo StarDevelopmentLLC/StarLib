@@ -25,20 +25,20 @@ shadowJar {
 }
 
 dependencies {
-    api project(':calculator')
-    api project(':eventbus')
-    api project(':observable')
-    api project(':property')
-    api project(':converter')
-    api project(':units')
-    api project(':helper')
-    api project(':hierarchy')
-    api project(':random')
-    api project(':range')
-    api project(':time')
-    api project(':clock')
-    api project(':registry')
-    api project(':fieldwatcher')
+    implementation project(':calculator')
+    implementation project(':eventbus')
+    implementation project(':observable')
+    implementation project(':property')
+    implementation project(':converter')
+    implementation project(':units')
+    implementation project(':helper')
+    implementation project(':hierarchy')
+    implementation project(':random')
+    implementation project(':range')
+    implementation project(':time')
+    implementation project(':clock')
+    implementation project(':registry')
+    implementation project(':fieldwatcher')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
