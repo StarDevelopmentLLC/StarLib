@@ -4,7 +4,7 @@ import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.value.ObservableBooleanValue;
 import com.stardevllc.observable.value.ObservableNumberValue;
 import com.stardevllc.observable.writable.WritableIntegerValue;
-import com.stardevllc.starlib.numbers.SimpleCalculator;
+import com.stardevllc.calculator.SimpleCalculator;
 
 public class IntegerProperty extends NumberProperty<Integer> implements WritableIntegerValue {
     

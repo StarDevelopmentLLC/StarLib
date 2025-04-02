@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.numbers;
+package com.stardevllc.calculator;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

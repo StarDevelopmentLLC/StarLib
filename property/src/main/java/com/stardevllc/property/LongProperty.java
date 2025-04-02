@@ -4,7 +4,7 @@ import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.value.ObservableBooleanValue;
 import com.stardevllc.observable.value.ObservableNumberValue;
 import com.stardevllc.observable.writable.WritableLongValue;
-import com.stardevllc.starlib.numbers.SimpleCalculator;
+import com.stardevllc.calculator.SimpleCalculator;
 
 public class LongProperty extends NumberProperty<Long> implements WritableLongValue {
     

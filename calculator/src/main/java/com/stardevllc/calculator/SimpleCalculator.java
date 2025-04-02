@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.numbers;
+package com.stardevllc.calculator;
 
 public final class SimpleCalculator {
     public static Number negate(Number number) {
