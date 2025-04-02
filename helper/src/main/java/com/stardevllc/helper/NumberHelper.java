@@ -6,12 +6,14 @@ public final class NumberHelper {
     private NumberHelper() {}
 
     public static String getNumberSuffix(long number) {
-        if (number == 1) {
-            return "1st";
-        } else if (number == 2) {
-            return "2nd";
-        } else if (number == 3) {
-            return "3rd";
+        String numberString = String.valueOf(number);
+        
+        if (numberString.charAt(numberString.length() - 1) == '1' && number != 11) {
+            return number + "st";
+        } else if (numberString.charAt(numberString.length() - 1) == '2' && number != 12) {
+            return number + "nd";
+        } else if (numberString.charAt(numberString.length() - 1) == '3' && number != 13) {
+            return number + "rd";
         } else {
             return number + "th";
         }
