@@ -19,6 +19,11 @@ publishing {
     }
 }
 
+shadowJar {
+    archiveClassifier.set('')
+    //destinationDirectory = file(System.getProperty("user.home") + File.separator + "Documents" + File.separator + "JarOutput")
+}
+
 dependencies {
     api project(':calculator')
     api project(':eventbus')
@@ -34,17 +39,6 @@ dependencies {
     api project(':clock')
     api project(':registry')
     api project(':fieldwatcher')
-    
-    // Use JUnit Jupiter for testing.
-    testImplementation libs.junit.jupiter
-
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    // api libs.commons.math3
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    // implementation libs.guava
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -53,10 +47,3 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
-
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}
-
-tasks.build.finalizedBy(publishToMavenLocal)
