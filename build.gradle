@@ -47,3 +47,7 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
+
+tasks.jar.finalizedBy(shadowJar)
+tasks.publishToMavenLocal.dependsOn(shadowJar)
+tasks.build.finalizedBy(publishToMavenLocal)
