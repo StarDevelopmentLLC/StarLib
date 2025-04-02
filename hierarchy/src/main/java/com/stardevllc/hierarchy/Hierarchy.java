@@ -1,4 +1,4 @@
-package com.stardevllc.hierarchy.base;
+package com.stardevllc.hierarchy;
 
 import java.util.Map;
 import java.util.SortedMap;
