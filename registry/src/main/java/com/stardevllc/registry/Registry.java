@@ -42,24 +42,24 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
             key = keyRetriever.apply(object);
         }
         
+        if (key == null) {
+            key = keyGenerator.apply(object);
+        }
+        
         return register(key, object);
     }
     
     public V register(K key, V object) {
         if (key == null) {
-            if (keyGenerator != null) {
-                key = keyGenerator.apply(object);
-                if (keySetter != null) {
-                    keySetter.accept(key, object);
-                }
-            } else {
-                return null;
-            } 
+            return null;
         }
         
         if (keyNormalizer != null) {
             key = keyNormalizer.apply(key);
         }
+        
+        keySetter.accept(key, object);
+        
         lock.lock();
         this.objects.put(key, object);
         lock.unlock();
