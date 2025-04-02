@@ -6,13 +6,27 @@ public final class CodeGenerator {
     private static final String LETTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final String NUMBERS = "0123456789";
     
-    public static String generate(int length) {
-        return generate(length, true, true, true);
+    public enum Option {
+        LETTERS, UPPERCASE, NUMBERS
+    }
+    
+    public static String generateAllOptions(int length) {
+        return generate(length, Option.LETTERS, Option.UPPERCASE, Option.NUMBERS);
     }
 
-    public static String generate(int length, boolean letters, boolean uppercase, boolean numbers) {
+    public static String generate(int length, Option... options) {
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
+        
+        boolean letters = false, numbers = false, uppercase = false;
+        
+        for (Option option : options) {
+            switch (option) {
+                case LETTERS -> letters = true;
+                case UPPERCASE -> uppercase = true;
+                case NUMBERS -> numbers = true;
+            }
+        }
 
         if (!letters && !numbers) {
             throw new IllegalArgumentException("You must have at least letters and/or numbers in the code.");
