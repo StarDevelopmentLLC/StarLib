@@ -58,7 +58,9 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
             key = keyNormalizer.apply(key);
         }
         
-        keySetter.accept(key, object);
+        if (keySetter != null) {
+            keySetter.accept(key, object);
+        }
         
         lock.lock();
         this.objects.put(key, object);
