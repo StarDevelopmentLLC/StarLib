@@ -9,7 +9,7 @@ repositories {
 }
 
 group 'com.github.StarDevelopmentLLC'
-version '0.1.1'
+version '0.1.2'
 
 publishing {
     publications {
@@ -39,6 +39,7 @@ dependencies {
     implementation project(':clock')
     implementation project(':registry')
     implementation project(':fieldwatcher')
+    implementation project(':mojang')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
