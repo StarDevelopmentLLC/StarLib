@@ -1,12 +1,12 @@
 package com.stardevllc.helper;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class StringHelper {
     private static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
+    
+    private static Map<String, UUID> uuidCache = new HashMap<>();
 
     public static String pluralize(String word) {
         if (word.charAt(word.length() - 1) == 's') {
@@ -70,8 +70,14 @@ public class StringHelper {
     }
 
     public static UUID toUUID(String id) {
+        if (uuidCache.containsKey(id)) {
+            return uuidCache.get(id);
+        }
+        
         if (UUID_PATTERN.matcher(id).matches()) {
-            return UUID.fromString(id);
+            UUID uuid = UUID.fromString(id);
+            uuidCache.put(id, uuid);
+            return uuid;
         }
 
         id = id.substring(0, 8) + "-" +
@@ -79,8 +85,10 @@ public class StringHelper {
                 id.substring(12, 16) + "-" +
                 id.substring(16, 20) + "-" +
                 id.substring(20, 32);
-
-        return UUID.fromString(id);
+        
+        UUID uuid = UUID.fromString(id);
+        uuidCache.put(id, uuid);
+        return uuid;
     }
 
     public static String getStringSafe(String value) {
