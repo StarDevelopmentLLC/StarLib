@@ -20,34 +20,25 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
     public Stopwatch(long endTime, long countAmount) {
         this(0L, endTime, countAmount);
     }
-
+    
     @Override
     protected boolean shouldCallback(CallbackHolder<StopwatchSnapshot> holder) {
-        long lastRun = holder.getLastRun(); //Variable to easily access when it ran last
-        if (!holder.isRepeating()) {
-            long run = startTime.get() + holder.getPeriod(); //This is for when the non-repeating callback should run based on the length
-            return lastRun == -1 && this.getTime() >= run;
-        } else {
-            if (holder.getLastRun() == -1) {
-                return startTime.get() + holder.getPeriod() >= this.getTime();
-            } else {
-                long nextRun = holder.getLastRun() + holder.getPeriod();
-                return this.getTime() >= nextRun;
-            }
-        }
+        long elapsed = this.startTime.get() - this.time.get();
+        long periodsElapsed = elapsed / holder.getPeriod() - 1;
+        long nextRun = this.startTime.get() - ((periodsElapsed + 1) * holder.getPeriod());
+        
+        return this.time.get() == nextRun;
     }
-
+    
     @Override
     protected long getNextRun(CallbackHolder<StopwatchSnapshot> holder) {
         if (!holder.isRepeating()) {
             return holder.getPeriod();
         }
-
-        if (holder.getLastRun() == -1) {
-            return startTime.get() + holder.getPeriod();
-        } else {
-            return holder.getLastRun() + holder.getPeriod();
-        }
+        
+        long elapsed = this.startTime.get() - this.time.get();
+        long periodsElapsed = elapsed / holder.getPeriod() - 1;
+        return this.startTime.get() - ((periodsElapsed + 1) * holder.getPeriod());
     }
 
     @Override

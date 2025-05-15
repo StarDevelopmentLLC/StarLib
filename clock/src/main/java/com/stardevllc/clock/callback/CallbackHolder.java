@@ -9,7 +9,6 @@ public class CallbackHolder<T extends ClockSnapshot> {
     protected final UUID callbackId;
     protected final long period;
     protected boolean repeating = true;
-    protected long lastRun = -1;
     
     public CallbackHolder(ClockCallback<T> callback, UUID callbackId, long period) {
         this.callback = callback;
@@ -32,14 +31,6 @@ public class CallbackHolder<T extends ClockSnapshot> {
         return period;
     }
     
-    public long getLastRun() {
-        return lastRun;
-    }
-    
-    public void setLastRun(long lastRun) {
-        this.lastRun = lastRun;
-    }
-
     public boolean isRepeating() {
         return repeating;
     }

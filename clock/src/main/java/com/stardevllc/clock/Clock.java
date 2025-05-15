@@ -104,7 +104,6 @@ public abstract class Clock<T extends ClockSnapshot> {
                 continue;
             }
             
-            holder.setLastRun(time.get());
             callback.callback(snapshot);
         }
     }
