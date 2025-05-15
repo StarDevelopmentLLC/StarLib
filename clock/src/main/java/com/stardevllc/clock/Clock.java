@@ -10,15 +10,13 @@ import com.stardevllc.property.BooleanProperty;
 import com.stardevllc.property.LongProperty;
 import com.stardevllc.time.TimeUnit;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class Clock<T extends ClockSnapshot> {
     protected final ClockLongProperty time;
     protected final ClockBooleanProperty paused;
     protected final ClockBooleanProperty cancelled;
-    protected Map<UUID, CallbackHolder<T>> callbacks = new HashMap<>();
+    protected Map<UUID, CallbackHolder<T>> callbacks = new LinkedHashMap<>();
     protected final long countAmount;
     protected ClockEndCondition<T> endCondition;
     
