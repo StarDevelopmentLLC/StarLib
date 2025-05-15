@@ -9,7 +9,7 @@ repositories {
 }
 
 group 'com.github.StarDevelopmentLLC'
-version '0.2.0'
+version '0.2.1'
 
 publishing {
     publications {
@@ -21,6 +21,7 @@ publishing {
 
 shadowJar {
     archiveClassifier.set('')
+    relocate('com.google.gson', 'com.stardevllc.json')
     //destinationDirectory = file(System.getProperty("user.home") + File.separator + "Documents" + File.separator + "JarOutput")
 }
 
