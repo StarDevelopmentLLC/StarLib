@@ -3,21 +3,12 @@ package com.stardevllc.time;
 public enum TimeUnit {
     MILLISECONDS(1, "millisecond", "ms"),
     TICKS(50, "tick", "t"),
-    SECONDS(1000, "second", "s") ,
-    MINUTES(SECONDS.msPerUnit * 60, "minute", "min", "m"),
-    HOURS(MINUTES.msPerUnit * 60, "hour", "h"),
-    DAYS(HOURS.msPerUnit * 24, "day", "d"),
-    /**
-     * The {@code WEEKS} value is based on a 7.604166666666667-day week. This is the average weeks in a month based on the below month value
-     */
-    WEEKS((long) (DAYS.msPerUnit * 7.604166666666667), "week", "w"),
-    /**
-     * The {@code MONTHS} value is based on a 30.41666667-day month. This is the average days in a month based on a 365 day year
-     */
-    MONTHS((long) (DAYS.msPerUnit * 30.41666667), "month", "mo"),
-    /**
-     * The {@code YEARS} value is based on a 365-day year. If another day count is needed, convert from the {@code DAYS} enum value.
-     */
+    SECONDS(java.util.concurrent.TimeUnit.SECONDS.toMillis(1), "second", "s") ,
+    MINUTES(java.util.concurrent.TimeUnit.MINUTES.toMillis(1), "minute", "min", "m"),
+    HOURS(java.util.concurrent.TimeUnit.HOURS.toMillis(1), "hour", "h"),
+    DAYS(java.util.concurrent.TimeUnit.DAYS.toMillis(1), "day", "d"),
+    WEEKS(DAYS.msPerUnit * 7, "week", "w"),
+    MONTHS(DAYS.msPerUnit * 30, "month", "mo"),
     YEARS(DAYS.msPerUnit * 365, "year", "y");
     
     private final String name;
