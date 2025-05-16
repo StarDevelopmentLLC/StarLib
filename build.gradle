@@ -37,6 +37,7 @@ dependencies {
     implementation project(':registry')
     implementation project(':fieldwatcher')
     implementation project(':mojang')
+    implementation project(':bucket')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
