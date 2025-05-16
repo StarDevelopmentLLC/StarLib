@@ -9,7 +9,7 @@ repositories {
 }
 
 group 'com.github.StarDevelopmentLLC'
-version '0.3.0'
+version '0.3.1'
 
 publishing {
     publications {
@@ -26,18 +26,18 @@ shadowJar {
 }
 
 dependencies {
-    implementation project(':calculator')
-    implementation project(':eventbus')
-    implementation project(':observable')
-    implementation project(':converter')
-    implementation project(':units')
-    implementation project(':helper')
-    implementation project(':time')
-    implementation project(':clock')
-    implementation project(':registry')
-    implementation project(':fieldwatcher')
-    implementation project(':mojang')
-    implementation project(':bucket')
+    api project(':bucket')
+    api project(':calculator')
+    api project(':clock')
+    api project(':converter')
+    api project(':eventbus')
+    api project(':fieldwatcher')
+    api project(':helper')
+    api project(':mojang')
+    api project(':observable')
+    api project(':registry')
+    api project(':time')
+    api project(':units')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -47,6 +47,7 @@ java {
     }
 }
 
+tasks.compileJava.dependsOn(clean)
 tasks.jar.finalizedBy(shadowJar)
 tasks.publishToMavenLocal.dependsOn(shadowJar)
 tasks.build.finalizedBy(publishToMavenLocal)
