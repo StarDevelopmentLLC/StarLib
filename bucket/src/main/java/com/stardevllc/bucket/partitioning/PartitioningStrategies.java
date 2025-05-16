@@ -101,5 +101,4 @@ public final class PartitioningStrategies {
     private PartitioningStrategies() {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
-
 }

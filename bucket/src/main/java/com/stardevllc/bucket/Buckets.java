@@ -23,37 +23,57 @@
  *  SOFTWARE.
  */
 
-package com.stardevllc.bucket.factory;
+package com.stardevllc.bucket;
 
-import com.stardevllc.bucket.Bucket;
 import com.stardevllc.bucket.partitioning.PartitioningStrategy;
 
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 /**
  * A set of methods for creating {@link Bucket}s.
  */
-public final class BucketFactory {
-
+public final class Buckets {
+    
     public static <E> Bucket<E> newBucket(int size, PartitioningStrategy<E> strategy, Supplier<Set<E>> setSupplier) {
-        return new SetSuppliedBucket<>(size, strategy, setSupplier);
+        return new AbstractBucket<>(size, strategy) {
+            @Override
+            protected Set<E> createSet() {
+                return setSupplier.get();
+            }
+        };
     }
-
+    
     public static <E> Bucket<E> newHashSetBucket(int size, PartitioningStrategy<E> strategy) {
-        return new HashSetBucket<>(size, strategy);
+        return new AbstractBucket<>(size, strategy) {
+            @Override
+            protected Set<E> createSet() {
+                return new HashSet<>();
+            }
+        };
     }
-
+    
     public static <E> Bucket<E> newSynchronizedHashSetBucket(int size, PartitioningStrategy<E> strategy) {
-        return new SynchronizedHashSetBucket<>(size, strategy);
+        return new AbstractBucket<>(size, strategy) {
+            @Override
+            protected Set<E> createSet() {
+                return Collections.synchronizedSet(new HashSet<>());
+            }
+        };
     }
-
+    
     public static <E> Bucket<E> newConcurrentBucket(int size, PartitioningStrategy<E> strategy) {
-        return new ConcurrentBucket<>(size, strategy);
+        return new AbstractBucket<>(size, strategy) {
+            @Override
+            protected Set<E> createSet() {
+                return ConcurrentHashMap.newKeySet();
+            }
+        };
     }
-
-    private BucketFactory() {
+    
+    private Buckets() {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
-
+    
 }
