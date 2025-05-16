@@ -33,7 +33,6 @@ dependencies {
     implementation project(':converter')
     implementation project(':units')
     implementation project(':helper')
-    implementation project(':range')
     implementation project(':time')
     implementation project(':clock')
     implementation project(':registry')
