@@ -4,20 +4,21 @@ import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 
 import java.util.*;
 
-@SuppressWarnings("SortedCollectionWithNonComparableKeys")
 public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements NavigableSet<E> {
-    protected final TreeSet<E> backingTreeSet;
+    protected final TreeSet<E> backingTreeSet = new TreeSet<>();
     
     public ObservableTreeSet() {
-        super(new TreeSet<>());
-        this.backingTreeSet = (TreeSet<E>) this.backingSet;
     }
     
     public ObservableTreeSet(Collection<E> collection) {
-        this();
-        this.backingSet.addAll(collection);
+        this.backingTreeSet.addAll(collection);
     }
-
+    
+    @Override
+    protected Set<E> getBackingSet() {
+        return backingTreeSet;
+    }
+    
     @Override
     public E lower(E e) {
         return backingTreeSet.lower(e);

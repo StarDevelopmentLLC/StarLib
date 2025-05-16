@@ -13,12 +13,9 @@ import java.util.stream.Stream;
 
 public abstract class AbstractObservableCollection<E> implements ObservableCollection<E> {
 
-    protected final Collection<E> backingCollection;
     protected final EventBus<CollectionChangeEvent<E>> eventBus = new SimpleEventBus<>();
     
-    public AbstractObservableCollection(Collection<E> collection) {
-        this.backingCollection = collection;
-    }
+    protected abstract Collection<E> getBackingCollection();
 
     @Override
     public void addListener(CollectionChangeListener listener) {
@@ -32,17 +29,17 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
 
     @Override
     public Stream<E> stream() {
-        return this.backingCollection.stream();
+        return getBackingCollection().stream();
     }
 
     @Override
     public Stream<E> parallelStream() {
-        return this.backingCollection.parallelStream();
+        return getBackingCollection().parallelStream();
     }
 
     @Override
     public int size() {
-        return this.backingCollection.size();
+        return getBackingCollection().size();
     }
 
     @Override
@@ -52,17 +49,17 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
 
     @Override
     public Object[] toArray() {
-        return this.backingCollection.toArray();
+        return getBackingCollection().toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return this.backingCollection.toArray(a);
+        return getBackingCollection().toArray(a);
     }
 
     @Override
     public boolean add(E e) {
-        boolean added = this.backingCollection.add(e);
+        boolean added = getBackingCollection().add(e);
         if (added) {
             this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
         }
@@ -71,7 +68,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
 
     @Override
     public boolean isEmpty() {
-        return this.backingCollection.isEmpty();
+        return getBackingCollection().isEmpty();
     }
     
     public EventBus<CollectionChangeEvent<E>> eventBus() {
@@ -80,7 +77,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
 
     @Override
     public boolean remove(Object o) {
-        boolean removed = this.backingCollection.remove(o);
+        boolean removed = getBackingCollection().remove(o);
         if (removed) {
             this.eventBus.post(new CollectionChangeEvent<>(this, null, (E) o));
         }
@@ -90,17 +87,17 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
 
     @Override
     public boolean contains(Object o) {
-        return this.backingCollection.contains(o);
+        return getBackingCollection().contains(o);
     }
 
     @Override
     public void forEach(Consumer<? super E> action) {
-        this.backingCollection.forEach(action);
+        getBackingCollection().forEach(action);
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return this.backingCollection.containsAll(c);
+        return getBackingCollection().containsAll(c);
     }
 
     @Override

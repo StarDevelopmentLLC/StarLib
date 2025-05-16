@@ -8,13 +8,13 @@ import java.util.function.UnaryOperator;
 
 public abstract class AbstractObservableList<E> extends AbstractObservableCollection<E> implements ObservableList<E> {
     
-    protected final List<E> backingList;
-    
-    public AbstractObservableList(List<E> collection) {
-        super(collection);
-        this.backingList = collection;
+    @Override
+    protected Collection<E> getBackingCollection() {
+        return getBackingList();
     }
-
+    
+    protected abstract List<E> getBackingList();
+    
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         boolean modified = false;
@@ -27,37 +27,37 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
 
     @Override
     public E get(int index) {
-        return this.backingList.get(index);
+        return getBackingList().get(index);
     }
 
     @Override
     public E set(int index, E element) {
-        E replaced = this.backingList.set(index, element);
+        E replaced = getBackingList().set(index, element);
         this.eventBus.post(new CollectionChangeEvent<>(this, element, replaced));
         return replaced;
     }
 
     @Override
     public void add(int index, E element) {
-        this.backingList.add(index, element);
+        getBackingList().add(index, element);
         this.eventBus.post(new CollectionChangeEvent<>(this, element, null));
     }
 
     @Override
     public E remove(int index) {
-        E removed = this.backingList.remove(index);
+        E removed = getBackingList().remove(index);
         this.eventBus.post(new CollectionChangeEvent(this, null, removed));
         return removed;
     }
 
     @Override
     public int indexOf(Object o) {
-        return this.backingList.indexOf(o);
+        return getBackingList().indexOf(o);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return backingList.lastIndexOf(o);
+        return getBackingList().lastIndexOf(o);
     }
 
     @Override
@@ -67,12 +67,12 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
 
     @Override
     public ListIterator<E> listIterator() {
-        return new ObservableListIterator<>(this, this.backingList.listIterator());
+        return new ObservableListIterator<>(this, getBackingList().listIterator());
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return new ObservableListIterator<>(this, this.backingList.listIterator(), index);
+        return new ObservableListIterator<>(this, getBackingList().listIterator(), index);
     }
 
     @Override
@@ -85,12 +85,12 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
 
     @Override
     public void sort(Comparator<? super E> c) {
-        this.backingList.sort(c);
+        getBackingList().sort(c);
     }
 
     @Override
     public Spliterator<E> spliterator() {
-        return this.backingList.spliterator();
+        return getBackingList().spliterator();
     }
 
     @Override
@@ -105,12 +105,12 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
 
     @Override
     public E getFirst() {
-        return this.backingList.getFirst();
+        return getBackingList().getFirst();
     }
 
     @Override
     public E getLast() {
-        return this.backingList.getLast();
+        return getBackingList().getLast();
     }
 
     @Override

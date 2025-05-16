@@ -1,17 +1,20 @@
 package com.stardevllc.observable.collections;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 
 public class ObservableHashSet<E> extends AbstractObservableSet<E> {
+    
+    private final HashSet<E> backingHashSet = new HashSet<>();
+    
     public ObservableHashSet() {
-        super(new HashSet<>());
     }
 
     public ObservableHashSet(Collection<E> collection) {
-        this();
-        this.backingSet.addAll(collection);
+        this.backingHashSet.addAll(collection);
     }
     
-    
+    @Override
+    protected Set<E> getBackingSet() {
+        return backingHashSet;
+    }
 }

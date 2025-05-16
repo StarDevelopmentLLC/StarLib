@@ -6,18 +6,20 @@ import java.util.*;
 
 public class ObservableLinkedList<E> extends AbstractObservableList<E> implements Deque<E> {
 
-    protected final LinkedList<E> backingLinkedList;
+    protected final LinkedList<E> backingLinkedList = new LinkedList<>();
 
     public ObservableLinkedList() {
-        super(new LinkedList<>());
-        this.backingLinkedList = (LinkedList<E>) this.backingList;
     }
 
     public ObservableLinkedList(Collection<E> collection) {
-        this();
-        this.backingList.addAll(collection);
+        this.backingLinkedList.addAll(collection);
     }
-
+    
+    @Override
+    protected List<E> getBackingList() {
+        return backingLinkedList;
+    }
+    
     public ObservableLinkedList<E> reversed() {
         return new ObservableLinkedList<>(this.backingLinkedList.reversed());
     }

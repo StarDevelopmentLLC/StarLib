@@ -2,24 +2,24 @@ package com.stardevllc.observable.collections;
 
 import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.SequencedSet;
+import java.util.*;
 
 public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> implements SequencedSet<E> {
     
-    private final LinkedHashSet<E> backingLinkedSet;
+    private final LinkedHashSet<E> backingLinkedSet = new LinkedHashSet<>();
     
     public ObservableLinkedHashSet() {
-        super(new LinkedHashSet<>());
-        this.backingLinkedSet = (LinkedHashSet<E>) this.backingSet;
     }
     
     public ObservableLinkedHashSet(Collection<E> collection) {
-        this();
-        this.backingSet.addAll(collection);
+        this.backingLinkedSet.addAll(collection);
     }
-
+    
+    @Override
+    protected Set<E> getBackingSet() {
+        return backingLinkedSet;
+    }
+    
     @Override
     public SequencedSet<E> reversed() {
         return new ObservableLinkedHashSet<>(backingLinkedSet.reversed());

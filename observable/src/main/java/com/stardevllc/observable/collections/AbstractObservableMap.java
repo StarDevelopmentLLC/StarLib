@@ -11,12 +11,9 @@ import java.util.function.Function;
 
 public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V> {
 
-    protected final Map<K, V> backingMap;
     protected final EventBus<MapChangeEvent> eventBus = new SimpleEventBus<>();
 
-    public AbstractObservableMap(Map<K, V> backingMap) {
-        this.backingMap = backingMap;
-    }
+    protected abstract Map<K, V> getBackingMap();
 
     @Override
     public EventBus<MapChangeEvent> eventBus() {
@@ -25,39 +22,39 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
 
     @Override
     public int size() {
-        return backingMap.size();
+        return getBackingMap().size();
     }
 
     @Override
     public boolean isEmpty() {
-        return backingMap.isEmpty();
+        return getBackingMap().isEmpty();
     }
 
     @Override
     public boolean containsKey(Object key) {
-        return backingMap.containsKey(key);
+        return getBackingMap().containsKey(key);
     }
 
     @Override
     public boolean containsValue(Object value) {
-        return backingMap.containsValue(value);
+        return getBackingMap().containsValue(value);
     }
 
     @Override
     public V get(Object key) {
-        return backingMap.get(key);
+        return getBackingMap().get(key);
     }
 
     @Override
     public V put(K key, V value) {
-        V removed = this.backingMap.put(key, value);
+        V removed = this.getBackingMap().put(key, value);
         this.eventBus.post(new MapChangeEvent<>(this, key, value, removed));
         return removed;
     }
 
     @Override
     public V remove(Object key) {
-        V removed = this.backingMap.remove(key);
+        V removed = this.getBackingMap().remove(key);
         this.eventBus.post(new MapChangeEvent<>(this, (K) key, null, removed));
         return removed;
     }
@@ -79,12 +76,12 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
 
     @Override
     public V getOrDefault(Object key, V defaultValue) {
-        return backingMap.getOrDefault(key, defaultValue);
+        return getBackingMap().getOrDefault(key, defaultValue);
     }
 
     @Override
     public void forEach(BiConsumer<? super K, ? super V> action) {
-        this.backingMap.forEach(action);
+        this.getBackingMap().forEach(action);
     }
 
     @Override
@@ -94,7 +91,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
 
     @Override
     public V putIfAbsent(K key, V value) {
-        V result = this.backingMap.putIfAbsent(key, value);
+        V result = getBackingMap().putIfAbsent(key, value);
         if (result != null) {
             this.eventBus.post(new MapChangeEvent<>(this, key, value, null));
         }
@@ -104,7 +101,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
 
     @Override
     public boolean remove(Object key, Object value) {
-        boolean result = this.backingMap.remove(key, value);
+        boolean result = getBackingMap().remove(key, value);
         if (result) {
             this.eventBus.post(new MapChangeEvent<>(this, (K) key, null, (V) value));
         }
@@ -114,7 +111,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
 
     @Override
     public boolean replace(K key, V oldValue, V newValue) {
-        boolean result = this.backingMap.replace(key, oldValue, newValue);
+        boolean result = getBackingMap().replace(key, oldValue, newValue);
         if (result) {
             this.eventBus.post(new MapChangeEvent<>(this, key, newValue, oldValue));
         }
@@ -124,7 +121,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
 
     @Override
     public V replace(K key, V value) {
-        V oldValue = this.backingMap.replace(key, value);
+        V oldValue = getBackingMap().replace(key, value);
         this.eventBus.post(new MapChangeEvent<>(this, key, value, oldValue));
         return oldValue;
     }

@@ -3,27 +3,26 @@ package com.stardevllc.observable.collections;
 import com.stardevllc.observable.Observable;
 import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class AbstractObservableSet<E> extends AbstractObservableCollection<E> implements ObservableSet<E> {
-    protected final Set<E> backingSet;
     
-    protected AbstractObservableSet(Set<E> backingSet) {
-        super(backingSet);
-        this.backingSet = backingSet;
+    @Override
+    protected Collection<E> getBackingCollection() {
+        return getBackingSet();
     }
-
+    
+    protected abstract Set<E> getBackingSet();
+    
     @Override
     public Iterator<E> iterator() {
-        return new ObservableSetIterator<>(this, backingSet.iterator());
+        return new ObservableSetIterator<>(this, getBackingSet().iterator());
     }
 
     @Override
     public Spliterator<E> spliterator() {
-        return backingSet.spliterator();
+        return getBackingSet().spliterator();
     }
 
     protected static class ObservableSetIterator<E> implements Observable, Iterator<E> {

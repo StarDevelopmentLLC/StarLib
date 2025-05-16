@@ -6,18 +6,20 @@ import java.util.List;
 
 public class ObservableArrayList<E> extends AbstractObservableList<E> {
     
-    protected final ArrayList<E> backingArrayList;
+    protected final ArrayList<E> backingArrayList = new ArrayList<>();
 
     public ObservableArrayList() {
-        super(new ArrayList<>());
-        this.backingArrayList = (ArrayList<E>) this.backingList;
     }
     
     public ObservableArrayList(Collection<E> collection) {
-        this();
-        this.backingList.addAll(collection);
+        backingArrayList.addAll(collection);
     }
-
+    
+    @Override
+    protected List<E> getBackingList() {
+        return backingArrayList;
+    }
+    
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         return new ObservableArrayList<>(this.backingArrayList.subList(fromIndex, toIndex));

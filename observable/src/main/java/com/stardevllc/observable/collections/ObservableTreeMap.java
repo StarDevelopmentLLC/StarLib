@@ -4,21 +4,22 @@ import com.stardevllc.observable.collections.event.MapChangeEvent;
 
 import java.util.*;
 
-@SuppressWarnings("SortedCollectionWithNonComparableKeys")
 public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> implements NavigableMap<K, V> {
     
-    protected final TreeMap<K, V> backingTreeMap;
+    protected final TreeMap<K, V> backingTreeMap = new TreeMap<>();
     
     public ObservableTreeMap() {
-        super(new TreeMap<>());
-        this.backingTreeMap = (TreeMap<K, V>) this.backingMap;
     }
 
     public ObservableTreeMap(Map<K, V> map) {
-       this();
-       this.backingMap.putAll(map);
+       this.backingTreeMap.putAll(map);
     }
-
+    
+    @Override
+    protected Map<K, V> getBackingMap() {
+        return backingTreeMap;
+    }
+    
     @Override
     public Entry<K, V> lowerEntry(K key) {
         return this.backingTreeMap.lowerEntry(key);
