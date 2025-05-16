@@ -6,7 +6,6 @@ rootProject.name = 'StarLib'
 include('calculator')
 include('eventbus')
 include('observable')
-include('property')
 include('converter')
 include('units')
 include('helper')

@@ -4,7 +4,7 @@ import com.stardevllc.clock.Clock;
 import com.stardevllc.clock.callback.CallbackHolder;
 import com.stardevllc.clock.property.ClockLongProperty;
 import com.stardevllc.clock.snapshot.StopwatchSnapshot;
-import com.stardevllc.property.LongProperty;
+import com.stardevllc.observable.property.LongProperty;
 
 public class Stopwatch extends Clock<StopwatchSnapshot> {
     protected final ClockLongProperty endTime;

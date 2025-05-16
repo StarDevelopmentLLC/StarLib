@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    api project(':property')
+    api project(':observable')
     api project(':time')
 }
 

@@ -1,4 +1,4 @@
-package com.stardevllc.property;
+package com.stardevllc.observable.property;
 
 import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.writable.WritableCharacterValue;

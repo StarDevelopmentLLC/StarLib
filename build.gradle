@@ -29,7 +29,6 @@ dependencies {
     implementation project(':calculator')
     implementation project(':eventbus')
     implementation project(':observable')
-    implementation project(':property')
     implementation project(':converter')
     implementation project(':units')
     implementation project(':helper')

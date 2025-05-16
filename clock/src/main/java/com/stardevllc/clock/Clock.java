@@ -6,8 +6,8 @@ import com.stardevllc.clock.condition.ClockEndCondition;
 import com.stardevllc.clock.property.ClockBooleanProperty;
 import com.stardevllc.clock.property.ClockLongProperty;
 import com.stardevllc.clock.snapshot.ClockSnapshot;
-import com.stardevllc.property.BooleanProperty;
-import com.stardevllc.property.LongProperty;
+import com.stardevllc.observable.property.BooleanProperty;
+import com.stardevllc.observable.property.LongProperty;
 import com.stardevllc.time.TimeUnit;
 
 import java.util.*;
