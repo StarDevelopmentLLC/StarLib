@@ -23,22 +23,37 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket.factory;
+package com.stardevllc.bucket.factory;
 
-import me.stardevllc.bucket.AbstractBucket;
-import me.stardevllc.bucket.partitioning.PartitioningStrategy;
+import com.stardevllc.bucket.Bucket;
+import com.stardevllc.bucket.partitioning.PartitioningStrategy;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
-class SynchronizedHashSetBucket<E> extends AbstractBucket<E> {
-    SynchronizedHashSetBucket(int size, PartitioningStrategy<E> partitioningStrategy) {
-        super(size, partitioningStrategy);
+/**
+ * A set of methods for creating {@link Bucket}s.
+ */
+public final class BucketFactory {
+
+    public static <E> Bucket<E> newBucket(int size, PartitioningStrategy<E> strategy, Supplier<Set<E>> setSupplier) {
+        return new SetSuppliedBucket<>(size, strategy, setSupplier);
     }
 
-    @Override
-    protected Set<E> createSet() {
-        return Collections.synchronizedSet(new HashSet<>());
+    public static <E> Bucket<E> newHashSetBucket(int size, PartitioningStrategy<E> strategy) {
+        return new HashSetBucket<>(size, strategy);
     }
+
+    public static <E> Bucket<E> newSynchronizedHashSetBucket(int size, PartitioningStrategy<E> strategy) {
+        return new SynchronizedHashSetBucket<>(size, strategy);
+    }
+
+    public static <E> Bucket<E> newConcurrentBucket(int size, PartitioningStrategy<E> strategy) {
+        return new ConcurrentBucket<>(size, strategy);
+    }
+
+    private BucketFactory() {
+        throw new UnsupportedOperationException("This class cannot be instantiated");
+    }
+
 }

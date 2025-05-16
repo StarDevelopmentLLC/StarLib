@@ -23,40 +23,31 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket.partitioning;
+package com.stardevllc.bucket.partitioning;
 
-import me.stardevllc.bucket.Bucket;
+import com.stardevllc.bucket.Bucket;
 
 /**
- * A {@link PartitioningStrategy} which allocates partitions without reference
- * to the object being added.
+ * A function which determines the position of an object within a {@link Bucket}.
+ *
+ * <p>Functions will not necessarily return consistent results for subsequent
+ * calls using the same parameters, as their behaviour usually depends heavily on
+ * current bucket state.</p>
+ *
+ * @param <T> the object type
  */
 @FunctionalInterface
-public interface GenericPartitioningStrategy extends PartitioningStrategy<Object> {
+public interface PartitioningStrategy<T> {
 
     /**
-     * Calculates the index of the partition to use for any given object.
+     * Calculates the index of the partition to use for the object.
      *
+     * <p>The index must be within range of the buckets size.</p>
+     *
+     * @param object the object
      * @param bucket the bucket
      * @return the index
      */
-    int allocate(Bucket<?> bucket);
-
-    /**
-     * Casts this {@link GenericPartitioningStrategy} to a {@link PartitioningStrategy} of type T.
-     *
-     * @param <T> the type
-     * @return a casted strategy
-     */
-    default <T> PartitioningStrategy<T> cast() {
-        //noinspection unchecked
-        return (PartitioningStrategy<T>) this;
-    }
-
-    @Override
-    @Deprecated
-    default int allocate(Object object, Bucket<Object> bucket) {
-        return allocate(bucket);
-    }
+    int allocate(T object, Bucket<T> bucket);
 
 }

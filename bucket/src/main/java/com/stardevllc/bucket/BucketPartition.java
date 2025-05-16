@@ -23,24 +23,43 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket.factory;
+package com.stardevllc.bucket;
 
-import me.stardevllc.bucket.AbstractBucket;
-import me.stardevllc.bucket.partitioning.PartitioningStrategy;
-
+import java.util.Collection;
 import java.util.Set;
-import java.util.function.Supplier;
 
-class SetSuppliedBucket<E> extends AbstractBucket<E> {
-    private final Supplier<Set<E>> setSupplier;
+/**
+ * Represents a partition of elements within a {@link Bucket}.
+ *
+ * @param <E> the element type
+ */
+public interface BucketPartition<E> extends Set<E> {
 
-    SetSuppliedBucket(int size, PartitioningStrategy<E> strategy, Supplier<Set<E>> setSupplier) {
-        super(size, strategy);
-        this.setSupplier = setSupplier;
-    }
+    /**
+     * Gets the index of this partition within the bucket
+     *
+     * @return the index
+     */
+    int getPartitionIndex();
 
+    /**
+     * {@inheritDoc}
+     * @deprecated as partitions do not support this method.
+     */
     @Override
-    protected Set<E> createSet() {
-        return this.setSupplier.get();
+    @Deprecated
+    default boolean add(E e) {
+        throw new UnsupportedOperationException();
     }
+
+    /**
+     * {@inheritDoc}
+     * @deprecated as partitions do not support this method.
+     */
+    @Override
+    @Deprecated
+    default boolean addAll(Collection<? extends E> c) {
+        throw new UnsupportedOperationException();
+    }
+
 }

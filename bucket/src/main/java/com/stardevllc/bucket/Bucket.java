@@ -23,9 +23,9 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket;
+package com.stardevllc.bucket;
 
-import me.stardevllc.bucket.partitioning.PartitioningStrategy;
+import com.stardevllc.bucket.partitioning.PartitioningStrategy;
 
 import java.util.List;
 import java.util.Set;

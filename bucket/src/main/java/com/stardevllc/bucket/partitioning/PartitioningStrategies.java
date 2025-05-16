@@ -23,10 +23,10 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket.partitioning;
+package com.stardevllc.bucket.partitioning;
 
-import me.stardevllc.bucket.Bucket;
-import me.stardevllc.bucket.BucketPartition;
+import com.stardevllc.bucket.Bucket;
+import com.stardevllc.bucket.BucketPartition;
 
 import java.util.concurrent.ThreadLocalRandom;
 

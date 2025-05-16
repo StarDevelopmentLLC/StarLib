@@ -23,10 +23,10 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket.factory;
+package com.stardevllc.bucket.factory;
 
-import me.stardevllc.bucket.AbstractBucket;
-import me.stardevllc.bucket.partitioning.PartitioningStrategy;
+import com.stardevllc.bucket.AbstractBucket;
+import com.stardevllc.bucket.partitioning.PartitioningStrategy;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;

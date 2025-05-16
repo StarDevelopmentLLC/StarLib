@@ -23,37 +23,40 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket.factory;
+package com.stardevllc.bucket.partitioning;
 
-import me.stardevllc.bucket.Bucket;
-import me.stardevllc.bucket.partitioning.PartitioningStrategy;
-
-import java.util.Set;
-import java.util.function.Supplier;
+import com.stardevllc.bucket.Bucket;
 
 /**
- * A set of methods for creating {@link Bucket}s.
+ * A {@link PartitioningStrategy} which allocates partitions without reference
+ * to the object being added.
  */
-public final class BucketFactory {
+@FunctionalInterface
+public interface GenericPartitioningStrategy extends PartitioningStrategy<Object> {
 
-    public static <E> Bucket<E> newBucket(int size, PartitioningStrategy<E> strategy, Supplier<Set<E>> setSupplier) {
-        return new SetSuppliedBucket<>(size, strategy, setSupplier);
+    /**
+     * Calculates the index of the partition to use for any given object.
+     *
+     * @param bucket the bucket
+     * @return the index
+     */
+    int allocate(Bucket<?> bucket);
+
+    /**
+     * Casts this {@link GenericPartitioningStrategy} to a {@link PartitioningStrategy} of type T.
+     *
+     * @param <T> the type
+     * @return a casted strategy
+     */
+    default <T> PartitioningStrategy<T> cast() {
+        //noinspection unchecked
+        return (PartitioningStrategy<T>) this;
     }
 
-    public static <E> Bucket<E> newHashSetBucket(int size, PartitioningStrategy<E> strategy) {
-        return new HashSetBucket<>(size, strategy);
-    }
-
-    public static <E> Bucket<E> newSynchronizedHashSetBucket(int size, PartitioningStrategy<E> strategy) {
-        return new SynchronizedHashSetBucket<>(size, strategy);
-    }
-
-    public static <E> Bucket<E> newConcurrentBucket(int size, PartitioningStrategy<E> strategy) {
-        return new ConcurrentBucket<>(size, strategy);
-    }
-
-    private BucketFactory() {
-        throw new UnsupportedOperationException("This class cannot be instantiated");
+    @Override
+    @Deprecated
+    default int allocate(Object object, Bucket<Object> bucket) {
+        return allocate(bucket);
     }
 
 }

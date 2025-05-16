@@ -23,7 +23,7 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket;
+package com.stardevllc.bucket;
 
 import java.util.Collections;
 import java.util.List;

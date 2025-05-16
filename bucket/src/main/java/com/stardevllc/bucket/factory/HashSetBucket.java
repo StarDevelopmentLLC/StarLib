@@ -23,43 +23,21 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket;
+package com.stardevllc.bucket.factory;
 
-import java.util.Collection;
+import com.stardevllc.bucket.AbstractBucket;
+import com.stardevllc.bucket.partitioning.PartitioningStrategy;
+
+import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Represents a partition of elements within a {@link Bucket}.
- *
- * @param <E> the element type
- */
-public interface BucketPartition<E> extends Set<E> {
-
-    /**
-     * Gets the index of this partition within the bucket
-     *
-     * @return the index
-     */
-    int getPartitionIndex();
-
-    /**
-     * {@inheritDoc}
-     * @deprecated as partitions do not support this method.
-     */
-    @Override
-    @Deprecated
-    default boolean add(E e) {
-        throw new UnsupportedOperationException();
+class HashSetBucket<E> extends AbstractBucket<E> {
+    HashSetBucket(int size, PartitioningStrategy<E> partitioningStrategy) {
+        super(size, partitioningStrategy);
     }
 
-    /**
-     * {@inheritDoc}
-     * @deprecated as partitions do not support this method.
-     */
     @Override
-    @Deprecated
-    default boolean addAll(Collection<? extends E> c) {
-        throw new UnsupportedOperationException();
+    protected Set<E> createSet() {
+        return new HashSet<>();
     }
-
 }

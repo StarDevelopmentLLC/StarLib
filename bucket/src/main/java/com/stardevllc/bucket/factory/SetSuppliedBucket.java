@@ -23,21 +23,24 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket.factory;
+package com.stardevllc.bucket.factory;
 
-import me.stardevllc.bucket.AbstractBucket;
-import me.stardevllc.bucket.partitioning.PartitioningStrategy;
+import com.stardevllc.bucket.AbstractBucket;
+import com.stardevllc.bucket.partitioning.PartitioningStrategy;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
-class HashSetBucket<E> extends AbstractBucket<E> {
-    HashSetBucket(int size, PartitioningStrategy<E> partitioningStrategy) {
-        super(size, partitioningStrategy);
+class SetSuppliedBucket<E> extends AbstractBucket<E> {
+    private final Supplier<Set<E>> setSupplier;
+
+    SetSuppliedBucket(int size, PartitioningStrategy<E> strategy, Supplier<Set<E>> setSupplier) {
+        super(size, strategy);
+        this.setSupplier = setSupplier;
     }
 
     @Override
     protected Set<E> createSet() {
-        return new HashSet<>();
+        return this.setSupplier.get();
     }
 }

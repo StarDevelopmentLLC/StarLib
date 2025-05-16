@@ -23,31 +23,22 @@
  *  SOFTWARE.
  */
 
-package me.stardevllc.bucket.partitioning;
+package com.stardevllc.bucket.factory;
 
-import me.stardevllc.bucket.Bucket;
+import com.stardevllc.bucket.AbstractBucket;
+import com.stardevllc.bucket.partitioning.PartitioningStrategy;
 
-/**
- * A function which determines the position of an object within a {@link Bucket}.
- *
- * <p>Functions will not necessarily return consistent results for subsequent
- * calls using the same parameters, as their behaviour usually depends heavily on
- * current bucket state.</p>
- *
- * @param <T> the object type
- */
-@FunctionalInterface
-public interface PartitioningStrategy<T> {
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-    /**
-     * Calculates the index of the partition to use for the object.
-     *
-     * <p>The index must be within range of the buckets size.</p>
-     *
-     * @param object the object
-     * @param bucket the bucket
-     * @return the index
-     */
-    int allocate(T object, Bucket<T> bucket);
+class SynchronizedHashSetBucket<E> extends AbstractBucket<E> {
+    SynchronizedHashSetBucket(int size, PartitioningStrategy<E> partitioningStrategy) {
+        super(size, partitioningStrategy);
+    }
 
+    @Override
+    protected Set<E> createSet() {
+        return Collections.synchronizedSet(new HashSet<>());
+    }
 }
