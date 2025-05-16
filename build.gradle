@@ -1,7 +1,9 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id("com.gradleup.shadow") version "9.0.0-beta11"
+    id("com.gradleup.shadow") version "9.0.0-beta13"
 }
 
 repositories {
@@ -13,16 +15,16 @@ version '0.3.1'
 
 publishing {
     publications {
-        shadow(MavenPublication) { publication ->
-            project.shadow.component(publication)
+        shadow(MavenPublication) {
+            from components.shadow
         }
     }
 }
 
-shadowJar {
-    archiveClassifier.set('')
+tasks.named('shadowJar', ShadowJar) {
+    archiveClassifier = ''
     relocate('com.google.gson', 'com.stardevllc.json')
-    //destinationDirectory = file(System.getProperty("user.home") + File.separator + "Documents" + File.separator + "JarOutput")
+    minimize()
 }
 
 dependencies {
@@ -40,7 +42,6 @@ dependencies {
     api project(':units')
 }
 
-// Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
