@@ -11,7 +11,7 @@ repositories {
 }
 
 group 'com.github.StarDevelopmentLLC'
-version '0.3.1'
+version '0.3.2'
 
 publishing {
     publications {
@@ -28,18 +28,18 @@ tasks.named('shadowJar', ShadowJar) {
 }
 
 dependencies {
-    api project(':bucket')
-    api project(':calculator')
-    api project(':clock')
-    api project(':converter')
-    api project(':eventbus')
-    api project(':fieldwatcher')
-    api project(':helper')
-    api project(':mojang')
-    api project(':observable')
-    api project(':registry')
-    api project(':time')
-    api project(':units')
+    implementation project(':bucket')
+    implementation project(':calculator')
+    implementation project(':clock')
+    implementation project(':converter')
+    implementation project(':eventbus')
+    implementation project(':fieldwatcher')
+    implementation project(':helper')
+    implementation project(':mojang')
+    implementation project(':observable')
+    implementation project(':registry')
+    implementation project(':time')
+    implementation project(':units')
 }
 
 java {
