@@ -3,15 +3,3 @@ plugins {
 }
 
 rootProject.name = 'StarLib'
-include('calculator')
-include('eventbus')
-include('observable')
-include('converter')
-include('units')
-include('helper')
-include('time')
-include('clock')
-include('registry')
-include('fieldwatcher')
-include('mojang')
-include('bucket')
