@@ -103,6 +103,7 @@ public abstract class Clock<T extends ClockSnapshot> {
             }
             
             callback.callback(snapshot);
+            holder.setHasRun(true);
         }
     }
     

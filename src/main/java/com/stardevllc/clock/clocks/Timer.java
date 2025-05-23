@@ -18,6 +18,16 @@ public class Timer extends Clock<TimerSnapshot> {
     
     @Override
     protected boolean shouldCallback(CallbackHolder<TimerSnapshot> holder) {
+        if (!holder.isRepeating()) {
+            if (holder.hasRun()) {
+                return false;
+            }
+            
+            if (this.time.get() < holder.getPeriod()) {
+                return true;
+            }
+        }
+        
         long elapsed = this.lengthProperty.get() - this.time.get();
         long periodsElapsed = elapsed / holder.getPeriod() - 1;
         long nextRun = this.lengthProperty.get() - ((periodsElapsed + 1) * holder.getPeriod());

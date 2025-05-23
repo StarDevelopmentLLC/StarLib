@@ -8,7 +8,7 @@ public class CallbackHolder<T extends ClockSnapshot> {
     protected final ClockCallback<T> callback;
     protected final UUID callbackId;
     protected final long period;
-    protected boolean repeating = true;
+    protected boolean repeating = true, hasRun;
     
     public CallbackHolder(ClockCallback<T> callback, UUID callbackId, long period) {
         this.callback = callback;
@@ -33,5 +33,13 @@ public class CallbackHolder<T extends ClockSnapshot> {
     
     public boolean isRepeating() {
         return repeating;
+    }
+    
+    public boolean hasRun() {
+        return hasRun;
+    }
+    
+    public void setHasRun(boolean hasRun) {
+        this.hasRun = hasRun;
     }
 }
