@@ -1,5 +1,8 @@
 package com.stardevllc.units;
 
+import com.stardevllc.converter.string.EnumStringConverter;
+import com.stardevllc.converter.string.StringConverters;
+
 public enum MemoryUnit {
     BYTE(1, "b", "bytes"), 
     KILOBYTE(1024, "kb", "kilobytes"),
@@ -7,6 +10,10 @@ public enum MemoryUnit {
     GIGABYTE(1073741824, "gb", "gigabytes"),
     TERABYTE(1099511627776L, "tb", "terabytes"),
     PETABYTE(1125899906842624L, "pb", "petabytes");
+    
+    static {
+        StringConverters.addConverter(MemoryUnit.class, new EnumStringConverter<>(MemoryUnit.class));
+    }
     
     private final long amountInBytes;
     private final String[] aliases;

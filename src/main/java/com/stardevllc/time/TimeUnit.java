@@ -1,5 +1,7 @@
 package com.stardevllc.time;
 
+import com.stardevllc.converter.string.*;
+
 public enum TimeUnit {
     MILLISECONDS(1, "millisecond", "ms"),
     TICKS(50, "tick", "t"),
@@ -10,6 +12,10 @@ public enum TimeUnit {
     WEEKS(DAYS.msPerUnit * 7, "week", "w"),
     MONTHS(DAYS.msPerUnit * 30, "month", "mo"),
     YEARS(DAYS.msPerUnit * 365, "year", "y");
+    
+    static {
+        StringConverters.addConverter(TimeUnit.class, new EnumStringConverter<>(TimeUnit.class));
+    }
     
     private final String name;
     private final String[] aliases;

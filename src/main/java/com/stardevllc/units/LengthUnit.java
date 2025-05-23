@@ -1,11 +1,18 @@
 package com.stardevllc.units;
 
+import com.stardevllc.converter.string.EnumStringConverter;
+import com.stardevllc.converter.string.StringConverters;
+
 public enum LengthUnit {
     MILLIMETER(1, "millimeters", "mm"), //Base Unit
     CENTIMETER(10, "centimeters", "cm"), 
     INCH(25.4, "inch", "in"), 
     FOOT(304.8, "feet", "ft"), 
     YARD(914.4, "yard", "yd", "yds");
+    
+    static {
+        StringConverters.addConverter(LengthUnit.class, new EnumStringConverter<>(LengthUnit.class));
+    }
     
     private final double amountInBase;
     private final String[] aliases;
