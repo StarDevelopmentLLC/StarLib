@@ -23,9 +23,7 @@ public class Timer extends Clock<TimerSnapshot> {
                 return false;
             }
             
-            if (this.time.get() < holder.getPeriod()) {
-                return true;
-            }
+            return this.time.get() < holder.getPeriod();
         }
         
         long elapsed = this.lengthProperty.get() - this.time.get();

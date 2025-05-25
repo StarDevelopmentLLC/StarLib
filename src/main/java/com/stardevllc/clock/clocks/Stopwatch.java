@@ -28,9 +28,7 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
                 return false;
             }
             
-            if (this.time.get() > holder.getPeriod()) {
-                return true;
-            }
+            return this.time.get() > holder.getPeriod();
         }
         
         long elapsed = this.startTime.get() - this.time.get();
