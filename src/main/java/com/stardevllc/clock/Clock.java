@@ -6,13 +6,13 @@ import com.stardevllc.clock.condition.ClockEndCondition;
 import com.stardevllc.clock.property.ClockBooleanProperty;
 import com.stardevllc.clock.property.ClockLongProperty;
 import com.stardevllc.clock.snapshot.ClockSnapshot;
-import com.stardevllc.observable.property.BooleanProperty;
-import com.stardevllc.observable.property.LongProperty;
+import com.stardevllc.observable.property.*;
 import com.stardevllc.time.TimeUnit;
 
 import java.util.*;
 
 public abstract class Clock<T extends ClockSnapshot> {
+    protected final UUIDProperty uniqueId;
     protected final ClockLongProperty time;
     protected final ClockBooleanProperty paused;
     protected final ClockBooleanProperty cancelled;
@@ -20,7 +20,8 @@ public abstract class Clock<T extends ClockSnapshot> {
     protected final long countAmount;
     protected ClockEndCondition<T> endCondition;
     
-    public Clock(long time, long countAmount) {
+    public Clock(UUID uuid, long time, long countAmount) {
+        this.uniqueId = new UUIDProperty(this, "uniqueid", uuid);
         this.time = new ClockLongProperty(this, "time", time);
         this.paused = new ClockBooleanProperty(this, "paused", true);
         this.cancelled = new ClockBooleanProperty(this, "cancelled", false);
@@ -206,6 +207,10 @@ public abstract class Clock<T extends ClockSnapshot> {
         return null;
     }
     
+    public UUID getUniqueId() {
+        return this.uniqueId.get();
+    }
+    
     public LongProperty timeProperty() {
         return this.time;
     }
@@ -216,5 +221,9 @@ public abstract class Clock<T extends ClockSnapshot> {
     
     public BooleanProperty cancelledProperty() {
         return this.cancelled;
+    }
+    
+    public UUIDProperty uuidProperty() {
+        return this.uniqueId;
     }
 }

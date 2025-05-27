@@ -6,12 +6,14 @@ import com.stardevllc.clock.property.ClockLongProperty;
 import com.stardevllc.clock.snapshot.TimerSnapshot;
 import com.stardevllc.observable.property.LongProperty;
 
+import java.util.UUID;
+
 public class Timer extends Clock<TimerSnapshot> {
     
     protected final ClockLongProperty lengthProperty;
     
-    public Timer(long length, long countAmount) {
-        super(length, countAmount);
+    public Timer(UUID uuid, long length, long countAmount) {
+        super(uuid, length, countAmount);
         this.lengthProperty = new ClockLongProperty(this, "length", length);
         this.lengthProperty.addListener(e -> unpause());
     }
@@ -28,7 +30,7 @@ public class Timer extends Clock<TimerSnapshot> {
         
         long elapsed = this.lengthProperty.get() - this.time.get();
         long periodsElapsed = elapsed / holder.getPeriod() - 1;
-        long nextRun = this.lengthProperty.get() - ((periodsElapsed + 1) * holder.getPeriod());
+        long nextRun = this.lengthProperty.get() - (periodsElapsed + 1) * holder.getPeriod();
         
         return this.time.get() == nextRun;
     }
@@ -41,7 +43,7 @@ public class Timer extends Clock<TimerSnapshot> {
         
         long elapsed = this.lengthProperty.get() - this.time.get();
         long periodsElapsed = elapsed / holder.getPeriod();
-        return this.lengthProperty.get() - ((periodsElapsed + 1) * holder.getPeriod());
+        return this.lengthProperty.get() - (periodsElapsed + 1) * holder.getPeriod();
     }
     
     @Override

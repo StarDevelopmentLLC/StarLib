@@ -6,19 +6,21 @@ import com.stardevllc.clock.property.ClockLongProperty;
 import com.stardevllc.clock.snapshot.StopwatchSnapshot;
 import com.stardevllc.observable.property.LongProperty;
 
+import java.util.UUID;
+
 public class Stopwatch extends Clock<StopwatchSnapshot> {
     protected final ClockLongProperty endTime;
     protected final ClockLongProperty startTime;
     
-    public Stopwatch(long startTime, long endTime, long countAmount) {
-        super(startTime, countAmount);
+    public Stopwatch(UUID uuid, long startTime, long endTime, long countAmount) {
+        super(uuid, startTime, countAmount);
         this.startTime = new ClockLongProperty(this, "startTime", startTime);
         this.endTime = new ClockLongProperty(this, "endTime", endTime);
         this.endTime.addListener(e -> unpause());
     }
     
-    public Stopwatch(long endTime, long countAmount) {
-        this(0L, endTime, countAmount);
+    public Stopwatch(UUID uuid, long endTime, long countAmount) {
+        this(uuid, 0L, endTime, countAmount);
     }
     
     @Override
@@ -33,7 +35,7 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
         
         long elapsed = this.startTime.get() - this.time.get();
         long periodsElapsed = elapsed / holder.getPeriod() - 1;
-        long nextRun = this.startTime.get() - ((periodsElapsed + 1) * holder.getPeriod());
+        long nextRun = this.startTime.get() - (periodsElapsed + 1) * holder.getPeriod();
         
         return this.time.get() == nextRun;
     }
@@ -46,7 +48,7 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
         
         long elapsed = this.startTime.get() - this.time.get();
         long periodsElapsed = elapsed / holder.getPeriod() - 1;
-        return this.startTime.get() - ((periodsElapsed + 1) * holder.getPeriod());
+        return this.startTime.get() - (periodsElapsed + 1) * holder.getPeriod();
     }
 
     @Override

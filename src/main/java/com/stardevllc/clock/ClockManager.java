@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class ClockManager {
-    protected final List<Clock<? extends ClockSnapshot>> clocks = Collections.synchronizedList(new ArrayList<>());
+    protected final Map<UUID, Clock<? extends ClockSnapshot>> clocks = Collections.synchronizedMap(new HashMap<>());
     protected long countAmount;
     protected ClockRunnable runnable;
     protected Logger logger;
@@ -25,16 +25,16 @@ public class ClockManager {
     }
     
     public void addClock(Clock<? extends ClockSnapshot> clock) {
-        this.clocks.add(clock);
+        this.clocks.put(clock.getUniqueId(), clock);
     }
     
     public void removeClock(Clock<? extends ClockSnapshot> clock) {
-        this.clocks.remove(clock);
+        this.clocks.remove(clock.getUniqueId(), clock);
     }
     
     @SafeVarargs
     public final Timer createTimer(long length, ClockCallback<? extends TimerSnapshot>... callbacks) {
-        Timer timer = new Timer(length, countAmount);
+        Timer timer = new Timer(UUID.randomUUID(), length, countAmount);
         addClock(timer);
         
         if (callbacks != null) {
@@ -57,7 +57,7 @@ public class ClockManager {
 
     @SafeVarargs
     public final Stopwatch createStopwatch(long startTime, long endTime, ClockCallback<? extends StopwatchSnapshot>... callbacks) {
-        Stopwatch stopwatch = new Stopwatch(startTime, endTime, countAmount);
+        Stopwatch stopwatch = new Stopwatch(UUID.randomUUID(), startTime, endTime, countAmount);
         addClock(stopwatch);
 
         if (callbacks != null) {
@@ -74,7 +74,7 @@ public class ClockManager {
     }
     
     public List<Clock<? extends ClockSnapshot>> getClocks() {
-        return clocks;
+        return new ArrayList<>(clocks.values());
     }
     
     public long getCountAmount() {
