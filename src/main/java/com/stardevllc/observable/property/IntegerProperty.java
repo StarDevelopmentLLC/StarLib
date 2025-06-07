@@ -34,6 +34,10 @@ public class IntegerProperty extends NumberProperty<Integer> implements Writable
 
     @Override
     public void set(int newValue) {
+        if (boundValue != null) {
+            return;
+        }
+        
         int oldValue = value;
         value = newValue;
         if (oldValue != newValue) {
@@ -48,6 +52,10 @@ public class IntegerProperty extends NumberProperty<Integer> implements Writable
 
     @Override
     public int get() {
+        if (boundValue != null) {
+            return boundValue.getValue();
+        }
+        
         return value;
     }
 
@@ -108,6 +116,6 @@ public class IntegerProperty extends NumberProperty<Integer> implements Writable
 
     @Override
     public Integer getValue() {
-        return value;
+        return get();
     }
 }

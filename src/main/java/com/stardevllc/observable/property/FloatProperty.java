@@ -34,6 +34,10 @@ public class FloatProperty extends NumberProperty<Float> implements WritableFloa
 
     @Override
     public void set(float newValue) {
+        if (boundValue != null) {
+            return;
+        }
+        
         float oldValue = value;
         value = newValue;
         if (oldValue != newValue) {
@@ -48,6 +52,10 @@ public class FloatProperty extends NumberProperty<Float> implements WritableFloa
 
     @Override
     public float get() {
+        if (boundValue != null) {
+            return boundValue.getValue();
+        }
+        
         return value;
     }
 
@@ -108,6 +116,6 @@ public class FloatProperty extends NumberProperty<Float> implements WritableFloa
 
     @Override
     public Float getValue() {
-        return value;
+        return get();
     }
 }

@@ -31,6 +31,10 @@ public class CharacterProperty extends AbstractProperty<Character> implements Wr
 
     @Override
     public void set(char newValue) {
+        if (boundValue != null) {
+            return;
+        }
+        
         char oldValue = this.value;
         this.value = newValue;
         if (oldValue != newValue) {
@@ -45,6 +49,10 @@ public class CharacterProperty extends AbstractProperty<Character> implements Wr
 
     @Override
     public char get() {
+        if (boundValue != null) {
+            return boundValue.getValue();
+        }
+        
         return value;
     }
 

@@ -32,16 +32,24 @@ public class ObjectProperty<T> extends AbstractProperty<T> implements WritableOb
 
     @Override
     public T get() {
+        if (this.boundValue != null) {
+            return this.boundValue.getValue();
+        }
+        
         return value;
     }
 
     @Override
     public void set(T newValue) {
+        if (this.boundValue != null) {
+            return;
+        }
+        
         T oldValue = value;
         value = newValue;
         ChangeEvent<T> event = new ChangeEvent<>(this, oldValue, newValue);
         
-        if ((oldValue == null && newValue != null) || (oldValue != null && newValue == null)) {
+        if (oldValue == null && newValue != null || oldValue != null && newValue == null) {
             eventBus.post(event);
         }
         
@@ -57,6 +65,6 @@ public class ObjectProperty<T> extends AbstractProperty<T> implements WritableOb
 
     @Override
     public T getValue() {
-        return value;
+        return get();
     }
 }

@@ -34,6 +34,10 @@ public class DoubleProperty extends NumberProperty<Double> implements WritableDo
 
     @Override
     public void set(double newValue) {
+        if (boundValue != null) {
+            return;
+        }
+        
         double oldValue = value;
         value = newValue;
         if (oldValue != newValue) {
@@ -48,6 +52,10 @@ public class DoubleProperty extends NumberProperty<Double> implements WritableDo
 
     @Override
     public double get() {
+        if (boundValue != null) {
+            return boundValue.getValue();
+        }
+        
         return value;
     }
 
@@ -108,6 +116,6 @@ public class DoubleProperty extends NumberProperty<Double> implements WritableDo
 
     @Override
     public Double getValue() {
-        return value;
+        return get();
     }
 }

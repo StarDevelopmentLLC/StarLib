@@ -34,6 +34,10 @@ public class LongProperty extends NumberProperty<Long> implements WritableLongVa
 
     @Override
     public void set(long newValue) {
+        if (boundValue != null) {
+            return;
+        }
+        
         long oldValue = value;
         value = newValue;
         if (oldValue != newValue) {
@@ -48,6 +52,9 @@ public class LongProperty extends NumberProperty<Long> implements WritableLongVa
 
     @Override
     public long get() {
+        if (boundValue != null) {
+            return boundValue.getValue();
+        }
         return value;
     }
 
@@ -108,6 +115,6 @@ public class LongProperty extends NumberProperty<Long> implements WritableLongVa
 
     @Override
     public Long getValue() {
-        return value;
+        return get();
     }
 }

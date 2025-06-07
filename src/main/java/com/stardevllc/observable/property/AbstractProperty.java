@@ -10,12 +10,19 @@ public abstract class AbstractProperty<T> implements Property<T> {
     
     protected final Object bean;
     protected final String name;
+    
+    protected ObservableValue<T> boundValue;
 
     public AbstractProperty(Object bean, String name) {
         this.bean = bean;
         this.name = name;
     }
-
+    
+    @Override
+    public void bind(ObservableValue<T> other) {
+        this.boundValue = other;
+    }
+    
     @Override
     public Object getBean() {
         return bean;
