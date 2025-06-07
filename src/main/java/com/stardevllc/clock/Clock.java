@@ -12,6 +12,7 @@ import java.util.*;
 
 public abstract class Clock<T extends ClockSnapshot> {
     protected final UUIDProperty uniqueId;
+    protected final StringProperty name;
     protected final ClockLongProperty time;
     protected final ClockBooleanProperty paused;
     protected final ClockBooleanProperty cancelled;
@@ -20,7 +21,12 @@ public abstract class Clock<T extends ClockSnapshot> {
     protected ClockEndCondition<T> endCondition;
     
     public Clock(UUID uuid, long time, long countAmount) {
+        this(uuid, "", time, countAmount);
+    }
+    
+    public Clock(UUID uuid, String name, long time, long countAmount) {
         this.uniqueId = new UUIDProperty(this, "uniqueid", uuid);
+        this.name = new StringProperty(this, "name", name);
         this.time = new ClockLongProperty(this, "time", time);
         this.paused = new ClockBooleanProperty(this, "paused", true);
         this.cancelled = new ClockBooleanProperty(this, "cancelled", false);
@@ -222,6 +228,10 @@ public abstract class Clock<T extends ClockSnapshot> {
         return this.uniqueId.get();
     }
     
+    public String getName() {
+        return this.name.get();
+    }
+    
     public LongProperty timeProperty() {
         return this.time;
     }
@@ -236,5 +246,9 @@ public abstract class Clock<T extends ClockSnapshot> {
     
     public UUIDProperty uuidProperty() {
         return this.uniqueId;
+    }
+    
+    public StringProperty nameProperty() {
+        return this.name;
     }
 }

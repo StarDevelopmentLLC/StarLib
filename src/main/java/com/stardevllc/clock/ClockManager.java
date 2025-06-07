@@ -34,7 +34,12 @@ public class ClockManager {
     
     @SafeVarargs
     public final Timer createTimer(long length, ClockCallback<? extends TimerSnapshot>... callbacks) {
-        Timer timer = new Timer(UUID.randomUUID(), length, countAmount);
+        return createTimer("", length, callbacks);
+    }
+    
+    @SafeVarargs
+    public final Timer createTimer(String name, long length, ClockCallback<? extends TimerSnapshot>... callbacks) {
+        Timer timer = new Timer(UUID.randomUUID(), name, length, countAmount);
         addClock(timer);
         
         if (callbacks != null) {
@@ -51,21 +56,36 @@ public class ClockManager {
     }
     
     @SafeVarargs
+    public final Stopwatch createStopwatch(String name, ClockCallback<? extends StopwatchSnapshot>... callbacks) {
+        return createStopwatch(name, 0L, 0L, callbacks);
+    }
+    
+    @SafeVarargs
     public final Stopwatch createStopwatch(long endTime, ClockCallback<? extends StopwatchSnapshot>... callbacks) {
         return createStopwatch(0L, endTime, callbacks);
     }
-
+    
+    @SafeVarargs
+    public final Stopwatch createStopwatch(String name, long endTime, ClockCallback<? extends StopwatchSnapshot>... callbacks) {
+        return createStopwatch(name, 0L, endTime, callbacks);
+    }
+    
     @SafeVarargs
     public final Stopwatch createStopwatch(long startTime, long endTime, ClockCallback<? extends StopwatchSnapshot>... callbacks) {
-        Stopwatch stopwatch = new Stopwatch(UUID.randomUUID(), startTime, endTime, countAmount);
+        return createStopwatch("", startTime, endTime, callbacks);
+    }
+    
+    @SafeVarargs
+    public final Stopwatch createStopwatch(String name, long startTime, long endTime, ClockCallback<? extends StopwatchSnapshot>... callbacks) {
+        Stopwatch stopwatch = new Stopwatch(UUID.randomUUID(), name, startTime, endTime, countAmount);
         addClock(stopwatch);
-
+        
         if (callbacks != null) {
             for (ClockCallback<? extends StopwatchSnapshot> callback : callbacks) {
                 stopwatch.addCallback((ClockCallback<StopwatchSnapshot>) callback);
             }
         }
-
+        
         return stopwatch;
     }
     

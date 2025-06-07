@@ -13,7 +13,11 @@ public class Timer extends Clock<TimerSnapshot> {
     protected final ClockLongProperty lengthProperty;
     
     public Timer(UUID uuid, long length, long countAmount) {
-        super(uuid, length, countAmount);
+        this(uuid, "", length, countAmount);
+    }
+    
+    public Timer(UUID uuid, String name, long length, long countAmount) {
+        super(uuid, name, length, countAmount);
         this.lengthProperty = new ClockLongProperty(this, "length", length);
         this.lengthProperty.addListener(e -> unpause());
     }

@@ -13,7 +13,11 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
     protected final ClockLongProperty startTime;
     
     public Stopwatch(UUID uuid, long startTime, long endTime, long countAmount) {
-        super(uuid, startTime, countAmount);
+        this(uuid, "", startTime, endTime, countAmount);
+    }
+    
+    public Stopwatch(UUID uuid, String name, long startTime, long endTime, long countAmount) {
+        super(uuid, name, startTime, countAmount);
         this.startTime = new ClockLongProperty(this, "startTime", startTime);
         this.endTime = new ClockLongProperty(this, "endTime", endTime);
         this.endTime.addListener(e -> unpause());
