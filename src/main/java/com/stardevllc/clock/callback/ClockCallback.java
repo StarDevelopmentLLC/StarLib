@@ -13,4 +13,8 @@ public interface ClockCallback<T extends ClockSnapshot> {
     default boolean isRepeating() {
         return true;
     }
+    
+    default String getName() {
+        return "";
+    }
 }

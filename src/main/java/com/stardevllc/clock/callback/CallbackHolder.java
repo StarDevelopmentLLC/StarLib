@@ -27,8 +27,8 @@ public class CallbackHolder<T extends ClockSnapshot> {
         return callback;
     }
     
-    public long getPeriod() {
-        return period.get();
+    public CallbackPeriod getPeriod() {
+        return period;
     }
     
     public boolean isRepeating() {

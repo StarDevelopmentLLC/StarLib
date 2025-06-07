@@ -34,25 +34,27 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
                 return false;
             }
             
-            return this.time.get() > holder.getPeriod();
+            return this.time.get() > holder.getPeriod().get();
         }
         
-        long elapsed = this.startTime.get() - this.time.get();
-        long periodsElapsed = elapsed / holder.getPeriod() - 1;
-        long nextRun = this.startTime.get() - (periodsElapsed + 1) * holder.getPeriod();
-        
-        return this.time.get() == nextRun;
+        return this.time.get() == getNextRun(holder);
     }
     
     @Override
     protected long getNextRun(CallbackHolder<StopwatchSnapshot> holder) {
+        long period = holder.getPeriod().get();
+        
         if (!holder.isRepeating()) {
-            return holder.getPeriod();
+            return period;
         }
         
-        long elapsed = this.startTime.get() - this.time.get();
-        long periodsElapsed = elapsed / holder.getPeriod() - 1;
-        return this.startTime.get() - (periodsElapsed + 1) * holder.getPeriod();
+        long elapsed = this.time.get() - this.startTime.get();
+        long periodsElapsed = elapsed / period;
+        if (elapsed % period != 0) {
+            return this.startTime.get() + (periodsElapsed + 1) * period;
+        } else {
+            return this.startTime.get() + periodsElapsed * period;
+        }
     }
 
     @Override

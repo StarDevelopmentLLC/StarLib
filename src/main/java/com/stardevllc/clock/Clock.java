@@ -100,7 +100,7 @@ public abstract class Clock<T extends ClockSnapshot> {
                 continue;
             }
             
-            if (holder.getPeriod() <= 0) {
+            if (holder.getPeriod().get() <= 0) {
                 continue;
             }
             

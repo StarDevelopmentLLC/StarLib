@@ -29,25 +29,27 @@ public class Timer extends Clock<TimerSnapshot> {
                 return false;
             }
             
-            return this.time.get() < holder.getPeriod();
+            return this.time.get() < holder.getPeriod().get();
         }
         
-        long elapsed = this.lengthProperty.get() - this.time.get();
-        long periodsElapsed = elapsed / holder.getPeriod() - 1;
-        long nextRun = this.lengthProperty.get() - (periodsElapsed + 1) * holder.getPeriod();
-        
-        return this.time.get() == nextRun;
+        return this.time.get() == getNextRun(holder);
     }
     
     @Override
     protected long getNextRun(CallbackHolder<TimerSnapshot> holder) {
+        long period = holder.getPeriod().get();
+        
         if (!holder.isRepeating()) {
-            return holder.getPeriod();
+            return period;
         }
         
         long elapsed = this.lengthProperty.get() - this.time.get();
-        long periodsElapsed = elapsed / holder.getPeriod();
-        return this.lengthProperty.get() - (periodsElapsed + 1) * holder.getPeriod();
+        long periodsElapsed = elapsed / period;
+        if (elapsed % period != 0) {
+            return this.lengthProperty.get() - (periodsElapsed + 1) * period;
+        } else {
+            return this.lengthProperty.get() - periodsElapsed * period;
+        }
     }
     
     @Override
