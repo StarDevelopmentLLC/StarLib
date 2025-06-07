@@ -7,16 +7,16 @@ import java.util.UUID;
 public class CallbackHolder<T extends ClockSnapshot> {
     protected final ClockCallback<T> callback;
     protected final UUID callbackId;
-    protected final long period;
+    protected final CallbackPeriod period;
     protected boolean repeating = true, hasRun;
     
-    public CallbackHolder(ClockCallback<T> callback, UUID callbackId, long period) {
+    public CallbackHolder(ClockCallback<T> callback, UUID callbackId, CallbackPeriod period) {
         this.callback = callback;
         this.callbackId = callbackId;
         this.period = period;
     }
 
-    public CallbackHolder(ClockCallback<T> callback, UUID callbackId, long period, boolean repeating) {
+    public CallbackHolder(ClockCallback<T> callback, UUID callbackId, CallbackPeriod period, boolean repeating) {
         this.callback = callback;
         this.callbackId = callbackId;
         this.period = period;
@@ -28,7 +28,7 @@ public class CallbackHolder<T extends ClockSnapshot> {
     }
     
     public long getPeriod() {
-        return period;
+        return period.get();
     }
     
     public boolean isRepeating() {

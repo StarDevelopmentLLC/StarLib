@@ -1,7 +1,6 @@
 package com.stardevllc.clock;
 
-import com.stardevllc.clock.callback.CallbackHolder;
-import com.stardevllc.clock.callback.ClockCallback;
+import com.stardevllc.clock.callback.*;
 import com.stardevllc.clock.condition.ClockEndCondition;
 import com.stardevllc.clock.property.ClockBooleanProperty;
 import com.stardevllc.clock.property.ClockLongProperty;
@@ -154,22 +153,30 @@ public abstract class Clock<T extends ClockSnapshot> {
     }
     
     public UUID addCallback(ClockCallback<T> callback, long runAtTime) {
+        return addCallback(callback, () -> runAtTime, false);
+    }
+    
+    public UUID addCallback(ClockCallback<T> callback, CallbackPeriod runAtTime) {
         return addCallback(callback, runAtTime, false);
     }
     
     public UUID addRepeatingCallback(ClockCallback<T> callback, long period) {
+        return addCallback(callback, () -> period, true);
+    }
+    
+    public UUID addRepeatingCallback(ClockCallback<T> callback, CallbackPeriod period) {
         return addCallback(callback, period, true);
     }
 
     public UUID addCallback(ClockCallback<T> callback, TimeUnit unit, long unitTime) {
-        return addCallback(callback, unit.toMillis(unitTime), false);
+        return addCallback(callback, () -> unit.toMillis(unitTime), false);
     }
 
     public UUID addRepeatingCallback(ClockCallback<T> callback, TimeUnit unit, long unitTime) {
-        return addCallback(callback, unit.toMillis(unitTime), true);
+        return addCallback(callback, () -> unit.toMillis(unitTime), true);
     }
 
-    public UUID addCallback(ClockCallback<T> callback, long period, boolean repeating) {
+    public UUID addCallback(ClockCallback<T> callback, CallbackPeriod period, boolean repeating) {
         if (callback == null) {
             return null;
         }
@@ -180,6 +187,10 @@ public abstract class Clock<T extends ClockSnapshot> {
 
         this.callbacks.put(uuid, new CallbackHolder<>(callback, uuid, period, repeating));
         return uuid;
+    }
+    
+    public UUID addRepeatingCallback(ClockCallback<T> callback) {
+        return addRepeatingCallback(callback, callback.getPeriod());
     }
     
     public UUID addCallback(ClockCallback<T> callback) {

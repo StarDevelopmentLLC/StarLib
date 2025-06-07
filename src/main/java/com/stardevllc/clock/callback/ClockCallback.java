@@ -6,8 +6,8 @@ import com.stardevllc.clock.snapshot.ClockSnapshot;
 public interface ClockCallback<T extends ClockSnapshot> {
     void callback(T snapshot);
     
-    default long getPeriod() {
-        return 1L;
+    default CallbackPeriod getPeriod() {
+        return () -> 1L;
     }
     
     default boolean isRepeating() {
