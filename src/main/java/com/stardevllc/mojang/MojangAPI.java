@@ -17,6 +17,8 @@ public final class MojangAPI {
     
     private static final Map<String, UUID> nameToUUIDCache = new HashMap<>();
     
+    private static final Gson GSON = new Gson();
+    
     private static JsonObject getJsonFromURL(String urlString) throws IOException {
         URL url = URI.create(urlString).toURL();
         HttpURLConnection request = (HttpURLConnection) url.openConnection();
@@ -28,8 +30,7 @@ public final class MojangAPI {
         if (responseCode != 200) {
             return null;
         }
-        
-        JsonElement json = new JsonParser().parse(new InputStreamReader(request.getInputStream()));
+        JsonElement json = JsonParser.parseReader(new InputStreamReader(request.getInputStream()));
         return json.getAsJsonObject();
     }
     
