@@ -39,23 +39,28 @@ public class SimpleEventBus<E> implements EventBus<E> {
 
         public EventHandler(Object listener) {
             this.listener = listener;
-
-            Class<?> listenerClass = listener.getClass();
-            boolean fullClassListener = listenerClass.isAnnotationPresent(SubscribeEvent.class);
-            if (!fullClassListener) {
-                Class<?> superclass = listenerClass.getSuperclass();
-                if (superclass != null && superclass.isAnnotationPresent(SubscribeEvent.class)) {
-                    fullClassListener = true;
-                }
-
-                for (Class<?> superInterface : listenerClass.getInterfaces()) {
-                    if (superInterface.isAnnotationPresent(SubscribeEvent.class)) {
-                        fullClassListener = true;
-                        break;
-                    }
+            searchClass(this.listener.getClass());
+        }
+        
+        protected boolean searchForFullClassListener(Class<?> listenerClass) {
+            if (listenerClass.isAnnotationPresent(SubscribeEvent.class)) {
+                return true;
+            }
+            
+            for (Class<?> classInterface : listenerClass.getInterfaces()) {
+                if (classInterface.isAnnotationPresent(SubscribeEvent.class)) {
+                    return true;
                 }
             }
-
+            
+            if (!listenerClass.getSuperclass().equals(Object.class)) {
+                return searchForFullClassListener(listenerClass.getSuperclass());
+            }
+            
+            return false;
+        }
+        
+        protected void findAllListenerMethods(boolean fullClassListener, Class<?> listenerClass) {
             for (Method method : listenerClass.getDeclaredMethods()) {
                 if (fullClassListener || method.isAnnotationPresent(SubscribeEvent.class)) {
                     Parameter[] parameters = method.getParameters();
@@ -67,6 +72,15 @@ public class SimpleEventBus<E> implements EventBus<E> {
                     }
                 }
             }
+            
+            if (!listenerClass.getSuperclass().equals(Object.class)) {
+                findAllListenerMethods(fullClassListener, listenerClass.getSuperclass());
+            }
+        }
+        
+        protected void searchClass(Class<?> listenerClass) {
+            boolean fullClassListener = searchForFullClassListener(listenerClass);
+            findAllListenerMethods(fullClassListener, listenerClass);
         }
 
         public Object getListener() {
@@ -88,10 +102,14 @@ public class SimpleEventBus<E> implements EventBus<E> {
 
         @Override
         public boolean equals(Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            }
+            if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
-            EventHandler that = (EventHandler) object;
+            EventHandler<?> that = (EventHandler<?>) object;
             return Objects.equals(listener, that.listener);
         }
 
