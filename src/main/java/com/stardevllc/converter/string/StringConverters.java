@@ -10,6 +10,7 @@ public final class StringConverters {
         new BooleanStringConverter();
         new ByteStringConverter();
         new CharacterStringConverter();
+        new CharSequenceStringConverter();
         new DoubleStringConverter();
         new DurationStringConverter();
         new FloatStringConverter();

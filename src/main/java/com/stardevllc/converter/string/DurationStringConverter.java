@@ -4,7 +4,7 @@ import com.stardevllc.time.Duration;
 import com.stardevllc.time.TimeUnit;
 
 public class DurationStringConverter implements StringConverter<Duration> {
-    public DurationStringConverter() {
+    protected DurationStringConverter() {
         StringConverters.addConverter(Duration.class, this);
     }
     
