@@ -11,6 +11,7 @@ public final class StringConverters {
         new ByteStringConverter();
         new CharacterStringConverter();
         new DoubleStringConverter();
+        new DurationStringConverter();
         new FloatStringConverter();
         new IntegerStringConverter();
         new LongStringConverter();
