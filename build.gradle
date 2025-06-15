@@ -11,7 +11,7 @@ repositories {
 }
 
 group 'com.github.StarDevelopmentLLC'
-version '0.6.2'
+version '0.6.3'
 
 publishing {
     publications {
@@ -23,7 +23,7 @@ publishing {
 
 tasks.named('shadowJar', ShadowJar) {
     archiveClassifier = ''
-    relocate('com.google.gson', 'com.stardevllc.json')
+    relocate('com.google', 'com.stardevllc.google')
 }
 
 dependencies {
