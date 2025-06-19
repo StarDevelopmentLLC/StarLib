@@ -1,7 +1,7 @@
 package com.stardevllc.calculator;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class ModeCalculator<T> {
     private Map<T, Long> counts = new HashMap<>();
@@ -12,6 +12,15 @@ public class ModeCalculator<T> {
         } else {
             counts.put(count, 1L);
         }
+    }
+    
+    public List<ModeResult<T>> getAll() {
+        List<ModeResult<T>> results = new ArrayList<>();
+        for (Entry<T, Long> entry : counts.entrySet()) {
+            results.add(new ModeResult<>(entry.getKey(), entry.getValue()));
+        }
+        
+        return results;
     }
     
     public ModeResult<T> get() {
