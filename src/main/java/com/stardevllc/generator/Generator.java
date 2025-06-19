@@ -163,7 +163,7 @@ public interface Generator<T> {
     /**
      * This method is a finalizer like the {@link Generator#generate()} method
      * Instead of returning anything, it just loops through the objects after they are all generated
-     * This is relatively similar to the {@link Generator#apply)} and {@link Generator#applyIf}, but is performed AFTER generation not DURING generation
+     * This is relatively similar to the {@link Generator#apply(Consumer)} )} and {@link Generator#applyIf(Predicate, Consumer)}, but is performed AFTER generation not DURING generation
      *
      * @param action The action to perform
      */
