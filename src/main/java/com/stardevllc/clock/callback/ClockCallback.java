@@ -2,6 +2,10 @@ package com.stardevllc.clock.callback;
 
 import com.stardevllc.clock.snapshot.ClockSnapshot;
 
+/**
+ * This class is a functional interface used to perform timed actions within clocks. It pretty much is the backbone of how to do anything
+ * @param <T>
+ */
 @FunctionalInterface
 public interface ClockCallback<T extends ClockSnapshot> {
     void callback(T snapshot);

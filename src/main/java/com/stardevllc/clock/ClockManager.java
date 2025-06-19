@@ -8,6 +8,10 @@ import com.stardevllc.clock.snapshot.*;
 import java.util.*;
 import java.util.logging.Logger;
 
+/**
+ * <pre>This is an overall manager that provides some default implementations to prevent making this yourself
+ * You don't have to use this if you don't want to, but you will have to manage everying that this manages</pre>
+ */
 public class ClockManager {
     protected final Map<UUID, Clock<? extends ClockSnapshot>> clocks = Collections.synchronizedMap(new HashMap<>());
     protected long countAmount;

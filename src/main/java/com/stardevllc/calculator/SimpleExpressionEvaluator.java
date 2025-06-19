@@ -3,7 +3,11 @@ package com.stardevllc.calculator;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class SimpleExpressionEvaluator {
+/**
+ * Allows you to evaluate a mathmatical expression from text. There are better options, might replace this though, maybe, or just remove it
+ */
+@Deprecated
+public final class SimpleExpressionEvaluator {
     public static int evaluate(String expression) {
         char[] tokens = expression.toCharArray();
 

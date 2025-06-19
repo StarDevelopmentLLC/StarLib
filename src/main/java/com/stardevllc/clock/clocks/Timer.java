@@ -8,6 +8,9 @@ import com.stardevllc.observable.property.LongProperty;
 
 import java.util.UUID;
 
+/**
+ * Count down clock
+ */
 public class Timer extends Clock<TimerSnapshot> {
     
     protected final ClockLongProperty lengthProperty;

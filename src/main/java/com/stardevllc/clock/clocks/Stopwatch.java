@@ -8,6 +8,9 @@ import com.stardevllc.observable.property.LongProperty;
 
 import java.util.UUID;
 
+/**
+ * Count up clock
+ */
 public class Stopwatch extends Clock<StopwatchSnapshot> {
     protected final ClockLongProperty endTime;
     protected final ClockLongProperty startTime;

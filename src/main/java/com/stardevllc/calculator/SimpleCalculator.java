@@ -1,5 +1,9 @@
 package com.stardevllc.calculator;
 
+/**
+ * <pre>A class that allows you to perform arithmentic and mathmatical operations on {@link Number}s
+ * Note: This does not support {@link java.math.BigInteger} or {@link java.math.BigDecimal} yet</pre>
+ */
 public final class SimpleCalculator {
     public static Number min(Number left, Number right) {
         if (left == null && right == null) {
