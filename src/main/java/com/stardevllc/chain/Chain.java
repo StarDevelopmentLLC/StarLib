@@ -51,7 +51,7 @@ public interface Chain<T> {
      * @return the new chain
      */
     static <T> Chain<T> start(T object) {
-        return new SimpleChain<>(object);
+        return new ChainImpl<>(object);
     }
     
     /**
@@ -63,7 +63,7 @@ public interface Chain<T> {
      */
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     static <T> Chain<T> startOpt(Optional<T> optional) {
-        return new SimpleChain<>(optional.orElse(null));
+        return new ChainImpl<>(optional.orElse(null));
     }
     
     /**

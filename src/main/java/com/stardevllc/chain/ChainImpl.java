@@ -32,11 +32,11 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-class SimpleChain<T> implements Chain<T> {
+class ChainImpl<T> implements Chain<T> {
     
     private T object;
     
-    SimpleChain(T object) {
+    ChainImpl(T object) {
         this.object = object;
     }
     
@@ -118,7 +118,7 @@ class SimpleChain<T> implements Chain<T> {
         if (result == this.object) {
             return (Chain<R>) this;
         } else {
-            return new SimpleChain<>(result);
+            return new ChainImpl<>(result);
         }
     }
     
@@ -155,7 +155,7 @@ class SimpleChain<T> implements Chain<T> {
         if (result == this.object) {
             return (Chain<R>) this;
         } else {
-            return new SimpleChain<>(result);
+            return new ChainImpl<>(result);
         }
     }
     
