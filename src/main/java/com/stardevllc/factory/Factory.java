@@ -14,12 +14,6 @@ package com.stardevllc.factory;
 public interface Factory<T, F extends Factory<T, F>> {
     
     /**
-     * Creates a new empty object
-     * @return The created object
-     */
-    T create();
-    
-    /**
      * Creates an object with some parameters passed in. 
      * This is useful if it is variable number of parameters or of different types. 
      * It is up to the {@link Factory} implementation to hande that.
@@ -27,8 +21,14 @@ public interface Factory<T, F extends Factory<T, F>> {
      * @param parameters The parameters for the object
      * @return The created object
      */
-    default T create(Object[] parameters) {
-        return create();
+    T create(Object[] parameters);
+    
+    /**
+     * Creates a new empty object
+     * @return The created object
+     */
+    default T create() {
+        return create(null);
     }
     
     /**
