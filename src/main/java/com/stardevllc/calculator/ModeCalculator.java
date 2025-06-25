@@ -5,10 +5,10 @@ import java.util.Map.Entry;
 
 /**
  * <pre>A class that helps to track and calculate the mode of a set of data.
- * This class will be replaced or removed eventually
- * Just the Multiset from Google Guava, it's just better.</pre>
+ * This class will be replaced or removed eventually </pre>
  *
- * @param <T>
+ * @param <T> The object type for the mode
+ * @deprecated This class is deprecated. Use Google Guava's Multiset. It's just better
  */
 @Deprecated
 public class ModeCalculator<T> {

@@ -9,6 +9,7 @@ import java.util.function.*;
 /**
  * Effectively an infinite Stream of new objects. Much like Stream.generate() but with some more extendibility
  * You can implement this interface for a more customization if needed. Otherwise there is a base implementation
+ * @param <T> The object type that this Generator makes
  */
 public interface Generator<T> {
     
