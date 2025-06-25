@@ -1,5 +1,7 @@
 package com.stardevllc.generator;
 
+import com.stardevllc.helper.Pair;
+
 import java.util.*;
 import java.util.function.*;
 
@@ -48,6 +50,61 @@ class GeneratorImpl<T> implements Generator<T> {
         return this;
     }
     
+    private Pair<T, Boolean> generateObject(Object[] params) {
+        T object = this.supplier.get();
+        
+        if (object == null) {
+            throw new IllegalStateException("The supplier returned a null value. This is not allowed");
+        }
+        
+        Object[] paramsCopy;
+        if (params != null) {
+            paramsCopy = new Object[params.length];
+        } else {
+            paramsCopy = new Object[]{};
+        }
+        
+        for (Action action : this.actions) {
+            if (params != null) {
+                System.arraycopy(params, 0, paramsCopy, 0, params.length);
+            }
+            if (action.getTest().test(object, paramsCopy)) {
+                action.getAction().accept(object, paramsCopy);
+            }
+        }
+        
+        if (whileTrueCondition != null && !whileTrueCondition.test(object, paramsCopy)) {
+            return new Pair<>(object, false);
+        }
+        
+        if (whileFalseCondition != null && whileFalseCondition.test(object, paramsCopy)) {
+            return new Pair<>(object, false);
+        }
+        
+        return new Pair<>(object, true);
+    }
+    
+    @Override
+    public void generateAndDiscard(Object[] params) {
+        if (this.supplier == null) {
+            throw new IllegalStateException("The supplier cannot be null");
+        }
+        
+        long totalObjects = 0;
+        while (true) {
+            if (totalObjects >= this.limit) {
+                return;
+            }
+            
+            Pair<T, Boolean> result = generateObject(params);
+            if (!result.value()) {
+                return;
+            }
+            
+            totalObjects++;
+        }
+    }
+    
     @Override
     public Deque<T> generate(Object[] params) {
         if (this.supplier == null) {
@@ -61,38 +118,13 @@ class GeneratorImpl<T> implements Generator<T> {
                 return objects;
             }
             
-            T object = this.supplier.get();
+            Pair<T, Boolean> result = generateObject(params);
             
-            if (object == null) {
-                throw new IllegalStateException("The supplier returned a null value. This is not allowed");
-            }
-            
-            Object[] paramsCopy;
-            if (params != null) {
-                paramsCopy = new Object[params.length];
-                System.arraycopy(params, 0, paramsCopy, 0, params.length);
-            } else {
-                paramsCopy = new Object[]{};
-            }
-            
-            for (Action action : this.actions) {
-                if (params != null) {
-                    System.arraycopy(params, 0, paramsCopy, 0, params.length);
-                }
-                if (action.getTest().test(object, paramsCopy)) {
-                    action.getAction().accept(object, paramsCopy);
-                }
-            }
-            
-            if (whileTrueCondition != null && !whileTrueCondition.test(object, paramsCopy)) {
+            if (!result.value()) {
                 return objects;
             }
             
-            if (whileFalseCondition != null && whileFalseCondition.test(object, paramsCopy)) {
-                return objects;
-            }
-            
-            objects.add(object);
+            objects.add(result.key());
         }
     }
     

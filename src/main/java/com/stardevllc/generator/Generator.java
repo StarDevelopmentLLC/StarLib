@@ -1,6 +1,7 @@
 package com.stardevllc.generator;
 
-import com.stardevllc.builder.Builder;
+import com.stardevllc.builder.IBuilder;
+import com.stardevllc.factory.IFactory;
 
 import java.util.Deque;
 import java.util.function.*;
@@ -23,15 +24,27 @@ public interface Generator<T> {
     }
     
     /**
-     * Constructs a Generator using a {@link Builder}
-     * All this does is delegate to {@link Generator#create(Supplier)} with a method reference on the {@link Builder#build()} method
+     * Constructs a Generator using a {@link IBuilder}
+     * All this does is delegate to {@link Generator#create(Supplier)} with a method reference on the {@link IBuilder#build()} method
      *
      * @param builder The builder instance
      * @param <T>     The object type
      * @return A new generator instance
      */
-    static <T> Generator<T> create(Builder<T, ?> builder) {
+    static <T> Generator<T> create(IBuilder<T, ?> builder) {
         return create(builder::build);
+    }
+    
+    /**
+     * Constructs a Generator using a {@link IFactory}
+     * All this does is delegate to {@link Generator#create(Supplier)} with a method reference on the {@link IFactory#create()} method
+     *
+     * @param factory The factory instance
+     * @param <T>     The object type
+     * @return A new generator instance
+     */
+    static <T> Generator<T> create(IFactory<T, ?> factory) {
+        return create((Supplier<T>) factory::create);
     }
     
     /**
@@ -153,6 +166,15 @@ public interface Generator<T> {
     }
     
     /**
+     * This is similar to the {@link #generate(Object[])} method where it generates things, but it just discards the generated objects immediately. Most useful for things that are done using the apply functions
+     */
+    void generateAndDiscard(Object[] args);
+    
+    default void generateAndDiscard() {
+        generateAndDiscard(null);
+    }
+    
+    /**
      * Performs generation of the objects and applies all things. Has paramters to pass things through. It is up to the consumers to handle them
      *
      * @param parameters The parameters
@@ -175,7 +197,7 @@ public interface Generator<T> {
      * This method is a finalizer like the {@link Generator#generate(Object[])} method
      * Instead of returning anything, it just loops through the objects after they are all generated
      * This is relatively similar to the {@link Generator#apply(BiConsumer)} and {@link Generator#applyIf(BiPredicate, BiConsumer)}, but is performed AFTER generation not DURING generation
-     * 
+     *
      * @param action The action to perform
      * @param params The params for the generation
      */

@@ -1,5 +1,6 @@
 package com.stardevllc.clock;
 
+import com.stardevllc.builder.IBuilder;
 import com.stardevllc.clock.callback.*;
 import com.stardevllc.clock.condition.ClockEndCondition;
 import com.stardevllc.clock.property.ClockBooleanProperty;
@@ -12,7 +13,7 @@ import java.util.*;
 
 /**
  * <pre>A class that represents a clock. There are two direct concrete implementations of this in {@link com.stardevllc.clock.clocks.Timer} and {@link com.stardevllc.clock.clocks.Stopwatch}
- * Note: It is planned to include a {@link com.stardevllc.builder.Builder} implementation but there are a few things that need rewrites first.</pre>
+ * Note: It is planned to include a {@link IBuilder} implementation but there are a few things that need rewrites first.</pre>
  * @param <T> The type for the {@link ClockSnapshot} instance
  */
 public abstract class Clock<T extends ClockSnapshot> {
