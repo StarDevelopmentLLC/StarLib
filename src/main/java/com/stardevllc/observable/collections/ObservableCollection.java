@@ -1,6 +1,6 @@
 package com.stardevllc.observable.collections;
 
-import com.stardevllc.eventbus.EventBus;
+import com.stardevllc.eventbus.IEventBus;
 import com.stardevllc.observable.Observable;
 import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 import com.stardevllc.observable.collections.listener.CollectionChangeListener;
@@ -33,7 +33,7 @@ public interface ObservableCollection<E> extends Observable, Collection<E> {
      *
      * @return The eventbus of the observable collection
      */
-    EventBus<CollectionChangeEvent<E>> eventBus();
+    IEventBus<CollectionChangeEvent<E>> eventBus();
     
     @Override
     Stream<E> stream();

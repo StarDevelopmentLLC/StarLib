@@ -1,12 +1,12 @@
 package com.stardevllc.observable.property;
 
-import com.stardevllc.eventbus.EventBus;
+import com.stardevllc.eventbus.IEventBus;
 import com.stardevllc.eventbus.impl.SimpleEventBus;
 import com.stardevllc.observable.*;
 
 public abstract class AbstractProperty<T> implements Property<T> {
 
-    protected final EventBus<ChangeEvent<T>> eventBus = new SimpleEventBus<>();
+    protected final IEventBus<ChangeEvent<T>> eventBus = new SimpleEventBus<>();
     
     protected final Object bean;
     protected final String name;

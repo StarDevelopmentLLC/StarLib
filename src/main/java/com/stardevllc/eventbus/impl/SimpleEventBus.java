@@ -1,26 +1,28 @@
 package com.stardevllc.eventbus.impl;
 
-import com.stardevllc.eventbus.EventBus;
+import com.stardevllc.eventbus.IEventBus;
 import com.stardevllc.eventbus.SubscribeEvent;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
-public class SimpleEventBus<E> implements EventBus<E> {
+public class SimpleEventBus<T> implements IEventBus<T> {
 
-    private Set<EventHandler<E>> handlers = new HashSet<>();
-
+    private Set<EventHandler<T>> handlers = new HashSet<>();
+    
     @Override
-    public void post(E event) {
-        for (EventHandler<E> handler : handlers) {
+    public <E extends T> E post(E event) {
+        for (EventHandler<T> handler : handlers) {
             handler.handle(event);
         }
+        
+        return event;
     }
 
     @Override
     public void subscribe(Object listener) {
-        for (EventHandler<E> handler : handlers) {
+        for (EventHandler<T> handler : handlers) {
             if (handler.getListener().equals(listener)) {
                 return;
             }

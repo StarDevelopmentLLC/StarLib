@@ -1,6 +1,6 @@
 package com.stardevllc.observable.collections;
 
-import com.stardevllc.eventbus.EventBus;
+import com.stardevllc.eventbus.IEventBus;
 import com.stardevllc.eventbus.impl.SimpleEventBus;
 import com.stardevllc.observable.collections.event.MapChangeEvent;
 
@@ -9,12 +9,12 @@ import java.util.function.*;
 
 public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V> {
 
-    protected final EventBus<MapChangeEvent> eventBus = new SimpleEventBus<>();
+    protected final IEventBus<MapChangeEvent> eventBus = new SimpleEventBus<>();
 
     protected abstract Map<K, V> getBackingMap();
 
     @Override
-    public EventBus<MapChangeEvent> eventBus() {
+    public IEventBus<MapChangeEvent> eventBus() {
         return this.eventBus;
     }
 

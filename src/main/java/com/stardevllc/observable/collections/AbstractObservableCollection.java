@@ -1,6 +1,6 @@
 package com.stardevllc.observable.collections;
 
-import com.stardevllc.eventbus.EventBus;
+import com.stardevllc.eventbus.IEventBus;
 import com.stardevllc.eventbus.impl.SimpleEventBus;
 import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 import com.stardevllc.observable.collections.listener.CollectionChangeListener;
@@ -27,7 +27,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
     /**
      * An EventBus that handles change events
      */
-    protected final EventBus<CollectionChangeEvent<E>> eventBus = new SimpleEventBus<>();
+    protected final IEventBus<CollectionChangeEvent<E>> eventBus = new SimpleEventBus<>();
     
     /**
      * The backing collection is what actually does the collection things
@@ -90,7 +90,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         return getBackingCollection().isEmpty();
     }
     
-    public EventBus<CollectionChangeEvent<E>> eventBus() {
+    public IEventBus<CollectionChangeEvent<E>> eventBus() {
         return eventBus;
     }
     
