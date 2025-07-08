@@ -51,6 +51,8 @@ public class SimpleEventBus<T> implements IEventBus<T> {
                 continue;
             }
             
+            method.setAccessible(true);
+            
             EventListener<T> eventListener = new EventListener<>(
                     listener, eventClass, method, 
                     methodAnnotation != null ? methodAnnotation.priority() : defaultPriority, 
