@@ -1,6 +1,6 @@
 package com.stardevllc.observable.property;
 
-import com.stardevllc.calculator.SimpleCalculator;
+import com.stardevllc.helper.NumberHelper;
 import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.value.ObservableBooleanValue;
 import com.stardevllc.observable.value.ObservableNumberValue;
@@ -60,27 +60,27 @@ public class LongProperty extends NumberProperty<Long> implements WritableLongVa
 
     @Override
     public ObservableNumberValue<Long> negate() {
-        return new LongProperty((Long) SimpleCalculator.negate(value));
+        return new LongProperty((Long) NumberHelper.negate(value));
     }
 
     @Override
     public ObservableNumberValue<Long> add(Number number) {
-        return new LongProperty((Long) SimpleCalculator.add(value, number.longValue()));
+        return new LongProperty((Long) NumberHelper.add(value, number.longValue()));
     }
 
     @Override
     public ObservableNumberValue<Long> subtract(Number number) {
-        return new LongProperty((Long) SimpleCalculator.subtract(value, number.longValue()));
+        return new LongProperty((Long) NumberHelper.subtract(value, number.longValue()));
     }
 
     @Override
     public ObservableNumberValue<Long> multiply(Number number) {
-        return new LongProperty((Long) SimpleCalculator.multiply(value, number.longValue()));
+        return new LongProperty((Long) NumberHelper.multiply(value, number.longValue()));
     }
 
     @Override
     public ObservableNumberValue<Long> divide(Number number) {
-        return new LongProperty((Long) SimpleCalculator.divide(value, number.longValue()));
+        return new LongProperty((Long) NumberHelper.divide(value, number.longValue()));
     }
 
     @Override

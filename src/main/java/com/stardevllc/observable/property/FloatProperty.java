@@ -1,6 +1,6 @@
 package com.stardevllc.observable.property;
 
-import com.stardevllc.calculator.SimpleCalculator;
+import com.stardevllc.helper.NumberHelper;
 import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.value.ObservableBooleanValue;
 import com.stardevllc.observable.value.ObservableNumberValue;
@@ -61,27 +61,27 @@ public class FloatProperty extends NumberProperty<Float> implements WritableFloa
 
     @Override
     public ObservableNumberValue<Float> negate() {
-        return new FloatProperty((Float) SimpleCalculator.negate(value));
+        return new FloatProperty((Float) NumberHelper.negate(value));
     }
 
     @Override
     public ObservableNumberValue<Float> add(Number number) {
-        return new FloatProperty((Float) SimpleCalculator.add(value, number.floatValue()));
+        return new FloatProperty((Float) NumberHelper.add(value, number.floatValue()));
     }
 
     @Override
     public ObservableNumberValue<Float> subtract(Number number) {
-        return new FloatProperty((Float) SimpleCalculator.subtract(value, number.floatValue()));
+        return new FloatProperty((Float) NumberHelper.subtract(value, number.floatValue()));
     }
 
     @Override
     public ObservableNumberValue<Float> multiply(Number number) {
-        return new FloatProperty((Float) SimpleCalculator.multiply(value, number.floatValue()));
+        return new FloatProperty((Float) NumberHelper.multiply(value, number.floatValue()));
     }
 
     @Override
     public ObservableNumberValue<Float> divide(Number number) {
-        return new FloatProperty((Float) SimpleCalculator.divide(value, number.floatValue()));
+        return new FloatProperty((Float) NumberHelper.divide(value, number.floatValue()));
     }
 
     @Override

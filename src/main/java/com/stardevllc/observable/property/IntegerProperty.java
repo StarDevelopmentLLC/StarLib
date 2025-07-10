@@ -1,6 +1,6 @@
 package com.stardevllc.observable.property;
 
-import com.stardevllc.calculator.SimpleCalculator;
+import com.stardevllc.helper.NumberHelper;
 import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.value.ObservableBooleanValue;
 import com.stardevllc.observable.value.ObservableNumberValue;
@@ -61,27 +61,27 @@ public class IntegerProperty extends NumberProperty<Integer> implements Writable
 
     @Override
     public ObservableNumberValue<Integer> negate() {
-        return new IntegerProperty((Integer) SimpleCalculator.negate(value));
+        return new IntegerProperty((Integer) NumberHelper.negate(value));
     }
 
     @Override
     public ObservableNumberValue<Integer> add(Number number) {
-        return new IntegerProperty((Integer) SimpleCalculator.add(value, number.intValue()));
+        return new IntegerProperty((Integer) NumberHelper.add(value, number.intValue()));
     }
 
     @Override
     public ObservableNumberValue<Integer> subtract(Number number) {
-        return new IntegerProperty((Integer) SimpleCalculator.subtract(value, number.intValue()));
+        return new IntegerProperty((Integer) NumberHelper.subtract(value, number.intValue()));
     }
 
     @Override
     public ObservableNumberValue<Integer> multiply(Number number) {
-        return new IntegerProperty((Integer) SimpleCalculator.multiply(value, number.intValue()));
+        return new IntegerProperty((Integer) NumberHelper.multiply(value, number.intValue()));
     }
 
     @Override
     public ObservableNumberValue<Integer> divide(Number number) {
-        return new IntegerProperty((Integer) SimpleCalculator.divide(value, number.intValue()));
+        return new IntegerProperty((Integer) NumberHelper.divide(value, number.intValue()));
     }
 
     @Override

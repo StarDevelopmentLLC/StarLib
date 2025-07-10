@@ -1,6 +1,6 @@
 package com.stardevllc.observable.property;
 
-import com.stardevllc.calculator.SimpleCalculator;
+import com.stardevllc.helper.NumberHelper;
 import com.stardevllc.observable.ChangeEvent;
 import com.stardevllc.observable.value.ObservableBooleanValue;
 import com.stardevllc.observable.value.ObservableNumberValue;
@@ -61,27 +61,27 @@ public class DoubleProperty extends NumberProperty<Double> implements WritableDo
 
     @Override
     public ObservableNumberValue<Double> negate() {
-        return new DoubleProperty((Double) SimpleCalculator.negate(value));
+        return new DoubleProperty((Double) NumberHelper.negate(value));
     }
 
     @Override
     public ObservableNumberValue<Double> add(Number number) {
-        return new DoubleProperty((Double) SimpleCalculator.add(value, number.doubleValue()));
+        return new DoubleProperty((Double) NumberHelper.add(value, number.doubleValue()));
     }
 
     @Override
     public ObservableNumberValue<Double> subtract(Number number) {
-        return new DoubleProperty((Double) SimpleCalculator.subtract(value, number.doubleValue()));
+        return new DoubleProperty((Double) NumberHelper.subtract(value, number.doubleValue()));
     }
 
     @Override
     public ObservableNumberValue<Double> multiply(Number number) {
-        return new DoubleProperty((Double) SimpleCalculator.multiply(value, number.doubleValue()));
+        return new DoubleProperty((Double) NumberHelper.multiply(value, number.doubleValue()));
     }
 
     @Override
     public ObservableNumberValue<Double> divide(Number number) {
-        return new DoubleProperty((Double) SimpleCalculator.divide(value, number.doubleValue()));
+        return new DoubleProperty((Double) NumberHelper.divide(value, number.doubleValue()));
     }
 
     @Override
