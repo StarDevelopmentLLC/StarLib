@@ -39,7 +39,23 @@ public class StringHelper {
 
         return name.toString();
     }
-
+    
+    public static String join(Object[] array, String separator) {
+        if (array == null || array.length == 0) {
+            return "";
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            if (i > 0) {
+                sb.append(separator);
+            }
+            sb.append(array[i]);
+        }
+        
+        return sb.toString();
+    }
+    
     public static String join(Collection<?> collection, String separator) {
         Iterator<?> iterator = collection.iterator();
         if (!iterator.hasNext()) {
