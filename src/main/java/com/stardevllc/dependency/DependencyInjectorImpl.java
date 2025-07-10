@@ -33,6 +33,8 @@ class DependencyInjectorImpl implements DependencyInjector {
         return 1;
     });
     
+    private Set<DependencyInjector> parentInjectors = new HashSet<>();
+    
     @Override
     public <I> I inject(I object) {
         boolean fullClassInject = object.getClass().isAnnotationPresent(Inject.class);
@@ -66,6 +68,8 @@ class DependencyInjectorImpl implements DependencyInjector {
             }
         }
         
+        //Call parent injectors
+        this.parentInjectors.forEach(injector -> injector.inject(object));
         return object;
     }
     
@@ -74,6 +78,12 @@ class DependencyInjectorImpl implements DependencyInjector {
         try {
             //Set the field to be accessible
             field.setAccessible(true);
+            
+            //Ignore fields that have values (To allow overridding parent injector's instances)
+            if (field.get(object) != null) {
+                return;
+            }
+            
             //Set the value
             field.set(object, value);
         } catch (Exception e) {
@@ -92,5 +102,15 @@ class DependencyInjectorImpl implements DependencyInjector {
     public <I> I setInstance(I instance) {
         this.instances.put(instance.getClass(), instance);
         return instance;
+    }
+    
+    @Override
+    public Set<DependencyInjector> getParentInjectors() {
+        return new HashSet<>(this.parentInjectors);
+    }
+    
+    @Override
+    public void addParentInjector(DependencyInjector injector) {
+        this.parentInjectors.add(injector);
     }
 }
