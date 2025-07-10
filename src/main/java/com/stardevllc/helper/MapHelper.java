@@ -3,7 +3,7 @@ package com.stardevllc.helper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapHelper {
+public final class MapHelper {
     public static <K, V> Map<K, V> of(K firstKey, V firstValue, Object... rawValues) {
         if (rawValues.length % 2 != 0) {
             throw new IllegalArgumentException("Number of raw values must be even");

@@ -53,7 +53,7 @@ public final class CodeGenerator {
         char c = LETTERS.charAt(random.nextInt(LETTERS.length()));
         if (uppercase) {
             if (random.nextBoolean()) {
-                c = Character.toUpperCase(c);
+                return Character.toUpperCase(c);
             }
         }
         return c;
