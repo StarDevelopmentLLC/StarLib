@@ -241,9 +241,12 @@ public interface VariableAmount {
 
         @Override
         public boolean equals(Object o) {
-            if (o == this) return true;
-            if (!(o instanceof Fixed)) return false;
-            final Fixed other = (Fixed) o;
+            if (o == this) {
+                return true;
+            }
+            if (!(o instanceof Fixed other)) {
+                return false;
+            }
             return Double.compare(this.amount, other.amount) == 0;
         }
 
@@ -251,7 +254,7 @@ public interface VariableAmount {
         public int hashCode() {
             final int PRIME = 59;
             int result = 1;
-            result = result * PRIME + (int) (Double.doubleToLongBits(this.amount) >>> 32 ^ Double.doubleToLongBits(this.amount));
+            result = result * PRIME + Long.hashCode(Double.doubleToLongBits(this.amount));
             return result;
         }
     }
@@ -282,9 +285,12 @@ public interface VariableAmount {
 
         @Override
         public boolean equals(Object o) {
-            if (o == this) return true;
-            if (!(o instanceof BaseAndVariance)) return false;
-            final BaseAndVariance other = (BaseAndVariance) o;
+            if (o == this) {
+                return true;
+            }
+            if (!(o instanceof BaseAndVariance other)) {
+                return false;
+            }
             return Double.compare(this.base, other.base) == 0 && this.variance.equals(other.variance);
         }
 
@@ -292,7 +298,7 @@ public interface VariableAmount {
         public int hashCode() {
             final int PRIME = 59;
             int result = 1;
-            result = result * PRIME + (int) (Double.doubleToLongBits(this.base) >>> 32 ^ Double.doubleToLongBits(this.base));
+            result = result * PRIME + Long.hashCode(Double.doubleToLongBits(this.base));
             result = result * PRIME + this.variance.hashCode();
             return result;
         }
@@ -314,7 +320,7 @@ public interface VariableAmount {
 
         @Override
         public double getAmount(Random random) {
-            return this.base + (random.nextDouble() * this.addition.getAmount(random));
+            return this.base + random.nextDouble() * this.addition.getAmount(random);
         }
 
         @Override
@@ -324,9 +330,12 @@ public interface VariableAmount {
 
         @Override
         public boolean equals(Object o) {
-            if (o == this) return true;
-            if (!(o instanceof BaseAndAddition)) return false;
-            final BaseAndAddition other = (BaseAndAddition) o;
+            if (o == this) {
+                return true;
+            }
+            if (!(o instanceof BaseAndAddition other)) {
+                return false;
+            }
             return Double.compare(this.base, other.base) == 0 && this.addition.equals(other.addition);
         }
 
@@ -334,7 +343,7 @@ public interface VariableAmount {
         public int hashCode() {
             final int PRIME = 59;
             int result = 1;
-            result = result * PRIME + (int) (Double.doubleToLongBits(this.base) >>> 32 ^ Double.doubleToLongBits(this.base));
+            result = result * PRIME + Long.hashCode(Double.doubleToLongBits(this.base));
             result = result * PRIME + this.addition.hashCode();
             return result;
         }
@@ -371,9 +380,12 @@ public interface VariableAmount {
 
         @Override
         public boolean equals(Object o) {
-            if (o == this) return true;
-            if (!(o instanceof OptionalAmount)) return false;
-            final OptionalAmount other = (OptionalAmount) o;
+            if (o == this) {
+                return true;
+            }
+            if (!(o instanceof OptionalAmount other)) {
+                return false;
+            }
             return Double.compare(this.base, other.base) == 0 && Double.compare(this.chance, other.chance) == 0 && this.inner.equals(other.inner);
         }
 
@@ -381,8 +393,8 @@ public interface VariableAmount {
         public int hashCode() {
             final int PRIME = 59;
             int result = 1;
-            result = result * PRIME + (int) (Double.doubleToLongBits(this.base) >>> 32 ^ Double.doubleToLongBits(this.base));
-            result = result * PRIME + (int) (Double.doubleToLongBits(this.chance) >>> 32 ^ Double.doubleToLongBits(this.chance));
+            result = result * PRIME + Long.hashCode(Double.doubleToLongBits(this.base));
+            result = result * PRIME + Long.hashCode(Double.doubleToLongBits(this.chance));
             result = result * PRIME + this.inner.hashCode();
             return result;
         }

@@ -58,9 +58,12 @@ public final class WeightedObject<T> implements Weighted {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!(o instanceof WeightedObject)) return false;
-        final WeightedObject other = (WeightedObject) o;
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WeightedObject<?> other)) {
+            return false;
+        }
         return this.object.equals(other.object) && Double.compare(this.getWeight(), other.getWeight()) == 0;
     }
 
@@ -69,7 +72,7 @@ public final class WeightedObject<T> implements Weighted {
         final int PRIME = 59;
         int result = 1;
         result = result * PRIME + this.object.hashCode();
-        result = result * PRIME + (int) (Double.doubleToLongBits(this.getWeight()) >>> 32 ^ Double.doubleToLongBits(this.getWeight()));
+        result = result * PRIME + Long.hashCode(Double.doubleToLongBits(this.getWeight()));
         return result;
     }
 

@@ -28,6 +28,7 @@ package com.stardevllc.random;
 /**
  * Represents an object which has a weight
  */
+@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface Weighted {
 
     /**

@@ -38,7 +38,6 @@ final class RandomSelectorImpl<E> implements RandomSelector<E> {
 
         int size = elements.size();
 
-        //noinspection unchecked
         E[] array = elements.toArray((E[]) new Object[size]);
         return new RandomSelectorImpl<>(array, new BoundedRandomSelector(size));
     }
@@ -50,7 +49,6 @@ final class RandomSelectorImpl<E> implements RandomSelector<E> {
 
         int size = elements.size();
 
-        //noinspection unchecked
         E[] elementArray = elements.toArray((E[]) new Object[size]);
 
         double totalWeight = 0d;
@@ -90,12 +88,12 @@ final class RandomSelectorImpl<E> implements RandomSelector<E> {
         return Stream.generate(() -> pick(random));
     }
 
+    @FunctionalInterface
     private interface IndexSelector {
-
         int pickIndex(Random random);
-
     }
 
+    @SuppressWarnings("ClassCanBeRecord")
     private static final class BoundedRandomSelector implements IndexSelector {
         private final int bound;
 

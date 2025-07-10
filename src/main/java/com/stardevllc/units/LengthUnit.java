@@ -52,18 +52,18 @@ public enum LengthUnit {
     }
     
     public double toCentimeters(double length) {
-        return (getAmountInBase() * length) / CENTIMETER.getAmountInBase();
+        return getAmountInBase() * length / CENTIMETER.getAmountInBase();
     }
 
     public double toInches(double length) {
-        return (getAmountInBase() * length) / INCH.getAmountInBase();
+        return getAmountInBase() * length / INCH.getAmountInBase();
     }
 
     public double toFeed(double length) {
-        return (getAmountInBase() * length) / FOOT.getAmountInBase();
+        return getAmountInBase() * length / FOOT.getAmountInBase();
     }
 
     public double toYards(double length) {
-        return (getAmountInBase() * length) / YARD.getAmountInBase();
+        return getAmountInBase() * length / YARD.getAmountInBase();
     }
 }

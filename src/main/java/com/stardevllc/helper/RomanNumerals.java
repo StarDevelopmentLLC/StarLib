@@ -1,6 +1,6 @@
 package com.stardevllc.helper;
 
-public class RomanNumerals {
+public final class RomanNumerals {
 
     public static String decimalToRoman(int num) {
         return "I".repeat(num)

@@ -30,6 +30,7 @@ package com.stardevllc.random;
  *
  * @param <E> the element type
  */
+@FunctionalInterface
 public interface Weigher<E> {
 
     /**

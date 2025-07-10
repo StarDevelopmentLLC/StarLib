@@ -96,7 +96,7 @@ public class TreeNode<T> {
             
             return result.getParent().removeChild(result);
         }
-        return result;
+        return null;
     }
     
     public String heirarchy() {

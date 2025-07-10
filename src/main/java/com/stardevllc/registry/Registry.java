@@ -329,8 +329,6 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         protected List<RegisterListener<K, V>> registerListeners = new ArrayList<>();
         protected List<UnregisterListener<K, V>> unregisterListeners = new ArrayList<>();
         
-        public Builder() {}
-
         public Builder<K, V> initialObjects(TreeMap<K, V> objects) {
             this.objects = objects;
             return this;

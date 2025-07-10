@@ -3,11 +3,11 @@ package com.stardevllc.helper;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class StringHelper {
+public final class StringHelper {
     private static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
     
     private static Map<String, UUID> uuidCache = new HashMap<>();
-
+    
     public static String pluralize(String word) {
         if (word.charAt(word.length() - 1) == 's') {
             word += "'";
@@ -36,7 +36,7 @@ public class StringHelper {
                 name.append(" ");
             }
         }
-
+        
         return name.toString();
     }
     
@@ -60,31 +60,32 @@ public class StringHelper {
         Iterator<?> iterator = collection.iterator();
         if (!iterator.hasNext()) {
             return "";
-        } else {
-            Object first = iterator.next();
-            if (first == null) {
-                return "";
-            }
-            if (!iterator.hasNext()) {
-                return first.toString();
-            } else {
-                StringBuilder buf = new StringBuilder();
-                buf.append(first);
-
-                while (iterator.hasNext()) {
-                    buf.append(separator);
-
-                    Object obj = iterator.next();
-                    if (obj != null) {
-                        buf.append(obj);
-                    }
-                }
-
-                return buf.toString();
+        }
+        
+        Object first = iterator.next();
+        if (first == null) {
+            return "";
+        }
+        
+        if (!iterator.hasNext()) {
+            return first.toString();
+        }
+        
+        StringBuilder buf = new StringBuilder();
+        buf.append(first);
+        
+        while (iterator.hasNext()) {
+            buf.append(separator);
+            
+            Object obj = iterator.next();
+            if (obj != null) {
+                buf.append(obj);
             }
         }
+        
+        return buf.toString();
     }
-
+    
     public static UUID toUUID(String id) {
         if (uuidCache.containsKey(id)) {
             return uuidCache.get(id);
@@ -95,7 +96,7 @@ public class StringHelper {
             uuidCache.put(id, uuid);
             return uuid;
         }
-
+        
         id = id.substring(0, 8) + "-" +
                 id.substring(8, 12) + "-" +
                 id.substring(12, 16) + "-" +
@@ -106,7 +107,7 @@ public class StringHelper {
         uuidCache.put(id, uuid);
         return uuid;
     }
-
+    
     public static String getStringSafe(String value) {
         return value == null ? "" : value;
     }

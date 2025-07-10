@@ -36,22 +36,22 @@ public enum MemoryUnit {
     }
     
     public double toKilobytes(long amount) {
-        return (amountInBytes * amount * 1.0) / KILOBYTE.getAmountInBytes();
+        return amountInBytes * amount * 1.0 / KILOBYTE.getAmountInBytes();
     }
     
     public double toMegabytes(long amount) {
-        return (amountInBytes * amount * 1.0) / MEGABYTE.getAmountInBytes();
+        return amountInBytes * amount * 1.0 / MEGABYTE.getAmountInBytes();
     }
     
     public double toGigabytes(long amount) {
-        return (amountInBytes * amount * 1.0) / GIGABYTE.getAmountInBytes();
+        return amountInBytes * amount * 1.0 / GIGABYTE.getAmountInBytes();
     }
     
     public double toTerabytes(long amount) {
-        return (amountInBytes * amount * 1.0) / TERABYTE.getAmountInBytes();
+        return amountInBytes * amount * 1.0 / TERABYTE.getAmountInBytes();
     }
     
     public double toPetabytes(long amount) {
-        return (amountInBytes * amount * 1.0) / PETABYTE.getAmountInBytes();
+        return amountInBytes * amount * 1.0 / PETABYTE.getAmountInBytes();
     }
 }
