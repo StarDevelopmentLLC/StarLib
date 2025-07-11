@@ -27,7 +27,7 @@ publishing {
     
     publications {
         shadow(MavenPublication) {
-            from components.shadow
+            from components.java
         }
     }
 }
@@ -53,5 +53,7 @@ java {
 tasks.compileJava.dependsOn(clean)
 tasks.jar.finalizedBy(shadowJar)
 tasks.publishToMavenLocal.dependsOn(shadowJar)
+tasks.shadowJar.finalizedBy(javadocJar)
+tasks.shadowJar.finalizedBy(sourcesJar)
 tasks.build.finalizedBy(publishToMavenLocal)
 tasks.build.finalizedBy(publish)
