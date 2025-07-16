@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -156,6 +158,54 @@ public final class FileHelper {
             } catch (IOException | InterruptedException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+    
+    public static void unzipFile(Path zipFile, Path destination) {
+        byte[] buffer = new byte[1024];
+        try {
+            ZipInputStream zis = new ZipInputStream(Files.newInputStream(zipFile));
+            ZipEntry zipEntry = zis.getNextEntry();
+            
+            while (zipEntry != null) {
+                Path newFile = newFileFromZip(destination, zipEntry);
+                if (zipEntry.isDirectory()) {
+                    FileHelper.createDirectoryIfNotExists(newFile);
+                } else {
+                    // fix for Windows-created archives
+                    Path parent = newFile.getParent();
+                    if (!Files.isDirectory(parent)) {
+                        FileHelper.createDirectoryIfNotExists(parent);
+                        if (Files.notExists(parent)) {
+                            throw new IOException("Failed to create directory " + parent);
+                        }
+                    }
+                    
+                    // write file content
+                    FileOutputStream fos = new FileOutputStream(newFile.toFile());
+                    int len;
+                    while ((len = zis.read(buffer)) > 0) {
+                        fos.write(buffer, 0, len);
+                    }
+                    fos.close();
+                }
+                zipEntry = zis.getNextEntry();
+            }
+            zis.closeEntry();
+            zis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static Path newFileFromZip(Path destinationDir, ZipEntry zipEntry) throws IOException {
+        Path path = FileHelper.subPath(destinationDir, zipEntry.getName());
+        String destDirPath = destinationDir.toFile().getCanonicalPath();
+        String destFilePath = path.toFile().getCanonicalPath();
+        if (!destFilePath.startsWith(destDirPath + File.separator)) {
+            throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+        } else {
+            return path;
         }
     }
 }
