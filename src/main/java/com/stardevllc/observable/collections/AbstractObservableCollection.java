@@ -63,7 +63,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
     
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new ObservableIterator<>(this, getBackingCollection().iterator());
     }
     
     @Override
