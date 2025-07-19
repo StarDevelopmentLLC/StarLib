@@ -11,58 +11,25 @@ public class UUIDRegistry<V> extends Registry<UUID, V> {
 
     public UUIDRegistry() {
     }
-
+    
     @Override
-    public SortedMap<UUID, V> subMap(UUID k1, UUID k2) {
-        return new UUIDRegistry<>(this.objects.subMap(k1, k2), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+    public Builder<V> toBuilder() {
+        Builder<V> builder = new Builder<>();
+        builder.keyNormalizer(this.keyNormalizer);
+        builder.keyRetriever(this.keyRetriever);
+        builder.keyGenerator(this.keyGenerator);
+        builder.keySetter(this.keySetter);
+        for (RegisterListener<UUID, V> registerListener : this.registerListeners) {
+            builder.addRegisterListener(registerListener);
+        }
+        
+        for (UnregisterListener<UUID, V> unregisterListener : this.unregisterListeners) {
+            builder.addUnregisterListener(unregisterListener);
+        }
+        return builder;
     }
 
-    @Override
-    public SortedMap<UUID, V> headMap(UUID k1) {
-        return new UUIDRegistry<>(this.objects.headMap(k1), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
-    }
-
-    @Override
-    public SortedMap<UUID, V> tailMap(UUID k1) {
-        return new UUIDRegistry<>(this.objects.tailMap(k1), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
-    }
-
-    public static class Builder<V> extends Registry.Builder<UUID, V> {
-        @Override
-        public Builder<V> initialObjects(TreeMap<UUID, V> objects) {
-            return (Builder<V>) super.initialObjects(objects);
-        }
-
-        @Override
-        public Builder<V> keyNormalizer(KeyNormalizer<UUID> keyNormalizer) {
-            return (Builder<V>) super.keyNormalizer(keyNormalizer);
-        }
-
-        @Override
-        public Builder<V> keyRetriever(KeyRetriever<V, UUID> keyRetriever) {
-            return (Builder<V>) super.keyRetriever(keyRetriever);
-        }
-
-        @Override
-        public Builder<V> keyGenerator(KeyGenerator<V, UUID> keyGenerator) {
-            return (Builder<V>) super.keyGenerator(keyGenerator);
-        }
-
-        @Override
-        public Builder<V> keySetter(KeySetter<UUID, V> keySetter) {
-            return (Builder<V>) super.keySetter(keySetter);
-        }
-
-        @Override
-        public Builder<V> addRegisterListener(RegisterListener<UUID, V> listener) {
-            return (Builder<V>) super.addRegisterListener(listener);
-        }
-
-        @Override
-        public Builder<V> addUnregisterListener(UnregisterListener<UUID, V> listener) {
-            return (Builder<V>) super.addUnregisterListener(listener);
-        }
-
+    public static class Builder<V> extends Registry.Builder<UUID, V, UUIDRegistry<V>, Builder<V>> {
         @Override
         public UUIDRegistry<V> build() {
             UUIDRegistry<V> registry = new UUIDRegistry<>(this.objects, this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);

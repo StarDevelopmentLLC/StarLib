@@ -1,5 +1,7 @@
 package com.stardevllc.registry;
 
+import com.stardevllc.builder.IBuilder;
+import com.stardevllc.observable.collections.ObservableHashSet;
 import com.stardevllc.registry.functions.*;
 
 import java.util.*;
@@ -30,6 +32,22 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
 
     public Registry() {
         this(null, null, null, null, null);
+    }
+    
+    public Builder<K, V, ?, ?> toBuilder() {
+        Builder<K, V, ?, ?> builder = new Builder<>();
+        builder.keyNormalizer(this.keyNormalizer);
+        builder.keyRetriever(this.keyRetriever);
+        builder.keyGenerator(this.keyGenerator);
+        builder.keySetter(this.keySetter);
+        for (RegisterListener<K, V> registerListener : this.registerListeners) {
+            builder.addRegisterListener(registerListener);
+        }
+        
+        for (UnregisterListener<K, V> unregisterListener : this.unregisterListeners) {
+            builder.addUnregisterListener(unregisterListener);
+        }
+        return builder;
     }
 
     public V register(V object) {
@@ -199,17 +217,26 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
 
     @Override
     public SortedMap<K, V> subMap(K k, K k1) {
-        return new Registry<>(this.objects.subMap(k, k1), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+        Builder<K, V, ?, ?> builder = toBuilder();
+        builder.addRegisterListener(this::register);
+        builder.addUnregisterListener((key, value) -> unregister(key));
+        return builder.build();
     }
 
     @Override
     public SortedMap<K, V> headMap(K k) {
-        return new Registry<>(this.objects.headMap(k), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+        Builder<K, V, ?, ?> builder = toBuilder();
+        builder.addRegisterListener(this::register);
+        builder.addUnregisterListener((key, value) -> unregister(key));
+        return builder.build();
     }
 
     @Override
     public SortedMap<K, V> tailMap(K k) {
-        return new Registry<>(this.objects.tailMap(k), this.keyNormalizer, this.keyRetriever, this.keyGenerator, this.keySetter);
+        Builder<K, V, ?, ?> builder = toBuilder();
+        builder.addRegisterListener(this::register);
+        builder.addUnregisterListener((key, value) -> unregister(key));
+        return builder.build();
     }
 
     @Override
@@ -234,7 +261,15 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return new HashSet<>(this.objects.entrySet());
+        ObservableHashSet<Entry<K, V>> set = new ObservableHashSet<>(this.objects.entrySet());
+        set.addListener(event -> {
+            if (event.added() != null) {
+                register(event.added().getKey(), event.added().getValue());
+            } else if (event.removed() != null) {
+                unregister(event.removed().getKey());
+            }
+        });
+        return set;
     }
 
     @Override
@@ -320,7 +355,7 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         return this.objects.merge(key, value, remappingFunction);
     }
     
-    public static class Builder<K extends Comparable<K>, V> {
+    public static class Builder<K extends Comparable<K>, V, R extends Registry<K, V>, B extends Builder<K, V, R, B>> implements IBuilder<R, B> {
         protected TreeMap<K, V> objects = new TreeMap<>();
         protected KeyNormalizer<K> keyNormalizer;
         protected KeyRetriever<V, K> keyRetriever;
@@ -329,48 +364,65 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         protected List<RegisterListener<K, V>> registerListeners = new ArrayList<>();
         protected List<UnregisterListener<K, V>> unregisterListeners = new ArrayList<>();
         
-        public Builder<K, V> initialObjects(TreeMap<K, V> objects) {
+        public Builder() {}
+        
+        public Builder(Builder<K, V, R, B> builder) {
+            this.objects.putAll(builder.objects);
+            this.keyNormalizer = builder.keyNormalizer;
+            this.keyRetriever = builder.keyRetriever;
+            this.keyGenerator = builder.keyGenerator;
+            this.keySetter = builder.keySetter;
+            this.registerListeners.addAll(builder.registerListeners);
+            this.unregisterListeners.addAll(builder.unregisterListeners);
+        }
+        
+        public B initialObjects(TreeMap<K, V> objects) {
             this.objects = objects;
-            return this;
+            return self();
         }
 
-        public Builder<K, V> keyNormalizer(KeyNormalizer<K> keyNormalizer) {
+        public B keyNormalizer(KeyNormalizer<K> keyNormalizer) {
             this.keyNormalizer = keyNormalizer;
-            return this;
+            return self();
         }
 
-        public Builder<K, V> keyRetriever(KeyRetriever<V, K> keyRetriever) {
+        public B keyRetriever(KeyRetriever<V, K> keyRetriever) {
             this.keyRetriever = keyRetriever;
-            return this;
+            return self();
         }
 
-        public Builder<K, V> keyGenerator(KeyGenerator<V, K> keyGenerator) {
+        public B keyGenerator(KeyGenerator<V, K> keyGenerator) {
             this.keyGenerator = keyGenerator;
-            return this;
+            return self();
         }
         
-        public Builder<K, V> keySetter(KeySetter<K, V> keySetter) {
+        public B keySetter(KeySetter<K, V> keySetter) {
             this.keySetter = keySetter;
-            return this;
+            return self();
         }
         
-        public Builder<K, V> addRegisterListener(RegisterListener<K, V> listener) {
+        public B addRegisterListener(RegisterListener<K, V> listener) {
             this.registerListeners.add(listener);
-            return this;
+            return self();
         }
         
-        public Builder<K, V> addUnregisterListener(UnregisterListener<K, V> listener) {
+        public B addUnregisterListener(UnregisterListener<K, V> listener) {
             this.unregisterListeners.add(listener);
-            return this;
+            return self();
         }
         
-        public Registry<K, V> build() {
+        public R build() {
             Registry<K, V> registry = new Registry<>(objects, keyNormalizer, keyRetriever, keyGenerator, keySetter);
             
             this.registerListeners.forEach(registry::addRegisterListener);
             this.unregisterListeners.forEach(registry::addUnregisterListener);
             
-            return registry;
+            return (R) registry;
+        }
+        
+        @Override
+        public B clone() {
+            return null;
         }
     }
 }
