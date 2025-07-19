@@ -7,6 +7,7 @@ import com.stardevllc.observable.collections.event.MapChangeEvent;
 import java.util.Map;
 import java.util.function.*;
 
+@SuppressWarnings("rawtypes")
 public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V> {
 
     protected final IEventBus<MapChangeEvent> eventBus = new SimpleEventBus<>();

@@ -4,6 +4,7 @@ import com.stardevllc.observable.collections.event.CollectionChangeEvent;
 
 import java.util.*;
 
+@SuppressWarnings("SortedCollectionWithNonComparableKeys")
 public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements NavigableSet<E> {
     protected final TreeSet<E> backingTreeSet = new TreeSet<>();
     
@@ -101,14 +102,14 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E removeFirst() {
         E removed = this.backingTreeSet.removeFirst();
-        this.eventBus.post(new CollectionChangeEvent(this, null, removed));
+        this.eventBus.post(new CollectionChangeEvent<>(this, null, removed));
         return removed;
     }
 
     @Override
     public E removeLast() {
         E removed = this.backingTreeSet.removeLast();
-        this.eventBus.post(new CollectionChangeEvent(this, null, removed));
+        this.eventBus.post(new CollectionChangeEvent<>(this, null, removed));
         return removed;
     }
 
