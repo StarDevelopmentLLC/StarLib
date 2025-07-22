@@ -43,21 +43,11 @@ public class CharacterProperty extends AbstractProperty<Character> implements Wr
     }
 
     @Override
-    public void setValue(Character character) {
-        set(character);
-    }
-
-    @Override
     public char get() {
         if (boundValue != null) {
             return boundValue.getValue();
         }
         
         return value;
-    }
-
-    @Override
-    public Character getValue() {
-        return get();
     }
 }

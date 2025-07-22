@@ -29,4 +29,8 @@ import com.stardevllc.observable.ObservableValue;
 
 public interface ObservableObjectValue<T> extends ObservableValue<T> {
     T get();
+    @Override
+    default T getValue() {
+        return get();
+    }
 }

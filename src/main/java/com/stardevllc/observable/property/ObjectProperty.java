@@ -57,14 +57,4 @@ public class ObjectProperty<T> extends AbstractProperty<T> implements WritableOb
             eventBus.post(event);
         }
     }
-
-    @Override
-    public void setValue(T newValue) {
-        set(newValue);
-    }
-
-    @Override
-    public T getValue() {
-        return get();
-    }
 }

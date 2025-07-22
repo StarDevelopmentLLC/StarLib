@@ -25,6 +25,56 @@
 
 package com.stardevllc.observable.value;
 
+import com.stardevllc.helper.NumberHelper;
+import com.stardevllc.observable.constants.*;
 public interface ObservableFloatValue extends ObservableNumberValue<Float> {
     float get();
+    @Override
+    default Float getValue() {
+        return get();
+    }
+    @Override
+    default ObservableFloatValue negate() {
+        return new FloatConstant((float) NumberHelper.negate(get()));
+    }
+    @Override
+    default ObservableFloatValue add(Number other) {
+        return new FloatConstant((float) NumberHelper.add(get(), other));
+    }
+    @Override
+    default ObservableFloatValue subtract(Number other) {
+        return new FloatConstant((float) NumberHelper.subtract(get(), other));
+    }
+    @Override
+    default ObservableFloatValue multiply(Number other) {
+        return new FloatConstant((float) NumberHelper.multiply(get(), other));
+    }
+    @Override
+    default ObservableFloatValue divide(Number other) {
+        return new FloatConstant((float) NumberHelper.divide(get(), other));
+    }
+    @Override
+    default ObservableBooleanValue isEqualTo(Number other) {
+        return new BooleanConstant(get() == other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue isNotEqualTo(Number other) {
+        return new BooleanConstant(get() != other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue greaterThan(Number other) {
+        return new BooleanConstant(get() > other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue lessThan(Number other) {
+        return new BooleanConstant(get() < other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue greaterThanOrEqualTo(Number other) {
+        return new BooleanConstant(get() >= other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue lessThanOrEqualTo(Number other) {
+        return new BooleanConstant(get() <= other.doubleValue());
+    }
 }

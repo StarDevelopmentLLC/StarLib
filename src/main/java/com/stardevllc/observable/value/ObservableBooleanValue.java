@@ -29,10 +29,17 @@ import com.stardevllc.observable.ObservableValue;
 
 public interface ObservableBooleanValue extends ObservableValue<Boolean> {
     boolean get();
-
-    ObservableBooleanValue and(final ObservableBooleanValue other);
-
-    ObservableBooleanValue or(final ObservableBooleanValue other);
-
-    ObservableBooleanValue not();
+    @Override
+    default Boolean getValue() {
+        return get();
+    }
+    default ObservableBooleanValue and(ObservableBooleanValue other) {
+        return () -> get() && other.get();
+    }
+    default ObservableBooleanValue or(ObservableBooleanValue other) {
+        return () -> get() || other.get();
+    }
+    default ObservableBooleanValue not() {
+        return () -> !get();
+    }
 }

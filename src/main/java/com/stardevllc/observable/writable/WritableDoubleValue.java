@@ -4,4 +4,8 @@ import com.stardevllc.observable.value.ObservableDoubleValue;
 
 public interface WritableDoubleValue extends ObservableDoubleValue, WritableNumberValue<Double> {
     void set(double value);
+    @Override
+    default void setValue(Double value) {
+        set(value);
+    }
 }

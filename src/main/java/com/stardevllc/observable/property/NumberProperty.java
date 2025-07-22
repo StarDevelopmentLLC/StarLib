@@ -11,14 +11,4 @@ public abstract class NumberProperty<N extends Number> extends AbstractProperty<
     public NumberProperty(String name) {
         this(null, name);
     }
-
-    @Override
-    public Object getBean() {
-        return bean;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
 }

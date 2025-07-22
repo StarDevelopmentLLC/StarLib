@@ -25,6 +25,56 @@
 
 package com.stardevllc.observable.value;
 
+import com.stardevllc.helper.NumberHelper;
+import com.stardevllc.observable.constants.*;
 public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
     int get();
+    @Override
+    default Integer getValue() {
+        return get();
+    }
+    @Override
+    default ObservableIntegerValue negate() {
+        return new IntegerConstant((int) NumberHelper.negate(get()));
+    }
+    @Override
+    default ObservableIntegerValue add(Number other) {
+        return new IntegerConstant((int) NumberHelper.add(get(), other));
+    }
+    @Override
+    default ObservableIntegerValue subtract(Number other) {
+        return new IntegerConstant((int) NumberHelper.subtract(get(), other));
+    }
+    @Override
+    default ObservableIntegerValue multiply(Number other) {
+        return new IntegerConstant((int) NumberHelper.multiply(get(), other));
+    }
+    @Override
+    default ObservableIntegerValue divide(Number other) {
+        return new IntegerConstant((int) NumberHelper.divide(get(), other));
+    }
+    @Override
+    default ObservableBooleanValue isEqualTo(Number other) {
+        return new BooleanConstant(get() == other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue isNotEqualTo(Number other) {
+        return new BooleanConstant(get() != other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue greaterThan(Number other) {
+        return new BooleanConstant(get() > other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue lessThan(Number other) {
+        return new BooleanConstant(get() < other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue greaterThanOrEqualTo(Number other) {
+        return new BooleanConstant(get() >= other.doubleValue());
+    }
+    @Override
+    default ObservableBooleanValue lessThanOrEqualTo(Number other) {
+        return new BooleanConstant(get() <= other.doubleValue());
+    }
 }

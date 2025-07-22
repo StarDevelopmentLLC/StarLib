@@ -1,7 +1,6 @@
 package com.stardevllc.observable.property;
 
 import com.stardevllc.observable.ChangeEvent;
-import com.stardevllc.observable.value.ObservableBooleanValue;
 import com.stardevllc.observable.writable.WritableBooleanValue;
 
 public class BooleanProperty extends AbstractProperty<Boolean> implements WritableBooleanValue {
@@ -31,16 +30,6 @@ public class BooleanProperty extends AbstractProperty<Boolean> implements Writab
     }
     
     @Override
-    public void setValue(Boolean newValue) {
-        set(newValue);
-    }
-    
-    @Override
-    public Boolean getValue() {
-        return get();
-    }
-    
-    @Override
     public void set(boolean newValue) {
         if (boundValue != null) {
             return;
@@ -60,20 +49,5 @@ public class BooleanProperty extends AbstractProperty<Boolean> implements Writab
         }
         
         return value;
-    }
-    
-    @Override
-    public ObservableBooleanValue and(ObservableBooleanValue observableBooleanValue) {
-        return new BooleanProperty(null, "", observableBooleanValue.get() && get());
-    }
-    
-    @Override
-    public ObservableBooleanValue or(ObservableBooleanValue observableBooleanValue) {
-        return new BooleanProperty(null, "", observableBooleanValue.get() || get());
-    }
-    
-    @Override
-    public ObservableBooleanValue not() {
-        return new BooleanProperty(null, "", !get());
     }
 }

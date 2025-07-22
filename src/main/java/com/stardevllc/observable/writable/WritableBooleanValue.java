@@ -30,4 +30,8 @@ import com.stardevllc.observable.value.ObservableBooleanValue;
 
 public interface WritableBooleanValue extends ObservableBooleanValue, WritableValue<Boolean> {
     void set(boolean value);
+    @Override
+    default void setValue(Boolean value) {
+        set(value);
+    }
 }
