@@ -1,5 +1,6 @@
 package com.stardevllc.starlib.dependency;
 
+import com.stardevllc.starlib.helper.ObjectProvider;
 import com.stardevllc.starlib.helper.ReflectionHelper;
 
 import java.lang.reflect.Field;
@@ -7,7 +8,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 class DependencyInjectorImpl implements DependencyInjector {
-    private Map<Class<?>, Object> instances = new TreeMap<>((o1, o2) -> {
+    private Map<Class<?>, ObjectProvider<?>> instances = new TreeMap<>((o1, o2) -> {
         //Classes are the same
         if (Objects.equals(o1, o2)) {
             return 0;
@@ -56,9 +57,9 @@ class DependencyInjectorImpl implements DependencyInjector {
             }
             
             //Search through the tree map to find the nearest class type to the field type
-            for (Entry<Class<?>, Object> entry : this.instances.entrySet()) {
+            for (Entry<Class<?>, ObjectProvider<?>> entry : this.instances.entrySet()) {
                 Class<?> clazz = entry.getKey();
-                Object instance = entry.getValue();
+                Object instance = entry.getValue().get();
                 //If the clazz of the map is a parent of the field's type, set the instance
                 //Due to the sorting of the TreeMap, this should be the closest in the inheritance tree to the field type
                 if (field.getType().isAssignableFrom(clazz)) {
@@ -94,14 +95,20 @@ class DependencyInjectorImpl implements DependencyInjector {
     
     @Override
     public <T, I extends T> I setInstance(Class<T> clazz, I instance) {
-        this.instances.put(clazz, instance);
+        this.instances.put(clazz, new ObjectProvider<>(instance));
         return instance;
     }
     
     @Override
     public <I> I setInstance(I instance) {
-        this.instances.put(instance.getClass(), instance);
+        this.instances.put(instance.getClass(), new ObjectProvider<>(instance));
         return instance;
+    }
+    
+    @Override
+    public <T, I extends T> ObjectProvider<I> setProvider(Class<T> clazz, ObjectProvider<I> provider) {
+        this.instances.put(clazz, provider);
+        return provider;
     }
     
     @Override
