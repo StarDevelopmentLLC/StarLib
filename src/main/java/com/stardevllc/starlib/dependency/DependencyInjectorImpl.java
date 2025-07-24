@@ -52,7 +52,7 @@ class DependencyInjectorImpl implements DependencyInjector {
             //Check to see if the field's type is in the map of instances
             //This gives direct class types the priority if multiple of the same inheritance tree exists
             if (instances.containsKey(field.getType())) {
-                setFieldValue(object, field, instances.get(field.getType()));
+                setFieldValue(object, field, instances.get(field.getType()).get());
                 continue;
             }
             
