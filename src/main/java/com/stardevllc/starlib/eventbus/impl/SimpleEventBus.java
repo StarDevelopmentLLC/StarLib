@@ -21,10 +21,11 @@ public class SimpleEventBus<T> implements IEventBus<T> {
     public <E extends T> E post(E event) {
         for (EventListener<T> listener : listeners) {
             listener.handleEvent(event);
-            for (IEventBus<?> cb : childBusses) {
-                if (cb.getEventClass().isAssignableFrom(getEventClass())) {
-                    ((IEventBus<T>) cb).post(event);
-                }
+        }
+        
+        for (IEventBus<?> cb : childBusses) {
+            if (cb.getEventClass().isAssignableFrom(getEventClass())) {
+                ((IEventBus<T>) cb).post(event);
             }
         }
         
