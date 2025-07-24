@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.eventbus.impl;
 
-import com.stardevllc.starlib.helper.ReflectionHelper;
 import com.stardevllc.starlib.eventbus.*;
+import com.stardevllc.starlib.helper.ReflectionHelper;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -11,6 +11,8 @@ public class SimpleEventBus<T> implements IEventBus<T> {
 
     private final SortedSet<EventListener<T>> listeners = new TreeSet<>();
     
+    private final List<IEventBus<?>> childBusses = new ArrayList<>();
+    
     public SimpleEventBus() {
         this.eventClass = (Class<T>) SimpleEventBus.class.getTypeParameters()[0].getBounds()[0];
     }
@@ -19,6 +21,11 @@ public class SimpleEventBus<T> implements IEventBus<T> {
     public <E extends T> E post(E event) {
         for (EventListener<T> listener : listeners) {
             listener.handleEvent(event);
+            for (IEventBus<?> cb : childBusses) {
+                if (cb.getEventClass().isAssignableFrom(getEventClass())) {
+                    ((IEventBus<T>) cb).post(event);
+                }
+            }
         }
         
         return event;
@@ -66,6 +73,16 @@ public class SimpleEventBus<T> implements IEventBus<T> {
     @Override
     public void unsubscribe(Object object) {
         this.listeners.removeIf(listener -> Objects.equals(listener.listener, object));
+    }
+    
+    @Override
+    public void addChildBus(IEventBus<?> childBus) {
+        this.childBusses.add(childBus);
+    }
+    
+    @Override
+    public Class<T> getEventClass() {
+        return eventClass;
     }
     
     //Class to handle events for each of the methods. The EventHandler logic will be moved up
