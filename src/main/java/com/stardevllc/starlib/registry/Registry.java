@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 public class Registry<K extends Comparable<K>, V> implements Iterable<V>, SortedMap<K, V> {
     protected final TreeMap<K, V> objects = new TreeMap<>();
@@ -50,7 +51,7 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         return builder;
     }
 
-    public V register(V object) {
+    public RegistryObject<K, V> register(V object) {
         K key = null;
         
         if (keyRetriever != null) {
@@ -64,7 +65,7 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         return register(key, object);
     }
     
-    public V register(K key, V object) {
+    public RegistryObject<K, V> register(K key, V object) {
         if (key == null) {
             return null;
         }
@@ -83,24 +84,29 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         for (RegisterListener<K, V> registerListener : this.registerListeners) {
             registerListener.onRegister(key, object);
         }
-        return object;
+        return new RegistryObject<>(key, object);
     }
 
-    public void registerAll(Map<K, V> map) {
-        map.forEach(this::register);
+    public List<RegistryObject<K, V>> registerAll(Map<K, V> map) {
+        List<RegistryObject<K, V>> registeredObjects = new LinkedList<>();
+        map.forEach((k, v) -> registeredObjects.add(register(k, v)));
+        return registeredObjects;
     }
     
-    public void registerAll(Collection<V> collection) {
-        collection.forEach(this::register);
+    public List<RegistryObject<K, V>> registerAll(Collection<V> collection) {
+        return collection.stream().map(this::register).collect(Collectors.toCollection(LinkedList::new));
     }
     
     @SafeVarargs
-    public final void registerAll(V... values) {
+    public final List<RegistryObject<K, V>> registerAll(V... values) {
+        List<RegistryObject<K, V>> registeredObjects = new LinkedList<>();
         if (values != null) {
             for (V value : values) {
-                register(value);
+                registeredObjects.add(register(value));
             }
         }
+        
+        return registeredObjects;
     }
 
     public V get(K key) {
@@ -157,7 +163,9 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
 
     @Override
     public void forEach(Consumer<? super V> action) {
-        new ArrayList<>(objects.values()).forEach(action);
+        for (V value : this.objects.values()) {
+            action.accept(value);
+        }
     }
 
     @Override
@@ -192,7 +200,12 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
 
     @Override
     public V put(K k, V v) {
-        return register(k, v);
+        RegistryObject<K, V> registryObject = register(k, v);
+        if (registryObject == null) {
+            return null;
+        }
+        
+        return registryObject.getObject();
     }
 
     @Override
