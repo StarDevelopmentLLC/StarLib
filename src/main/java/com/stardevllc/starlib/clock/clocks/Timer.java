@@ -4,7 +4,7 @@ import com.stardevllc.starlib.clock.Clock;
 import com.stardevllc.starlib.clock.callback.CallbackHolder;
 import com.stardevllc.starlib.clock.property.ClockLongProperty;
 import com.stardevllc.starlib.clock.snapshot.TimerSnapshot;
-import com.stardevllc.starlib.observable.property.LongProperty;
+import com.stardevllc.starlib.observable.property.readwrite.ReadWriteLongProperty;
 
 import java.util.UUID;
 
@@ -101,7 +101,7 @@ public class Timer extends Clock<TimerSnapshot> {
         return new TimerSnapshot(this.getTime(), isPaused(), this.getLength(), getCountAmount());
     }
     
-    public LongProperty lengthProperty() {
+    public ReadWriteLongProperty lengthProperty() {
         return this.lengthProperty;
     }
 }

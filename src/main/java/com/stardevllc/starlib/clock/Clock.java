@@ -8,7 +8,7 @@ import com.stardevllc.starlib.clock.condition.ClockEndCondition;
 import com.stardevllc.starlib.clock.property.ClockBooleanProperty;
 import com.stardevllc.starlib.clock.property.ClockLongProperty;
 import com.stardevllc.starlib.clock.snapshot.ClockSnapshot;
-import com.stardevllc.starlib.observable.property.*;
+import com.stardevllc.starlib.observable.property.readwrite.*;
 import com.stardevllc.starlib.time.TimeUnit;
 
 import java.util.*;
@@ -19,8 +19,8 @@ import java.util.*;
  * @param <T> The type for the {@link ClockSnapshot} instance
  */
 public abstract class Clock<T extends ClockSnapshot> {
-    protected final UUIDProperty uniqueId;
-    protected final StringProperty name;
+    protected final ReadWriteUUIDProperty uniqueId;
+    protected final ReadWriteStringProperty name;
     protected final ClockLongProperty time;
     protected final ClockBooleanProperty paused;
     protected final ClockBooleanProperty cancelled;
@@ -48,8 +48,8 @@ public abstract class Clock<T extends ClockSnapshot> {
      * @param countAmount The amount that counts by each time that a tick happens
      */
     public Clock(UUID uuid, String name, long time, long countAmount) {
-        this.uniqueId = new UUIDProperty(this, "uniqueid", uuid);
-        this.name = new StringProperty(this, "name", name);
+        this.uniqueId = new ReadWriteUUIDProperty(this, "uniqueid", uuid);
+        this.name = new ReadWriteStringProperty(this, "name", name);
         this.time = new ClockLongProperty(this, "time", time);
         this.paused = new ClockBooleanProperty(this, "paused", true);
         this.cancelled = new ClockBooleanProperty(this, "cancelled", false);
@@ -440,7 +440,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      * Properties allow you to listen for changes directly. This allows direct access to those
      * @return The property instance
      */
-    public LongProperty timeProperty() {
+    public ReadWriteLongProperty timeProperty() {
         return this.time;
     }
     
@@ -448,7 +448,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      * Properties allow you to listen for changes directly. This allows direct access to those
      * @return The property instance
      */
-    public BooleanProperty pausedProperty() {
+    public ReadWriteBooleanProperty pausedProperty() {
         return this.paused;
     }
     
@@ -456,7 +456,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      * Properties allow you to listen for changes directly. This allows direct access to those
      * @return The property instance
      */
-    public BooleanProperty cancelledProperty() {
+    public ReadWriteBooleanProperty cancelledProperty() {
         return this.cancelled;
     }
     
@@ -464,7 +464,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      * Properties allow you to listen for changes directly. This allows direct access to those
      * @return The property instance
      */
-    public UUIDProperty uuidProperty() {
+    public ReadWriteUUIDProperty uuidProperty() {
         return this.uniqueId;
     }
     
@@ -472,7 +472,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      * Properties allow you to listen for changes directly. This allows direct access to those
      * @return The property instance
      */
-    public StringProperty nameProperty() {
+    public ReadWriteStringProperty nameProperty() {
         return this.name;
     }
 }
