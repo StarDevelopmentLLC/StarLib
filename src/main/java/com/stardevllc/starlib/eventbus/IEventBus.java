@@ -5,6 +5,7 @@ public interface IEventBus<T> {
     boolean subscribe(Object object);
     boolean unsubscribe(Object object);
     Class<T> getEventClass();
+    void clearListeners();
     
     default void addChildBus(IEventBus<?> childBus) {
         
