@@ -33,7 +33,7 @@ public class SimpleEventBus<T> implements IEventBus<T> {
     }
 
     @Override
-    public void subscribe(Object listener) {
+    public boolean subscribe(Object listener) {
         //Get info from full class information if present
         SubscribeEvent fullClassInfo = ReflectionHelper.getClassAnnotation(listener.getClass(), SubscribeEvent.class);
         EventPriority defaultPriority = fullClassInfo != null ? fullClassInfo.priority() : EventPriority.NORMAL;
@@ -69,11 +69,13 @@ public class SimpleEventBus<T> implements IEventBus<T> {
             
             this.listeners.add(eventListener);
         }
+        
+        return !listeners.isEmpty();
     }
 
     @Override
-    public void unsubscribe(Object object) {
-        this.listeners.removeIf(listener -> Objects.equals(listener.listener, object));
+    public boolean unsubscribe(Object object) {
+        return this.listeners.removeIf(listener -> Objects.equals(listener.listener, object));
     }
     
     @Override
