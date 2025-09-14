@@ -7,14 +7,31 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public class SimpleEventBus<T> implements IEventBus<T> {
+    private static final Set<String> objectMethods = new HashSet<>();
+    
+    static {
+        for (Method classMethod : ReflectionHelper.getClassMethods(Object.class)) {
+            objectMethods.add(classMethod.getName().toLowerCase());
+        }
+    }
+    
     protected final Class<T> eventClass;
 
-    private final SortedSet<EventListener<T>> listeners = new TreeSet<>();
+    private final Set<EventListener<T>> listeners = new TreeSet<>();
     
     private final List<IEventBus<?>> childBusses = new ArrayList<>();
     
     public SimpleEventBus() {
-        this.eventClass = (Class<T>) SimpleEventBus.class.getTypeParameters()[0].getBounds()[0];
+        this((Class<T>) SimpleEventBus.class.getTypeParameters()[0].getBounds()[0]);
+    }
+    
+    public SimpleEventBus(Class<T> eventClass) {
+        this.eventClass = eventClass;
+    }
+    
+    @Override
+    public void clearListeners() {
+        this.listeners.clear();
     }
     
     @Override
@@ -43,6 +60,7 @@ public class SimpleEventBus<T> implements IEventBus<T> {
         Set<Method> methods = ReflectionHelper.getClassMethods(listener.getClass());
         //Remove methods that do not have a parameter count of 1
         methods.removeIf(method -> method.getParameterCount() != 1);
+        methods.removeIf(method -> objectMethods.contains(method.getName().toLowerCase()));
         
         for (Method method : methods) {
             //Use recursive reflection to get the SubscribeEvent annotation from the method
@@ -138,10 +156,15 @@ public class SimpleEventBus<T> implements IEventBus<T> {
             return result;
         }
         
+        @SuppressWarnings("ComparatorMethodParameterNotUsed")
         @Override
         public int compareTo(EventListener<?> o) {
             if (o == null) {
                 return 1;
+            }
+            
+            if (o.priority.ordinal() == priority.ordinal()) {
+                return -1;
             }
             
             return Integer.compare(o.priority.ordinal(), priority.ordinal());
