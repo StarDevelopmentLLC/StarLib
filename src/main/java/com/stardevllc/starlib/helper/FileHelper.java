@@ -10,6 +10,16 @@ import java.util.zip.ZipInputStream;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public final class FileHelper {
+    public static void renameFile(Path file, String newName) {
+        Path parent = file.toAbsolutePath().getParent();
+        Path newPath = subPath(parent, newName);
+        try {
+            Files.move(file, newPath, REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     public static void createFileIfNotExists(File file) {
         createFileIfNotExists(file.toPath());
     }
