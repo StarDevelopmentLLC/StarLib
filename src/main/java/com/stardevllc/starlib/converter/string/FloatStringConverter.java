@@ -1,12 +1,21 @@
 package com.stardevllc.starlib.converter.string;
 
+/**
+ * Converts between Floats and Strings
+ */
 public class FloatStringConverter implements StringConverter<Float> {
-
+    
+    /**
+     * Constructs a new FloatStringConverter
+     */
     protected FloatStringConverter() {
         StringConverters.addConverter(float.class, this);
         StringConverters.addConverter(Float.class, this);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String convertFrom(Object fromObject) {
         if (fromObject == null) {
@@ -15,7 +24,10 @@ public class FloatStringConverter implements StringConverter<Float> {
         
         return Float.toString((float) fromObject);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Float convertTo(String toObject) {
         try {

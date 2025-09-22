@@ -1,7 +1,18 @@
 package com.stardevllc.starlib.helper;
 
+/**
+ * A utility class for roman numerals
+ */
 public final class RomanNumerals {
-
+    private RomanNumerals() {
+    }
+    
+    /**
+     * Converts a decimal number to roman numerals
+     *
+     * @param num The number
+     * @return The roman numeral representation
+     */
     public static String decimalToRoman(int num) {
         return "I".repeat(num)
                 .replace("IIIII", "V")
@@ -17,8 +28,8 @@ public final class RomanNumerals {
                 .replace("DD", "M")
                 .replace("DCD", "CM");
     }
-
-    public static int value(char r) {
+    
+    private static int value(char r) {
         return switch (r) {
             case 'I' -> 1;
             case 'V' -> 5;
@@ -30,16 +41,22 @@ public final class RomanNumerals {
             default -> -1;
         };
     }
-
+    
+    /**
+     * Converts a Roman Numeral representation to an integer
+     *
+     * @param str The string representation
+     * @return The integer value
+     */
     public static int romanToDecimal(String str) {
         int result = 0;
-
+        
         for (int i = 0; i < str.length(); i++) {
             int s1 = value(str.charAt(i));
-
+            
             if (i + 1 < str.length()) {
                 int s2 = value(str.charAt(i + 1));
-
+                
                 if (s1 >= s2) {
                     result += s1;
                 } else {
@@ -50,7 +67,7 @@ public final class RomanNumerals {
                 result = result + s1;
             }
         }
-
+        
         return result;
     }
 }

@@ -5,5 +5,10 @@ package com.stardevllc.starlib.clock.callback;
  */
 @FunctionalInterface
 public interface CallbackPeriod {
+    /**
+     * Get the time of the period
+     *
+     * @return The period time
+     */
     long get();
 }

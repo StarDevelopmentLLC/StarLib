@@ -6,6 +6,11 @@ import com.stardevllc.starlib.helper.ReflectionHelper;
 import java.lang.reflect.Method;
 import java.util.*;
 
+/**
+ * This is a simple implementation of an {@link IEventBus}. It is not required to use this
+ *
+ * @param <T> The event type
+ */
 public class SimpleEventBus<T> implements IEventBus<T> {
     private static final Set<String> objectMethods = new HashSet<>();
     
@@ -15,16 +20,33 @@ public class SimpleEventBus<T> implements IEventBus<T> {
         }
     }
     
+    /**
+     * The base class  for the event type
+     */
     protected final Class<T> eventClass;
-
+    
+    /**
+     * All registered listeners of this bus
+     */
     private final Set<EventListener<T>> listeners = new TreeSet<>();
     
+    /**
+     * All child busses to this event bus
+     */
     private final List<IEventBus<?>> childBusses = new ArrayList<>();
     
+    /**
+     * Constructs a simple event bus that detects the event type (Might not work depending on context)
+     */
     public SimpleEventBus() {
         this((Class<T>) SimpleEventBus.class.getTypeParameters()[0].getBounds()[0]);
     }
     
+    /**
+     * Constructs a simple event bus with a specified event class
+     *
+     * @param eventClass The event class
+     */
     public SimpleEventBus(Class<T> eventClass) {
         this.eventClass = eventClass;
     }
@@ -48,7 +70,7 @@ public class SimpleEventBus<T> implements IEventBus<T> {
         
         return event;
     }
-
+    
     @Override
     public boolean subscribe(Object listener) {
         //Get info from full class information if present
@@ -80,8 +102,8 @@ public class SimpleEventBus<T> implements IEventBus<T> {
             method.setAccessible(true);
             
             EventListener<T> eventListener = new EventListener<>(
-                    listener, eventClass, method, 
-                    methodAnnotation != null ? methodAnnotation.priority() : defaultPriority, 
+                    listener, eventClass, method,
+                    methodAnnotation != null ? methodAnnotation.priority() : defaultPriority,
                     methodAnnotation != null ? methodAnnotation.ignoreCancelled() : defaultIgnoreCancelled
             );
             
@@ -90,7 +112,7 @@ public class SimpleEventBus<T> implements IEventBus<T> {
         
         return !listeners.isEmpty();
     }
-
+    
     @Override
     public boolean unsubscribe(Object object) {
         return this.listeners.removeIf(listener -> Objects.equals(listener.listener, object));

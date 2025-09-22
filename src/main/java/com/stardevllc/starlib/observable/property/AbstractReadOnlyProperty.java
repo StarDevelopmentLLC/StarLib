@@ -6,16 +6,50 @@ import com.stardevllc.starlib.observable.*;
 
 import java.util.Objects;
 
+/**
+ * A common abstract class for read only properties to make things easier and smaller
+ *
+ * @param <T> The object type
+ */
 public abstract class AbstractReadOnlyProperty<T> implements ReadOnlyProperty<T> {
     
+    /**
+     * The owner of the property
+     */
     protected final Object bean;
+    
+    /**
+     * The name of the property
+     */
     protected final String name;
+    
+    /**
+     * The class type for the value of the property
+     */
     protected final Class<T> typeClass;
+    
+    /**
+     * The EventBus for change listener handling
+     */
     protected final IEventBus<ChangeEvent<T>> eventBus;
     
+    /**
+     * The value that this property is bound to
+     */
     protected ObservableValue<T> boundValue;
+    
+    /**
+     * The listener attached to the bound value
+     */
     protected BindListener<T> bindListener;
     
+    /**
+     * Constructs a new AbstractReadOnlyProperty
+     *
+     * @param bean      The owner bean
+     * @param name      The name of the property
+     * @param typeClass The type class
+     */
     public AbstractReadOnlyProperty(Object bean, String name, Class<T> typeClass) {
         this.bean = bean;
         this.name = name;
@@ -112,6 +146,11 @@ public abstract class AbstractReadOnlyProperty<T> implements ReadOnlyProperty<T>
         
         private AbstractReadOnlyProperty<T> property;
         
+        /**
+         * Constructs a new bind listeners
+         *
+         * @param property The property that owns the listener
+         */
         public BindListener(AbstractReadOnlyProperty<T> property) {
             this.property = property;
         }

@@ -4,23 +4,50 @@ import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyLongProperty;
 import com.stardevllc.starlib.observable.writable.WritableLongValue;
 
+/**
+ * Represents a Read-Write Long value with an identity
+ */
 public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadWriteProperty<Long>, WritableLongValue {
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param bean  The owner
+     * @param name  The name
+     * @param value The value
+     */
     public ReadWriteLongProperty(Object bean, String name, long value) {
         super(bean, name, value);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param bean  The owner
+     * @param name  The name
+     */
     public ReadWriteLongProperty(Object bean, String name) {
         super(bean, name);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param value The value
+     */
     public ReadWriteLongProperty(long value) {
         super(value);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     */
     public ReadWriteLongProperty() {
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(long value) {
         long oldValue = this.value;
@@ -28,6 +55,9 @@ public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadW
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bindBidirectionally(WritableProperty<Long> other) {
         if (other == null) {
@@ -39,6 +69,9 @@ public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadW
         addListener(listener);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void unbindBidirectionally(WritableProperty<Long> other) {
         BidirectionalBindListener<Long> cl = new BidirectionalBindListener<>(this, other);
@@ -46,6 +79,9 @@ public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadW
         addListener(cl);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReadOnlyLongProperty asReadOnly() {
         ReadOnlyLongProperty property = new ReadOnlyLongProperty(this.bean, this.name);

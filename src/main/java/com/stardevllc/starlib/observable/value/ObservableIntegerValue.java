@@ -1,8 +1,7 @@
 package com.stardevllc.starlib.observable.value;
 
 import com.stardevllc.starlib.helper.NumberHelper;
-import com.stardevllc.starlib.observable.constants.BooleanConstant;
-import com.stardevllc.starlib.observable.constants.IntegerConstant;
+import com.stardevllc.starlib.observable.ObservableValue;
 
 /**
  * Represents an integer that can be observed
@@ -29,7 +28,7 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableIntegerValue negate() {
-        return new IntegerConstant((int) NumberHelper.negate(get()));
+        return () -> NumberHelper.negate(get()).intValue();
     }
     
     /**
@@ -37,7 +36,15 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableIntegerValue add(Number other) {
-        return new IntegerConstant((int) NumberHelper.add(get(), other));
+        return () -> NumberHelper.add(get(), other).intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableIntegerValue add(ObservableValue<Number> other) {
+        return () -> NumberHelper.add(get(), other.getValue()).intValue();
     }
     
     /**
@@ -45,7 +52,15 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableIntegerValue subtract(Number other) {
-        return new IntegerConstant((int) NumberHelper.subtract(get(), other));
+        return () -> NumberHelper.subtract(get(), other).intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableIntegerValue subtract(ObservableValue<Number> other) {
+        return () -> NumberHelper.subtract(get(), other.getValue()).intValue();
     }
     
     /**
@@ -53,7 +68,15 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableIntegerValue multiply(Number other) {
-        return new IntegerConstant((int) NumberHelper.multiply(get(), other));
+        return () -> NumberHelper.multiply(get(), other).intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableIntegerValue multiply(ObservableValue<Number> other) {
+        return () -> NumberHelper.multiply(get(), other.getValue()).intValue();
     }
     
     /**
@@ -61,7 +84,15 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableIntegerValue divide(Number other) {
-        return new IntegerConstant((int) NumberHelper.divide(get(), other));
+        return () -> NumberHelper.divide(get(), other).intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableIntegerValue divide(ObservableValue<Number> other) {
+        return () -> NumberHelper.divide(get(), other.getValue()).intValue();
     }
     
     /**
@@ -69,7 +100,15 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableBooleanValue isEqualTo(Number other) {
-        return new BooleanConstant(get() == other.doubleValue());
+        return () -> get() == other.intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue isEqualTo(ObservableValue<Number> other) {
+        return () -> get() == other.getValue().intValue();
     }
     
     /**
@@ -77,7 +116,15 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableBooleanValue isNotEqualTo(Number other) {
-        return new BooleanConstant(get() != other.doubleValue());
+        return () -> get() != other.intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue isNotEqualTo(ObservableValue<Number> other) {
+        return () -> get() != other.getValue().intValue();
     }
     
     /**
@@ -85,7 +132,15 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableBooleanValue greaterThan(Number other) {
-        return new BooleanConstant(get() > other.doubleValue());
+        return () -> get() > other.intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue greaterThan(ObservableValue<Number> other) {
+        return () -> get() > other.getValue().intValue();
     }
     
     /**
@@ -93,7 +148,15 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableBooleanValue lessThan(Number other) {
-        return new BooleanConstant(get() < other.doubleValue());
+        return () -> get() < other.intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue lessThan(ObservableValue<Number> other) {
+        return () -> get() < other.getValue().intValue();
     }
     
     /**
@@ -101,7 +164,15 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableBooleanValue greaterThanOrEqualTo(Number other) {
-        return new BooleanConstant(get() >= other.doubleValue());
+        return () -> get() >= other.intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue greaterThanOrEqualTo(ObservableValue<Number> other) {
+        return () -> get() >= other.getValue().intValue();
     }
     
     /**
@@ -109,6 +180,14 @@ public interface ObservableIntegerValue extends ObservableNumberValue<Integer> {
      */
     @Override
     default ObservableBooleanValue lessThanOrEqualTo(Number other) {
-        return new BooleanConstant(get() <= other.doubleValue());
+        return () -> get() <= other.intValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue lessThanOrEqualTo(ObservableValue<Number> other) {
+        return () -> get() <= other.getValue().intValue();
     }
 }

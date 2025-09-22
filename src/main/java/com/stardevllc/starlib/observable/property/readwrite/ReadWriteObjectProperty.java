@@ -4,24 +4,56 @@ import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyObjectProperty;
 import com.stardevllc.starlib.observable.writable.WritableObjectValue;
 
+/**
+ * Represents a Read-Write Object value with an identity
+ *
+ * @param <T> The value type
+ */
 public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implements ReadWriteProperty<T>, WritableObjectValue<T> {
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param bean  The owner
+     * @param name  The name
+     * @param value The value
+     */
     public ReadWriteObjectProperty(Object bean, String name, T value) {
         super(bean, name, value);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param bean  The owner
+     * @param name  The name
+     * @param clazz The class of the value
+     */
     public ReadWriteObjectProperty(Object bean, String name, Class<T> clazz) {
         super(bean, name, clazz);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param value The value
+     */
     public ReadWriteObjectProperty(T value) {
         super(value);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param clazz The class of the value
+     */
     public ReadWriteObjectProperty(Class<T> clazz) {
         super(clazz);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(T value) {
         T oldValue = this.value;
@@ -29,6 +61,9 @@ public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implem
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bindBidirectionally(WritableProperty<T> other) {
         if (other == null) {
@@ -40,6 +75,9 @@ public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implem
         addListener(listener);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void unbindBidirectionally(WritableProperty<T> other) {
         BidirectionalBindListener<T> cl = new BidirectionalBindListener<>(this, other);
@@ -47,6 +85,9 @@ public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implem
         addListener(cl);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReadOnlyObjectProperty<T> asReadOnly() {
         ReadOnlyObjectProperty<T> property = new ReadOnlyObjectProperty<>(this.bean, this.name, this.typeClass);

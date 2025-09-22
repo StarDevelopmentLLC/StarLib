@@ -5,6 +5,9 @@ import com.stardevllc.starlib.helper.ReflectionHelper;
 import java.lang.reflect.Field;
 import java.util.*;
 
+/**
+ * Represents a field watcher. Note: Not all changes can be detected due to speed limitations
+ */
 public class FieldWatcher {
     
     private Object object; //The object that holds the field
@@ -15,6 +18,12 @@ public class FieldWatcher {
     
     private final Thread thread;
     
+    /**
+     * Constructs a new field watcher
+     *
+     * @param object    The object that owns the field
+     * @param fieldName The name of the field
+     */
     public FieldWatcher(Object object, String fieldName) {
         this.object = object;
         this.field = ReflectionHelper.getClassField(object.getClass(), fieldName);
@@ -34,6 +43,9 @@ public class FieldWatcher {
         });
     }
     
+    /**
+     * Checks for updates to the field
+     */
     public void update() {
         Object oldValue = this.value;
         updateValue();
@@ -56,34 +68,58 @@ public class FieldWatcher {
         }
     }
     
+    /**
+     * Adds a change listener
+     *
+     * @param listener The listener
+     */
     public void addChangeListener(FieldChangeListener listener) {
         this.changeListeners.add(listener);
     }
     
+    /**
+     * Removes a change listener
+     *
+     * @param listener The listener
+     */
     public void removeChangeListener(FieldChangeListener listener) {
         this.changeListeners.remove(listener);
     }
-
+    
+    /**
+     * Returns the object
+     * @return The object
+     */
     public Object getObject() {
         return object;
     }
-
+    
+    /**
+     * Returns the field
+     * @return The field
+     */
     public Field getField() {
         return field;
     }
-
+    
+    /**
+     * Returns the current value
+     * @return The value
+     */
     public Object getValue() {
         return value;
     }
-
+    
     @Override
     public boolean equals(Object object1) {
-        if (object1 == null || getClass() != object1.getClass()) return false;
-
+        if (object1 == null || getClass() != object1.getClass()) {
+            return false;
+        }
+        
         FieldWatcher that = (FieldWatcher) object1;
         return Objects.equals(object, that.object) && Objects.equals(field, that.field);
     }
-
+    
     @Override
     public int hashCode() {
         int result = Objects.hashCode(object);

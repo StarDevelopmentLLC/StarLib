@@ -1,9 +1,31 @@
 package com.stardevllc.starlib.eventbus;
 
+/**
+ * Represents an event priority
+ */
 public enum EventPriority {
-    HIGHEST, //First to execute
+    /**
+     * First to execute
+     */
+    HIGHEST,
+    
+    /**
+     * Executes after HIGHEST
+     */
     HIGH,
+    
+    /**
+     * Executes after HIGH
+     */
     NORMAL,
+    
+    /**
+     * Executes after NORMAL
+     */
     LOW,
-    LOWEST //Last to execute
+    
+    /**
+     * Executes after LOW
+     */
+    LOWEST
 }

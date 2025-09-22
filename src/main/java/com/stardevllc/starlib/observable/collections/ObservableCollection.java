@@ -35,9 +35,15 @@ public interface ObservableCollection<E> extends Observable, Collection<E> {
      */
     IEventBus<CollectionChangeEvent<E>> eventBus();
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     Stream<E> stream();
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     Stream<E> parallelStream();
 }

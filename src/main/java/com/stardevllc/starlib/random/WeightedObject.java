@@ -32,30 +32,44 @@ import java.util.Objects;
  *
  * @param <T> the object type
  */
+@SuppressWarnings("ClassCanBeRecord")
 public final class WeightedObject<T> implements Weighted {
-
+    
+    /**
+     * Creates a weighted object
+     *
+     * @param object The object
+     * @param weight The weight of the object
+     * @param <T>    the object type
+     * @return The instance of this class
+     */
     public static <T> WeightedObject<T> of(T object, double weight) {
         return new WeightedObject<>(object, weight);
     }
-
+    
     private final T object;
     private final double weight;
-
+    
     private WeightedObject(T object, double weight) {
 //        Preconditions.checkArgument(weight >= 0, "weight cannot be negative");
         this.object = Objects.requireNonNull(object, "object");
         this.weight = weight;
     }
-
+    
+    /**
+     * Gets the value of the object
+     *
+     * @return The object
+     */
     public T get() {
         return this.object;
     }
-
+    
     @Override
     public double getWeight() {
         return this.weight;
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (o == this) {
@@ -66,7 +80,7 @@ public final class WeightedObject<T> implements Weighted {
         }
         return this.object.equals(other.object) && Double.compare(this.getWeight(), other.getWeight()) == 0;
     }
-
+    
     @Override
     public int hashCode() {
         final int PRIME = 59;
@@ -75,7 +89,7 @@ public final class WeightedObject<T> implements Weighted {
         result = result * PRIME + Long.hashCode(Double.doubleToLongBits(this.getWeight()));
         return result;
     }
-
+    
     @Override
     public String toString() {
         return "WeightedObject(object=" + this.object + ", weight=" + this.getWeight() + ")";

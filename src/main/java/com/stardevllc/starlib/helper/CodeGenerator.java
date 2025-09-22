@@ -2,18 +2,50 @@ package com.stardevllc.starlib.helper;
 
 import java.util.Random;
 
+/**
+ * Utility class that generates random alphanumeric codes
+ */
 public final class CodeGenerator {
     private static final String LETTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final String NUMBERS = "0123456789";
     
+    private CodeGenerator() {}
+    
+    /**
+     * The generation options
+     */
     public enum Option {
-        LETTERS, UPPERCASE, NUMBERS
+        /**
+         * a-z letters are used when present
+         */
+        LETTERS,
+        
+        /**
+         * Randomly capitalize letters if present (50-50)
+         */
+        UPPERCASE,
+        
+        /**
+         * 0-9 numbers are used when present
+         */
+        NUMBERS
     }
     
+    /**
+     * Generates a code with all options
+     * @param length The length of the code string
+     * @return The generated code
+     */
     public static String generateAllOptions(int length) {
         return generate(length, Option.LETTERS, Option.UPPERCASE, Option.NUMBERS);
     }
-
+    
+    /**
+     * Generates a code
+     * @param length The length
+     * @param options The options for generation
+     * @return The generated code
+     */
     public static String generate(int length, Option... options) {
         StringBuilder sb = new StringBuilder();
         Random random = new Random();

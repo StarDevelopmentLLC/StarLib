@@ -91,23 +91,35 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
             this.backingIterator = backingIterator;
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean hasNext() {
             return backingIterator.hasNext();
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public E next() {
             current = backingIterator.next();
             return current;
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void remove() {
             backingIterator.remove();
             backingSet.eventBus().post(new CollectionChangeEvent<>(backingSet, null, current));
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void forEachRemaining(Consumer<? super E> action) {
             backingIterator.forEachRemaining(action);

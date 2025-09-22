@@ -8,14 +8,37 @@ import java.util.Objects;
  * @param <T> The value type
  */
 public interface WritableProperty<T> extends Property<T>, WritableValue<T> {
+    
+    /**
+     * Binds this property to another property bidirectionally
+     *
+     * @param other The other property
+     */
     void bindBidirectionally(WritableProperty<T> other);
+    
+    /**
+     * Unbinds this property from the other one
+     *
+     * @param other The other property
+     */
     void unbindBidirectionally(WritableProperty<T> other);
     
+    /**
+     * This change listener for the binding
+     *
+     * @param <T> The type
+     */
     class BidirectionalBindListener<T> implements ChangeListener<T> {
-    
+        
         private WritableProperty<T> property1, property2;
         private boolean updating;
         
+        /**
+         * Constructs a new listener
+         *
+         * @param property1 The first property
+         * @param property2 The second property
+         */
         public BidirectionalBindListener(WritableProperty<T> property1, WritableProperty<T> property2) {
             this.property1 = property1;
             this.property2 = property2;
@@ -37,10 +60,20 @@ public interface WritableProperty<T> extends Property<T>, WritableValue<T> {
             updating = false;
         }
         
+        /**
+         * Gets the first property
+         *
+         * @return The first property
+         */
         public WritableProperty<T> getProperty1() {
             return property1;
         }
         
+        /**
+         * Gets the second property
+         *
+         * @return The second property
+         */
         public WritableProperty<T> getProperty2() {
             return property2;
         }

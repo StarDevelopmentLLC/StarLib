@@ -4,23 +4,50 @@ import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyStringProperty;
 import com.stardevllc.starlib.observable.writable.WritableStringValue;
 
+/**
+ * Represents a Read-Write String value with an identity
+ */
 public class ReadWriteStringProperty extends ReadOnlyStringProperty implements ReadWriteProperty<String>, WritableStringValue {
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param bean  The owner
+     * @param name  The name
+     * @param value The value
+     */
     public ReadWriteStringProperty(Object bean, String name, String value) {
         super(bean, name, value);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param bean  The owner
+     * @param name  The name
+     */
     public ReadWriteStringProperty(Object bean, String name) {
         super(bean, name);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param value The value
+     */
     public ReadWriteStringProperty(String value) {
         super(value);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     */
     public ReadWriteStringProperty() {
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(String value) {
         String oldValue = this.value;
@@ -28,6 +55,9 @@ public class ReadWriteStringProperty extends ReadOnlyStringProperty implements R
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bindBidirectionally(WritableProperty<String> other) {
         if (other == null) {
@@ -39,6 +69,9 @@ public class ReadWriteStringProperty extends ReadOnlyStringProperty implements R
         addListener(listener);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void unbindBidirectionally(WritableProperty<String> other) {
         BidirectionalBindListener<String> cl = new BidirectionalBindListener<>(this, other);
@@ -46,6 +79,9 @@ public class ReadWriteStringProperty extends ReadOnlyStringProperty implements R
         addListener(cl);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReadOnlyStringProperty asReadOnly() {
         ReadOnlyStringProperty property = new ReadOnlyStringProperty(this.bean, this.name);

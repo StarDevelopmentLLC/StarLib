@@ -1,8 +1,7 @@
 package com.stardevllc.starlib.observable.value;
 
 import com.stardevllc.starlib.helper.NumberHelper;
-import com.stardevllc.starlib.observable.constants.BooleanConstant;
-import com.stardevllc.starlib.observable.constants.DoubleConstant;
+import com.stardevllc.starlib.observable.ObservableValue;
 
 /**
  * Represents a double that can be observed
@@ -28,7 +27,7 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableDoubleValue negate() {
-        return new DoubleConstant((double) NumberHelper.negate(get()));
+        return () -> NumberHelper.negate(get()).doubleValue();
     }
     
     /**
@@ -36,7 +35,15 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableDoubleValue add(Number other) {
-        return new DoubleConstant((double) NumberHelper.add(get(), other));
+        return () -> NumberHelper.add(get(), other).doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableDoubleValue add(ObservableValue<Number> other) {
+        return () -> NumberHelper.add(get(), other.getValue()).doubleValue();
     }
     
     /**
@@ -44,7 +51,15 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableDoubleValue subtract(Number other) {
-        return new DoubleConstant((double) NumberHelper.subtract(get(), other));
+        return () -> NumberHelper.subtract(get(), other).doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableDoubleValue subtract(ObservableValue<Number> other) {
+        return () -> NumberHelper.subtract(get(), other.getValue()).doubleValue();
     }
     
     /**
@@ -52,7 +67,15 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableDoubleValue multiply(Number other) {
-        return new DoubleConstant((double) NumberHelper.multiply(get(), other));
+        return () -> NumberHelper.multiply(get(), other).doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableDoubleValue multiply(ObservableValue<Number> other) {
+        return () -> NumberHelper.multiply(get(), other.getValue()).doubleValue();
     }
     
     /**
@@ -60,7 +83,15 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableDoubleValue divide(Number other) {
-        return new DoubleConstant((double) NumberHelper.divide(get(), other));
+        return () -> NumberHelper.divide(get(), other).doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableDoubleValue divide(ObservableValue<Number> other) {
+        return () -> NumberHelper.divide(get(), other.getValue()).doubleValue();
     }
     
     /**
@@ -68,7 +99,15 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableBooleanValue isEqualTo(Number other) {
-        return new BooleanConstant(get() == other.doubleValue());
+        return () -> get() == other.doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue isEqualTo(ObservableValue<Number> other) {
+        return () -> get() == other.getValue().doubleValue();
     }
     
     /**
@@ -76,7 +115,15 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableBooleanValue isNotEqualTo(Number other) {
-        return new BooleanConstant(get() != other.doubleValue());
+        return () -> get() != other.doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue isNotEqualTo(ObservableValue<Number> other) {
+        return () -> get() != other.getValue().doubleValue();
     }
     
     /**
@@ -84,7 +131,15 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableBooleanValue greaterThan(Number other) {
-        return new BooleanConstant(get() > other.doubleValue());
+        return () -> get() > other.doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue greaterThan(ObservableValue<Number> other) {
+        return () -> get() > other.getValue().doubleValue();
     }
     
     /**
@@ -92,7 +147,15 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableBooleanValue lessThan(Number other) {
-        return new BooleanConstant(get() < other.doubleValue());
+        return () -> get() < other.doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue lessThan(ObservableValue<Number> other) {
+        return () -> get() < other.getValue().doubleValue();
     }
     
     /**
@@ -100,7 +163,15 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableBooleanValue greaterThanOrEqualTo(Number other) {
-        return new BooleanConstant(get() >= other.doubleValue());
+        return () -> get() >= other.doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue greaterThanOrEqualTo(ObservableValue<Number> other) {
+        return () -> get() >= other.getValue().doubleValue();
     }
     
     /**
@@ -108,6 +179,14 @@ public interface ObservableDoubleValue extends ObservableNumberValue<Double> {
      */
     @Override
     default ObservableBooleanValue lessThanOrEqualTo(Number other) {
-        return new BooleanConstant(get() <= other.doubleValue());
+        return () -> get() <= other.doubleValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue lessThanOrEqualTo(ObservableValue<Number> other) {
+        return () -> get() <= other.getValue().doubleValue();
     }
 }

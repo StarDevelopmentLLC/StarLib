@@ -9,7 +9,19 @@ import java.util.zip.ZipInputStream;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
+/**
+ * A collection of file utilities
+ */
 public final class FileHelper {
+    private FileHelper() {
+    }
+    
+    /**
+     * Renames a file
+     *
+     * @param file    The file
+     * @param newName The new name and extension
+     */
     public static void renameFile(Path file, String newName) {
         Path parent = file.toAbsolutePath().getParent();
         Path newPath = subPath(parent, newName);
@@ -20,13 +32,23 @@ public final class FileHelper {
         }
     }
     
+    /**
+     * Creates a file if it does not exist
+     *
+     * @param file The file
+     */
     public static void createFileIfNotExists(File file) {
         createFileIfNotExists(file.toPath());
     }
     
+    /**
+     * Creates a file if it does not exist
+     *
+     * @param path The file
+     */
     public static void createFileIfNotExists(Path path) {
         createDirectoryIfNotExists(path.getParent());
-
+        
         if (Files.notExists(path)) {
             try {
                 Files.createFile(path);
@@ -36,18 +58,42 @@ public final class FileHelper {
         }
     }
     
+    /**
+     * Creates a subpath from the parent and the children
+     *
+     * @param parent The parent
+     * @param child  The child nodes after the parent
+     * @return The new end file
+     */
     public static File subPath(File parent, String... child) {
         return subPath(parent.toPath(), child).toFile();
     }
-
+    
+    /**
+     * Creates a sub path from the parent and the children
+     *
+     * @param parent The parent
+     * @param child  The child nodes after the parent
+     * @return The new path
+     */
     public static Path subPath(Path parent, String... child) {
         return FileSystems.getDefault().getPath(parent.toString(), child);
     }
-
+    
+    /**
+     * Creates the director if it does not exist
+     *
+     * @param file The directory
+     */
     public static void createDirectoryIfNotExists(File file) {
         createDirectoryIfNotExists(file.toPath());
     }
     
+    /**
+     * Creates the director if it does not exist
+     *
+     * @param path The directory
+     */
     public static void createDirectoryIfNotExists(Path path) {
         if (Files.notExists(path)) {
             try {
@@ -58,10 +104,28 @@ public final class FileHelper {
         }
     }
     
+    /**
+     * Downloads a file
+     *
+     * @param downloadUrl The url to download from
+     * @param downloadDir The download directory to use
+     * @param fileName    The file to download to
+     * @param userAgent   The useragent to use downloading
+     * @return The file that was downloaded
+     */
     public static File downloadFile(String downloadUrl, File downloadDir, String fileName, boolean userAgent) {
         return downloadFile(downloadUrl, downloadDir.toPath(), fileName, userAgent).toFile();
     }
-
+    
+    /**
+     * Downloads a file
+     *
+     * @param downloadUrl The url to download from
+     * @param downloadDir The download directory to use
+     * @param fileName    The file to download to
+     * @param userAgent   The useragent to use downloading
+     * @return The file that was downloaded
+     */
     public static Path downloadFile(String downloadUrl, Path downloadDir, String fileName, boolean userAgent) {
         try {
             Path targetFile = FileSystems.getDefault().getPath(downloadDir.toString(), fileName);
@@ -85,7 +149,7 @@ public final class FileHelper {
                         out.write(buffer, 0, read);
                     }
                 }
-
+                
                 Files.move(tmpFile, targetFile, REPLACE_EXISTING);
             }
             return targetFile;
@@ -95,10 +159,22 @@ public final class FileHelper {
         return null;
     }
     
+    /**
+     * Recursive copy the folder
+     *
+     * @param src  The source folder
+     * @param dest The destination folder
+     */
     public static void copyFolder(File src, File dest) {
         copyFolder(src.toPath(), dest.toPath());
     }
-
+    
+    /**
+     * Recursive copy the folder
+     *
+     * @param src  The source folder
+     * @param dest The destination folder
+     */
     public static void copyFolder(Path src, Path dest) {
         try {
             Files.walkFileTree(src, new SimpleFileVisitor<>() {
@@ -108,7 +184,7 @@ public final class FileHelper {
                     Files.createDirectories(dest.resolve(src.relativize(dir)));
                     return FileVisitResult.CONTINUE;
                 }
-
+                
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                         throws IOException {
@@ -121,10 +197,22 @@ public final class FileHelper {
         }
     }
     
+    /**
+     * Copy files
+     *
+     * @param source The source file
+     * @param dest   The destination file
+     */
     public static void copy(File source, File dest) {
         copy(source.toPath(), dest.toPath());
     }
-
+    
+    /**
+     * Copy files
+     *
+     * @param source The source file
+     * @param dest   The destination file
+     */
     public static void copy(Path source, Path dest) {
         try {
             Files.copy(source, dest, REPLACE_EXISTING);
@@ -133,10 +221,20 @@ public final class FileHelper {
         }
     }
     
+    /**
+     * Recursive delete a directory
+     *
+     * @param directory The directory
+     */
     public static void deleteDirectory(File directory) {
         deleteDirectory(directory.toPath());
     }
-
+    
+    /**
+     * Recursive delete a directory
+     *
+     * @param directory The directory
+     */
     public static void deleteDirectory(Path directory) {
         try {
             Files.walkFileTree(directory, new SimpleFileVisitor<>() {
@@ -144,7 +242,7 @@ public final class FileHelper {
                     Files.delete(file);
                     return FileVisitResult.CONTINUE;
                 }
-
+                
                 public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
                     Files.delete(dir);
                     return FileVisitResult.CONTINUE;
@@ -160,7 +258,7 @@ public final class FileHelper {
             } else {
                 cmd = null;
             }
-
+            
             try {
                 Process process = new ProcessBuilder().command(cmd).start();
                 process.waitFor();
@@ -171,6 +269,12 @@ public final class FileHelper {
         }
     }
     
+    /**
+     * Unzips a file
+     *
+     * @param zipFile     The zip file
+     * @param destination The destination folder
+     */
     public static void unzipFile(Path zipFile, Path destination) {
         byte[] buffer = new byte[1024];
         try {

@@ -97,7 +97,7 @@ class GeneratorImpl<T> implements Generator<T> {
             }
             
             Pair<T, Boolean> result = generateObject(params);
-            if (!result.value()) {
+            if (!result.second()) {
                 return;
             }
             
@@ -120,11 +120,11 @@ class GeneratorImpl<T> implements Generator<T> {
             
             Pair<T, Boolean> result = generateObject(params);
             
-            if (!result.value()) {
+            if (!result.second()) {
                 return objects;
             }
             
-            objects.add(result.key());
+            objects.add(result.first());
         }
     }
     

@@ -1,12 +1,21 @@
 package com.stardevllc.starlib.converter.string;
 
+/**
+ * Converts between bytes and Strings
+ */
 public class ByteStringConverter implements StringConverter<Byte> {
-
+    
+    /**
+     * Constructs a new ByteStringConverter
+     */
     protected ByteStringConverter() {
         StringConverters.addConverter(byte.class, this);
         StringConverters.addConverter(Byte.class, this);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String convertFrom(Object fromObject) {
         if (fromObject == null) {
@@ -15,7 +24,10 @@ public class ByteStringConverter implements StringConverter<Byte> {
         
         return Byte.toString((byte) fromObject);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Byte convertTo(String toObject) {
         try {

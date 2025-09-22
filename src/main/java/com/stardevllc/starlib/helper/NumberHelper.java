@@ -2,9 +2,19 @@ package com.stardevllc.starlib.helper;
 
 import java.util.Random;
 
+/**
+ * Number based utilities
+ */
 public final class NumberHelper {
-    private NumberHelper() {}
-
+    private NumberHelper() {
+    }
+    
+    /**
+     * Suffix used in writing numbers in sentances
+     *
+     * @param number The number
+     * @return The number + suffix
+     */
     public static String getNumberSuffix(long number) {
         String numberString = String.valueOf(number);
         
@@ -19,79 +29,130 @@ public final class NumberHelper {
         }
     }
     
+    /**
+     * Generate random number in range
+     *
+     * @param min The min
+     * @param max The max
+     * @return The number
+     */
     public static int randomInRange(int min, int max) {
         return randomInRange(new Random(), min, max);
     }
-
+    
+    /**
+     * Generate random number in range using provided random
+     *
+     * @param random The random instnace
+     * @param min    The min
+     * @param max    The max
+     * @return The number
+     */
     public static int randomInRange(Random random, int min, int max) {
         return random.nextInt(max - min) + min;
     }
-
+    
+    /**
+     * Converts to an int
+     *
+     * @param object The object
+     * @return The converted value
+     */
     public static int toInt(Object object) {
         if (object instanceof Number) {
             return ((Number) object).intValue();
         }
-
+        
         try {
             return Integer.parseInt(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
         }
         return 0;
     }
-
+    
+    /**
+     * Converts to a float
+     *
+     * @param object The object
+     * @return The converted value
+     */
     public static float toFloat(Object object) {
         if (object instanceof Number) {
             return ((Number) object).floatValue();
         }
-
+        
         try {
             return Float.parseFloat(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
         }
         return 0;
     }
-
+    
+    /**
+     * Converts to a double
+     *
+     * @param object The object
+     * @return The converted value
+     */
     public static double toDouble(Object object) {
         if (object instanceof Number) {
             return ((Number) object).doubleValue();
         }
-
+        
         try {
             return Double.parseDouble(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
         }
         return 0;
     }
-
+    
+    /**
+     * Converts to a long
+     *
+     * @param object The object
+     * @return The converted value
+     */
     public static long toLong(Object object) {
         if (object instanceof Number) {
             return ((Number) object).longValue();
         }
-
+        
         try {
             return Long.parseLong(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
         }
         return 0;
     }
-
+    
+    /**
+     * Converts to a short
+     *
+     * @param object The object
+     * @return The converted value
+     */
     public static short toShort(Object object) {
         if (object instanceof Number) {
             return ((Number) object).shortValue();
         }
-
+        
         try {
             return Short.parseShort(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
         }
         return 0;
     }
-
+    
+    /**
+     * Converts to a byte
+     *
+     * @param object The object
+     * @return The converted value
+     */
     public static byte toByte(Object object) {
         if (object instanceof Number) {
             return ((Number) object).byteValue();
         }
-
+        
         try {
             return Byte.parseByte(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
@@ -99,6 +160,13 @@ public final class NumberHelper {
         return 0;
     }
     
+    /**
+     * Finds the min value using the Number class as parameters
+     *
+     * @param left  The left value
+     * @param right The right value
+     * @return The min value
+     */
     public static Number min(Number left, Number right) {
         if (left == null && right == null) {
             return 0;
@@ -125,6 +193,13 @@ public final class NumberHelper {
         return 0;
     }
     
+    /**
+     * Finds the max value using the Number class as parameters
+     *
+     * @param left  The left value
+     * @param right The right value
+     * @return The max value
+     */
     public static Number max(Number left, Number right) {
         if (left == null && right == null) {
             return 0;
@@ -151,6 +226,12 @@ public final class NumberHelper {
         return 0;
     }
     
+    /**
+     * Negates the number using the Number class as input
+     *
+     * @param number The number
+     * @return The negated number
+     */
     public static Number negate(Number number) {
         return switch (number) {
             case Double ignored -> -number.doubleValue();
@@ -164,6 +245,13 @@ public final class NumberHelper {
         
     }
     
+    /**
+     * Adds two numbers together using the Number class as input
+     *
+     * @param left  The left
+     * @param right The right
+     * @return The result
+     */
     public static Number add(Number left, Number right) {
         if (left == null && right == null) {
             return 0;
@@ -190,6 +278,13 @@ public final class NumberHelper {
         return 0;
     }
     
+    /**
+     * Subtracts two numbers using the Number class as input
+     *
+     * @param left  The left
+     * @param right The right
+     * @return The result
+     */
     public static Number subtract(Number left, Number right) {
         if (left == null && right == null) {
             return 0;
@@ -216,6 +311,13 @@ public final class NumberHelper {
         return 0;
     }
     
+    /**
+     * Multiplies two numbers together using the Number class as input
+     *
+     * @param left  The left
+     * @param right The right
+     * @return The result
+     */
     public static Number multiply(Number left, Number right) {
         if (left == null || right == null) {
             return 0; //If either side is null, its just like multiplying by 0, which by definition is zero
@@ -238,6 +340,13 @@ public final class NumberHelper {
         return 0;
     }
     
+    /**
+     * Divides two numbers using the Number class as input
+     *
+     * @param left  The left
+     * @param right The right
+     * @return The result
+     */
     public static Number divide(Number left, Number right) {
         if (left == null || right == null) {
             return 0; //If any side is null, just return 0, this will not trigger a divide by zero in that case as its undefined, but whatever

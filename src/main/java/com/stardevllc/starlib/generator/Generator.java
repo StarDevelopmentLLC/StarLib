@@ -9,6 +9,7 @@ import java.util.function.*;
 /**
  * Effectively an infinite Stream of new objects. Much like Stream.generate() but with some more extendibility
  * You can implement this interface for a more customization if needed. Otherwise there is a base implementation
+ *
  * @param <T> The object type that this Generator makes
  */
 public interface Generator<T> {
@@ -168,9 +169,14 @@ public interface Generator<T> {
     
     /**
      * This is similar to the {@link #generate(Object[])} method where it generates things, but it just discards the generated objects immediately. Most useful for things that are done using the apply functions
+     *
+     * @param args The args for the generation
      */
     void generateAndDiscard(Object[] args);
     
+    /**
+     * Runs generation and discards results
+     */
     default void generateAndDiscard() {
         generateAndDiscard(null);
     }

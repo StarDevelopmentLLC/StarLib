@@ -6,6 +6,11 @@ import com.stardevllc.starlib.observable.collections.event.MapChangeEvent;
 
 import java.util.Map;
 
+/**
+ * Represents a map that can be observed for changes
+ * @param <K> The key type
+ * @param <V> The value type
+ */
 @SuppressWarnings("rawtypes")
 public interface ObservableMap<K, V> extends Observable, Map<K, V> {
     /**

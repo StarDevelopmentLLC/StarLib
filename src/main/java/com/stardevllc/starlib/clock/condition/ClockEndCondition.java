@@ -9,5 +9,11 @@ import com.stardevllc.starlib.clock.snapshot.ClockSnapshot;
  */
 @FunctionalInterface
 public interface ClockEndCondition<T extends ClockSnapshot> {
+    
+    /**
+     * Returns if the clock should end
+     * @param snapshot The clock snapshot
+     * @return true if the clock should end or false if it should keep going
+     */
     boolean shouldEnd(T snapshot);
 }

@@ -1,8 +1,7 @@
 package com.stardevllc.starlib.observable.value;
 
 import com.stardevllc.starlib.helper.NumberHelper;
-import com.stardevllc.starlib.observable.constants.BooleanConstant;
-import com.stardevllc.starlib.observable.constants.FloatConstant;
+import com.stardevllc.starlib.observable.ObservableValue;
 
 /**
  * Represents a float that can be observed
@@ -29,7 +28,7 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableFloatValue negate() {
-        return new FloatConstant((float) NumberHelper.negate(get()));
+        return () -> NumberHelper.negate(get()).floatValue();
     }
     
     /**
@@ -37,7 +36,15 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableFloatValue add(Number other) {
-        return new FloatConstant((float) NumberHelper.add(get(), other));
+        return () -> NumberHelper.add(get(), other).floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableFloatValue add(ObservableValue<Number> other) {
+        return () -> NumberHelper.add(get(), other.getValue()).floatValue();
     }
     
     /**
@@ -45,7 +52,15 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableFloatValue subtract(Number other) {
-        return new FloatConstant((float) NumberHelper.subtract(get(), other));
+        return () -> NumberHelper.subtract(get(), other).floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableFloatValue subtract(ObservableValue<Number> other) {
+        return () -> NumberHelper.subtract(get(), other.getValue()).floatValue();
     }
     
     /**
@@ -53,7 +68,15 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableFloatValue multiply(Number other) {
-        return new FloatConstant((float) NumberHelper.multiply(get(), other));
+        return () -> NumberHelper.multiply(get(), other).floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableFloatValue multiply(ObservableValue<Number> other) {
+        return () -> NumberHelper.multiply(get(), other.getValue()).floatValue();
     }
     
     /**
@@ -61,7 +84,15 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableFloatValue divide(Number other) {
-        return new FloatConstant((float) NumberHelper.divide(get(), other));
+        return () -> NumberHelper.divide(get(), other).floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableFloatValue divide(ObservableValue<Number> other) {
+        return () -> NumberHelper.divide(get(), other.getValue()).floatValue();
     }
     
     /**
@@ -69,7 +100,15 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableBooleanValue isEqualTo(Number other) {
-        return new BooleanConstant(get() == other.doubleValue());
+        return () -> get() == other.floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue isEqualTo(ObservableValue<Number> other) {
+        return () -> get() == other.getValue().floatValue();
     }
     
     /**
@@ -77,7 +116,15 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableBooleanValue isNotEqualTo(Number other) {
-        return new BooleanConstant(get() != other.doubleValue());
+        return () -> get() != other.floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue isNotEqualTo(ObservableValue<Number> other) {
+        return () -> get() != other.getValue().floatValue();
     }
     
     /**
@@ -85,7 +132,15 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableBooleanValue greaterThan(Number other) {
-        return new BooleanConstant(get() > other.doubleValue());
+        return () -> get() > other.floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue greaterThan(ObservableValue<Number> other) {
+        return () -> get() > other.getValue().floatValue();
     }
     
     /**
@@ -93,7 +148,15 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableBooleanValue lessThan(Number other) {
-        return new BooleanConstant(get() < other.doubleValue());
+        return () -> get() < other.floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue lessThan(ObservableValue<Number> other) {
+        return () -> get() < other.getValue().floatValue();
     }
     
     /**
@@ -101,7 +164,15 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableBooleanValue greaterThanOrEqualTo(Number other) {
-        return new BooleanConstant(get() >= other.doubleValue());
+        return () -> get() >= other.floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue greaterThanOrEqualTo(ObservableValue<Number> other) {
+        return () -> get() >= other.getValue().floatValue();
     }
     
     /**
@@ -109,6 +180,14 @@ public interface ObservableFloatValue extends ObservableNumberValue<Float> {
      */
     @Override
     default ObservableBooleanValue lessThanOrEqualTo(Number other) {
-        return new BooleanConstant(get() <= other.doubleValue());
+        return () -> get() <= other.floatValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue lessThanOrEqualTo(ObservableValue<Number> other) {
+        return () -> get() <= other.getValue().floatValue();
     }
 }

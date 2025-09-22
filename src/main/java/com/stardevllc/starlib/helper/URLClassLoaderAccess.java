@@ -6,8 +6,16 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collection;
 
+/**
+ * Provides access to a URL based class cloader
+ */
 public abstract class URLClassLoaderAccess {
-
+    
+    /**
+     * Creates an instance based on what is allowed to be used for retrieval
+     * @param classLoader The class loader
+     * @return The instnace of this class
+     */
     public static URLClassLoaderAccess create(URLClassLoader classLoader) {
         if (classLoader == null) {
             return null;
@@ -23,10 +31,14 @@ public abstract class URLClassLoaderAccess {
 
     private final URLClassLoader classLoader;
 
-    protected URLClassLoaderAccess(URLClassLoader classLoader) {
+    private URLClassLoaderAccess(URLClassLoader classLoader) {
         this.classLoader = classLoader;
     }
-
+    
+    /**
+     * Exposes the {@link URLClassLoader#addURL(URL)} method
+     * @param url The url to add to the loader
+     */
     public abstract void addURL(URL url);
 
     private static class Reflection extends URLClassLoaderAccess {
@@ -102,7 +114,7 @@ public abstract class URLClassLoaderAccess {
 
         private static Object fetchField(final Class<?> clazz, final Object object, final String name) throws NoSuchFieldException {
             Field field = clazz.getDeclaredField(name);
-            long offset = UNSAFE.objectFieldOffset(field);
+            @SuppressWarnings("deprecation") long offset = UNSAFE.objectFieldOffset(field);
             return UNSAFE.getObject(object, offset);
         }
 

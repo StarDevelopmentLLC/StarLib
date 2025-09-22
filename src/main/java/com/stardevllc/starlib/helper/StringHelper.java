@@ -3,11 +3,23 @@ package com.stardevllc.starlib.helper;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * A collection of utilities for Strings
+ */
 public final class StringHelper {
+    private StringHelper() {
+    }
+    
     private static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
     
     private static Map<String, UUID> uuidCache = new HashMap<>();
     
+    /**
+     * Pluralizes a word using some very basic rules
+     *
+     * @param word The word
+     * @return the result
+     */
     public static String pluralize(String word) {
         if (word.charAt(word.length() - 1) == 's') {
             word += "'";
@@ -17,6 +29,12 @@ public final class StringHelper {
         return word;
     }
     
+    /**
+     * Capitalize every word in a string. This treats underscores as a space
+     *
+     * @param string The string
+     * @return The result
+     */
     public static String titlize(String string) {
         string = string.toLowerCase();
         String[] words = string.split("_");
@@ -40,6 +58,13 @@ public final class StringHelper {
         return name.toString();
     }
     
+    /**
+     * Joins the array using a separator
+     *
+     * @param array     The array to join
+     * @param separator The separator to use
+     * @return The result
+     */
     public static String join(Object[] array, String separator) {
         if (array == null || array.length == 0) {
             return "";
@@ -56,6 +81,13 @@ public final class StringHelper {
         return sb.toString();
     }
     
+    /**
+     * Joins a collection using a separator
+     *
+     * @param collection The collection
+     * @param separator  The seperator
+     * @return The result
+     */
     public static String join(Collection<?> collection, String separator) {
         Iterator<?> iterator = collection.iterator();
         if (!iterator.hasNext()) {
@@ -86,6 +118,13 @@ public final class StringHelper {
         return buf.toString();
     }
     
+    /**
+     * Converts the string into a uuid<br>
+     * The string can have dashes or not. This method will detect it
+     *
+     * @param id The string version of a uuid
+     * @return The result
+     */
     public static UUID toUUID(String id) {
         if (uuidCache.containsKey(id)) {
             return uuidCache.get(id);
@@ -108,10 +147,22 @@ public final class StringHelper {
         return uuid;
     }
     
+    /**
+     * A null safe utility method for strings
+     *
+     * @param value The value
+     * @return The value or an empty string if null
+     */
     public static String getStringSafe(String value) {
         return value == null ? "" : value;
     }
     
+    /**
+     * Null safe version of {@link String#isEmpty()}
+     *
+     * @param str The string
+     * @return If it is empty, returning true if it is null
+     */
     public static boolean isEmpty(String str) {
         return str == null || str.isEmpty();
     }

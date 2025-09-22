@@ -5,8 +5,6 @@ import com.stardevllc.starlib.clock.callback.*;
 import com.stardevllc.starlib.clock.clocks.Stopwatch;
 import com.stardevllc.starlib.clock.clocks.Timer;
 import com.stardevllc.starlib.clock.condition.ClockEndCondition;
-import com.stardevllc.starlib.clock.property.ClockBooleanProperty;
-import com.stardevllc.starlib.clock.property.ClockLongProperty;
 import com.stardevllc.starlib.clock.snapshot.ClockSnapshot;
 import com.stardevllc.starlib.observable.property.readwrite.*;
 import com.stardevllc.starlib.time.TimeUnit;
@@ -16,16 +14,48 @@ import java.util.*;
 /**
  * <pre>A class that represents a clock. There are two direct concrete implementations of this in {@link Timer} and {@link Stopwatch}
  * Note: It is planned to include a {@link IBuilder} implementation but there are a few things that need rewrites first.</pre>
+ *
  * @param <T> The type for the {@link ClockSnapshot} instance
  */
 public abstract class Clock<T extends ClockSnapshot> {
+    /**
+     * The UUID of the clock
+     */
     protected final ReadWriteUUIDProperty uniqueId;
+    
+    /**
+     * The name of the clock
+     */
     protected final ReadWriteStringProperty name;
-    protected final ClockLongProperty time;
-    protected final ClockBooleanProperty paused;
-    protected final ClockBooleanProperty cancelled;
+    
+    /**
+     * The time value of the clock
+     */
+    protected final ReadWriteLongProperty time;
+    
+    /**
+     * The paused status of the clock
+     */
+    protected final ReadWriteBooleanProperty paused;
+    
+    /**
+     * The cancelled status of the clock
+     */
+    protected final ReadWriteBooleanProperty cancelled;
+    
+    /**
+     * The callbacks assigned to the clock
+     */
     protected Map<UUID, CallbackHolder<T>> callbacks = new LinkedHashMap<>();
+    
+    /**
+     * The amount in milliseonds that the clock counts by
+     */
     protected final long countAmount;
+    
+    /**
+     * The end condition of the clock
+     */
     protected ClockEndCondition<T> endCondition;
     
     /**
@@ -50,9 +80,9 @@ public abstract class Clock<T extends ClockSnapshot> {
     public Clock(UUID uuid, String name, long time, long countAmount) {
         this.uniqueId = new ReadWriteUUIDProperty(this, "uniqueid", uuid);
         this.name = new ReadWriteStringProperty(this, "name", name);
-        this.time = new ClockLongProperty(this, "time", time);
-        this.paused = new ClockBooleanProperty(this, "paused", true);
-        this.cancelled = new ClockBooleanProperty(this, "cancelled", false);
+        this.time = new ReadWriteLongProperty(this, "time", time);
+        this.paused = new ReadWriteBooleanProperty(this, "paused", true);
+        this.cancelled = new ReadWriteBooleanProperty(this, "cancelled", false);
         this.countAmount = countAmount;
         
         this.time.addListener(e -> unpause());
@@ -221,6 +251,8 @@ public abstract class Clock<T extends ClockSnapshot> {
     }
     
     /**
+     * The cancelled flag
+     *
      * @return The cancelled state
      */
     public boolean isCancelled() {
@@ -228,6 +260,8 @@ public abstract class Clock<T extends ClockSnapshot> {
     }
     
     /**
+     * The current time value
+     *
      * @return The current time
      */
     public long getTime() {
@@ -235,6 +269,8 @@ public abstract class Clock<T extends ClockSnapshot> {
     }
     
     /**
+     * The paused flag
+     *
      * @return The paused state
      */
     public boolean isPaused() {
@@ -401,6 +437,7 @@ public abstract class Clock<T extends ClockSnapshot> {
     }
     
     /**
+     * The end condition
      * @return The current end condition
      */
     public ClockEndCondition<T> getEndCondition() {
@@ -423,6 +460,7 @@ public abstract class Clock<T extends ClockSnapshot> {
     }
     
     /**
+     * The uuid of the clock
      * @return The unique id of the clock
      */
     public UUID getUniqueId() {
@@ -430,6 +468,7 @@ public abstract class Clock<T extends ClockSnapshot> {
     }
     
     /**
+     * The name of the clock
      * @return The name of the clock
      */
     public String getName() {
@@ -438,6 +477,7 @@ public abstract class Clock<T extends ClockSnapshot> {
     
     /**
      * Properties allow you to listen for changes directly. This allows direct access to those
+     *
      * @return The property instance
      */
     public ReadWriteLongProperty timeProperty() {
@@ -446,6 +486,7 @@ public abstract class Clock<T extends ClockSnapshot> {
     
     /**
      * Properties allow you to listen for changes directly. This allows direct access to those
+     *
      * @return The property instance
      */
     public ReadWriteBooleanProperty pausedProperty() {
@@ -454,6 +495,7 @@ public abstract class Clock<T extends ClockSnapshot> {
     
     /**
      * Properties allow you to listen for changes directly. This allows direct access to those
+     *
      * @return The property instance
      */
     public ReadWriteBooleanProperty cancelledProperty() {
@@ -462,6 +504,7 @@ public abstract class Clock<T extends ClockSnapshot> {
     
     /**
      * Properties allow you to listen for changes directly. This allows direct access to those
+     *
      * @return The property instance
      */
     public ReadWriteUUIDProperty uuidProperty() {
@@ -470,6 +513,7 @@ public abstract class Clock<T extends ClockSnapshot> {
     
     /**
      * Properties allow you to listen for changes directly. This allows direct access to those
+     *
      * @return The property instance
      */
     public ReadWriteStringProperty nameProperty() {

@@ -94,6 +94,7 @@ public interface Chain<T> {
     /**
      * Updates the backing object if the test fails, otherwise returns an identical chain.
      *
+     * @param test The test
      * @param failValue the fail value
      * @return this chain
      */
@@ -110,6 +111,7 @@ public interface Chain<T> {
     /**
      * Updates the backing object if the test fails, otherwise returns an identical chain.
      *
+     * @param test The test
      * @param failSupplier the fail supplier
      * @return this chain
      */

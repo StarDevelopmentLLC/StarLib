@@ -44,36 +44,57 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IEventBus<MapChangeEvent> eventBus() {
         return this.eventBus;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int size() {
         return getBackingMap().size();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return getBackingMap().isEmpty();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean containsKey(Object key) {
         return getBackingMap().containsKey(key);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean containsValue(Object value) {
         return getBackingMap().containsValue(value);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V get(Object key) {
         return getBackingMap().get(key);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V put(K key, V value) {
         V removed = this.getBackingMap().put(key, value);
@@ -81,6 +102,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         return removed;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V remove(Object key) {
         V removed = this.getBackingMap().remove(key);
@@ -88,6 +112,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         return removed;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
         for (Entry<? extends K, ? extends V> entry : m.entrySet()) {
@@ -95,6 +122,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         }
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         for (Entry<K, V> entry : this.entrySet()) {
@@ -103,21 +133,33 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         this.entrySet().clear();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V getOrDefault(Object key, V defaultValue) {
         return getBackingMap().getOrDefault(key, defaultValue);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void forEach(BiConsumer<? super K, ? super V> action) {
         this.getBackingMap().forEach(action);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
         ObservableMap.super.replaceAll(function);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V putIfAbsent(K key, V value) {
         V result = getBackingMap().putIfAbsent(key, value);
@@ -128,6 +170,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         return result;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean remove(Object key, Object value) {
         boolean result = getBackingMap().remove(key, value);
@@ -138,6 +183,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         return result;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean replace(K key, V oldValue, V newValue) {
         boolean result = getBackingMap().replace(key, oldValue, newValue);
@@ -148,6 +196,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         return result;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V replace(K key, V value) {
         V oldValue = getBackingMap().replace(key, value);
@@ -155,6 +206,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         return oldValue;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
         V value;
@@ -170,6 +224,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         return value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
         V oldValue;
@@ -189,6 +246,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         }
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
         V oldValue = get(key);
@@ -207,6 +267,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         }
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
         V oldValue = get(key);

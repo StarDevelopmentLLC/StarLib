@@ -20,6 +20,9 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
     public AbstractObservableList() {
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Collection<E> getBackingCollection() {
         return getBackingList();
@@ -32,6 +35,9 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
      */
     protected abstract List<E> getBackingList();
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         boolean modified = false;
@@ -42,11 +48,17 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
         return modified;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E get(int index) {
         return getBackingList().get(index);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E set(int index, E element) {
         E replaced = getBackingList().set(index, element);
@@ -54,12 +66,18 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
         return replaced;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void add(int index, E element) {
         getBackingList().add(index, element);
         this.eventBus.post(new CollectionChangeEvent<>(this, element, null));
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E remove(int index) {
         E removed = getBackingList().remove(index);
@@ -67,31 +85,49 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
         return removed;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int indexOf(Object o) {
         return getBackingList().indexOf(o);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int lastIndexOf(Object o) {
         return getBackingList().lastIndexOf(o);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<E> iterator() {
         return listIterator();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListIterator<E> listIterator() {
         return new ObservableListIterator<>(this, getBackingList().listIterator());
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListIterator<E> listIterator(int index) {
         return new ObservableListIterator<>(this, getBackingList().listIterator(), index);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void replaceAll(UnaryOperator<E> operator) {
         final ListIterator<E> li = this.listIterator();
@@ -100,41 +136,65 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
         }
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void sort(Comparator<? super E> c) {
         getBackingList().sort(c);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Spliterator<E> spliterator() {
         return getBackingList().spliterator();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addFirst(E e) {
         this.add(0, e);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addLast(E e) {
         this.add(e);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E getFirst() {
         return getBackingList().getFirst();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E getLast() {
         return getBackingList().getLast();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E removeFirst() {
         return this.remove(0);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E removeLast() {
         return this.remove(this.size() - 1);
@@ -187,50 +247,77 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
             }
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean hasNext() {
             return backingIterator.hasNext();
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public E next() {
             current = backingIterator.next();
             return current;
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean hasPrevious() {
             return backingIterator.hasPrevious();
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public E previous() {
             current = backingIterator.previous();
             return current;
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int nextIndex() {
             return backingIterator.nextIndex();
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int previousIndex() {
             return backingIterator.previousIndex();
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void remove() {
             backingIterator.remove();
             backingList.eventBus().post(new CollectionChangeEvent<>(backingList, null, current));
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void set(E e) {
             backingIterator.set(e);
             backingList.eventBus().post(new CollectionChangeEvent<>(backingList, e, current));
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void add(E e) {
             backingIterator.add(e);

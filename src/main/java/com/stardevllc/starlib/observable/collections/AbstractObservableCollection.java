@@ -36,46 +36,73 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
      */
     protected abstract Collection<E> getBackingCollection();
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addListener(CollectionChangeListener<E> listener) {
         eventBus.subscribe(listener);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeListener(CollectionChangeListener<E> listener) {
         eventBus.unsubscribe(listener);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Stream<E> stream() {
         return getBackingCollection().stream();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Stream<E> parallelStream() {
         return getBackingCollection().parallelStream();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int size() {
         return getBackingCollection().size();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<E> iterator() {
         return new ObservableIterator<>(this, getBackingCollection().iterator());
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object[] toArray() {
         return getBackingCollection().toArray();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T[] toArray(T[] a) {
         return getBackingCollection().toArray(a);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean add(E e) {
         boolean added = getBackingCollection().add(e);
@@ -85,6 +112,9 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         return added;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return getBackingCollection().isEmpty();
@@ -94,6 +124,9 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         return eventBus;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean remove(Object o) {
         boolean removed = getBackingCollection().remove(o);
@@ -104,21 +137,33 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         return removed;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean contains(Object o) {
         return getBackingCollection().contains(o);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void forEach(Consumer<? super E> action) {
         getBackingCollection().forEach(action);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean containsAll(Collection<?> c) {
         return getBackingCollection().containsAll(c);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addAll(Collection<? extends E> c) {
         boolean modified = false;
@@ -132,6 +177,9 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         return modified;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean removeAll(Collection<?> c) {
         boolean modified = false;
@@ -145,6 +193,9 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         return modified;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean removeIf(Predicate<? super E> filter) {
         Iterator<E> it = iterator();
@@ -158,6 +209,9 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         return modified;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean retainAll(Collection<?> c) {
         boolean modified = false;
@@ -171,6 +225,9 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         return modified;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         Iterator<E> it = iterator();
@@ -213,23 +270,35 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
             this.backingIterator = backingIterator;
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean hasNext() {
             return backingIterator.hasNext();
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public E next() {
             this.current = this.backingIterator.next();
             return this.current;
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void remove() {
             this.backingIterator.remove();
             this.backingCollection.eventBus().post(new CollectionChangeEvent<>(this.backingCollection, null, current));
         }
         
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void forEachRemaining(Consumer<? super E> action) {
             this.backingIterator.forEachRemaining(action);

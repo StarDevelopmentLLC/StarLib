@@ -2,7 +2,6 @@ package com.stardevllc.starlib.clock.clocks;
 
 import com.stardevllc.starlib.clock.Clock;
 import com.stardevllc.starlib.clock.callback.CallbackHolder;
-import com.stardevllc.starlib.clock.property.ClockLongProperty;
 import com.stardevllc.starlib.clock.snapshot.StopwatchSnapshot;
 import com.stardevllc.starlib.observable.property.readwrite.ReadWriteLongProperty;
 
@@ -12,20 +11,51 @@ import java.util.UUID;
  * Count up clock
  */
 public class Stopwatch extends Clock<StopwatchSnapshot> {
-    protected final ClockLongProperty endTime;
-    protected final ClockLongProperty startTime;
+    /**
+     * The time to end the stopwatch at
+     */
+    protected final ReadWriteLongProperty endTime;
     
+    /**
+     * The time to start the stopwatch et
+     */
+    protected final ReadWriteLongProperty startTime;
+    
+    /**
+     * Constructs a new stopwatch
+     *
+     * @param uuid        The uuid of the stopwatch
+     * @param startTime   The start time of the stopwatch
+     * @param endTime     The end time of the stopwatch
+     * @param countAmount The amount to count by
+     */
     public Stopwatch(UUID uuid, long startTime, long endTime, long countAmount) {
         this(uuid, "", startTime, endTime, countAmount);
     }
     
+    /**
+     * Constructs a new stopwatch
+     *
+     * @param uuid        The uuid of the stopwatch
+     * @param name        The name of the stopwatch
+     * @param startTime   The start time of the stopwatch
+     * @param endTime     The end time of the stopwatch
+     * @param countAmount The amount to count by
+     */
     public Stopwatch(UUID uuid, String name, long startTime, long endTime, long countAmount) {
         super(uuid, name, startTime, countAmount);
-        this.startTime = new ClockLongProperty(this, "startTime", startTime);
-        this.endTime = new ClockLongProperty(this, "endTime", endTime);
+        this.startTime = new ReadWriteLongProperty(this, "startTime", startTime);
+        this.endTime = new ReadWriteLongProperty(this, "endTime", endTime);
         this.endTime.addListener(e -> unpause());
     }
     
+    /**
+     * Constructs a new stopwatch
+     *
+     * @param uuid        The uuid of the stopwatch
+     * @param endTime     The end time of the stopwatch
+     * @param countAmount The amount to count by
+     */
     public Stopwatch(UUID uuid, long endTime, long countAmount) {
         this(uuid, 0L, endTime, countAmount);
     }
@@ -59,12 +89,12 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
             return this.startTime.get() + periodsElapsed * period;
         }
     }
-
+    
     @Override
     public StopwatchSnapshot createSnapshot() {
         return new StopwatchSnapshot(getTime(), getEndTime(), isPaused(), getCountAmount());
     }
-
+    
     @Override
     protected void count() {
         if (this.endTime.get() == 0L) {
@@ -73,24 +103,44 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
             this.time.setValue(Math.min(getTime() + countAmount, this.getEndTime()));
         }
     }
-
+    
     @Override
     public Stopwatch start() {
         return (Stopwatch) super.start();
     }
     
+    /**
+     * Gets the end time
+     *
+     * @return The end time
+     */
     public long getEndTime() {
         return endTime.get();
     }
     
+    /**
+     * Sets the end time
+     *
+     * @param endTime The end time
+     */
     public void setEndTime(long endTime) {
         this.endTime.setValue(endTime);
     }
     
+    /**
+     * Gets the endTime property
+     *
+     * @return The endtime property
+     */
     public ReadWriteLongProperty endTimeProperty() {
         return this.endTime;
     }
     
+    /**
+     * Gets the start time property
+     *
+     * @return The start time property
+     */
     public ReadWriteLongProperty startTimeProperty() {
         return this.startTime;
     }

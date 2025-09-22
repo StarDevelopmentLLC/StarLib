@@ -9,5 +9,9 @@ import com.stardevllc.starlib.eventbus.SubscribeEvent;
 @SubscribeEvent
 @FunctionalInterface
 public interface ChangeListener<T> {
+    /**
+     * Called when a change occurs
+     * @param event The event information
+     */
     void changed(ChangeEvent<T> event);
 }

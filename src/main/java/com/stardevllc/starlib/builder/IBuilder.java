@@ -87,7 +87,7 @@ public interface IBuilder<T, B extends IBuilder<T, B>> extends Cloneable {
         private IBuilder<T, ?> builder;
         
         /**
-         * Constructs a blank consumer
+         * Constructs a blank container
          */
         public Container() {
         }

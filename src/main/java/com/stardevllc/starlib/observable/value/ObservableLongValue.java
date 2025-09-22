@@ -1,8 +1,7 @@
 package com.stardevllc.starlib.observable.value;
 
 import com.stardevllc.starlib.helper.NumberHelper;
-import com.stardevllc.starlib.observable.constants.BooleanConstant;
-import com.stardevllc.starlib.observable.constants.LongConstant;
+import com.stardevllc.starlib.observable.ObservableValue;
 
 /**
  * Represents a long that can be observed
@@ -29,7 +28,7 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableLongValue negate() {
-        return new LongConstant((long) NumberHelper.negate(get()));
+        return () -> NumberHelper.negate(get()).longValue();
     }
     
     /**
@@ -37,7 +36,15 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableLongValue add(Number other) {
-        return new LongConstant((long) NumberHelper.add(get(), other));
+        return () -> NumberHelper.add(get(), other).longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableLongValue add(ObservableValue<Number> other) {
+        return () -> NumberHelper.add(get(), other.getValue()).longValue();
     }
     
     /**
@@ -45,7 +52,15 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableLongValue subtract(Number other) {
-        return new LongConstant((long) NumberHelper.subtract(get(), other));
+        return () -> NumberHelper.subtract(get(), other).longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableLongValue subtract(ObservableValue<Number> other) {
+        return () -> NumberHelper.subtract(get(), other.getValue()).longValue();
     }
     
     /**
@@ -53,7 +68,15 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableLongValue multiply(Number other) {
-        return new LongConstant((long) NumberHelper.multiply(get(), other));
+        return () -> NumberHelper.multiply(get(), other).longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableLongValue multiply(ObservableValue<Number> other) {
+        return () -> NumberHelper.multiply(get(), other.getValue()).longValue();
     }
     
     /**
@@ -61,7 +84,15 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableLongValue divide(Number other) {
-        return new LongConstant((long) NumberHelper.divide(get(), other));
+        return () -> NumberHelper.divide(get(), other).longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableLongValue divide(ObservableValue<Number> other) {
+        return () -> NumberHelper.divide(get(), other.getValue()).longValue();
     }
     
     /**
@@ -69,7 +100,15 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableBooleanValue isEqualTo(Number other) {
-        return new BooleanConstant(get() == other.doubleValue());
+        return () -> get() == other.longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue isEqualTo(ObservableValue<Number> other) {
+        return () -> get() == other.getValue().longValue();
     }
     
     /**
@@ -77,7 +116,15 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableBooleanValue isNotEqualTo(Number other) {
-        return new BooleanConstant(get() != other.doubleValue());
+        return () -> get() != other.longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue isNotEqualTo(ObservableValue<Number> other) {
+        return () -> get() != other.getValue().longValue();
     }
     
     /**
@@ -85,7 +132,15 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableBooleanValue greaterThan(Number other) {
-        return new BooleanConstant(get() > other.doubleValue());
+        return () -> get() > other.longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue greaterThan(ObservableValue<Number> other) {
+        return () -> get() > other.getValue().longValue();
     }
     
     /**
@@ -93,7 +148,15 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableBooleanValue lessThan(Number other) {
-        return new BooleanConstant(get() < other.doubleValue());
+        return () -> get() < other.longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue lessThan(ObservableValue<Number> other) {
+        return () -> get() < other.getValue().longValue();
     }
     
     /**
@@ -101,7 +164,15 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableBooleanValue greaterThanOrEqualTo(Number other) {
-        return new BooleanConstant(get() >= other.doubleValue());
+        return () -> get() >= other.longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue greaterThanOrEqualTo(ObservableValue<Number> other) {
+        return () -> get() >= other.getValue().longValue();
     }
     
     /**
@@ -109,6 +180,14 @@ public interface ObservableLongValue extends ObservableNumberValue<Long> {
      */
     @Override
     default ObservableBooleanValue lessThanOrEqualTo(Number other) {
-        return new BooleanConstant(get() <= other.doubleValue());
+        return () -> get() <= other.longValue();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default ObservableBooleanValue lessThanOrEqualTo(ObservableValue<Number> other) {
+        return () -> get() <= other.getValue().longValue();
     }
 }

@@ -4,23 +4,50 @@ import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyDoubleProperty;
 import com.stardevllc.starlib.observable.writable.WritableDoubleValue;
 
+/**
+ * Represents a Read-Write Double value with an identity
+ */
 public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements ReadWriteProperty<Double>, WritableDoubleValue {
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param bean  The owner
+     * @param name  The name
+     * @param value The value
+     */
     public ReadWriteDoubleProperty(Object bean, String name, double value) {
         super(bean, name, value);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param bean  The owner
+     * @param name  The name
+     */
     public ReadWriteDoubleProperty(Object bean, String name) {
         super(bean, name);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     *
+     * @param value The value
+     */
     public ReadWriteDoubleProperty(double value) {
         super(value);
     }
     
+    /**
+     * Constructs a ReadWrite Property
+     */
     public ReadWriteDoubleProperty() {
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(double value) {
         double oldValue = this.value;
@@ -28,6 +55,9 @@ public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements R
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bindBidirectionally(WritableProperty<Double> other) {
         if (other == null) {
@@ -39,6 +69,9 @@ public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements R
         addListener(listener);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void unbindBidirectionally(WritableProperty<Double> other) {
         BidirectionalBindListener<Double> cl = new BidirectionalBindListener<>(this, other);
@@ -46,6 +79,9 @@ public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements R
         addListener(cl);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReadOnlyDoubleProperty asReadOnly() {
         ReadOnlyDoubleProperty property = new ReadOnlyDoubleProperty(this.bean, this.name);

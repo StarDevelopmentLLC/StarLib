@@ -9,6 +9,10 @@ public final class ClockRunnable implements Runnable {
     
     private ClockManager clockManager;
     
+    /**
+     * Constructs a new clock runnable
+     * @param clockManager The clock manager
+     */
     public ClockRunnable(ClockManager clockManager) {
         this.clockManager = clockManager;
     }

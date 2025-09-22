@@ -22,7 +22,7 @@ public class TimeFormat {
         return -1;
     };
 
-    public static final Set<TimeUnit> UNIT_ORDER = new TreeSet<>(UNIT_COMPARATOR);
+    private static final Set<TimeUnit> UNIT_ORDER = new TreeSet<>(UNIT_COMPARATOR);
 
     static {
         UNIT_ORDER.addAll(Arrays.asList(TimeUnit.values()));

@@ -20,8 +20,6 @@ public interface Property<T> extends Observable {
      */
     String getName();
     
-
-    
     /**
      * Gets the Class object that represents the value of this property
      *
