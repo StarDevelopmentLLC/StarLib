@@ -23,10 +23,9 @@
  *  SOFTWARE.
  */
 
-package com.stardevllc.starlib.bucket;
+package com.stardevllc.starlib.cycle;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 final class CycleImpl<E> implements Cycle<E> {
@@ -46,11 +45,11 @@ final class CycleImpl<E> implements Cycle<E> {
      */
     private AtomicInteger cursor = new AtomicInteger(0);
 
-    CycleImpl(List<E> objects) {
+    CycleImpl(Collection<E> objects) {
         if (objects == null || objects.isEmpty()) {
             throw new IllegalArgumentException("List of objects cannot be null/empty.");
         }
-        this.objects = Collections.unmodifiableList(objects);
+        this.objects = List.copyOf(objects);
         this.size = this.objects.size();
     }
 

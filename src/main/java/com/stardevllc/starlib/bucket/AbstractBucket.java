@@ -26,6 +26,7 @@
 package com.stardevllc.starlib.bucket;
 
 import com.stardevllc.starlib.bucket.partitioning.PartitioningStrategy;
+import com.stardevllc.starlib.cycle.Cycle;
 
 import java.util.*;
 import java.util.function.Consumer;

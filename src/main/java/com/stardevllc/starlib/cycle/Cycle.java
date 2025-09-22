@@ -23,8 +23,9 @@
  *  SOFTWARE.
  */
 
-package com.stardevllc.starlib.bucket;
+package com.stardevllc.starlib.cycle;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public interface Cycle<E> {
      * @param <E> the element type
      * @return the cycle
      */
-    static <E> Cycle<E> of(List<E> objects) {
+    static <E> Cycle<E> of(Collection<E> objects) {
         return new CycleImpl<>(objects);
     }
 
