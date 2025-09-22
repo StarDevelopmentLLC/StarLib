@@ -37,16 +37,16 @@ import java.util.Set;
  *
  * <p>The performance of {@link Bucket} should be largely similar to the performance
  * of the underlying {@link Set}. Elements are stored twice - once in a set
- * containing all elements in the com.stardevllc.bucket, and again in a set representing each partition.</p>
+ * containing all elements in the {@link Bucket}, and again in a set representing each partition.</p>
  *
  * @param <E> the element type
  */
 public interface Bucket<E> extends Set<E> {
 
     /**
-     * Gets the number of partitions used to form this com.stardevllc.bucket.
+     * Gets the number of partitions used to form this {@link Bucket}
      *
-     * @return the number of partitions in this com.stardevllc.bucket
+     * @return the number of partitions in this {@link Bucket}
      */
     int getPartitionCount();
 
@@ -61,19 +61,19 @@ public interface Bucket<E> extends Set<E> {
     BucketPartition<E> getPartition(int i);
 
     /**
-     * Gets the partitions which form this com.stardevllc.bucket.
+     * Gets the partitions which form this {@link Bucket}
      *
-     * @return the partitions within the com.stardevllc.bucket
+     * @return the partitions within the {@link Bucket}
      */
     List<BucketPartition<E>> getPartitions();
 
     /**
-     * Returns a cycle instance unique to this com.stardevllc.bucket.
+     * Returns a cycle instance unique to this {@link Bucket}
      *
      * <p>This method is provided as a utility for operating deterministically on
      * all elements within the com.stardevllc.bucket over a period of time.</p>
      *
-     * <p>The same cycle instance is returned for each com.stardevllc.bucket.</p>
+     * <p>The same cycle instance is returned for each {@link Bucket}</p>
      *
      * @return a cycle of partitions
      */

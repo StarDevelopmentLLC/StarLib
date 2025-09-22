@@ -37,7 +37,7 @@ public interface GenericPartitioningStrategy extends PartitioningStrategy<Object
     /**
      * Calculates the index of the partition to use for any given object.
      *
-     * @param bucket the com.stardevllc.bucket
+     * @param bucket the {@link Bucket}
      * @return the index
      */
     int allocate(Bucket<?> bucket);

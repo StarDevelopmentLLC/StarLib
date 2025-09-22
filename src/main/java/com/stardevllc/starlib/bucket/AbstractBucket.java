@@ -44,17 +44,17 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
     protected final PartitioningStrategy<E> strategy;
     
     /**
-     * The number of partitions in this com.stardevllc.bucket
+     * The number of partitions in this {@link Bucket}
      */
     protected final int size;
     
     /**
-     * The content in the com.stardevllc.bucket
+     * The content in the {@link Bucket}
      */
     protected final Set<E> content;
     
     /**
-     * The partitions in the com.stardevllc.bucket
+     * The partitions in the {@link Bucket}
      */
     protected final List<Set<E>> partitions;
     
@@ -64,7 +64,7 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
     protected final List<BucketPartition<E>> partitionView;
     
     /**
-     * A cycle of the partitions in this com.stardevllc.bucket
+     * A cycle of the partitions in this {@link Bucket}
      */
     private final Cycle<BucketPartition<E>> partitionCycle;
     
@@ -97,32 +97,47 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
     }
     
     /**
-     * Supplies the set instances to use for each partition in the com.stardevllc.bucket
+     * Supplies the set instances to use for each partition in the {@link Bucket}
      *
      * @return a new set
      */
     protected abstract Set<E> createSet();
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPartitionCount() {
         return this.size;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BucketPartition<E> getPartition(int index) {
         return this.partitionView.get(index);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<BucketPartition<E>> getPartitions() {
         return this.partitionView;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Cycle<BucketPartition<E>> asCycle() {
         return this.partitionCycle;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean add(E e) {
         if (e == null) {
@@ -137,6 +152,9 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
         return true;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean remove(Object o) {
         if (!this.content.remove(o)) {
@@ -150,6 +168,9 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
         return true;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         for (Set<E> partition : this.partitions) {
@@ -158,28 +179,37 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
         this.content.clear();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<E> iterator() {
         return new BucketIterator();
     }
     
-    // just delegate to the backing content set
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int size() {
         return this.content.size();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return this.content.isEmpty();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean contains(Object o) {
         return this.content.contains(o);
     }
-    
     
     /**
      * Class used to wrap the result of {@link Bucket}'s {@link #iterator()} method.
@@ -226,7 +256,7 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
     /**
      * Class used to wrap the backing sets returned by {@link #getPartition(int)}.
      * This wrapping prevents add operations, and propagates calls with remove objects
-     * back to the parent com.stardevllc.bucket.
+     * back to the parent {@link Bucket}
      */
     private final class SetView extends AbstractSet<E> implements BucketPartition<E> {
         private final Set<E> backing;
@@ -306,7 +336,7 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
     
     /**
      * Wrapping around {@link SetView}'s iterators, to propagate calls to the
-     * #remove method to the parent com.stardevllc.bucket.
+     * #remove method to the parent {@link Bucket}
      */
     private final class SetViewIterator implements Iterator<E> {
         private final Iterator<E> delegate;
@@ -346,5 +376,4 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
             this.delegate.forEachRemaining(action);
         }
     }
-    
 }

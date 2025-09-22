@@ -32,7 +32,7 @@ import com.stardevllc.starlib.bucket.Bucket;
  *
  * <p>Functions will not necessarily return consistent results for subsequent
  * calls using the same parameters, as their behaviour usually depends heavily on
- * current com.stardevllc.bucket state.</p>
+ * current {@link Bucket} state.</p>
  *
  * @param <T> the object type
  */
@@ -45,7 +45,7 @@ public interface PartitioningStrategy<T> {
      * <p>The index must be within range of the buckets size.</p>
      *
      * @param object the object
-     * @param bucket the com.stardevllc.bucket
+     * @param bucket the {@link Bucket}
      * @return the index
      */
     int allocate(T object, Bucket<T> bucket);

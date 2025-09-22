@@ -36,6 +36,15 @@ import java.util.function.Supplier;
  */
 public final class Buckets {
     
+    /**
+     * Create a new {@link Bucket} using a custom set from a {@link Supplier}
+     *
+     * @param size        The size per bucket
+     * @param strategy    The {@link PartitioningStrategy} to use
+     * @param setSupplier The {@link Supplier} for the {@link Set}
+     * @param <E>         The {@link Bucket} element type
+     * @return The newly created {@link Bucket}
+     */
     public static <E> Bucket<E> newBucket(int size, PartitioningStrategy<E> strategy, Supplier<Set<E>> setSupplier) {
         return new AbstractBucket<>(size, strategy) {
             @Override
@@ -45,6 +54,14 @@ public final class Buckets {
         };
     }
     
+    /**
+     * Creates a new {@link Bucket} backed by a {@link HashSet}
+     *
+     * @param size     The size per bucket
+     * @param strategy The {@link PartitioningStrategy} to use
+     * @param <E>      The {@link Bucket} element type
+     * @return The newly created {@link Bucket}
+     */
     public static <E> Bucket<E> newHashSetBucket(int size, PartitioningStrategy<E> strategy) {
         return new AbstractBucket<>(size, strategy) {
             @Override
@@ -54,6 +71,14 @@ public final class Buckets {
         };
     }
     
+    /**
+     * Creates a new {@link Bucket} backed by a synchronized {@link HashSet}
+     *
+     * @param size     The size per bucket
+     * @param strategy The {@link PartitioningStrategy} to use
+     * @param <E>      The {@link Bucket} element type
+     * @return The newly created {@link Bucket}
+     */
     public static <E> Bucket<E> newSynchronizedHashSetBucket(int size, PartitioningStrategy<E> strategy) {
         return new AbstractBucket<>(size, strategy) {
             @Override
@@ -63,6 +88,14 @@ public final class Buckets {
         };
     }
     
+    /**
+     * Creates a new {@link Bucket} backed by a concurrent {@link HashSet}
+     *
+     * @param size     The size per bucket
+     * @param strategy The {@link PartitioningStrategy} to use
+     * @param <E>      The {@link Bucket} element type
+     * @return The newly created {@link Bucket}
+     */
     public static <E> Bucket<E> newConcurrentBucket(int size, PartitioningStrategy<E> strategy) {
         return new AbstractBucket<>(size, strategy) {
             @Override
@@ -75,5 +108,4 @@ public final class Buckets {
     private Buckets() {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
-    
 }

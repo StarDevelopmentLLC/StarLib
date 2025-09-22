@@ -34,23 +34,47 @@ import java.util.concurrent.ThreadLocalRandom;
  * Some standard partitioning strategies for use in {@link Bucket}s.
  */
 public final class PartitioningStrategies {
-
+    
+    /**
+     * A strategy that randomly selects objects from the bucket
+     *
+     * @param <T> The element type
+     * @return The Strategy Instance
+     */
     public static <T> PartitioningStrategy<T> random() {
         return Strategies.RANDOM.cast();
     }
-
+    
+    /**
+     * A strategy that selects partitions based on lowest size
+     *
+     * @param <T> The element type
+     * @return The Strategy Instance
+     */
     public static <T> PartitioningStrategy<T> lowestSize() {
         return Strategies.LOWEST_SIZE.cast();
     }
-
+    
+    /**
+     * A strategy that selects partitions based on the bucket's cycle next()
+     *
+     * @param <T> The element type
+     * @return The Strategy Instance
+     */
     public static <T> PartitioningStrategy<T> nextInCycle() {
         return Strategies.NEXT_IN_CYCLE.cast();
     }
-
+    
+    /**
+     * A strategy that selects partitions based on the bucket's cycle previous()
+     *
+     * @param <T> The element type
+     * @return The Strategy Instance
+     */
     public static <T> PartitioningStrategy<T> previousInCycle() {
         return Strategies.PREVIOUS_IN_CYCLE.cast();
     }
-
+    
     private enum Strategies implements GenericPartitioningStrategy {
         RANDOM {
             @Override
@@ -63,21 +87,21 @@ public final class PartitioningStrategies {
             public int allocate(Bucket<?> bucket) {
                 int index = -1;
                 int lowestSize = Integer.MAX_VALUE;
-
+                
                 for (BucketPartition<?> partition : bucket.getPartitions()) {
                     int size = partition.size();
                     int i = partition.getPartitionIndex();
-
+                    
                     if (size == 0) {
                         return i;
                     }
-
+                    
                     if (size < lowestSize) {
                         lowestSize = size;
                         index = i;
                     }
                 }
-
+                
                 if (index == -1) {
                     throw new AssertionError();
                 }
@@ -97,7 +121,7 @@ public final class PartitioningStrategies {
             }
         }
     }
-
+    
     private PartitioningStrategies() {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }

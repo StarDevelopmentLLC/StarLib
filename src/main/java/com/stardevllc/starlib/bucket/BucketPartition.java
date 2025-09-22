@@ -36,7 +36,7 @@ import java.util.Set;
 public interface BucketPartition<E> extends Set<E> {
 
     /**
-     * Gets the index of this partition within the com.stardevllc.bucket
+     * Gets the index of this partition within the {@link Bucket}
      *
      * @return the index
      */
