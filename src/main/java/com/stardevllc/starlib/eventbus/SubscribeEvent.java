@@ -1,9 +1,11 @@
 package com.stardevllc.starlib.eventbus;
 
+import com.stardevllc.starlib.eventbus.impl.SimpleEventBus;
+
 import java.lang.annotation.*;
 
 /**
- * Marker annotation for a {@link com.stardevllc.starlib.eventbus.impl.SimpleEventBus}. Not required if using a custom event bus
+ * Marker annotation for a {@link SimpleEventBus}. Not required if using a custom event bus
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
