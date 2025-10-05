@@ -118,7 +118,9 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         }
         
         if (key == null) {
-            key = keyGenerator.apply(object);
+            if (keyGenerator != null) {
+                key = keyGenerator.apply(object);
+            }
         }
         
         return register(key, object);
