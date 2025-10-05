@@ -40,10 +40,10 @@ class DependencyInjectorImpl implements DependencyInjector {
     public <I> I inject(I object) {
         boolean fullClassInject = object.getClass().isAnnotationPresent(Inject.class);
         //Get all fields of the class
-        Set<Field> fields = ReflectionHelper.getClassFields(object.getClass());
+        Map<String, Field> fields = ReflectionHelper.getClassFields(object.getClass());
         //Loop through the fields
         fieldLoop:
-        for (Field field : fields) {
+        for (Field field : fields.values()) {
             //Only search fields that have the @Inject annotation
             if (!field.isAnnotationPresent(Inject.class) && !fullClassInject) {
                 continue;

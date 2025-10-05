@@ -253,6 +253,8 @@ public final class ReflectionHelper {
         return getClassMethod(clazz.getSuperclass(), name, parameters);
     }
     
+    private static final Map<Class<?>, Set<Method>> classMethods = new HashMap<>();
+    
     /**
      * Recursively fetches the methods of a class
      *
@@ -260,29 +262,21 @@ public final class ReflectionHelper {
      * @return The set of methods
      */
     public static Set<Method> getClassMethods(Class<?> clazz) {
-        Set<Method> methods = new LinkedHashSet<>(Arrays.asList(clazz.getDeclaredMethods()));
-        if (clazz.getSuperclass() != null && clazz.getSuperclass() != Object.class) {
-            getClassMethods(clazz.getSuperclass(), methods);
+        if (classMethods.containsKey(clazz)) {
+            return new HashSet<>(classMethods.get(clazz));
         }
+        
+        Set<Method> methods = new LinkedHashSet<>(Arrays.asList(clazz.getDeclaredMethods()));
+        classMethods.put(clazz, methods);
+        
+        if (clazz.getSuperclass() != null && clazz.getSuperclass() != Object.class) {
+            methods.addAll(getClassMethods(clazz.getSuperclass()));
+        }
+        
         return methods;
     }
     
-    /**
-     * Recursively fetches the methods of a class
-     *
-     * @param clazz   The class to search
-     * @param methods The existing methods
-     */
-    public static void getClassMethods(Class<?> clazz, Set<Method> methods) {
-        if (methods == null) {
-            methods = new LinkedHashSet<>();
-        }
-        
-        methods.addAll(Arrays.asList(clazz.getDeclaredMethods()));
-        if (clazz.getSuperclass() != null) {
-            getClassMethods(clazz.getSuperclass(), methods);
-        }
-    }
+    private static final Map<Class<?>, Map<String, Field>> classFields = new HashMap<>();
     
     /**
      * Recursively gets the field of a class
@@ -292,12 +286,8 @@ public final class ReflectionHelper {
      * @return The found field or null if it is invalid
      */
     public static Field getClassField(Class<?> clazz, String name) {
-        try {
-            return clazz.getDeclaredField(name);
-        } catch (NoSuchFieldException e) {
-        }
-        
-        return getClassField(clazz.getSuperclass(), name);
+        Map<String, Field> fields = getClassFields(clazz);
+        return fields.get(name.toLowerCase());
     }
     
     /**
@@ -306,28 +296,22 @@ public final class ReflectionHelper {
      * @param clazz The class to search
      * @return The found fields
      */
-    public static Set<Field> getClassFields(Class<?> clazz) {
-        Set<Field> fields = new LinkedHashSet<>(Arrays.asList(clazz.getDeclaredFields()));
-        if (clazz.getSuperclass() != null) {
-            getClassFields(clazz.getSuperclass(), fields);
-        }
-        return fields;
-    }
-    
-    /**
-     * Recursively fetches all fields of a class and super-classes
-     *
-     * @param clazz  The class to search
-     * @param fields The existing fields
-     */
-    public static void getClassFields(Class<?> clazz, Set<Field> fields) {
-        if (fields == null) {
-            fields = new LinkedHashSet<>();
+    public static Map<String, Field> getClassFields(Class<?> clazz) {
+        if (classFields.containsKey(clazz)) {
+            return new HashMap<>(classFields.get(clazz));
         }
         
-        fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
-        if (clazz.getSuperclass() != null) {
-            getClassFields(clazz.getSuperclass(), fields);
+        Map<String, Field> fields = new HashMap<>();
+        for (Field declaredField : clazz.getDeclaredFields()) {
+            fields.put(declaredField.getName().toLowerCase(), declaredField);
         }
+        
+        classFields.put(clazz, fields);
+        
+        if (clazz.getSuperclass() != null) {
+            fields.putAll(getClassFields(clazz.getSuperclass()));
+        }
+        
+        return fields;
     }
 }
