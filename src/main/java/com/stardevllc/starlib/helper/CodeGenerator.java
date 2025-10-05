@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.helper;
 
-import java.util.Random;
+import java.util.*;
 
 /**
  * Utility class that generates random alphanumeric codes
@@ -50,15 +50,13 @@ public final class CodeGenerator {
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         
-        boolean letters = false, numbers = false, uppercase = false;
+        Set<Option> optionSet = EnumSet.noneOf(Option.class);
         
-        for (Option option : options) {
-            switch (option) {
-                case LETTERS -> letters = true;
-                case UPPERCASE -> uppercase = true;
-                case NUMBERS -> numbers = true;
-            }
+        if (options != null) {
+            optionSet.addAll(List.of(options));
         }
+        
+        boolean letters = optionSet.contains(Option.LETTERS), numbers = optionSet.contains(Option.NUMBERS), uppercase = optionSet.contains(Option.UPPERCASE);
 
         if (!letters && !numbers) {
             throw new IllegalArgumentException("You must have at least letters and/or numbers in the code.");
