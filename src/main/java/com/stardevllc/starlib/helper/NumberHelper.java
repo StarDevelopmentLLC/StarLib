@@ -59,8 +59,8 @@ public final class NumberHelper {
      * @return The converted value
      */
     public static int toInt(Object object) {
-        if (object instanceof Number) {
-            return ((Number) object).intValue();
+        if (object instanceof Number number) {
+            return number.intValue();
         }
         
         try {
@@ -77,8 +77,8 @@ public final class NumberHelper {
      * @return The converted value
      */
     public static float toFloat(Object object) {
-        if (object instanceof Number) {
-            return ((Number) object).floatValue();
+        if (object instanceof Number number) {
+            return number.floatValue();
         }
         
         try {
@@ -95,8 +95,8 @@ public final class NumberHelper {
      * @return The converted value
      */
     public static double toDouble(Object object) {
-        if (object instanceof Number) {
-            return ((Number) object).doubleValue();
+        if (object instanceof Number number) {
+            return number.doubleValue();
         }
         
         try {
@@ -113,8 +113,8 @@ public final class NumberHelper {
      * @return The converted value
      */
     public static long toLong(Object object) {
-        if (object instanceof Number) {
-            return ((Number) object).longValue();
+        if (object instanceof Number number) {
+            return number.longValue();
         }
         
         try {
@@ -131,8 +131,8 @@ public final class NumberHelper {
      * @return The converted value
      */
     public static short toShort(Object object) {
-        if (object instanceof Number) {
-            return ((Number) object).shortValue();
+        if (object instanceof Number number) {
+            return number.shortValue();
         }
         
         try {
@@ -149,8 +149,8 @@ public final class NumberHelper {
      * @return The converted value
      */
     public static byte toByte(Object object) {
-        if (object instanceof Number) {
-            return ((Number) object).byteValue();
+        if (object instanceof Number number) {
+            return number.byteValue();
         }
         
         try {
