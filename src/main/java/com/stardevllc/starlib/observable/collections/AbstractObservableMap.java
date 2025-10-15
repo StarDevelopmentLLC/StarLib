@@ -3,6 +3,7 @@ package com.stardevllc.starlib.observable.collections;
 import com.stardevllc.starlib.eventbus.IEventBus;
 import com.stardevllc.starlib.eventbus.impl.SimpleEventBus;
 import com.stardevllc.starlib.observable.collections.event.MapChangeEvent;
+import com.stardevllc.starlib.observable.collections.listener.MapChangeListener;
 
 import java.util.Map;
 import java.util.function.*;
@@ -50,6 +51,16 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     @Override
     public IEventBus<MapChangeEvent> eventBus() {
         return this.eventBus;
+    }
+    
+    @Override
+    public void addChangeListener(MapChangeListener<K, V> listener) {
+        this.eventBus.subscribe(listener);
+    }
+    
+    @Override
+    public void removeChangeListener(MapChangeListener<K, V> listener) {
+        this.eventBus.unsubscribe(listener);
     }
     
     /**
