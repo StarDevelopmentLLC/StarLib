@@ -17,7 +17,7 @@ public class IntegerStringConverter implements StringConverter<Integer> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(Integer fromObject) {
         if (fromObject == null) {
             return "0";
         }

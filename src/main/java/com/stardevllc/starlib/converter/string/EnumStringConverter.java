@@ -20,7 +20,7 @@ public class EnumStringConverter<T extends Enum<T>> implements StringConverter<T
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(T fromObject) {
         if (enumClass == fromObject.getClass()) {
             return ((T) fromObject).name();
         }

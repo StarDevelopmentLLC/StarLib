@@ -19,7 +19,7 @@ public class DurationStringConverter implements StringConverter<Duration> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(Duration fromObject) {
         if (fromObject instanceof Duration duration) {
             return String.valueOf(duration.get());
         }

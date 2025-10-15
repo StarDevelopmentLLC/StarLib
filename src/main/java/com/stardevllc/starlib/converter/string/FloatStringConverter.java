@@ -17,7 +17,7 @@ public class FloatStringConverter implements StringConverter<Float> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(Float fromObject) {
         if (fromObject == null) {
             return "0.0";
         }

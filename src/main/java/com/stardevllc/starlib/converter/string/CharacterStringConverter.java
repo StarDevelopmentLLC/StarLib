@@ -17,7 +17,7 @@ public class CharacterStringConverter implements StringConverter<Character> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(Character fromObject) {
         if (fromObject == null) {
             return "";
         }

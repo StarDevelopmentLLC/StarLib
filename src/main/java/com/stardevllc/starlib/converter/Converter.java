@@ -13,7 +13,9 @@ public interface Converter<F, T> {
      * @param fromObject The object to convert
      * @return The converted value
      */
-    T convertFrom(Object fromObject);
+    default T convertFrom(F fromObject) {
+        return null;
+    }
     
     /**
      * Reverse of {@link #convertFrom(Object)}
@@ -21,5 +23,7 @@ public interface Converter<F, T> {
      * @param toObject The object to convert
      * @return The converted value
      */
-    F convertTo(T toObject);
+    default F convertTo(T toObject) {
+        return null;
+    }
 }

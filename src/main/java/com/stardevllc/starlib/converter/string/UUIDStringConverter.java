@@ -18,7 +18,7 @@ public class UUIDStringConverter implements StringConverter<UUID> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(UUID fromObject) {
         if (fromObject == null) {
             return "";
         }

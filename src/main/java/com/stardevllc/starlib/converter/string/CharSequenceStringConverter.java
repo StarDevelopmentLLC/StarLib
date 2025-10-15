@@ -17,7 +17,7 @@ public class CharSequenceStringConverter implements StringConverter<CharSequence
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(CharSequence fromObject) {
         return fromObject.toString();
     }
     

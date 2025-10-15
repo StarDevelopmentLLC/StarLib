@@ -17,7 +17,7 @@ public class BooleanStringConverter implements StringConverter<Boolean> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(Boolean fromObject) {
         if (fromObject == null) {
             return "false";
         }

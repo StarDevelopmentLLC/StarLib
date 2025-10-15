@@ -17,7 +17,7 @@ public class ByteStringConverter implements StringConverter<Byte> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(Byte fromObject) {
         if (fromObject == null) {
             return "0";
         }

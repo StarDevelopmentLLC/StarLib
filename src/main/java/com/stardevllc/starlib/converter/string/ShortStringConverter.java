@@ -17,7 +17,7 @@ public class ShortStringConverter implements StringConverter<Short> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(Short fromObject) {
         if (fromObject == null) {
             return "0";
         }

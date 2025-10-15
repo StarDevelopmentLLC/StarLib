@@ -17,7 +17,7 @@ public class LongStringConverter implements StringConverter<Long> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(Long fromObject) {
         if (fromObject == null) {
             return "0";
         }

@@ -17,7 +17,7 @@ public class DoubleStringConverter implements StringConverter<Double> {
      * {@inheritDoc}
      */
     @Override
-    public String convertFrom(Object fromObject) {
+    public String convertFrom(Double fromObject) {
         if (fromObject == null) {
             return "0.0";
         }
