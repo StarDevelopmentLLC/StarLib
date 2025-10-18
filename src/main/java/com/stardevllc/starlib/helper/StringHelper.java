@@ -7,12 +7,12 @@ import java.util.regex.Pattern;
  * A collection of utilities for Strings
  */
 public final class StringHelper {
+    
     private StringHelper() {
     }
     
     private static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
-    
-    private static Map<String, UUID> uuidCache = new HashMap<>();
+    private static final Map<String, UUID> uuidCache = new HashMap<>();
     
     /**
      * Pluralizes a word using some very basic rules
@@ -21,12 +21,7 @@ public final class StringHelper {
      * @return the result
      */
     public static String pluralize(String word) {
-        if (word.charAt(word.length() - 1) == 's') {
-            word += "'";
-        } else {
-            word += "'s";
-        }
-        return word;
+        return new Pluralizer().pluralize(word);
     }
     
     /**
