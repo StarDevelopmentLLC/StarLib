@@ -1,9 +1,6 @@
 package com.stardevllc.starlib.observable.collections;
 
-import com.stardevllc.starlib.eventbus.IEventBus;
-import com.stardevllc.starlib.eventbus.impl.SimpleEventBus;
-import com.stardevllc.starlib.observable.collections.event.CollectionChangeEvent;
-import com.stardevllc.starlib.observable.collections.listener.CollectionChangeListener;
+import com.stardevllc.starlib.observable.collections.handler.CollectionListenerHandler;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -25,9 +22,9 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
     public AbstractObservableCollection() {}
     
     /**
-     * An EventBus that handles change events
+     * The listener handler for change listeners
      */
-    protected final IEventBus<CollectionChangeEvent<E>> eventBus = new SimpleEventBus<>();
+    protected final CollectionListenerHandler<E> handler = new CollectionListenerHandler<>();
     
     /**
      * The backing collection is what actually does the collection things
@@ -36,20 +33,9 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
      */
     protected abstract Collection<E> getBackingCollection();
     
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addListener(CollectionChangeListener<E> listener) {
-        eventBus.subscribe(listener);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeListener(CollectionChangeListener<E> listener) {
-        eventBus.unsubscribe(listener);
+    public CollectionListenerHandler<E> getHandler() {
+        return handler;
     }
     
     /**
@@ -107,7 +93,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
     public boolean add(E e) {
         boolean added = getBackingCollection().add(e);
         if (added) {
-            this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
+            handler.handleChange(this, e, null);
         }
         return added;
     }
@@ -120,10 +106,6 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         return getBackingCollection().isEmpty();
     }
     
-    public IEventBus<CollectionChangeEvent<E>> eventBus() {
-        return eventBus;
-    }
-    
     /**
      * {@inheritDoc}
      */
@@ -131,7 +113,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
     public boolean remove(Object o) {
         boolean removed = getBackingCollection().remove(o);
         if (removed) {
-            this.eventBus.post(new CollectionChangeEvent<>(this, null, (E) o));
+            this.handler.handleChange(this, null, (E) o);
         }
         
         return removed;
@@ -169,7 +151,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         boolean modified = false;
         for (E e : c) {
             if (add(e)) {
-                this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
+                this.handler.handleChange(this, e, null);
                 modified = true;
             }
         }
@@ -293,7 +275,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
         @Override
         public void remove() {
             this.backingIterator.remove();
-            this.backingCollection.eventBus().post(new CollectionChangeEvent<>(this.backingCollection, null, current));
+            this.backingCollection.getHandler().handleChange(this.backingCollection, null, current);
         }
         
         /**

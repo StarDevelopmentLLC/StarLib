@@ -1,7 +1,6 @@
 package com.stardevllc.starlib.observable.collections;
 
 import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.collections.event.CollectionChangeEvent;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -62,7 +61,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
     @Override
     public E set(int index, E element) {
         E replaced = getBackingList().set(index, element);
-        this.eventBus.post(new CollectionChangeEvent<>(this, element, replaced));
+        this.handler.handleChange(this, element, replaced);
         return replaced;
     }
     
@@ -72,7 +71,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
     @Override
     public void add(int index, E element) {
         getBackingList().add(index, element);
-        this.eventBus.post(new CollectionChangeEvent<>(this, element, null));
+        this.handler.handleChange(this, element, null);
     }
     
     /**
@@ -81,7 +80,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
     @Override
     public E remove(int index) {
         E removed = getBackingList().remove(index);
-        this.eventBus.post(new CollectionChangeEvent<>(this, null, removed));
+        this.handler.handleChange(this, null, removed);
         return removed;
     }
     
@@ -303,7 +302,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
         @Override
         public void remove() {
             backingIterator.remove();
-            backingList.eventBus().post(new CollectionChangeEvent<>(backingList, null, current));
+            backingList.getHandler().handleChange(backingList, null, current);
         }
         
         /**
@@ -312,7 +311,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
         @Override
         public void set(E e) {
             backingIterator.set(e);
-            backingList.eventBus().post(new CollectionChangeEvent<>(backingList, e, current));
+            backingList.getHandler().handleChange(backingList, e, current);
         }
         
         /**
@@ -321,7 +320,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
         @Override
         public void add(E e) {
             backingIterator.add(e);
-            backingList.eventBus().post(new CollectionChangeEvent<>(backingList, e, null));
+            backingList.getHandler().handleChange(backingList, e, null);
         }
     }
 }

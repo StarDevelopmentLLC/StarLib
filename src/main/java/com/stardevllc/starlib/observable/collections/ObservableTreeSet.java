@@ -1,7 +1,5 @@
 package com.stardevllc.starlib.observable.collections;
 
-import com.stardevllc.starlib.observable.collections.event.CollectionChangeEvent;
-
 import java.util.*;
 
 /**
@@ -73,7 +71,7 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E pollFirst() {
         E value = backingTreeSet.pollFirst();
-        this.eventBus.post(new CollectionChangeEvent<>(this, null, value));
+        this.handler.handleChange(this, null, value);
         return value;
     }
     
@@ -83,7 +81,7 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E pollLast() {
         E value = backingTreeSet.pollLast();
-        this.eventBus.post(new CollectionChangeEvent<>(this, null, value));
+        this.handler.handleChange(this, null, value);
         return value;
     }
     
@@ -165,7 +163,7 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E removeFirst() {
         E removed = this.backingTreeSet.removeFirst();
-        this.eventBus.post(new CollectionChangeEvent<>(this, null, removed));
+        this.handler.handleChange(this, null, removed);
         return removed;
     }
     
@@ -175,7 +173,7 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E removeLast() {
         E removed = this.backingTreeSet.removeLast();
-        this.eventBus.post(new CollectionChangeEvent<>(this, null, removed));
+        this.handler.handleChange(this, null, removed);
         return removed;
     }
     
@@ -209,7 +207,7 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public void addFirst(E e) {
         this.backingTreeSet.addFirst(e);
-        this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
+        this.handler.handleChange(this, e, null);
     }
     
     /**
@@ -218,7 +216,7 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public void addLast(E e) {
         this.backingTreeSet.addLast(e);
-        this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
+        this.handler.handleChange(this, e, null);
     }
     
     /**

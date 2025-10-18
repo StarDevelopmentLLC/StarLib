@@ -1,20 +1,21 @@
 package com.stardevllc.starlib.observable.collections.listener;
 
-import com.stardevllc.starlib.eventbus.SubscribeEvent;
-import com.stardevllc.starlib.observable.collections.event.CollectionChangeEvent;
+import com.stardevllc.starlib.observable.collections.ObservableCollection;
 
 /**
  * Listener for collection change events
  *
  * @param <E> The element type
  */
-@SubscribeEvent
 @FunctionalInterface
 public interface CollectionChangeListener<E> {
+    
     /**
-     * Called when changes occured
+     * Called when changes occur
      *
-     * @param event The event
+     * @param collection The collection that changed
+     * @param added      The element added
+     * @param removed    The element removed
      */
-    void changed(CollectionChangeEvent<E> event);
+    void changed(ObservableCollection<E> collection, E added, E removed);
 }

@@ -1,7 +1,5 @@
 package com.stardevllc.starlib.observable.collections;
 
-import com.stardevllc.starlib.observable.collections.event.CollectionChangeEvent;
-
 import java.util.*;
 
 /**
@@ -50,7 +48,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     public boolean offerFirst(E e) {
         boolean result = this.backingLinkedList.offerFirst(e);
         if (result) {
-            this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
+            this.handler.handleChange(this, e, null);
         }
         return result;
     }
@@ -62,7 +60,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     public boolean offerLast(E e) {
         boolean result = this.backingLinkedList.offerLast(e);
         if (result) {
-            this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
+            this.handler.handleChange(this, e, null);
         }
         return result;
     }
@@ -73,7 +71,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     @Override
     public E pollFirst() {
         E value = this.backingLinkedList.pollFirst();
-        this.eventBus.post(new CollectionChangeEvent<>(this, null, value));
+        this.handler.handleChange(this, null, value);
         return value;
     }
     
@@ -83,7 +81,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     @Override
     public E pollLast() {
         E value = this.backingLinkedList.pollLast();
-        this.eventBus.post(new CollectionChangeEvent<>(this, null, value));
+        this.handler.handleChange(this, null, value);
         return value;
     }
     
@@ -110,7 +108,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     public boolean removeFirstOccurrence(Object o) {
         boolean result = this.backingLinkedList.removeFirstOccurrence(o);
         if (result) {
-            this.eventBus.post(new CollectionChangeEvent<>(this, null, (E) o));
+            this.handler.handleChange(this, null, (E) o);
         }
         return result;
     }
@@ -122,7 +120,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     public boolean removeLastOccurrence(Object o) {
         boolean result = this.backingLinkedList.removeLastOccurrence(o);
         if (result) {
-            this.eventBus.post(new CollectionChangeEvent<>(this, null, (E) o));
+            this.handler.handleChange(this, null, (E) o);
         }
         return result;
     }
@@ -134,7 +132,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     public boolean offer(E e) {
         boolean result = this.backingLinkedList.offer(e);
         if (result) {
-            this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
+            this.handler.handleChange(this, e, null);
         }
         return result;
     }
@@ -145,7 +143,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     @Override
     public E remove() {
         E removed = this.backingLinkedList.remove();
-        this.eventBus.post(new CollectionChangeEvent<>(this, null, removed));
+        this.handler.handleChange(this, null, removed);
         return removed;
     }
     
@@ -155,7 +153,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     @Override
     public E poll() {
         E value = this.backingLinkedList.poll();
-        this.eventBus.post(new CollectionChangeEvent<>(this, null, value));
+        this.handler.handleChange(this, null, value);
         return value;
     }
     
@@ -181,7 +179,7 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     @Override
     public void push(E e) {
         this.backingLinkedList.push(e);
-        this.eventBus.post(new CollectionChangeEvent<>(this, e, null));
+        this.handler.handleChange(this, e, null);
     }
     
     /**

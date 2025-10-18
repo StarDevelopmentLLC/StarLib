@@ -1,8 +1,7 @@
 package com.stardevllc.starlib.observable.collections;
 
-import com.stardevllc.starlib.eventbus.IEventBus;
 import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.collections.event.CollectionChangeEvent;
+import com.stardevllc.starlib.observable.collections.handler.CollectionListenerHandler;
 import com.stardevllc.starlib.observable.collections.listener.CollectionChangeListener;
 
 import java.util.Collection;
@@ -19,21 +18,25 @@ public interface ObservableCollection<E> extends Observable, Collection<E> {
      *
      * @param listener The listener to add
      */
-    void addListener(CollectionChangeListener<E> listener);
+    default void addListener(CollectionChangeListener<E> listener) {
+        getHandler().addListener(listener);
+    }
     
     /**
      * Removes a Change listener from this obserable collection
      *
      * @param listener The listener instance to remove
      */
-    void removeListener(CollectionChangeListener<E> listener);
+    default void removeListener(CollectionChangeListener<E> listener) {
+        getHandler().addListener(listener);
+    }
     
     /**
-     * The eventbus handles the change listeners
+     * Gets the handler for the change listeners
      *
-     * @return The eventbus of the observable collection
+     * @return The handler
      */
-    IEventBus<CollectionChangeEvent<E>> eventBus();
+    CollectionListenerHandler<E> getHandler();
     
     /**
      * {@inheritDoc}

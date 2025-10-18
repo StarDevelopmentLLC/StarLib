@@ -1,9 +1,6 @@
 package com.stardevllc.starlib.observable.collections;
 
-import com.stardevllc.starlib.eventbus.IEventBus;
-import com.stardevllc.starlib.eventbus.impl.SimpleEventBus;
-import com.stardevllc.starlib.observable.collections.event.MapChangeEvent;
-import com.stardevllc.starlib.observable.collections.listener.MapChangeListener;
+import com.stardevllc.starlib.observable.collections.handler.MapListenerHandler;
 
 import java.util.Map;
 import java.util.function.*;
@@ -14,13 +11,9 @@ import java.util.function.*;
  * @param <K> The Key Type
  * @param <V> The value type
  */
-@SuppressWarnings("rawtypes")
 public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V> {
     
-    /**
-     * The event bus that is used to listen to changes
-     */
-    protected final IEventBus<MapChangeEvent> eventBus = new SimpleEventBus<>();
+    protected final MapListenerHandler<K, V> handler = new MapListenerHandler<>();
     
     /**
      * The actual map that backs this observable map
@@ -45,22 +38,9 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         
     }
     
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public IEventBus<MapChangeEvent> eventBus() {
-        return this.eventBus;
-    }
-    
-    @Override
-    public void addChangeListener(MapChangeListener<K, V> listener) {
-        this.eventBus.subscribe(listener);
-    }
-    
-    @Override
-    public void removeChangeListener(MapChangeListener<K, V> listener) {
-        this.eventBus.unsubscribe(listener);
+    public MapListenerHandler<K, V> getHandler() {
+        return handler;
     }
     
     /**
@@ -109,7 +89,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     @Override
     public V put(K key, V value) {
         V removed = this.getBackingMap().put(key, value);
-        this.eventBus.post(new MapChangeEvent<>(this, key, value, removed));
+        this.handler.handleChange(this, key, value, removed);
         return removed;
     }
     
@@ -119,7 +99,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     @Override
     public V remove(Object key) {
         V removed = this.getBackingMap().remove(key);
-        this.eventBus.post(new MapChangeEvent<>(this, (K) key, null, removed));
+        this.handler.handleChange(this, (K) key, null, removed);
         return removed;
     }
     
@@ -139,7 +119,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     @Override
     public void clear() {
         for (Entry<K, V> entry : this.entrySet()) {
-            this.eventBus.post(new MapChangeEvent<>(this, entry.getKey(), null, entry.getValue()));
+            this.handler.handleChange(this, entry.getKey(), null, entry.getValue());
         }
         this.entrySet().clear();
     }
@@ -175,7 +155,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     public V putIfAbsent(K key, V value) {
         V result = getBackingMap().putIfAbsent(key, value);
         if (result != null) {
-            this.eventBus.post(new MapChangeEvent<>(this, key, value, null));
+            this.handler.handleChange(this, key, value, null);
         }
         
         return result;
@@ -188,7 +168,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     public boolean remove(Object key, Object value) {
         boolean result = getBackingMap().remove(key, value);
         if (result) {
-            this.eventBus.post(new MapChangeEvent<>(this, (K) key, null, (V) value));
+            this.handler.handleChange(this, (K) key, null, (V) value);
         }
         
         return result;
@@ -201,7 +181,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     public boolean replace(K key, V oldValue, V newValue) {
         boolean result = getBackingMap().replace(key, oldValue, newValue);
         if (result) {
-            this.eventBus.post(new MapChangeEvent<>(this, key, newValue, oldValue));
+            this.handler.handleChange(this, key, newValue, oldValue);
         }
         
         return result;
@@ -213,7 +193,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     @Override
     public V replace(K key, V value) {
         V oldValue = getBackingMap().replace(key, value);
-        this.eventBus.post(new MapChangeEvent<>(this, key, value, oldValue));
+        this.handler.handleChange(this, key, value, oldValue);
         return oldValue;
     }
     
@@ -227,7 +207,7 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
             V newValue;
             if ((newValue = mappingFunction.apply(key)) != null) {
                 put(key, newValue);
-                this.eventBus.post(new MapChangeEvent<>(this, key, newValue, null));
+                this.handler.handleChange(this, key, newValue, null);
                 return newValue;
             }
         }
@@ -245,11 +225,11 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
             V newValue = remappingFunction.apply(key, oldValue);
             if (newValue != null) {
                 put(key, newValue);
-                this.eventBus.post(new MapChangeEvent<>(this, key, newValue, null));
+                this.handler.handleChange(this, key, newValue, null);
                 return newValue;
             } else {
                 V existing = remove(key);
-                this.eventBus.post(new MapChangeEvent<>(this, key, null, existing));
+                this.handler.handleChange(this, key, null, existing);
                 return null;
             }
         } else {
@@ -268,12 +248,12 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         if (newValue == null) {
             if (oldValue != null || containsKey(key)) {
                 V existing = remove(key);
-                this.eventBus.post(new MapChangeEvent<>(this, key, null, existing));
+                this.handler.handleChange(this, key, null, existing);
             }
             return null;
         } else {
             put(key, newValue);
-            this.eventBus.post(new MapChangeEvent<>(this, key, newValue, oldValue));
+            this.handler.handleChange(this, key, newValue, oldValue);
             return newValue;
         }
     }
@@ -287,10 +267,10 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
         V newValue = oldValue == null ? value : remappingFunction.apply(oldValue, value);
         if (newValue == null) {
             remove(key);
-            this.eventBus.post(new MapChangeEvent<>(this, key, null, oldValue));
+            this.handler.handleChange(this, key, null, oldValue);
         } else {
             put(key, newValue);
-            this.eventBus.post(new MapChangeEvent<>(this, key, newValue, oldValue));
+            this.handler.handleChange(this, key, newValue, oldValue);
         }
         return newValue;
     }

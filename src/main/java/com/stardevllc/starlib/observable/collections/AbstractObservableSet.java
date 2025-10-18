@@ -1,7 +1,6 @@
 package com.stardevllc.starlib.observable.collections;
 
 import com.stardevllc.starlib.observable.Observable;
-import com.stardevllc.starlib.observable.collections.event.CollectionChangeEvent;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -114,7 +113,7 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
         @Override
         public void remove() {
             backingIterator.remove();
-            backingSet.eventBus().post(new CollectionChangeEvent<>(backingSet, null, current));
+            backingSet.getHandler().handleChange(backingSet, null, current);
         }
         
         /**
