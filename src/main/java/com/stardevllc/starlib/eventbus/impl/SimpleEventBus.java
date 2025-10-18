@@ -146,7 +146,7 @@ public class SimpleEventBus<T> implements IEventBus<T> {
         
         public void handleEvent(Object event) {
             if (event instanceof ICancellable cancellable) {
-                if (cancellable.isCancelled()) {
+                if (cancellable.isCancelled() && !ignoreCancelled) {
                     return;
                 }
             }
