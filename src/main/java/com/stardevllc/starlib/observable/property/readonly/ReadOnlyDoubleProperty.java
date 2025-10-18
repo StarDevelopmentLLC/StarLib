@@ -1,12 +1,12 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
 import com.stardevllc.starlib.observable.property.AbstractReadOnlyProperty;
-import com.stardevllc.starlib.observable.value.ObservableDoubleValue;
+import com.stardevllc.starlib.observable.value.ObservableDouble;
 
 /**
  * Represents a Read-Only Double value with an identity
  */
-public class ReadOnlyDoubleProperty extends AbstractReadOnlyProperty<Double> implements ObservableDoubleValue {
+public class ReadOnlyDoubleProperty extends AbstractReadOnlyProperty<Double> implements ObservableDouble {
     
     /**
      * The value of the property

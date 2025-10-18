@@ -1,12 +1,12 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
 import com.stardevllc.starlib.observable.property.AbstractReadOnlyProperty;
-import com.stardevllc.starlib.observable.value.ObservableFloatValue;
+import com.stardevllc.starlib.observable.value.ObservableFloat;
 
 /**
  * Represents a Read-Only Float value with an identity
  */
-public class ReadOnlyFloatProperty extends AbstractReadOnlyProperty<Float> implements ObservableFloatValue {
+public class ReadOnlyFloatProperty extends AbstractReadOnlyProperty<Float> implements ObservableFloat {
     
     /**
      * The value of the property

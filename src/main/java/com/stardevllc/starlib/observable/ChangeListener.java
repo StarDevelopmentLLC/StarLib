@@ -1,17 +1,18 @@
 package com.stardevllc.starlib.observable;
 
-import com.stardevllc.starlib.eventbus.SubscribeEvent;
-
 /**
  * Represents a listener for changes in an observable value
+ *
  * @param <T> The value type
  */
-@SubscribeEvent
 @FunctionalInterface
 public interface ChangeListener<T> {
     /**
      * Called when a change occurs
-     * @param event The event information
+     *
+     * @param observableValue The value that the change occured on
+     * @param oldValue The old value
+     * @param newValue The new value
      */
-    void changed(ChangeEvent<T> event);
+    void changed(ObservableValue<T> observableValue, T oldValue, T newValue);
 }

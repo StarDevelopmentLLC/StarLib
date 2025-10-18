@@ -2,12 +2,12 @@ package com.stardevllc.starlib.observable.property.readwrite;
 
 import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyFloatProperty;
-import com.stardevllc.starlib.observable.writable.WritableFloatValue;
+import com.stardevllc.starlib.observable.writable.WritableObservableFloat;
 
 /**
  * Represents a Read-Write Float value with an identity
  */
-public class ReadWriteFloatProperty extends ReadOnlyFloatProperty implements ReadWriteProperty<Float>, WritableFloatValue {
+public class ReadWriteFloatProperty extends ReadOnlyFloatProperty implements ReadWriteProperty<Float>, WritableObservableFloat {
     
     /**
      * Constructs a ReadWrite Property
@@ -51,7 +51,7 @@ public class ReadWriteFloatProperty extends ReadOnlyFloatProperty implements Rea
     @Override
     public void set(float value) {
         float oldValue = this.value;
-        this.eventBus.post(new ChangeEvent<>(this, oldValue, value));
+        this.handler.handleChange(this, oldValue, value);
         this.value = value;
     }
     

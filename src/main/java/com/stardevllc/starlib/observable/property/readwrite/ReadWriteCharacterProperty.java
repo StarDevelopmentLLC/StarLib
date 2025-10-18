@@ -2,12 +2,12 @@ package com.stardevllc.starlib.observable.property.readwrite;
 
 import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyCharacterProperty;
-import com.stardevllc.starlib.observable.writable.WritableCharacterValue;
+import com.stardevllc.starlib.observable.writable.WritableObservableCharacter;
 
 /**
  * Represents a Read-Write Character value with an identity
  */
-public class ReadWriteCharacterProperty extends ReadOnlyCharacterProperty implements ReadWriteProperty<Character>, WritableCharacterValue {
+public class ReadWriteCharacterProperty extends ReadOnlyCharacterProperty implements ReadWriteProperty<Character>, WritableObservableCharacter {
     
     /**
      * Constructs a ReadWrite Property
@@ -51,7 +51,7 @@ public class ReadWriteCharacterProperty extends ReadOnlyCharacterProperty implem
     @Override
     public void set(char value) {
         char oldValue = this.value;
-        this.eventBus.post(new ChangeEvent<>(this, oldValue, value));
+        this.handler.handleChange(this, oldValue, value);
         this.value = value;
     }
     

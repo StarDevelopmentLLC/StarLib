@@ -2,12 +2,12 @@ package com.stardevllc.starlib.observable.property.readwrite;
 
 import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyBooleanProperty;
-import com.stardevllc.starlib.observable.writable.WritableBooleanValue;
+import com.stardevllc.starlib.observable.writable.WritableObservableBoolean;
 
 /**
  * Represents a Read-Write Boolean value with an identity
  */
-public class ReadWriteBooleanProperty extends ReadOnlyBooleanProperty implements ReadWriteProperty<Boolean>, WritableBooleanValue {
+public class ReadWriteBooleanProperty extends ReadOnlyBooleanProperty implements ReadWriteProperty<Boolean>, WritableObservableBoolean {
     
     /**
      * Constructs a ReadWrite Property
@@ -51,7 +51,7 @@ public class ReadWriteBooleanProperty extends ReadOnlyBooleanProperty implements
     @Override
     public void set(boolean value) {
         boolean oldValue = this.value;
-        this.eventBus.post(new ChangeEvent<>(this, oldValue, value));
+        this.handler.handleChange(this, oldValue, value);
         this.value = value;
     }
     

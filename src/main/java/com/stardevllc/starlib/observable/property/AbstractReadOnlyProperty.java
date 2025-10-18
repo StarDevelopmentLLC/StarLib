@@ -1,7 +1,5 @@
 package com.stardevllc.starlib.observable.property;
 
-import com.stardevllc.starlib.eventbus.IEventBus;
-import com.stardevllc.starlib.eventbus.impl.SimpleEventBus;
 import com.stardevllc.starlib.observable.*;
 
 import java.util.Objects;
@@ -31,7 +29,7 @@ public abstract class AbstractReadOnlyProperty<T> implements ReadOnlyProperty<T>
     /**
      * The EventBus for change listener handling
      */
-    protected final IEventBus<ChangeEvent<T>> eventBus;
+    protected final ListenerHandler<T> handler = new ListenerHandler<>();
     
     /**
      * The value that this property is bound to
@@ -54,7 +52,14 @@ public abstract class AbstractReadOnlyProperty<T> implements ReadOnlyProperty<T>
         this.bean = bean;
         this.name = name;
         this.typeClass = typeClass;
-        this.eventBus = new SimpleEventBus<>();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ListenerHandler<T> getHandler() {
+        return handler;
     }
     
     /**
@@ -76,7 +81,7 @@ public abstract class AbstractReadOnlyProperty<T> implements ReadOnlyProperty<T>
         
         T newValue = getValue();
         if (!Objects.equals(oldValue, newValue)) {
-            this.eventBus.post(new ChangeEvent<>(this, oldValue, newValue));
+            this.handler.handleChange(this, oldValue, newValue);
         }
     }
     
@@ -93,24 +98,8 @@ public abstract class AbstractReadOnlyProperty<T> implements ReadOnlyProperty<T>
         }
         
         if (!Objects.equals(value, this.getValue())) {
-            this.eventBus.post(new ChangeEvent<>(this, value, this.getValue()));
+            this.handler.handleChange(this, value, this.getValue());
         }
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addListener(ChangeListener<? super T> listener) {
-        boolean status = eventBus.subscribe(listener);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeListener(ChangeListener<? super T> listener) {
-        eventBus.unsubscribe(listener);
     }
     
     /**
@@ -156,8 +145,8 @@ public abstract class AbstractReadOnlyProperty<T> implements ReadOnlyProperty<T>
         }
         
         @Override
-        public void changed(ChangeEvent<T> event) {
-            property.eventBus.post(event);
+        public void changed(ObservableValue<T> observableValue, T oldValue, T newValue) {
+            property.getHandler().handleChange(observableValue, oldValue, newValue);
         }
     }
 }

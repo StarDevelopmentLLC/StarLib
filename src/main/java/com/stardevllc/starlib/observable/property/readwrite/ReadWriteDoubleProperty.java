@@ -2,12 +2,12 @@ package com.stardevllc.starlib.observable.property.readwrite;
 
 import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyDoubleProperty;
-import com.stardevllc.starlib.observable.writable.WritableDoubleValue;
+import com.stardevllc.starlib.observable.writable.WritableObservableDouble;
 
 /**
  * Represents a Read-Write Double value with an identity
  */
-public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements ReadWriteProperty<Double>, WritableDoubleValue {
+public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements ReadWriteProperty<Double>, WritableObservableDouble {
     
     /**
      * Constructs a ReadWrite Property
@@ -51,7 +51,7 @@ public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements R
     @Override
     public void set(double value) {
         double oldValue = this.value;
-        this.eventBus.post(new ChangeEvent<>(this, oldValue, value));
+        this.handler.handleChange(this, oldValue, value);
         this.value = value;
     }
     

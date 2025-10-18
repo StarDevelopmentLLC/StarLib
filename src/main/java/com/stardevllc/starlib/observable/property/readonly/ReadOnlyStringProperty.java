@@ -1,11 +1,11 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
-import com.stardevllc.starlib.observable.value.ObservableStringValue;
+import com.stardevllc.starlib.observable.value.ObservableString;
 
 /**
  * Represents a Read-Only String value with an identity
  */
-public class ReadOnlyStringProperty extends ReadOnlyObjectProperty<String> implements ObservableStringValue {
+public class ReadOnlyStringProperty extends ReadOnlyObjectProperty<String> implements ObservableString {
     
     /**
      * Constructs a ReadOnly Property

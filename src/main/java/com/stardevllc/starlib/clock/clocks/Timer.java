@@ -39,7 +39,7 @@ public class Timer extends Clock<TimerSnapshot> {
     public Timer(UUID uuid, String name, long length, long countAmount) {
         super(uuid, name, length, countAmount);
         this.lengthProperty = new ReadWriteLongProperty(this, "length", length);
-        this.lengthProperty.addListener(e -> unpause());
+        this.lengthProperty.addListener((observable, oldValue, newValue) -> unpause());
     }
     
     @Override

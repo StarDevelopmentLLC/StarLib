@@ -7,7 +7,7 @@ import java.util.Objects;
  *
  * @param <T> The value type
  */
-public interface WritableProperty<T> extends Property<T>, WritableValue<T> {
+public interface WritableProperty<T> extends Property<T>, WritableObservableValue<T> {
     
     /**
      * Binds this property to another property bidirectionally
@@ -45,17 +45,16 @@ public interface WritableProperty<T> extends Property<T>, WritableValue<T> {
         }
         
         @Override
-        public void changed(ChangeEvent<T> event) {
+        public void changed(ObservableValue<T> observableValue, T oldValue, T newValue) {
             if (updating) {
                 return;
             }
             
             updating = true;
-            ObservableValue<? extends T> source = event.observableValue();
-            if (property1 == source) {
-                property2.setValue(event.newValue());
+            if (property1 == observableValue) {
+                property2.setValue(newValue);
             } else {
-                property1.setValue(event.newValue());
+                property1.setValue(newValue);
             }
             updating = false;
         }

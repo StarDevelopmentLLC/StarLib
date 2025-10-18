@@ -1,12 +1,12 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
 import com.stardevllc.starlib.observable.property.AbstractReadOnlyProperty;
-import com.stardevllc.starlib.observable.value.ObservableIntegerValue;
+import com.stardevllc.starlib.observable.value.ObservableInteger;
 
 /**
  * Represents a Read-Only Integer value with an identity
  */
-public class ReadOnlyIntegerProperty extends AbstractReadOnlyProperty<Integer> implements ObservableIntegerValue {
+public class ReadOnlyIntegerProperty extends AbstractReadOnlyProperty<Integer> implements ObservableInteger {
     
     /**
      * The value of the property

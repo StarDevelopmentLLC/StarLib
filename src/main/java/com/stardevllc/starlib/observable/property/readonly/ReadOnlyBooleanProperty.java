@@ -1,12 +1,12 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
 import com.stardevllc.starlib.observable.property.AbstractReadOnlyProperty;
-import com.stardevllc.starlib.observable.value.ObservableBooleanValue;
+import com.stardevllc.starlib.observable.value.ObservableBoolean;
 
 /**
  * Represents a Read-Only Boolean value with an identity
  */
-public class ReadOnlyBooleanProperty extends AbstractReadOnlyProperty<Boolean> implements ObservableBooleanValue {
+public class ReadOnlyBooleanProperty extends AbstractReadOnlyProperty<Boolean> implements ObservableBoolean {
     
     /**
      * The value of the property

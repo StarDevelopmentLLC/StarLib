@@ -2,14 +2,14 @@ package com.stardevllc.starlib.observable.property.readwrite;
 
 import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyObjectProperty;
-import com.stardevllc.starlib.observable.writable.WritableObjectValue;
+import com.stardevllc.starlib.observable.writable.WritableObservableObject;
 
 /**
  * Represents a Read-Write Object value with an identity
  *
  * @param <T> The value type
  */
-public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implements ReadWriteProperty<T>, WritableObjectValue<T> {
+public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implements ReadWriteProperty<T>, WritableObservableObject<T> {
     
     /**
      * Constructs a ReadWrite Property
@@ -57,7 +57,7 @@ public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implem
     @Override
     public void set(T value) {
         T oldValue = this.value;
-        this.eventBus.post(new ChangeEvent<>(this, oldValue, value));
+        this.handler.handleChange(this, oldValue, value);
         this.value = value;
     }
     

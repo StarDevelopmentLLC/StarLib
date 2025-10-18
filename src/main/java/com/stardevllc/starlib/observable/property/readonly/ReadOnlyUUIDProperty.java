@@ -1,13 +1,13 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
-import com.stardevllc.starlib.observable.value.ObservableUUIDValue;
+import com.stardevllc.starlib.observable.value.ObservableUUID;
 
 import java.util.UUID;
 
 /**
  * Represents a Read-Only UUID value with an identity
  */
-public class ReadOnlyUUIDProperty extends ReadOnlyObjectProperty<UUID> implements ObservableUUIDValue {
+public class ReadOnlyUUIDProperty extends ReadOnlyObjectProperty<UUID> implements ObservableUUID {
     
     /**
      * Constructs a ReadOnly Property

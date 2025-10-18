@@ -1,12 +1,12 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
 import com.stardevllc.starlib.observable.property.AbstractReadOnlyProperty;
-import com.stardevllc.starlib.observable.value.ObservableCharacterValue;
+import com.stardevllc.starlib.observable.value.ObservableCharacter;
 
 /**
  * Represents a Read-Only Character value with an identity
  */
-public class ReadOnlyCharacterProperty extends AbstractReadOnlyProperty<Character> implements ObservableCharacterValue {
+public class ReadOnlyCharacterProperty extends AbstractReadOnlyProperty<Character> implements ObservableCharacter {
     
     /**
      * The value of the property

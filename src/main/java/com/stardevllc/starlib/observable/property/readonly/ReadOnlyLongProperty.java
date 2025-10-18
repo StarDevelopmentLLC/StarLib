@@ -1,12 +1,12 @@
 package com.stardevllc.starlib.observable.property.readonly;
 
 import com.stardevllc.starlib.observable.property.AbstractReadOnlyProperty;
-import com.stardevllc.starlib.observable.value.ObservableLongValue;
+import com.stardevllc.starlib.observable.value.ObservableLong;
 
 /**
  * Represents a Read-Only Long value with an identity
  */
-public class ReadOnlyLongProperty extends AbstractReadOnlyProperty<Long> implements ObservableLongValue {
+public class ReadOnlyLongProperty extends AbstractReadOnlyProperty<Long> implements ObservableLong {
     
     /**
      * The value of the property

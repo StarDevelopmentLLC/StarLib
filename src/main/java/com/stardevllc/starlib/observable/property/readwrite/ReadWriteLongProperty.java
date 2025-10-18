@@ -2,12 +2,12 @@ package com.stardevllc.starlib.observable.property.readwrite;
 
 import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyLongProperty;
-import com.stardevllc.starlib.observable.writable.WritableLongValue;
+import com.stardevllc.starlib.observable.writable.WritableObservableLong;
 
 /**
  * Represents a Read-Write Long value with an identity
  */
-public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadWriteProperty<Long>, WritableLongValue {
+public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadWriteProperty<Long>, WritableObservableLong {
     
     /**
      * Constructs a ReadWrite Property
@@ -51,7 +51,7 @@ public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadW
     @Override
     public void set(long value) {
         long oldValue = this.value;
-        this.eventBus.post(new ChangeEvent<>(this, oldValue, value));
+        this.handler.handleChange(this, oldValue, value);
         this.value = value;
     }
     

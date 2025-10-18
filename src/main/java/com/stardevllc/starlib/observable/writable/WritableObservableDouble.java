@@ -1,0 +1,23 @@
+package com.stardevllc.starlib.observable.writable;
+
+import com.stardevllc.starlib.observable.value.ObservableDouble;
+
+/**
+ * Represents a Writable Double Observable value
+ */
+public interface WritableObservableDouble extends ObservableDouble, WritableObservableNumber<Double> {
+    /**
+     * Sets the value to the provided value
+     *
+     * @param value The new value
+     */
+    void set(double value);
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default void setValue(Double value) {
+        set(value);
+    }
+}

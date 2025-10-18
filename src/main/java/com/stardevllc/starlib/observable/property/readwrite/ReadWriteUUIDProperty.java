@@ -2,14 +2,14 @@ package com.stardevllc.starlib.observable.property.readwrite;
 
 import com.stardevllc.starlib.observable.*;
 import com.stardevllc.starlib.observable.property.readonly.ReadOnlyUUIDProperty;
-import com.stardevllc.starlib.observable.writable.WritableUUIDValue;
+import com.stardevllc.starlib.observable.writable.WritableObservableUUID;
 
 import java.util.UUID;
 
 /**
  * Represents a Read-Write UUID value with an identity
  */
-public class ReadWriteUUIDProperty extends ReadOnlyUUIDProperty implements ReadWriteProperty<UUID>, WritableUUIDValue {
+public class ReadWriteUUIDProperty extends ReadOnlyUUIDProperty implements ReadWriteProperty<UUID>, WritableObservableUUID {
     
     /**
      * Constructs a ReadWrite Property
@@ -53,7 +53,7 @@ public class ReadWriteUUIDProperty extends ReadOnlyUUIDProperty implements ReadW
     @Override
     public void set(UUID value) {
         UUID oldValue = this.value;
-        this.eventBus.post(new ChangeEvent<>(this, oldValue, value));
+        this.handler.handleChange(this, oldValue, value);
         this.value = value;
     }
     
