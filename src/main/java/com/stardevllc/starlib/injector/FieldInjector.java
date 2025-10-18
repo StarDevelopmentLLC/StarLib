@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.dependency;
+package com.stardevllc.starlib.injector;
 
 import com.stardevllc.starlib.helper.ObjectProvider;
 
@@ -7,14 +7,14 @@ import java.util.Set;
 /**
  * Facilities passing in object instances using reflection and the {@link Inject} annotation
  */
-public interface DependencyInjector {
+public interface FieldInjector {
     /**
-     * Creates a default instance. Implement {@link DependencyInjector} for a custom implementation
+     * Creates a default instance. Implement {@link FieldInjector} for a custom implementation
      *
      * @return A new default injector
      */
-    static DependencyInjector create() {
-        return new DependencyInjectorImpl();
+    static FieldInjector create() {
+        return new FieldInjectorImpl();
     }
     
     /**
@@ -62,12 +62,12 @@ public interface DependencyInjector {
      *
      * @return The parent injectors
      */
-    Set<DependencyInjector> getParentInjectors();
+    Set<FieldInjector> getParentInjectors();
     
     /**
      * Adds a parent injector. The parent injectors are run after this one is ran
      *
      * @param injector The parent injector
      */
-    void addParentInjector(DependencyInjector injector);
+    void addParentInjector(FieldInjector injector);
 }

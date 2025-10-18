@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.dependency;
+package com.stardevllc.starlib.injector;
 
 import java.lang.annotation.*;
 

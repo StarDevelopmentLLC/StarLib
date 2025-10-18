@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.dependency;
+package com.stardevllc.starlib.injector;
 
 import com.stardevllc.starlib.helper.ObjectProvider;
 import com.stardevllc.starlib.helper.ReflectionHelper;
@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 
-class DependencyInjectorImpl implements DependencyInjector {
+class FieldInjectorImpl implements FieldInjector {
     private Map<Class<?>, ObjectProvider<?>> instances = new TreeMap<>((o1, o2) -> {
         //Classes are the same
         if (Objects.equals(o1, o2)) {
@@ -34,7 +34,7 @@ class DependencyInjectorImpl implements DependencyInjector {
         return 1;
     });
     
-    private Set<DependencyInjector> parentInjectors = new HashSet<>();
+    private final Set<FieldInjector> parentInjectors = new HashSet<>();
     
     @Override
     public <I> I inject(I object) {
@@ -112,12 +112,12 @@ class DependencyInjectorImpl implements DependencyInjector {
     }
     
     @Override
-    public Set<DependencyInjector> getParentInjectors() {
+    public Set<FieldInjector> getParentInjectors() {
         return new HashSet<>(this.parentInjectors);
     }
     
     @Override
-    public void addParentInjector(DependencyInjector injector) {
+    public void addParentInjector(FieldInjector injector) {
         this.parentInjectors.add(injector);
     }
 }
