@@ -12,11 +12,17 @@ public class SimpleBooleanValue implements WritableBooleanValue {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean get() {
         return value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(boolean value) {
         this.value = value;

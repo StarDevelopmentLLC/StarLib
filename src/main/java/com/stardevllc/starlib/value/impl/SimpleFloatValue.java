@@ -13,11 +13,17 @@ public class SimpleFloatValue implements WritableFloatValue {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(float value) {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public float get() {
         return this.value;

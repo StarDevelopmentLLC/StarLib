@@ -13,11 +13,17 @@ public class SimpleIntegerValue implements WritableIntegerValue {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(int value) {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int get() {
         return this.value;

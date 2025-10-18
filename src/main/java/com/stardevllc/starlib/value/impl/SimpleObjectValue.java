@@ -13,11 +13,17 @@ public class SimpleObjectValue<T> implements WritableObjectValue<T> {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(T value) {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T get() {
         return value;

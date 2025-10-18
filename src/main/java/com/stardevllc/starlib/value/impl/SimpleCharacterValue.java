@@ -12,11 +12,17 @@ public class SimpleCharacterValue implements WritableCharacterValue {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(char newValue) {
         this.value = newValue;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public char get() {
         return value;

@@ -15,6 +15,24 @@ import java.util.Map;
 public interface ObservableMap<K, V> extends Observable, Map<K, V> {
     
     /**
+     * Adds a listener that mirrors changes in this observable map to the one passed in.
+     *
+     * @param map The map to mirror changes into
+     * @return The same mapped passed in (For inline registration)
+     */
+    default Map<K, V> addContentMirror(Map<K, V> map) {
+        map.putAll(this);
+        getHandler().addListener((m, key, added, removed) -> {
+            if (added != null && !map.containsValue(added)) {
+                map.put(key, added);
+            } else if (removed != null && added == null) {
+                map.remove(key);
+            }
+        });
+        return map;
+    }
+    
+    /**
      * Gets the handler for change listeners
      *
      * @return The handler

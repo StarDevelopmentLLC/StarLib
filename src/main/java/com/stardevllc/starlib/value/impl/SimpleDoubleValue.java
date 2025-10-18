@@ -12,11 +12,17 @@ public class SimpleDoubleValue implements WritableDoubleValue {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(double value) {
         this.value = value;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double get() {
         return this.value;

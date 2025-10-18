@@ -39,6 +39,11 @@ java {
     withSourcesJar()
 }
 
+tasks.named("javadoc", Javadoc) {
+    options.addBooleanOption('public', true)
+    options.addBooleanOption('Xdoclint:none', true)
+}
+
 tasks.jar.finalizedBy(javadocJar)
 tasks.jar.finalizedBy(sourcesJar)
 tasks.build.finalizedBy(publishToMavenLocal)

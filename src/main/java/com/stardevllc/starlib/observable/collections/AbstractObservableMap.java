@@ -13,6 +13,9 @@ import java.util.function.*;
  */
 public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V> {
     
+    /**
+     * This is the handler for listeners
+     */
     protected final MapListenerHandler<K, V> handler = new MapListenerHandler<>();
     
     /**
