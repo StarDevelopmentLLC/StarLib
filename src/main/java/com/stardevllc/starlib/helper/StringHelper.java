@@ -32,7 +32,12 @@ public final class StringHelper {
      */
     public static String titlize(String string) {
         string = string.toLowerCase();
-        String[] words = string.split("_");
+        String[] words;
+        if (string.contains("_")) {
+            words = string.split("_");
+        } else {
+            words = string.split(" ");
+        }
         StringBuilder name = new StringBuilder();
         for (int w = 0; w < words.length; w++) {
             String word = words[w];
