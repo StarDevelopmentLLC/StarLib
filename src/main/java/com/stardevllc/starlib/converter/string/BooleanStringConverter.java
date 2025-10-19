@@ -22,7 +22,7 @@ public class BooleanStringConverter implements StringConverter<Boolean> {
             return "false";
         }
         
-        return Boolean.toString((boolean) fromObject);
+        return Boolean.toString(fromObject);
     }
     
     /**
