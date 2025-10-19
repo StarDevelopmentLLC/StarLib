@@ -36,7 +36,7 @@ public abstract class URLClassLoaderAccess {
     }
     
     /**
-     * Exposes the {@link URLClassLoader#addURL(URL)} method
+     * Exposes the {@code URLClassLoader#addURL(URL)} method
      * @param url The url to add to the loader
      */
     public abstract void addURL(URL url);
