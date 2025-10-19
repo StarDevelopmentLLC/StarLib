@@ -15,6 +15,10 @@ public class WatcherManager {
     public WatcherManager() {
     }
     
+    public Set<FieldWatcher> getFieldWatchers() {
+        return new HashSet<>(fieldWatchers);
+    }
+    
     /**
      * Creates a field watcher
      *
