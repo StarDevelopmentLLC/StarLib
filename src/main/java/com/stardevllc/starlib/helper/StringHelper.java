@@ -19,7 +19,9 @@ public final class StringHelper {
      *
      * @param word The word
      * @return the result
+     * @deprecated Use {@link Pluralizer}
      */
+    @Deprecated
     public static String pluralize(String word) {
         return new Pluralizer().pluralize(word);
     }
@@ -64,7 +66,9 @@ public final class StringHelper {
      * @param array     The array to join
      * @param separator The separator to use
      * @return The result
+     * @deprecated Use {@link String#join(CharSequence, CharSequence...)}
      */
+    @Deprecated
     public static String join(Object[] array, String separator) {
         if (array == null || array.length == 0) {
             return "";
@@ -87,7 +91,9 @@ public final class StringHelper {
      * @param collection The collection
      * @param separator  The seperator
      * @return The result
+     * @deprecated Use {@link String#join(CharSequence, Iterable)}
      */
+    @Deprecated
     public static String join(Collection<?> collection, String separator) {
         Iterator<?> iterator = collection.iterator();
         if (!iterator.hasNext()) {
