@@ -8,7 +8,7 @@ import java.util.stream.Stream;
  * A class that allows the ability to pluralize words and to customize it as well
  */
 @SuppressWarnings("RedundantNoArgConstructor")
-public final class Pluralizer {
+public class Pluralizer {
     private static final List<Character> vowels = List.of('a', 'e', 'i', 'o', 'u');
     private static final List<Function<String, String>> pluralFunctions = new LinkedList<>();
     
