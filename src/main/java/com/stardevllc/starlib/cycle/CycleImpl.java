@@ -43,7 +43,7 @@ final class CycleImpl<E> implements Cycle<E> {
     /**
      * The current position of the cursor
      */
-    private AtomicInteger cursor = new AtomicInteger(0);
+    private AtomicInteger cursor = new AtomicInteger(-1);
 
     CycleImpl(Collection<E> objects) {
         if (objects == null || objects.isEmpty()) {
@@ -74,6 +74,10 @@ final class CycleImpl<E> implements Cycle<E> {
 
     @Override
     public E current() {
+        if (cursor() == -1) {
+            return null;
+        }
+        
         return this.objects.get(cursor());
     }
 
