@@ -71,19 +71,19 @@ public abstract class AbstractBucket<E> extends AbstractSet<E> implements Bucket
     /**
      * Constructs a new AbstractBucket
      *
-     * @param size     The size of the bucket
-     * @param strategy The strategy to use
+     * @param partitionCount The partition count
+     * @param strategy       The strategy to use
      */
-    protected AbstractBucket(int size, PartitioningStrategy<E> strategy) {
+    protected AbstractBucket(int partitionCount, PartitioningStrategy<E> strategy) {
         this.strategy = strategy;
         
-        this.size = size;
+        this.size = partitionCount;
         this.content = createSet();
         
         List<Set<E>> sets = new ArrayList<>();
         List<BucketPartition<E>> views = new ArrayList<>();
         
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < partitionCount; i++) {
             Set<E> set = createSet();
             sets.add(set);
             
