@@ -9,8 +9,8 @@ import java.util.stream.Stream;
  */
 @SuppressWarnings("RedundantNoArgConstructor")
 public class Pluralizer {
-    private static final List<Character> vowels = List.of('a', 'e', 'i', 'o', 'u');
-    private static final List<Function<String, String>> pluralFunctions = new LinkedList<>();
+    protected static final List<Character> vowels = new LinkedList<>(List.of('a', 'e', 'i', 'o', 'u'));
+    protected static final List<Function<String, String>> pluralFunctions = new LinkedList<>();
     
     static {
         //Consonant and y ending
