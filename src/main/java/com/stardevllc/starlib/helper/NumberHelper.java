@@ -66,6 +66,9 @@ public final class NumberHelper {
         try {
             return Integer.parseInt(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
+            try {
+                return (int) Double.parseDouble(object.toString());
+            } catch (NumberFormatException | NullPointerException ex) {}
         }
         return 0;
     }
@@ -120,6 +123,9 @@ public final class NumberHelper {
         try {
             return Long.parseLong(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
+            try {
+                return (long) Double.parseDouble(object.toString());
+            } catch (NumberFormatException | NullPointerException ex) {}
         }
         return 0;
     }
@@ -138,6 +144,9 @@ public final class NumberHelper {
         try {
             return Short.parseShort(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
+            try {
+                return (short) Double.parseDouble(object.toString());
+            } catch (NumberFormatException | NullPointerException ex) {}
         }
         return 0;
     }
@@ -156,6 +165,9 @@ public final class NumberHelper {
         try {
             return Byte.parseByte(object.toString());
         } catch (NumberFormatException | NullPointerException e) {
+            try {
+                return (byte) Double.parseDouble(object.toString());
+            } catch (NumberFormatException | NullPointerException ex) {}
         }
         return 0;
     }
