@@ -28,9 +28,14 @@ public enum LengthUnit {
     FOOT(304.8, "feet", "ft"),
     
     /**
-     * Year (Millimeters * 914.4)
+     * Yard (Millimeters * 914.4)
      */
-    YARD(914.4, "yard", "yd", "yds");
+    YARD(914.4, "yard", "yd", "yds"),
+    
+    /**
+     * Meter (1000 millimeters)
+     */
+    METER(1000, "meter", "m");
     
     static {
         StringConverters.addConverter(LengthUnit.class, new EnumStringConverter<>(LengthUnit.class));
@@ -133,5 +138,15 @@ public enum LengthUnit {
      */
     public double toYards(double length) {
         return getAmountInBase() * length / YARD.getAmountInBase();
+    }
+    
+    /**
+     * Converts to meters
+     *
+     * @param length The length
+     * @return The converted value
+     */
+    public double toMeters(double length) {
+        return getAmountInBase() * length / METER.getAmountInBase();
     }
 }
