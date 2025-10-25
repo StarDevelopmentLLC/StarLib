@@ -24,27 +24,31 @@ public enum WeightUnit {
         return aliases;
     }
     
+    public double toUnit(double weight, WeightUnit newUnit) {
+        return getAmountInBase() * weight / newUnit.getAmountInBase();
+    }
+    
     public double toGrams(double weight) {
         return getAmountInBase() * weight;
     }
     
     public double toOunces(double weight) {
-        return getAmountInBase() * weight / OUNCE.getAmountInBase();
+        return toUnit(weight, OUNCE);
     }
     
     public double toPounds(double weight) {
-        return getAmountInBase() * weight / POUND.getAmountInBase();
+        return toUnit(weight, POUND);
     }
     
     public double toTons(double weight) {
-        return getAmountInBase() * weight / TON.getAmountInBase();
+        return toUnit(weight, TON);
     }
     
     public double toKilograms(double weight) {
-        return getAmountInBase() * weight / KILOGRAM.getAmountInBase();
+        return toUnit(weight, KILOGRAM);
     }
     
     public double toMetricTon(double weight) {
-        return getAmountInBase() * weight / METRIC_TON.getAmountInBase();
+        return toUnit(weight, METRIC_TON);
     }
 }

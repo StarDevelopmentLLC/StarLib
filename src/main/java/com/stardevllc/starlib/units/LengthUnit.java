@@ -90,6 +90,10 @@ public enum LengthUnit {
         return aliases;
     }
     
+    public double toUnit(double length, LengthUnit newUnit) {
+        return getAmountInBase() * length / newUnit.getAmountInBase();
+    }
+    
     /**
      * Converts to millimeters
      *
@@ -107,7 +111,7 @@ public enum LengthUnit {
      * @return The converted value
      */
     public double toCentimeters(double length) {
-        return getAmountInBase() * length / CENTIMETER.getAmountInBase();
+        return toUnit(length, CENTIMETER);
     }
     
     /**
@@ -117,7 +121,7 @@ public enum LengthUnit {
      * @return The converted value
      */
     public double toInches(double length) {
-        return getAmountInBase() * length / INCH.getAmountInBase();
+        return toUnit(length, INCH);
     }
     
     /**
@@ -127,7 +131,7 @@ public enum LengthUnit {
      * @return The converted value
      */
     public double toFeet(double length) {
-        return getAmountInBase() * length / FOOT.getAmountInBase();
+        return toUnit(length, FOOT);
     }
     
     /**
@@ -137,7 +141,7 @@ public enum LengthUnit {
      * @return The converted value
      */
     public double toYards(double length) {
-        return getAmountInBase() * length / YARD.getAmountInBase();
+        return toUnit(length, YARD);
     }
     
     /**
@@ -147,6 +151,6 @@ public enum LengthUnit {
      * @return The converted value
      */
     public double toMeters(double length) {
-        return getAmountInBase() * length / METER.getAmountInBase();
+        return toUnit(length, METER);
     }
 }
