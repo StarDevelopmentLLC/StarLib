@@ -7,8 +7,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 
-class FieldInjectorImpl implements FieldInjector {
-    private Map<Class<?>, ObjectProvider<?>> instances = new TreeMap<>((o1, o2) -> {
+public class SimpleFieldInjector implements FieldInjector {
+    private final Map<Class<?>, ObjectProvider<?>> instances = new TreeMap<>((o1, o2) -> {
         //Classes are the same
         if (Objects.equals(o1, o2)) {
             return 0;
@@ -93,22 +93,8 @@ class FieldInjectorImpl implements FieldInjector {
         }
     }
     
-    @Override
-    public <T, I extends T> I setInstance(Class<T> clazz, I instance) {
-        this.instances.put(clazz, new ObjectProvider<>(instance));
-        return instance;
-    }
-    
-    @Override
-    public <I> I setInstance(I instance) {
-        this.instances.put(instance.getClass(), new ObjectProvider<>(instance));
-        return instance;
-    }
-    
-    @Override
-    public <T, I extends T> ObjectProvider<I> setProvider(Class<T> clazz, ObjectProvider<I> provider) {
-        this.instances.put(clazz, provider);
-        return provider;
+    public <I> ObjectProvider<I> getProvider(Class<? super I> clazz) {
+        return (ObjectProvider<I>) this.instances.computeIfAbsent(clazz, c -> new ObjectProvider<>());
     }
     
     @Override
