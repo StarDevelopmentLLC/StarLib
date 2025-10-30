@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.eventbus.impl;
 
 import com.stardevllc.starlib.eventbus.*;
-import com.stardevllc.starlib.helper.ReflectionHelper;
+import com.stardevllc.starlib.reflection.ReflectionHelper;
 
 import java.lang.reflect.Method;
 import java.util.*;

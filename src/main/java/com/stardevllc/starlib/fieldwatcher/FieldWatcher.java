@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.fieldwatcher;
 
-import com.stardevllc.starlib.helper.ReflectionHelper;
+import com.stardevllc.starlib.reflection.ReflectionHelper;
 
 import java.lang.reflect.Field;
 import java.util.*;

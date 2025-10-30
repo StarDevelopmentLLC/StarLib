@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.helper;
+package com.stardevllc.starlib.reflection;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
