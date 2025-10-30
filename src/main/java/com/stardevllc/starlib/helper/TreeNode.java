@@ -1,122 +1,99 @@
 package com.stardevllc.starlib.helper;
 
-import java.util.LinkedList;
+import java.util.*;
 
 /**
- * Represents a node in a tree structure, or the root node
- *
+ * Class for representing a tree structure
  * @param <T> The data type
+ * @deprecated See {@link com.stardevllc.starlib.tree.TreeNode} for new things
  */
-public class TreeNode<T> {
+@Deprecated
+public class TreeNode<T> implements Iterable<TreeNode<T>> {
     private T data;
     private TreeNode<T> parent;
-    private final LinkedList<TreeNode<T>> children = new LinkedList<>();
+    private final LinkedHashSet<TreeNode<T>> children = new LinkedHashSet<>();
+    private int depth;
     
-    /**
-     * Constructs a new node
-     *
-     * @param data     The data
-     * @param parent   The parent
-     * @param children The children
-     */
-    public TreeNode(T data, TreeNode<T> parent, LinkedList<TreeNode<T>> children) {
+    public TreeNode(T data, TreeNode<T> parent, int depth, Collection<TreeNode<T>> children) {
         this.data = data;
         this.parent = parent;
-        this.children.addAll(children);
+        this.depth = depth;
+        if (children != null) {
+            this.children.addAll(children);
+        }
     }
     
-    /**
-     * Constructs a new node
-     *
-     * @param data   The data
-     * @param parent The parent
-     */
+    public TreeNode(T data, TreeNode<T> parent, LinkedHashSet<TreeNode<T>> children) {
+        this(data, parent, 0, children);
+    }
+    
+    public TreeNode(T data, TreeNode<T> parent, int depth) {
+        this(data, parent, depth, null);
+    }
+    
     public TreeNode(T data, TreeNode<T> parent) {
-        this.data = data;
-        this.parent = parent;
+        this(data, parent, null);
     }
     
-    /**
-     * Gets the data
-     *
-     * @return The data
-     */
+    public TreeNode(T data, int depth) {
+        this(data, null, depth, null);
+    }
+    
+    public TreeNode(T data) {
+        this(data, null);
+    }
+    
+    public TreeNode() {
+        
+    }
+    
+    public int getDepth() {
+        return depth;
+    }
+    
     public T getData() {
         return data;
     }
     
-    /**
-     * Sets the data
-     *
-     * @param data The new data
-     */
     public void setData(T data) {
         this.data = data;
     }
     
-    /**
-     * Gets the parent
-     *
-     * @return The parent or null
-     */
     public TreeNode<T> getParent() {
         return parent;
     }
     
-    /**
-     * Sets the parent
-     *
-     * @param parent The new parent
-     */
     public void setParent(TreeNode<T> parent) {
         this.parent = parent;
     }
     
-    /**
-     * Gets a copy of the children
-     *
-     * @return The children
-     */
     public LinkedList<TreeNode<T>> getChildren() {
         return new LinkedList<>(children);
     }
     
-    /**
-     * Adds a child to this node
-     *
-     * @param child The child node
-     */
     public void addChild(TreeNode<T> child) {
+        child.depth = this.depth + 1;
         this.children.add(child);
         child.setParent(this);
     }
     
-    /**
-     * Adds a child to this node
-     *
-     * @param child The child data
-     * @return The created tree node
-     */
     public TreeNode<T> addChild(T child) {
         TreeNode<T> childNode = new TreeNode<>(child, this);
+        childNode.depth = this.depth + 1;
         this.children.add(childNode);
         return childNode;
     }
     
-    /**
-     * Addds a child to this tree structure
-     *
-     * @param parent the parent of the child
-     * @param child  The child for the parent
-     * @return The created tree node of the child
-     */
     public TreeNode<T> addChild(T parent, T child) {
-        if (parent.equals(this.data)) {
+        if (this.data == null && parent == null) {
+            return addChild(child);
+        } else if (parent.equals(this.data)) {
             return addChild(child);
         } else {
             for (TreeNode<T> childNode : this.children) {
                 TreeNode<T> addedNode = childNode.addChild(parent, child);
                 if (addedNode != null) {
+                    addedNode.depth = childNode.depth + 1;
                     return addedNode;
                 }
             }
@@ -125,11 +102,20 @@ public class TreeNode<T> {
         return null;
     }
     
-    /**
-     * Removes a child from this node
-     * @param child the child
-     * @return The removed node or null if it didn't exist
-     */
+    @SafeVarargs
+    public final List<TreeNode<T>> addChildren(T parent, T firstChild, T... otherChildren) {
+        List<TreeNode<T>> nodes = new ArrayList<>();
+        
+        nodes.add(addChild(parent, firstChild));
+        if (otherChildren != null) {
+            for (T otherChild : otherChildren) {
+                nodes.add(addChild(parent, otherChild));
+            }
+        }
+        
+        return nodes;
+    }
+    
     public TreeNode<T> removeChild(TreeNode<T> child) {
         if (this.children.remove(child)) {
             return child;
@@ -138,11 +124,6 @@ public class TreeNode<T> {
         return null;
     }
     
-    /**
-     * Retrieves the tree node of the data
-     * @param data The data to search for
-     * @return The node or null
-     */
     public TreeNode<T> search(T data) {
         if (this.data.equals(data)) {
             return this;
@@ -158,11 +139,6 @@ public class TreeNode<T> {
         return null;
     }
     
-    /**
-     * Removes the data fromt his tree
-     * @param data The data to remove
-     * @return The node that was removed
-     */
     public TreeNode<T> remove(T data) {
         TreeNode<T> result = search(data);
         if (result != null) {
@@ -175,18 +151,19 @@ public class TreeNode<T> {
         return null;
     }
     
-    /**
-     * Mainly testing, no customizibility
-     * @return The heirarchy
-     */
-    public String heirarchy() {
-        StringBuilder sb = new StringBuilder(String.valueOf(this.data));
-        if (getParent() == null) {
-            sb.append("->Root");
-        } else {
-            sb.append("->").append(getParent().heirarchy());
+    public boolean hasChildren() {
+        return !this.children.isEmpty();
+    }
+    
+    public List<TreeNode<T>> getLeafNodes() {
+        List<TreeNode<T>> leafNodes = new LinkedList<>();
+        for (TreeNode<T> node : this) {
+            if (!node.hasChildren()) {
+                leafNodes.add(node);
+            }
         }
-        return sb.toString();
+        
+        return leafNodes;
     }
     
     @Override
@@ -195,5 +172,40 @@ public class TreeNode<T> {
                 ", parent=" + (parent != null ? parent.data : "null") +
                 ", children=" + children +
                 '}';
+    }
+    
+    public List<TreeNode<T>> getAllChildren() {
+        List<TreeNode<T>> children = new ArrayList<>(this.children);
+        for (TreeNode<T> child : this.children) {
+            children.addAll(child.getAllChildren());
+        }
+        
+        return children;
+    }
+    
+    @Override
+    public Iterator<TreeNode<T>> iterator() {
+        List<TreeNode<T>> nodes = new ArrayList<>();
+        nodes.add(this);
+        nodes.addAll(this.getAllChildren());
+        
+        return nodes.iterator();
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        
+        TreeNode<?> treeNode = (TreeNode<?>) object;
+        return Objects.equals(data, treeNode.data) && Objects.equals(parent, treeNode.parent);
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(data);
+        result = 31 * result + Objects.hashCode(parent);
+        return result;
     }
 }
