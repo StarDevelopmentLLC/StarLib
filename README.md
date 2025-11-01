@@ -11,7 +11,7 @@ Monolith library for SDLLC
 ```xml
 <dependency>
     <groupId>com.stardevllc</groupId>
-    <artifactId>SMaterial</artifactId>
+    <artifactId>StarLib</artifactId>
     <version>{VERSION}</version>
     <scope>provided</scope>
 </dependency>
@@ -21,5 +21,5 @@ Monolith library for SDLLC
 maven { url 'https://repo.stardevllc.com/releases' }
 ```
 ```groovy
-compileOnly 'com.stardevllc:SMaterial:{VERSION}'
+compileOnly 'com.stardevllc:StarLib:{VERSION}'
 ```
