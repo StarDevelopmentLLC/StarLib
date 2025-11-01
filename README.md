@@ -1,30 +1,25 @@
 # StarLib
 Monolith library for SDLLC
-
-# Installation
-## Repository
+## Installation
 ### Maven
-```
+```xml
 <repository>
     <id>stardev-releases</id>
     <url>https://repo.stardevllc.com/releases</url>
 </repository>
 ```
-### Gradle
-```
-maven { url 'https://repo.stardevllc.com/releases' }
-```
-## Dependency
-### Maven
-```
+```xml
 <dependency>
     <groupId>com.stardevllc</groupId>
-    <artifactId>StarLib</artifactId>
+    <artifactId>SMaterial</artifactId>
     <version>{VERSION}</version>
     <scope>provided</scope>
 </dependency>
 ```
 ### Gradle
+```groovy
+maven { url 'https://repo.stardevllc.com/releases' }
 ```
-compileOnly 'com.stardevllc:StarLib:{VERSION}'
+```groovy
+compileOnly 'com.stardevllc:SMaterial:{VERSION}'
 ```
