@@ -7,6 +7,7 @@ import java.util.*;
 /**
  * Some reflection based utilities that also provide some caching
  */
+@SuppressWarnings("DuplicatedCode")
 public final class ReflectionHelper {
     private ReflectionHelper() {
     }
@@ -22,6 +23,10 @@ public final class ReflectionHelper {
      * @return The annotation details
      */
     public static <A extends Annotation> A getMethodAnnotation(Method method, Class<A> annotation) {
+        if (method == null || annotation == null) {
+            return null;
+        }
+        
         //Check the cache to see if it exists already
         if (methodAnnotationCache.containsKey(method)) {
             return (A) methodAnnotationCache.get(method);
@@ -62,6 +67,10 @@ public final class ReflectionHelper {
      * @return The method that was found or null if not
      */
     public static Method getAnnotatedMethod(Class<? extends Annotation> annotation, Class<?> c, String methodName, Class<?>... parameterTypes) {
+        if (annotation == null || c == null || methodName == null || methodName.isBlank()) {
+            return null;
+        }
+        
         try {
             Method method = c.getDeclaredMethod(methodName, parameterTypes);
             if (method.isAnnotationPresent(annotation)) {
@@ -98,6 +107,10 @@ public final class ReflectionHelper {
      * @return The annotation information
      */
     public static <A extends Annotation> A getClassAnnotation(Class<?> clazz, Class<A> annotation) {
+        if (clazz == null || annotation == null) {
+            return null;
+        }
+        
         if (classAnnotations.containsKey(clazz)) {
             return (A) classAnnotations.get(clazz);
         }
@@ -136,6 +149,10 @@ public final class ReflectionHelper {
      * @return The value
      */
     public static Object getValue(Object object, String path) {
+        if (object == null || path == null || path.isBlank()) {
+            return null;
+        }
+        
         if (!path.contains(".")) {
             return getFieldValue(object, path);
         }
@@ -156,6 +173,10 @@ public final class ReflectionHelper {
      * @return The field value or null if not found or not accessible
      */
     public static Object getFieldValue(Object object, String fieldName) {
+        if (object == null || fieldName == null || fieldName.isBlank()) {
+            return null;
+        }
+        
         Field field = getClassField(object.getClass(), fieldName);
         if (field == null) {
             return null;
@@ -178,6 +199,10 @@ public final class ReflectionHelper {
      * @return The new instance as an optional
      */
     public static <T> Optional<T> newInstance(Class<T> clazz, Object... params) {
+        if (clazz == null) {
+            return Optional.empty();
+        }
+        
         Class<?>[] paramTypes;
         if (params != null) {
             paramTypes = new Class<?>[params.length];
@@ -208,6 +233,10 @@ public final class ReflectionHelper {
      * @return An optional of the constructor instance
      */
     public static Optional<Constructor<?>> getClassConstructor(Class<?> clazz, Class<?>... parameters) {
+        if (clazz == null) {
+            return Optional.empty();
+        }
+        
         if (parameters == null || parameters.length == 0) {
             try {
                 return Optional.of(clazz.getDeclaredConstructor());
@@ -245,6 +274,10 @@ public final class ReflectionHelper {
      * @return The method instance
      */
     public static Method getClassMethod(Class<?> clazz, String name, Class<?>... parameters) {
+        if (clazz == null || name == null) {
+            return null;
+        }
+        
         try {
             return clazz.getDeclaredMethod(name, parameters);
         } catch (NoSuchMethodException e) {
@@ -262,6 +295,10 @@ public final class ReflectionHelper {
      * @return The set of methods
      */
     public static Set<Method> getClassMethods(Class<?> clazz) {
+        if (clazz == null) {
+            return new HashSet<>();
+        }
+        
         if (classMethods.containsKey(clazz)) {
             return new HashSet<>(classMethods.get(clazz));
         }
@@ -286,6 +323,10 @@ public final class ReflectionHelper {
      * @return The found field or null if it is invalid
      */
     public static Field getClassField(Class<?> clazz, String name) {
+        if (clazz == null) {
+            return null;
+        }
+        
         Map<String, Field> fields = getClassFields(clazz);
         return fields.get(name.toLowerCase());
     }
@@ -297,6 +338,10 @@ public final class ReflectionHelper {
      * @return The found fields
      */
     public static Map<String, Field> getClassFields(Class<?> clazz) {
+        if (clazz == null) {
+            return new HashMap<>();
+        }
+        
         if (classFields.containsKey(clazz)) {
             return new HashMap<>(classFields.get(clazz));
         }
