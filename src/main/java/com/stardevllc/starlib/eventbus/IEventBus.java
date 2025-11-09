@@ -1,11 +1,14 @@
 package com.stardevllc.starlib.eventbus;
 
+import java.util.function.Predicate;
+
 /**
  * Represents a bus where events are passed to and listeners are used to react to those events
  *
  * @param <T> The event type
+ * @param <C> The cancellable type
  */
-public interface IEventBus<T> {
+public interface IEventBus<T, C> {
     /**
      * Posts an event to the bus, calling listeners
      *
@@ -48,7 +51,20 @@ public interface IEventBus<T> {
      *
      * @param childBus The child bus
      */
-    default void addChildBus(IEventBus<?> childBus) {
+    default void addChildBus(IEventBus<?, ?> childBus) {
+        
+    }
+    
+    default void setCancelMapper(Predicate<C> mapper) {
+        
+    }
+    
+    /**
+     * Sets the handler used to check to see if an event is cancelled
+     * @param cancellableClass The class used as the marker of a cancellable event
+     * @param mapper The mapper that maps an event instance to check
+     */
+    default void setCancelHandler(Class<C> cancellableClass, Predicate<C> mapper) {
         
     }
 }
