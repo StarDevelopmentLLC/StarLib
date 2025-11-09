@@ -195,7 +195,6 @@ public class StarEventBus<T, C> implements IEventBus<T, C> {
                 try {
                     method.invoke(listener, event);
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }
