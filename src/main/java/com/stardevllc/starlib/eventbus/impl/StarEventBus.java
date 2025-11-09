@@ -191,7 +191,7 @@ public class StarEventBus<T, C> implements IEventBus<T, C> {
                 }
             }
             
-            if (eventClass.isAssignableFrom(event.getClass())) {
+            if (eventClass.isInstance(event)) {
                 try {
                     method.invoke(listener, event);
                 } catch (Exception e) {
