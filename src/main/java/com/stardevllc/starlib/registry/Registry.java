@@ -467,11 +467,11 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
     @Override
     public Set<Entry<K, V>> entrySet() {
         ObservableHashSet<Entry<K, V>> set = new ObservableHashSet<>(this.objects.entrySet());
-        set.addListener((oset, added, removed) -> {
-            if (added != null) {
-                register(added.getKey(), added.getValue());
-            } else if (removed != null) {
-                unregister(removed.getKey());
+        set.addListener(c -> {
+            if (c.added() != null) {
+                register(c.added().getKey(), c.added().getValue());
+            } else if (c.removed() != null) {
+                unregister(c.removed().getKey());
             }
         });
         return set;

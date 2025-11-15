@@ -12,13 +12,26 @@ import com.stardevllc.starlib.observable.collections.ObservableMap;
 @SubscribeEvent
 @FunctionalInterface
 public interface MapChangeListener<K, V> {
+    
+    record Change<K, V>(ObservableMap<K, V> map, K key, V added, V removed) {
+    }
+    
     /**
      * Called when changes occur
      *
-     * @param map     The map that changed
-     * @param key     The key that changed
-     * @param added   The value added
-     * @param removed The value removed
+     * @param change The change information
      */
-    void changed(ObservableMap<K, V> map, K key, V added, V removed);
+    void changed(Change<K, V> change);
+    
+    /**
+     * Called when changes occur. This passes the arguments into a {@link Change} and then to the {@link #changed(Change)} method
+     *
+     * @param map     The Map
+     * @param key     The key
+     * @param added   The added value (if any)
+     * @param removed The removed value (if any)
+     */
+    default void changed(ObservableMap<K, V> map, K key, V added, V removed) {
+        changed(new Change<>(map, key, added, removed));
+    }
 }

@@ -20,13 +20,13 @@ public interface ObservableMap<K, V> extends Observable, Map<K, V> {
      * @param map The map to mirror changes into
      * @return The same mapped passed in (For inline registration)
      */
-    default Map<K, V> addContentMirror(Map<K, V> map) {
+    default <M extends Map<K, V> > M addContentMirror(M map) {
         map.putAll(this);
-        getHandler().addListener((m, key, added, removed) -> {
-            if (added != null && !map.containsValue(added)) {
-                map.put(key, added);
-            } else if (removed != null && added == null) {
-                map.remove(key);
+        getHandler().addListener(c -> {
+            if (c.added() != null && !map.containsValue(c.added())) {
+                map.put(c.key(), c.added());
+            } else if (c.removed() != null && c.added() == null) {
+                map.remove(c.key());
             }
         });
         return map;

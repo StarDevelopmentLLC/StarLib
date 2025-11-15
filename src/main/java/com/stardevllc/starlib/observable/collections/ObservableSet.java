@@ -15,13 +15,13 @@ public interface ObservableSet<E> extends ObservableCollection<E>, Set<E> {
      * @param set The set to mirror changes into
      * @return The same set passed in
      */
-    default Set<E> addContentMirror(Set<E> set) {
+    default <S extends Set<E>> S addContentMirror(S set) {
         set.addAll(this);
-        getHandler().addListener((collection, added, removed) -> {
-            if (added != null) {
-                set.add(added);
-            } else if (removed != null) {
-                set.remove(removed);
+        getHandler().addListener(c -> {
+            if (c.added() != null) {
+                set.add(c.added());
+            } else if (c.removed() != null) {
+                set.remove(c.removed());
             }
         });
         

@@ -10,12 +10,24 @@ import com.stardevllc.starlib.observable.collections.ObservableCollection;
 @FunctionalInterface
 public interface CollectionChangeListener<E> {
     
+    record Change<E>(ObservableCollection<E> collection, E added, E removed) {
+    }
+    
     /**
      * Called when changes occur
      *
-     * @param collection The collection that changed
-     * @param added      The element added
-     * @param removed    The element removed
+     * @param change The change information
      */
-    void changed(ObservableCollection<E> collection, E added, E removed);
+    void changed(Change<E> change);
+    
+    /**
+     * Called when changes occur
+     *
+     * @param collection The collection
+     * @param added      The added value (if any)
+     * @param removed    The removed value (if any)
+     */
+    default void changed(ObservableCollection<E> collection, E added, E removed) {
+        changed(new Change<>(collection, added, removed));
+    }
 }
