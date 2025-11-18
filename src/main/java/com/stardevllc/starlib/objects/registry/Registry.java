@@ -424,7 +424,7 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
      */
     public RegistryObject<K, V> register(K key, V value) {
         if (frozen) {
-            return null;
+            throw new IllegalStateException("Cannot register to a frozen registry.");
         }
         
         if (key == null) {
@@ -434,15 +434,11 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         RegistryObject<K, V> object = getObject(key);
         if (object == null) {
             object = new RegistryObject<>(this, key, value);
+        } else {
+            object.set(value);
         }
         
-        object.set(value);
-        
-        if (keySetter != null) {
-            keySetter.accept(key, value);
-        }
-        
-        return object;
+        return register(object);
     }
     
     /**
@@ -453,7 +449,15 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
      */
     public RegistryObject<K, V> register(RegistryObject<K, V> registryObject) {
         if (frozen) {
-            return null;
+            throw new IllegalStateException("Cannot register to a frozen registry.");
+        }
+        
+        if (registryObject == null) {
+            throw new NullPointerException("Cannot register a null object");
+        }
+        
+        if (registryObject.getKey() == null) {
+            throw new NullPointerException("Cannot register a null key");
         }
         
         RegistryObject<K, V> object = getObject(registryObject.getKey());
@@ -461,8 +465,13 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
             object = registryObject;
             this.backingSet.add(object);
         } else {
-            this.backingSet.remove(object);
-            this.backingSet.add(registryObject);
+            if (!Objects.equals(object.get(), registryObject.get())) {
+                object.set(registryObject.get());
+            }
+        }
+        
+        if (keySetter != null) {
+            keySetter.accept(object.getKey(), object.get());
         }
         
         return object;
