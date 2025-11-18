@@ -44,7 +44,7 @@ public interface ObservableMap<K, V> extends Observable, Map<K, V> {
      *
      * @param listener the listener to add
      */
-    default void addChangeListener(MapChangeListener<K, V> listener) {
+    default void addListener(MapChangeListener<K, V> listener) {
         getHandler().addListener(listener);
     }
     
@@ -53,7 +53,7 @@ public interface ObservableMap<K, V> extends Observable, Map<K, V> {
      *
      * @param listener The listener to remove
      */
-    default void removeChangeListener(MapChangeListener<K, V> listener) {
+    default void removeListener(MapChangeListener<K, V> listener) {
         getHandler().removeListener(listener);
     }
     
