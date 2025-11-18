@@ -8,7 +8,7 @@ import java.util.*;
  * @param <E> The element type
  */
 public class ObservableLinkedList<E> extends AbstractObservableList<E> implements Deque<E> {
-
+    
     private final LinkedList<E> backingLinkedList = new LinkedList<>();
     
     /**
@@ -23,7 +23,9 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
      * @param collection The collection
      */
     public ObservableLinkedList(Collection<E> collection) {
-        this.backingLinkedList.addAll(collection);
+        if (collection != null) {
+            this.backingLinkedList.addAll(collection);
+        }
     }
     
     /**
@@ -38,7 +40,15 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
      * {@inheritDoc}
      */
     public ObservableLinkedList<E> reversed() {
-        return new ObservableLinkedList<>(this.backingLinkedList.reversed());
+        ObservableLinkedList<E> reversed = new ObservableLinkedList<>(this.backingLinkedList.reversed());
+        reversed.addListener(c -> {
+            if (c.added() != null) {
+                add(c.added());
+            } else if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return reversed;
     }
     
     /**
@@ -46,11 +56,10 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
      */
     @Override
     public boolean offerFirst(E e) {
-        boolean result = this.backingLinkedList.offerFirst(e);
-        if (result) {
-            this.handler.handleChange(this, e, null);
+        if (!this.handler.handleChange(this, e, null)) {
+            return this.backingLinkedList.offerFirst(e);
         }
-        return result;
+        return false;
     }
     
     /**
@@ -58,11 +67,10 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
      */
     @Override
     public boolean offerLast(E e) {
-        boolean result = this.backingLinkedList.offerLast(e);
-        if (result) {
-            this.handler.handleChange(this, e, null);
+        if (!this.handler.handleChange(this, e, null)) {
+            return this.backingLinkedList.offerLast(e);
         }
-        return result;
+        return false;
     }
     
     /**
@@ -71,7 +79,10 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     @Override
     public E pollFirst() {
         E value = this.backingLinkedList.pollFirst();
-        this.handler.handleChange(this, null, value);
+        boolean cancelled = this.handler.handleChange(this, null, value);
+        if (value != null && cancelled) {
+            this.backingLinkedList.addFirst(value);
+        }
         return value;
     }
     
@@ -81,7 +92,10 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     @Override
     public E pollLast() {
         E value = this.backingLinkedList.pollLast();
-        this.handler.handleChange(this, null, value);
+        boolean cancelled = this.handler.handleChange(this, null, value);
+        if (value != null && cancelled) {
+            this.backingLinkedList.addLast(value);
+        }
         return value;
     }
     
@@ -106,11 +120,10 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
      */
     @Override
     public boolean removeFirstOccurrence(Object o) {
-        boolean result = this.backingLinkedList.removeFirstOccurrence(o);
-        if (result) {
-            this.handler.handleChange(this, null, (E) o);
+        if (!this.handler.handleChange(this, null, (E) o)) {
+            return this.backingLinkedList.removeFirstOccurrence(o);
         }
-        return result;
+        return false;
     }
     
     /**
@@ -118,11 +131,10 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
      */
     @Override
     public boolean removeLastOccurrence(Object o) {
-        boolean result = this.backingLinkedList.removeLastOccurrence(o);
-        if (result) {
-            this.handler.handleChange(this, null, (E) o);
+        if (!this.handler.handleChange(this, null, (E) o)) {
+            return this.backingLinkedList.removeLastOccurrence(o);
         }
-        return result;
+        return false;
     }
     
     /**
@@ -130,11 +142,10 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
      */
     @Override
     public boolean offer(E e) {
-        boolean result = this.backingLinkedList.offer(e);
-        if (result) {
-            this.handler.handleChange(this, e, null);
+        if (!this.handler.handleChange(this, e, null)) {
+            return this.backingLinkedList.offer(e);
         }
-        return result;
+        return false;
     }
     
     /**
@@ -143,7 +154,10 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     @Override
     public E remove() {
         E removed = this.backingLinkedList.remove();
-        this.handler.handleChange(this, null, removed);
+        boolean cancelled = this.handler.handleChange(this, null, removed);
+        if (removed != null && cancelled) {
+            this.backingLinkedList.add(removed);
+        }
         return removed;
     }
     
@@ -153,7 +167,10 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
     @Override
     public E poll() {
         E value = this.backingLinkedList.poll();
-        this.handler.handleChange(this, null, value);
+        boolean cancelled = this.handler.handleChange(this, null, value);
+        if (value != null && cancelled) {
+            this.backingLinkedList.add(value);
+        }
         return value;
     }
     
@@ -178,8 +195,9 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
      */
     @Override
     public void push(E e) {
-        this.backingLinkedList.push(e);
-        this.handler.handleChange(this, e, null);
+        if (!this.handler.handleChange(this, e, null)) {
+            this.backingLinkedList.push(e);
+        }
     }
     
     /**
@@ -203,6 +221,14 @@ public class ObservableLinkedList<E> extends AbstractObservableList<E> implement
      */
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        return new ObservableLinkedList<>(this.backingLinkedList.subList(fromIndex, toIndex));
+        ObservableLinkedList<E> subList = new ObservableLinkedList<>(this.backingLinkedList.subList(fromIndex, toIndex));
+        subList.addListener(c -> {
+            if (c.added() != null) {
+                add(c.added());
+            } else if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return subList;
     }
 }

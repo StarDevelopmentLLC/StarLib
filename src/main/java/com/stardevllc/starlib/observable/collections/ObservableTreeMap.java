@@ -1,5 +1,7 @@
 package com.stardevllc.starlib.observable.collections;
 
+import com.stardevllc.starlib.observable.collections.listener.MapChangeListener;
+
 import java.util.*;
 
 /**
@@ -25,7 +27,9 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      * @param map The map
      */
     public ObservableTreeMap(Map<K, V> map) {
-        this.backingTreeMap.putAll(map);
+        if (map != null) {
+            this.backingTreeMap.putAll(map);
+        }
     }
     
     /**
@@ -40,8 +44,8 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      * {@inheritDoc}
      */
     @Override
-    public Entry<K, V> lowerEntry(K key) {
-        return this.backingTreeMap.lowerEntry(key);
+    public Map.Entry<K, V> lowerEntry(K key) {
+        return new ObservableEntry<>(this, this.backingTreeMap.lowerEntry(key));
     }
     
     /**
@@ -56,8 +60,8 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      * {@inheritDoc}
      */
     @Override
-    public Entry<K, V> floorEntry(K key) {
-        return this.backingTreeMap.floorEntry(key);
+    public Map.Entry<K, V> floorEntry(K key) {
+        return new ObservableEntry<>(this, this.backingTreeMap.floorEntry(key));
     }
     
     /**
@@ -72,8 +76,8 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      * {@inheritDoc}
      */
     @Override
-    public Entry<K, V> ceilingEntry(K key) {
-        return this.backingTreeMap.ceilingEntry(key);
+    public Map.Entry<K, V> ceilingEntry(K key) {
+        return new ObservableEntry<>(this, this.backingTreeMap.ceilingEntry(key));
     }
     
     /**
@@ -88,8 +92,8 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      * {@inheritDoc}
      */
     @Override
-    public Entry<K, V> higherEntry(K key) {
-        return this.backingTreeMap.higherEntry(key);
+    public Map.Entry<K, V> higherEntry(K key) {
+        return new ObservableEntry<>(this, this.backingTreeMap.higherEntry(key));
     }
     
     /**
@@ -104,24 +108,24 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      * {@inheritDoc}
      */
     @Override
-    public Entry<K, V> firstEntry() {
-        return this.backingTreeMap.firstEntry();
+    public Map.Entry<K, V> firstEntry() {
+        return new ObservableEntry<>(this, this.backingTreeMap.firstEntry());
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public Entry<K, V> lastEntry() {
-        return this.backingTreeMap.lastEntry();
+    public Map.Entry<K, V> lastEntry() {
+        return new ObservableEntry<>(this, this.backingTreeMap.lastEntry());
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public Entry<K, V> pollFirstEntry() {
-        Entry<K, V> entry = this.backingTreeMap.pollFirstEntry();
+    public Map.Entry<K, V> pollFirstEntry() {
+        Map.Entry<K, V> entry = new ObservableEntry<>(this, this.backingTreeMap.pollFirstEntry());
         this.handler.handleChange(this, entry.getKey(), null, entry.getValue());
         return entry;
     }
@@ -130,8 +134,8 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      * {@inheritDoc}
      */
     @Override
-    public Entry<K, V> pollLastEntry() {
-        Entry<K, V> entry = this.backingTreeMap.pollLastEntry();
+    public Map.Entry<K, V> pollLastEntry() {
+        Map.Entry<K, V> entry = new ObservableEntry<>(this, this.backingTreeMap.pollLastEntry());
         this.handler.handleChange(this, entry.getKey(), null, entry.getValue());
         return entry;
     }
@@ -141,7 +145,15 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public NavigableMap<K, V> descendingMap() {
-        return new ObservableTreeMap<>(this.backingTreeMap.descendingMap());
+        ObservableTreeMap<K, V> decendingMap = new ObservableTreeMap<>(this.backingTreeMap.descendingMap());
+        decendingMap.addChangeListener(c -> {
+            if (c.added() != null) {
+                put(c.key(), c.added());
+            } else if (c.removed() != null) {
+                remove(c.key());
+            }
+        });
+        return decendingMap;
     }
     
     /**
@@ -149,7 +161,13 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public NavigableSet<K> navigableKeySet() {
-        return new ObservableTreeSet<>(this.backingTreeMap.navigableKeySet());
+        ObservableTreeSet<K> keySet = new ObservableTreeSet<>(this.backingTreeMap.navigableKeySet());
+        keySet.addListener(c -> {
+            if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return keySet;
     }
     
     /**
@@ -157,7 +175,24 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public NavigableSet<K> descendingKeySet() {
-        return new ObservableTreeSet<>(this.backingTreeMap.descendingKeySet());
+        ObservableTreeSet<K> decendingKeySet = new ObservableTreeSet<>(this.backingTreeMap.descendingKeySet());
+        decendingKeySet.addListener(c -> {
+            if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return decendingKeySet;
+    }
+    
+    private class SubMapChangeListener implements MapChangeListener<K, V> {
+        @Override
+        public void changed(Change<K, V> c) {
+            if (c.added() != null) {
+                put(c.key(), c.added());
+            } else if (c.removed() != null) {
+                remove(c.key());
+            }
+        }
     }
     
     /**
@@ -165,7 +200,9 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) {
-        return new ObservableTreeMap<>(this.backingTreeMap.subMap(fromKey, fromInclusive, toKey, toInclusive));
+        ObservableTreeMap<K, V> subMap = new ObservableTreeMap<>(this.backingTreeMap.subMap(fromKey, fromInclusive, toKey, toInclusive));
+        subMap.addChangeListener(new SubMapChangeListener());
+        return subMap;
     }
     
     /**
@@ -173,7 +210,9 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public NavigableMap<K, V> headMap(K toKey, boolean inclusive) {
-        return new ObservableTreeMap<>(this.backingTreeMap.headMap(toKey, inclusive));
+        ObservableTreeMap<K, V> headMap = new ObservableTreeMap<>(this.backingTreeMap.headMap(toKey, inclusive));
+        headMap.addChangeListener(new SubMapChangeListener());
+        return headMap;
     }
     
     /**
@@ -181,7 +220,9 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) {
-        return new ObservableTreeMap<>(this.backingTreeMap.tailMap(fromKey, inclusive));
+        ObservableTreeMap<K, V> tailMap = new ObservableTreeMap<>(this.backingTreeMap.tailMap(fromKey, inclusive));
+        tailMap.addChangeListener(new SubMapChangeListener());
+        return tailMap;
     }
     
     /**
@@ -197,7 +238,9 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public SortedMap<K, V> subMap(K fromKey, K toKey) {
-        return new ObservableTreeMap<>(this.backingTreeMap.subMap(fromKey, toKey));
+        ObservableTreeMap<K, V> subMap = new ObservableTreeMap<>(this.backingTreeMap.subMap(fromKey, toKey));
+        subMap.addChangeListener(new SubMapChangeListener());
+        return subMap;
     }
     
     /**
@@ -205,7 +248,9 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public SortedMap<K, V> headMap(K toKey) {
-        return new ObservableTreeMap<>(this.backingTreeMap.headMap(toKey));
+        ObservableTreeMap<K, V> headMap = new ObservableTreeMap<>(this.backingTreeMap.headMap(toKey));
+        headMap.addChangeListener(new SubMapChangeListener());
+        return headMap;
     }
     
     /**
@@ -213,7 +258,9 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public SortedMap<K, V> tailMap(K fromKey) {
-        return new ObservableTreeMap<>(this.backingTreeMap.tailMap(fromKey));
+        ObservableTreeMap<K, V> tailMap = new ObservableTreeMap<>(this.backingTreeMap.tailMap(fromKey));
+        tailMap.addChangeListener(new SubMapChangeListener());
+        return tailMap;
     }
     
     /**
@@ -221,7 +268,9 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public NavigableMap<K, V> reversed() {
-        return new ObservableTreeMap<>(this.backingTreeMap.reversed());
+        ObservableTreeMap<K, V> reversed = new ObservableTreeMap<>(this.backingTreeMap.reversed());
+        reversed.addChangeListener(new SubMapChangeListener());
+        return reversed;
     }
     
     /**
@@ -245,7 +294,15 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public Set<K> keySet() {
-        return new ObservableTreeSet<>(this.backingTreeMap.keySet());
+        ObservableTreeSet<K> keySet = new ObservableTreeSet<>(this.backingTreeMap.keySet());
+        keySet.addListener(c -> {
+            if (c.added() != null) {
+                put(c.added(), null);
+            } else if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return keySet;
     }
     
     /**
@@ -253,15 +310,25 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
      */
     @Override
     public Collection<V> values() {
-        return new ObservableLinkedList<>(this.backingTreeMap.values());
+        ObservableLinkedList<V> values = new ObservableLinkedList<>(this.backingTreeMap.values());
+        values.addListener(c -> {
+            if (c.removed() != null) {
+                this.backingTreeMap.values().remove(c.removed());
+            }
+        });
+        return values;
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public Set<Entry<K, V>> entrySet() {
-        return new ObservableTreeSet<>(this.backingTreeMap.entrySet());
+    public Set<Map.Entry<K, V>> entrySet() {
+        ObservableTreeSet<Map.Entry<K, V>> entrySet = new ObservableTreeSet<>();
+        for (Map.Entry<K, V> entry : this.backingTreeMap.entrySet()) {
+            entrySet.add(new ObservableEntry<>(this, entry));
+        }
+        return entrySet;
     }
     
     /**
@@ -270,7 +337,11 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
     @Override
     public V putFirst(K k, V v) {
         V r = this.backingTreeMap.putFirst(k, v);
-        this.handler.handleChange(this, k, v, r);
+        boolean cancelled = this.handler.handleChange(this, k, v, r);
+        if (cancelled) {
+            this.backingTreeMap.putFirst(k, r);
+            return null;
+        }
         return r;
     }
     
@@ -280,7 +351,11 @@ public class ObservableTreeMap<K, V> extends AbstractObservableMap<K, V> impleme
     @Override
     public V putLast(K k, V v) {
         V r = this.backingTreeMap.putLast(k, v);
-        this.handler.handleChange(this, k, v, r);
+        boolean cancelled = this.handler.handleChange(this, k, v, r);
+        if (cancelled) {
+            this.backingTreeMap.putLast(k, r);
+            return null;
+        }
         return r;
     }
 }

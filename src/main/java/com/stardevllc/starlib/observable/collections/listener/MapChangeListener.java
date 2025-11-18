@@ -2,6 +2,8 @@ package com.stardevllc.starlib.observable.collections.listener;
 
 import com.stardevllc.starlib.eventbus.SubscribeEvent;
 import com.stardevllc.starlib.observable.collections.ObservableMap;
+import com.stardevllc.starlib.value.WritableBooleanValue;
+import com.stardevllc.starlib.value.impl.SimpleBooleanValue;
 
 /**
  * Listener for map change events
@@ -13,7 +15,22 @@ import com.stardevllc.starlib.observable.collections.ObservableMap;
 @FunctionalInterface
 public interface MapChangeListener<K, V> {
     
-    record Change<K, V>(ObservableMap<K, V> map, K key, V added, V removed) {
+    record Change<K, V>(ObservableMap<K, V> map, K key, V added, V removed, WritableBooleanValue cancelled) {
+        public Change(ObservableMap<K, V> map, K key, V added, V removed, WritableBooleanValue cancelled) {
+            this.map = map;
+            this.key = key;
+            this.added = added;
+            this.removed = removed;
+            if (cancelled != null) {
+                this.cancelled = cancelled;
+            } else {
+                this.cancelled = new SimpleBooleanValue();
+            }
+        }
+        
+        public Change(ObservableMap<K, V> map, K key, V added, V removed) {
+            this(map, key, added, removed, null);
+        }
     }
     
     /**

@@ -2,9 +2,9 @@ package com.stardevllc.starlib.observable.collections.handler;
 
 import com.stardevllc.starlib.observable.collections.ObservableMap;
 import com.stardevllc.starlib.observable.collections.listener.MapChangeListener;
+import com.stardevllc.starlib.observable.collections.listener.MapChangeListener.Change;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * A handler for map listeners
@@ -41,16 +41,31 @@ public class MapListenerHandler<K, V> {
     }
     
     /**
-     * Handles the change
+     * Handles a change in the map
+     *
+     * @param change The change information
+     * @return If the change was cancelled
+     */
+    public boolean handleChange(MapChangeListener.Change<K, V> change) {
+        boolean cancelled = false;
+        for (MapChangeListener<K, V> listener : listeners) {
+            listener.changed(change);
+            if (!cancelled) {
+                cancelled = change.cancelled().get();
+            }
+        }
+        return cancelled;
+    }
+    
+    /**
+     * Handles the change. Delegates to {@link #handleChange(Change)}
      *
      * @param collection The map that changed
      * @param key        The key that was operated on
      * @param added      The added value
      * @param removed    The removed (or replaced) value
      */
-    public void handleChange(ObservableMap<K, V> collection, K key, V added, V removed) {
-        for (MapChangeListener<K, V> listener : listeners) {
-            listener.changed(collection, key, added, removed);
-        }
+    public boolean handleChange(ObservableMap<K, V> collection, K key, V added, V removed) {
+        return handleChange(new Change<>(collection, key, added, removed));
     }
 }

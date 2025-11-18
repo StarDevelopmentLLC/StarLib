@@ -15,12 +15,11 @@ public interface ObservableList<E> extends ObservableCollection<E>, List<E> {
      * @param list The list to modify
      * @return The list that was passed in. (To allow single line uses)
      */
-    @SuppressWarnings("SuspiciousMethodCalls")
     default <L extends List<E>> L addContentMirror(L list) {
         list.addAll(this);
         getHandler().addListener(c -> {
             if (c.added() != null && !list.contains(c.added())) {
-                list.add((E) c.added());
+                list.add(c.added());
             } else if (c.removed() != null && c.added() == null) {
                 list.remove(c.removed());
             }

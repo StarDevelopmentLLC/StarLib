@@ -57,6 +57,11 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
         return getBackingSet().spliterator();
     }
     
+    @Override
+    public String toString() {
+        return getBackingSet().toString();
+    }
+    
     /**
      * A custom iterator instance that allows detection of changes
      *
@@ -112,8 +117,9 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
          */
         @Override
         public void remove() {
-            backingIterator.remove();
-            backingSet.getHandler().handleChange(backingSet, null, current);
+            if (!backingSet.getHandler().handleChange(backingSet, null, current)) {
+                backingIterator.remove();
+            }
         }
         
         /**

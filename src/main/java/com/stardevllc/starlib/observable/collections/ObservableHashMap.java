@@ -24,7 +24,9 @@ public class ObservableHashMap<K, V> extends AbstractObservableMap<K, V> {
      * @param map The map
      */
     public ObservableHashMap(Map<K, V> map) {
-        this.backingHashMap.putAll(map);
+        if (map != null) {
+            this.backingHashMap.putAll(map);
+        }
     }
     
     /**
@@ -40,22 +42,25 @@ public class ObservableHashMap<K, V> extends AbstractObservableMap<K, V> {
      */
     @Override
     public Set<K> keySet() {
-        return new ObservableHashSet<>(this.backingHashMap.keySet());
+        ObservableHashSet<K> keySet = new ObservableHashSet<>(this.backingHashMap.keySet());
+        keySet.addListener(c -> {
+            if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return keySet;
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public Collection<V> values() {
-        return new ObservableLinkedList<>(this.backingHashMap.values());
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Entry<K, V>> entrySet() {
-        return new ObservableHashSet<>(this.backingHashMap.entrySet());
+    public Set<Map.Entry<K, V>> entrySet() {
+        ObservableHashSet<Map.Entry<K, V>> entrySet = new ObservableHashSet<>();
+        for (Map.Entry<K, V> entry : this.backingHashMap.entrySet()) {
+            entrySet.add(new ObservableEntry<>(this, entry));
+        }
+        
+        return entrySet;
     }
 }

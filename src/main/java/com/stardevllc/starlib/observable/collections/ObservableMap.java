@@ -56,4 +56,35 @@ public interface ObservableMap<K, V> extends Observable, Map<K, V> {
     default void removeChangeListener(MapChangeListener<K, V> listener) {
         getHandler().removeListener(listener);
     }
+    
+    @SuppressWarnings("ClassCanBeRecord")
+    class ObservableEntry<K, V> implements Map.Entry<K, V> {
+        private final ObservableMap<K, V> backingMap;
+        private final Map.Entry<K, V> backingEntry;
+        
+        public ObservableEntry(ObservableMap<K, V> backingMap, Map.Entry<K, V> backingEntry) {
+            this.backingMap = backingMap;
+            this.backingEntry = backingEntry;
+        }
+        
+        @Override
+        public K getKey() {
+            return backingEntry.getKey();
+        }
+        
+        @Override
+        public V getValue() {
+            return backingEntry.getValue();
+        }
+        
+        @Override
+        public V setValue(V value) {
+            if (backingEntry.getValue() != null && !backingEntry.getValue().equals(value)) {
+                if (!backingMap.getHandler().handleChange(backingMap, backingEntry.getKey(), value, backingEntry.getValue())) {
+                    return backingEntry.setValue(value);
+                }
+            }
+            return null;
+        }
+    }
 }

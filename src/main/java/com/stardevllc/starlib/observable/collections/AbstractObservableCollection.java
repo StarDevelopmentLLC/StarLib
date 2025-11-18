@@ -19,7 +19,8 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
     /**
      * Constructs an empty obserable collection
      */
-    public AbstractObservableCollection() {}
+    public AbstractObservableCollection() {
+    }
     
     /**
      * The listener handler for change listeners
@@ -91,11 +92,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
      */
     @Override
     public boolean add(E e) {
-        boolean added = getBackingCollection().add(e);
-        if (added) {
-            handler.handleChange(this, e, null);
-        }
-        return added;
+        return !handler.handleChange(this, e, null) && getBackingCollection().add(e);
     }
     
     /**
@@ -111,12 +108,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
      */
     @Override
     public boolean remove(Object o) {
-        boolean removed = getBackingCollection().remove(o);
-        if (removed) {
-            this.handler.handleChange(this, null, (E) o);
-        }
-        
-        return removed;
+        return !this.handler.handleChange(this, null, (E) o) && getBackingCollection().remove(o);
     }
     
     /**
@@ -150,8 +142,7 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
     public boolean addAll(Collection<? extends E> c) {
         boolean modified = false;
         for (E e : c) {
-            if (add(e)) {
-                this.handler.handleChange(this, e, null);
+            if (!this.handler.handleChange(this, e, null) && add(e)) {
                 modified = true;
             }
         }
@@ -274,8 +265,9 @@ public abstract class AbstractObservableCollection<E> implements ObservableColle
          */
         @Override
         public void remove() {
-            this.backingIterator.remove();
-            this.backingCollection.getHandler().handleChange(this.backingCollection, null, current);
+            if (!this.backingCollection.getHandler().handleChange(this.backingCollection, null, current)) {
+                this.backingIterator.remove();
+            }
         }
         
         /**

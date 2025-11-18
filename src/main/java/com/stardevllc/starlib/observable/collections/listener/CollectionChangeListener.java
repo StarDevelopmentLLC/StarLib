@@ -1,6 +1,8 @@
 package com.stardevllc.starlib.observable.collections.listener;
 
 import com.stardevllc.starlib.observable.collections.ObservableCollection;
+import com.stardevllc.starlib.value.WritableBooleanValue;
+import com.stardevllc.starlib.value.impl.SimpleBooleanValue;
 
 /**
  * Listener for collection change events
@@ -10,7 +12,21 @@ import com.stardevllc.starlib.observable.collections.ObservableCollection;
 @FunctionalInterface
 public interface CollectionChangeListener<E> {
     
-    record Change<E>(ObservableCollection<E> collection, E added, E removed) {
+    record Change<E>(ObservableCollection<E> collection, E added, E removed, WritableBooleanValue cancelled) {
+        public Change(ObservableCollection<E> collection, E added, E removed, WritableBooleanValue cancelled) {
+            this.collection = collection;
+            this.added = added;
+            this.removed = removed;
+            if (cancelled != null) {
+                this.cancelled = cancelled;
+            } else {
+                this.cancelled = new SimpleBooleanValue();
+            }
+        }
+        
+        public Change(ObservableCollection<E> collection, E added, E removed) {
+            this(collection, added, removed, null);
+        }
     }
     
     /**

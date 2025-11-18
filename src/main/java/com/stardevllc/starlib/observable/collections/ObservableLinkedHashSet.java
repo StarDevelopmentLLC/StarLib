@@ -23,7 +23,9 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
      * @param collection The collection
      */
     public ObservableLinkedHashSet(Collection<E> collection) {
-        this.backingLinkedSet.addAll(collection);
+        if (collection != null) {
+            this.backingLinkedSet.addAll(collection);
+        }
     }
     
     /**
@@ -39,7 +41,15 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
      */
     @Override
     public SequencedSet<E> reversed() {
-        return new ObservableLinkedHashSet<>(backingLinkedSet.reversed());
+        ObservableLinkedHashSet<E> reversed = new ObservableLinkedHashSet<>(backingLinkedSet.reversed());
+        reversed.addListener(c -> {
+            if (c.added() != null) {
+                add(c.added());
+            } else if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return reversed;
     }
     
     /**
@@ -47,8 +57,9 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
      */
     @Override
     public void addFirst(E e) {
-        backingLinkedSet.addFirst(e);
-        this.handler.handleChange(this, e, null);
+        if (!this.handler.handleChange(this, e, null)) {
+            backingLinkedSet.addFirst(e);
+        }
     }
     
     /**
@@ -56,8 +67,9 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
      */
     @Override
     public void addLast(E e) {
-        backingLinkedSet.addLast(e);
-        this.handler.handleChange(this, e, null);
+        if (!this.handler.handleChange(this, e, null)) {
+            backingLinkedSet.addLast(e);
+        }
     }
     
     /**
@@ -82,7 +94,11 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
     @Override
     public E removeFirst() {
         E removed = backingLinkedSet.removeFirst();
-        this.handler.handleChange(this, null, removed);
+        boolean cancelled = this.handler.handleChange(this, null, removed);
+        if (removed != null && cancelled) {
+            backingLinkedSet.addFirst(removed);
+            return null;
+        }
         return removed;
     }
     
@@ -92,7 +108,11 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
     @Override
     public E removeLast() {
         E removed = backingLinkedSet.removeLast();
-        this.handler.handleChange(this, null, removed);
+        boolean cancelled = this.handler.handleChange(this, null, removed);
+        if (removed != null && cancelled) {
+            backingLinkedSet.addLast(removed);
+            return null;
+        }
         return removed;
     }
 }

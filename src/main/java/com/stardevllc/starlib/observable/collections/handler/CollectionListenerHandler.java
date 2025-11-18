@@ -2,9 +2,9 @@ package com.stardevllc.starlib.observable.collections.handler;
 
 import com.stardevllc.starlib.observable.collections.ObservableCollection;
 import com.stardevllc.starlib.observable.collections.listener.CollectionChangeListener;
+import com.stardevllc.starlib.observable.collections.listener.CollectionChangeListener.Change;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Handles the listener stuff for collections
@@ -41,15 +41,31 @@ public class CollectionListenerHandler<E> {
     }
     
     /**
-     * Handles the change on a collection
+     * Handles the change in the collection
+     *
+     * @param change The change information
+     * @return If the change was cancelled
+     */
+    public boolean handleChange(CollectionChangeListener.Change<E> change) {
+        boolean cancelled = false;
+        for (CollectionChangeListener<E> listener : listeners) {
+            listener.changed(change);
+            if (!cancelled) {
+                cancelled = change.cancelled().get();
+            }
+        }
+        
+        return cancelled;
+    }
+    
+    /**
+     * Handles the change on a collection. Delegates to {@link #handleChange(Change)}
      *
      * @param collection The source collection
      * @param added      The added element
      * @param removed    The removed element
      */
-    public void handleChange(ObservableCollection<E> collection, E added, E removed) {
-        for (CollectionChangeListener<E> listener : listeners) {
-            listener.changed(collection, added, removed);
-        }
+    public boolean handleChange(ObservableCollection<E> collection, E added, E removed) {
+        return handleChange(new Change<>(collection, added, removed));
     }
 }

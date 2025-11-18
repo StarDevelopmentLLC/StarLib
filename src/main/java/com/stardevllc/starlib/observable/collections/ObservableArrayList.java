@@ -23,7 +23,9 @@ public class ObservableArrayList<E> extends AbstractObservableList<E> {
      * @param collection The collection
      */
     public ObservableArrayList(Collection<E> collection) {
-        backingArrayList.addAll(collection);
+        if (collection != null) {
+            backingArrayList.addAll(collection);
+        }
     }
     
     /**
@@ -39,7 +41,15 @@ public class ObservableArrayList<E> extends AbstractObservableList<E> {
      */
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        return new ObservableArrayList<>(this.backingArrayList.subList(fromIndex, toIndex));
+        ObservableArrayList<E> subList = new ObservableArrayList<>(this.backingArrayList.subList(fromIndex, toIndex));
+        subList.addListener(c -> {
+            if (c.added() != null) {
+                add(c.added());
+            } else if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return subList;
     }
     
     /**
@@ -47,6 +57,14 @@ public class ObservableArrayList<E> extends AbstractObservableList<E> {
      */
     @Override
     public List<E> reversed() {
-        return new ObservableArrayList<>(this.backingArrayList.reversed());
+        ObservableArrayList<E> reversed = new ObservableArrayList<>(this.backingArrayList.reversed());
+        reversed.addListener(c -> {
+            if (c.added() != null) {
+                add(c.added());
+            } else if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return reversed;
     }
 }

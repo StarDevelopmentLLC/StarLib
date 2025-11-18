@@ -1,5 +1,7 @@
 package com.stardevllc.starlib.observable.collections;
 
+import com.stardevllc.starlib.observable.collections.listener.CollectionChangeListener;
+
 import java.util.*;
 
 /**
@@ -22,7 +24,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      * @param collection The collection
      */
     public ObservableTreeSet(Collection<E> collection) {
-        this.backingTreeSet.addAll(collection);
+        if (collection != null) {
+            this.backingTreeSet.addAll(collection);
+        }
     }
     
     /**
@@ -71,7 +75,10 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E pollFirst() {
         E value = backingTreeSet.pollFirst();
-        this.handler.handleChange(this, null, value);
+        boolean cancelled = this.handler.handleChange(this, null, value);
+        if (value != null && cancelled) {
+            backingTreeSet.addFirst(value);
+        }
         return value;
     }
     
@@ -81,7 +88,10 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E pollLast() {
         E value = backingTreeSet.pollLast();
-        this.handler.handleChange(this, null, value);
+        boolean cancelled = this.handler.handleChange(this, null, value);
+        if (value != null && cancelled) {
+            backingTreeSet.addLast(value);
+        }
         return value;
     }
     
@@ -90,7 +100,15 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public NavigableSet<E> descendingSet() {
-        return new ObservableTreeSet<>(this.backingTreeSet.descendingSet());
+        ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.descendingSet());
+        set.addListener(c -> {
+            if (c.added() != null) {
+                add(c.added());
+            } else if (c.removed() != null) {
+                remove(c.removed());
+            }
+        });
+        return set;
     }
     
     /**
@@ -101,12 +119,25 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
         return new ObservableSetIterator<>(this, backingTreeSet.descendingIterator());
     }
     
+    private class SubSetListener implements CollectionChangeListener<E> {
+        @Override
+        public void changed(Change<E> c) {
+            if (c.added() != null) {
+                add(c.added());
+            } else if (c.removed() != null) {
+                remove(c.removed());
+            }
+        }
+    }
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public NavigableSet<E> subSet(E fromElement, boolean fromInclusive, E toElement, boolean toInclusive) {
-        return new ObservableTreeSet<>(this.backingTreeSet.subSet(fromElement, fromInclusive, toElement, toInclusive));
+        ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.subSet(fromElement, fromInclusive, toElement, toInclusive));
+        set.addListener(new SubSetListener());
+        return set;
     }
     
     /**
@@ -114,7 +145,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public NavigableSet<E> headSet(E toElement, boolean inclusive) {
-        return new ObservableTreeSet<>(this.backingTreeSet.headSet(toElement, inclusive));
+        ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.headSet(toElement, inclusive));
+        set.addListener(new SubSetListener());
+        return set;
     }
     
     /**
@@ -122,7 +155,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public NavigableSet<E> tailSet(E fromElement, boolean inclusive) {
-        return new ObservableTreeSet<>(this.backingTreeSet.tailSet(fromElement, inclusive));
+        ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.tailSet(fromElement, inclusive));
+        set.addListener(new SubSetListener());
+        return set;
     }
     
     /**
@@ -138,7 +173,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public SortedSet<E> subSet(E fromElement, E toElement) {
-        return new ObservableTreeSet<>(this.backingTreeSet.subSet(fromElement, toElement));
+        ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.subSet(fromElement, toElement));
+        set.addListener(new SubSetListener());
+        return set;
     }
     
     /**
@@ -146,7 +183,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public SortedSet<E> headSet(E toElement) {
-        return new ObservableTreeSet<>(this.backingTreeSet.headSet(toElement));
+        ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.headSet(toElement));
+        set.addListener(new SubSetListener());
+        return set;
     }
     
     /**
@@ -154,7 +193,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public SortedSet<E> tailSet(E fromElement) {
-        return new ObservableTreeSet<>(this.backingTreeSet.tailSet(fromElement));
+        ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.tailSet(fromElement));
+        set.addListener(new SubSetListener());
+        return set;
     }
     
     /**
@@ -163,7 +204,10 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E removeFirst() {
         E removed = this.backingTreeSet.removeFirst();
-        this.handler.handleChange(this, null, removed);
+        boolean cancelled = this.handler.handleChange(this, null, removed);
+        if (removed != null && cancelled) {
+            this.backingTreeSet.addFirst(removed);
+        }
         return removed;
     }
     
@@ -173,7 +217,10 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public E removeLast() {
         E removed = this.backingTreeSet.removeLast();
-        this.handler.handleChange(this, null, removed);
+        boolean cancelled = this.handler.handleChange(this, null, removed);
+        if (removed != null && cancelled) {
+            this.backingTreeSet.addLast(removed);
+        }
         return removed;
     }
     
@@ -182,7 +229,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public NavigableSet<E> reversed() {
-        return new ObservableTreeSet<>(this.backingTreeSet.reversed());
+        ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.reversed());
+        set.addListener(new SubSetListener());
+        return set;
     }
     
     /**
@@ -206,8 +255,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public void addFirst(E e) {
-        this.backingTreeSet.addFirst(e);
-        this.handler.handleChange(this, e, null);
+        if (!this.handler.handleChange(this, e, null)) {
+            this.backingTreeSet.addFirst(e);
+        }
     }
     
     /**
@@ -215,8 +265,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public void addLast(E e) {
-        this.backingTreeSet.addLast(e);
-        this.handler.handleChange(this, e, null);
+        if (!this.handler.handleChange(this, e, null)) {
+            this.backingTreeSet.addLast(e);
+        }
     }
     
     /**

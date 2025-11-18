@@ -23,7 +23,9 @@ public class ObservableHashSet<E> extends AbstractObservableSet<E> {
      * @param collection The collection
      */
     public ObservableHashSet(Collection<E> collection) {
-        this.backingHashSet.addAll(collection);
+        if (collection != null) {
+            this.backingHashSet.addAll(collection);
+        }
     }
     
     /**
