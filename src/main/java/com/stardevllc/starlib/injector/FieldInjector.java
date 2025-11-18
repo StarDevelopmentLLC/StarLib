@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.injector;
 
 import com.stardevllc.starlib.objects.builder.IBuilder;
-import com.stardevllc.starlib.factory.IFactory;
+import com.stardevllc.starlib.objects.factory.IFactory;
 import com.stardevllc.starlib.helper.ObjectProvider;
 
 import java.util.HashSet;

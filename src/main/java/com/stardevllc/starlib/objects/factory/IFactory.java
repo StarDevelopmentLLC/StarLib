@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.factory;
+package com.stardevllc.starlib.objects.factory;
 
 import com.stardevllc.starlib.objects.builder.IBuilder;
 

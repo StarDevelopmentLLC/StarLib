@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.generator;
 
 import com.stardevllc.starlib.objects.builder.IBuilder;
-import com.stardevllc.starlib.factory.IFactory;
+import com.stardevllc.starlib.objects.factory.IFactory;
 
 import java.util.Deque;
 import java.util.function.*;
