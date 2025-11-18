@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.builder;
+package com.stardevllc.starlib.objects.builder;
 
 import java.util.function.Consumer;
 

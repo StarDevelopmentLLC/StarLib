@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.clock;
 
-import com.stardevllc.starlib.builder.IBuilder;
+import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.clock.callback.*;
 import com.stardevllc.starlib.clock.clocks.Stopwatch;
 import com.stardevllc.starlib.clock.clocks.Timer;

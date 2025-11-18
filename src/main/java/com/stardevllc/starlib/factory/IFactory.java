@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.factory;
 
-import com.stardevllc.starlib.builder.IBuilder;
+import com.stardevllc.starlib.objects.builder.IBuilder;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;

@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.registry;
 
-import com.stardevllc.starlib.builder.IBuilder;
+import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.registry.functions.*;
 import com.stardevllc.starlib.observable.collections.ObservableHashSet;
 
