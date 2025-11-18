@@ -3,6 +3,8 @@ package com.stardevllc.starlib.objects.registry;
 import com.stardevllc.starlib.objects.registry.RegistryChangeListener.Change;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Represents an object in a registry
@@ -61,12 +63,22 @@ public class RegistryObject<K extends Comparable<K>, V> implements Comparable<Re
         return object;
     }
     
+    /**
+     * Similar to the {@link Optional#ifPresent(Consumer)} method, just makes it easier for handling null
+     *
+     * @param presentConsumer The consumer to call if the value here is not null
+     */
+    public void ifPresent(Consumer<V> presentConsumer) {
+        if (this.object != null) {
+            presentConsumer.accept(this.object);
+        }
+    }
+    
     public final void set(V newValue) {
         if (registry.isFrozen()) {
             return;
         }
-        boolean cancelled = registry.fireChangeListeners(Change.full(registry, key, newValue, this.object));
-        if (!cancelled) {
+        if (!registry.fireChangeListeners(Change.full(registry, key, newValue, this.object))) {
             this.object = newValue;
         }
     }
