@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.registry;
 
-import com.stardevllc.starlib.registry.functions.*;
+import com.stardevllc.starlib.objects.registry.functions.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -9,7 +9,10 @@ import java.util.UUID;
  * Represents a registry mapping Objects of type {@link V} to UUIDs
  *
  * @param <V> The object type
+ * @deprecated See {@link com.stardevllc.starlib.objects.registry.Registry}
  */
+@SuppressWarnings("removal")
+@Deprecated(forRemoval = true, since = "0.20.0")
 public class UUIDRegistry<V> extends Registry<UUID, V> {
     
     /**

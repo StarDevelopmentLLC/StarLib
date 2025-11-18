@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.registry.functions;
+package com.stardevllc.starlib.objects.registry.functions;
 
 import java.util.function.BiConsumer;
 

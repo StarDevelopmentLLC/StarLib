@@ -1,4 +1,6 @@
-package com.stardevllc.starlib.registry;
+package com.stardevllc.starlib.objects.registry;
+
+import com.stardevllc.starlib.objects.registry.RegistryChangeListener.Change;
 
 import java.util.Objects;
 
@@ -7,22 +9,13 @@ import java.util.Objects;
  *
  * @param <K> The key type
  * @param <V> The value type
- * @deprecated See {@link com.stardevllc.starlib.objects.registry.RegistryObject}
  */
-@SuppressWarnings("removal")
-@Deprecated(forRemoval = true, since = "0.20.0")
 public class RegistryObject<K extends Comparable<K>, V> implements Comparable<RegistryObject<K, V>> {
-    protected final Registry<K, V> registry;
+    private final Registry<K, V> registry;
     
-    /**
-     * The key of the object
-     */
-    protected final K key;
+    private final K key;
     
-    /**
-     * The value of the object
-     */
-    protected V object; //Planned on some other things, not sure what to do right now
+    private V object; //Planned on some other things, not sure what to do right now
     
     /**
      * Constructs a new RegistryObject
@@ -32,7 +25,12 @@ public class RegistryObject<K extends Comparable<K>, V> implements Comparable<Re
      */
     public RegistryObject(Registry<K, V> registry, K key, V object) {
         this.registry = registry;
-        this.key = key;
+        if (registry.keyNormalizer != null) {
+            this.key = registry.keyNormalizer.apply(key);
+        } else {
+            this.key = key;
+        }
+        
         this.object = object;
     }
     
@@ -61,6 +59,16 @@ public class RegistryObject<K extends Comparable<K>, V> implements Comparable<Re
      */
     public V get() {
         return object;
+    }
+    
+    public final void set(V newValue) {
+        if (registry.isFrozen()) {
+            return;
+        }
+        boolean cancelled = registry.fireChangeListeners(Change.full(registry, key, newValue, this.object));
+        if (!cancelled) {
+            this.object = newValue;
+        }
     }
     
     @Override

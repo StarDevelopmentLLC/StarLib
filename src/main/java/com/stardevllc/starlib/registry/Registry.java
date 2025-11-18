@@ -1,8 +1,8 @@
 package com.stardevllc.starlib.registry;
 
 import com.stardevllc.starlib.builder.IBuilder;
+import com.stardevllc.starlib.objects.registry.functions.*;
 import com.stardevllc.starlib.observable.collections.ObservableHashSet;
-import com.stardevllc.starlib.registry.functions.*;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -15,7 +15,10 @@ import java.util.stream.Collectors;
  *
  * @param <K> The key type
  * @param <V> The value type
+ * @deprecated See {@link com.stardevllc.starlib.objects.registry.Registry}
  */
+@SuppressWarnings("removal")
+@Deprecated(forRemoval = true, since = "0.20.0")
 public class Registry<K extends Comparable<K>, V> implements Iterable<V>, SortedMap<K, V> {
     /**
      * The objects of the registry
@@ -152,7 +155,7 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
         for (RegisterListener<K, V> registerListener : this.registerListeners) {
             registerListener.onRegister(key, object);
         }
-        return new RegistryObject<>(key, object);
+        return new RegistryObject<>(this, key, object);
     }
     
     /**
@@ -361,7 +364,7 @@ public class Registry<K extends Comparable<K>, V> implements Iterable<V>, Sorted
             return null;
         }
         
-        return registryObject.getObject();
+        return registryObject.get();
     }
     
     /**
