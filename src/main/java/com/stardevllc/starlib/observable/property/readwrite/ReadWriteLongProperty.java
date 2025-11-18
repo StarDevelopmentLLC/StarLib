@@ -51,8 +51,9 @@ public class ReadWriteLongProperty extends ReadOnlyLongProperty implements ReadW
     @Override
     public void set(long value) {
         long oldValue = this.value;
-        this.handler.handleChange(this, oldValue, value);
-        this.value = value;
+        if (this.handler.handleChange(this, oldValue, value)) {
+            this.value = value;
+        }
     }
     
     /**

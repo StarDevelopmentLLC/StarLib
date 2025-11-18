@@ -145,8 +145,8 @@ public abstract class AbstractReadOnlyProperty<T> implements ReadOnlyProperty<T>
         }
         
         @Override
-        public void changed(ObservableValue<T> observableValue, T oldValue, T newValue) {
-            property.getHandler().handleChange(observableValue, oldValue, newValue);
+        public void changed(Change<T> change) {
+            property.getHandler().handleChange(change);
         }
     }
 }

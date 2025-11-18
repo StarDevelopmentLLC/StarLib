@@ -57,8 +57,9 @@ public class ReadWriteObjectProperty<T> extends ReadOnlyObjectProperty<T> implem
     @Override
     public void set(T value) {
         T oldValue = this.value;
-        this.handler.handleChange(this, oldValue, value);
-        this.value = value;
+        if (!this.handler.handleChange(this, oldValue, value)) {
+            this.value = value;
+        }
     }
     
     /**

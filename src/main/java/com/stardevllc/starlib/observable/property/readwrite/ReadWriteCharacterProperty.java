@@ -51,8 +51,9 @@ public class ReadWriteCharacterProperty extends ReadOnlyCharacterProperty implem
     @Override
     public void set(char value) {
         char oldValue = this.value;
-        this.handler.handleChange(this, oldValue, value);
-        this.value = value;
+        if (!this.handler.handleChange(this, oldValue, value)) {
+            this.value = value;
+        }
     }
     
     /**

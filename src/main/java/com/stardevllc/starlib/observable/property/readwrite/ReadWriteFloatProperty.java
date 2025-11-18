@@ -51,8 +51,9 @@ public class ReadWriteFloatProperty extends ReadOnlyFloatProperty implements Rea
     @Override
     public void set(float value) {
         float oldValue = this.value;
-        this.handler.handleChange(this, oldValue, value);
-        this.value = value;
+        if (!this.handler.handleChange(this, oldValue, value)) {
+            this.value = value;
+        }
     }
     
     /**

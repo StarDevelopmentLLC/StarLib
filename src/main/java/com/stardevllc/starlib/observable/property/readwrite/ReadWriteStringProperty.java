@@ -51,8 +51,9 @@ public class ReadWriteStringProperty extends ReadOnlyStringProperty implements R
     @Override
     public void set(String value) {
         String oldValue = this.value;
-        this.handler.handleChange(this, oldValue, value);
-        this.value = value;
+        if (!this.handler.handleChange(this, oldValue, value)) {
+            this.value = value;
+        }
     }
     
     /**

@@ -85,7 +85,7 @@ public abstract class Clock<T extends ClockSnapshot> {
         this.cancelled = new ReadWriteBooleanProperty(this, "cancelled", false);
         this.countAmount = countAmount;
         
-        this.time.addListener((value, oldValue, newValue) -> unpause());
+        this.time.addListener(c -> unpause());
     }
     
     /**

@@ -46,7 +46,7 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
         super(uuid, name, startTime, countAmount);
         this.startTime = new ReadWriteLongProperty(this, "startTime", startTime);
         this.endTime = new ReadWriteLongProperty(this, "endTime", endTime);
-        this.endTime.addListener((observable, oldValue, newValue) -> unpause());
+        this.endTime.addListener(c -> unpause());
     }
     
     /**

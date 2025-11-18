@@ -10,14 +10,16 @@ import java.util.Objects;
 public interface WritableProperty<T> extends Property<T>, WritableObservableValue<T> {
     
     /**
-     * Binds this property to another property bidirectionally
+     * Binds this property to another property bidirectionally <br>
+     * This method ignores the cancelled flag in change listeners
      *
      * @param other The other property
      */
     void bindBidirectionally(WritableProperty<T> other);
     
     /**
-     * Unbinds this property from the other one
+     * Unbinds this property from the other one <br>
+     * This method ignores the cancelled flag in change listeners
      *
      * @param other The other property
      */
@@ -45,16 +47,16 @@ public interface WritableProperty<T> extends Property<T>, WritableObservableValu
         }
         
         @Override
-        public void changed(ObservableValue<T> observableValue, T oldValue, T newValue) {
+        public void changed(Change<T> change) {
             if (updating) {
                 return;
             }
             
             updating = true;
-            if (property1 == observableValue) {
-                property2.setValue(newValue);
+            if (property1 == change.observableValue()) {
+                property2.setValue(change.newValue());
             } else {
-                property1.setValue(newValue);
+                property1.setValue(change.newValue());
             }
             updating = false;
         }

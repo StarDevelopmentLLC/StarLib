@@ -1,5 +1,7 @@
 package com.stardevllc.starlib.observable;
 
+import com.stardevllc.starlib.observable.ChangeListener.Change;
+
 import java.util.*;
 
 /**
@@ -36,17 +38,28 @@ public class ListenerHandler<T> {
     }
     
     /**
+     * Handles changes for an observable value
+     *
+     * @param change The change that occured
+     * @return The changed status
+     */
+    public boolean handleChange(Change<T> change) {
+        if (Objects.equals(change.oldValue(), change.newValue())) {
+            for (ChangeListener<T> listener : listeners) {
+                listener.changed(change);
+            }
+        }
+        return change.cancelled().get();
+    }
+    
+    /**
      * Calls the listeners based on the changes. This checks for equality with {@code Objects.equals(oldValue, newValue}
      *
      * @param observable The observable that was the source of the change
      * @param oldValue   The old value
      * @param newValue   The new value
      */
-    public void handleChange(ObservableValue<T> observable, T oldValue, T newValue) {
-        if (!Objects.equals(oldValue, newValue)) {
-            for (ChangeListener<T> listener : listeners) {
-                listener.changed(observable, oldValue, newValue);
-            }
-        }
+    public boolean handleChange(ObservableValue<T> observable, T oldValue, T newValue) {
+        return handleChange(new Change<>(observable, oldValue, newValue));
     }
 }

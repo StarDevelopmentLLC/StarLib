@@ -51,8 +51,9 @@ public class ReadWriteIntegerProperty extends ReadOnlyIntegerProperty implements
     @Override
     public void set(int value) {
         int oldValue = this.value;
-        this.handler.handleChange(this, oldValue, value);
-        this.value = value;
+        if (!this.handler.handleChange(this, oldValue, value)) {
+            this.value = value;
+        }
     }
     
     /**

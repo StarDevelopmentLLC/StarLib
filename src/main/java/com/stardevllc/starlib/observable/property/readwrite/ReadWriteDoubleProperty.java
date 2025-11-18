@@ -51,8 +51,9 @@ public class ReadWriteDoubleProperty extends ReadOnlyDoubleProperty implements R
     @Override
     public void set(double value) {
         double oldValue = this.value;
-        this.handler.handleChange(this, oldValue, value);
-        this.value = value;
+        if (!this.handler.handleChange(this, oldValue, value)) {
+            this.value = value;
+        }
     }
     
     /**

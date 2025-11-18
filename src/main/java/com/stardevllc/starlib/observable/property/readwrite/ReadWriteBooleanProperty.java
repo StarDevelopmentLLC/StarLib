@@ -51,8 +51,9 @@ public class ReadWriteBooleanProperty extends ReadOnlyBooleanProperty implements
     @Override
     public void set(boolean value) {
         boolean oldValue = this.value;
-        this.handler.handleChange(this, oldValue, value);
-        this.value = value;
+        if (!this.handler.handleChange(this, oldValue, value)) {
+            this.value = value;
+        }
     }
     
     /**

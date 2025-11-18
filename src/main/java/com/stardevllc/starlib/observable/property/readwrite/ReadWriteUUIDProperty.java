@@ -53,8 +53,9 @@ public class ReadWriteUUIDProperty extends ReadOnlyUUIDProperty implements ReadW
     @Override
     public void set(UUID value) {
         UUID oldValue = this.value;
-        this.handler.handleChange(this, oldValue, value);
-        this.value = value;
+        if (!this.handler.handleChange(this, oldValue, value)) {
+            this.value = value;
+        }
     }
     
     /**
