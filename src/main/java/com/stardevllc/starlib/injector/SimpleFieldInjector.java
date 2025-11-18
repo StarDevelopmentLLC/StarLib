@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.injector;
 
-import com.stardevllc.starlib.helper.ObjectProvider;
+import com.stardevllc.starlib.objects.ObjectProvider;
 import com.stardevllc.starlib.reflection.ReflectionHelper;
 
 import java.lang.reflect.Field;
