@@ -25,8 +25,8 @@ public class RegistryObject<K extends Comparable<K>, V> implements Comparable<Re
      */
     public RegistryObject(Registry<K, V> registry, K key, V object) {
         this.registry = registry;
-        if (registry.keyNormalizer != null) {
-            this.key = registry.keyNormalizer.apply(key);
+        if (registry.getKeyNormalizer() != null) {
+            this.key = registry.getKeyNormalizer().apply(key);
         } else {
             this.key = key;
         }

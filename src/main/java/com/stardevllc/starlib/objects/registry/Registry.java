@@ -6,30 +6,34 @@ import com.stardevllc.starlib.objects.registry.functions.*;
 import com.stardevllc.starlib.observable.collections.ObservableTreeSet;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
+/**
+ * Represents a Registry of objects for storage in memory
+ *
+ * @param <K> The key type for the registry
+ * @param <V> The type for the objects actually stored
+ */
 public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<K, V>> {
     
-    protected final ObservableTreeSet<RegistryObject<K, V>> backingSet = new ObservableTreeSet<>();
-    protected final KeyNormalizer<K> keyNormalizer;
-    protected final KeyRetriever<V, K> keyRetriever;
-    protected final KeyGenerator<V, K> keyGenerator;
-    protected final KeySetter<K, V> keySetter;
+    private final ObservableTreeSet<RegistryObject<K, V>> backingSet = new ObservableTreeSet<>();
+    private final KeyNormalizer<K> keyNormalizer;
+    private final KeyRetriever<V, K> keyRetriever;
+    private final KeyGenerator<V, K> keyGenerator;
+    private final KeySetter<K, V> keySetter;
     
     private boolean frozen;
     
-    protected final List<RegistryChangeListener<K, V>> changeListeners = new ArrayList<>();
+    private final List<RegistryChangeListener<K, V>> changeListeners = new ArrayList<>();
     
-    public Registry() {
-        this(null);
-    }
-    
-    public Registry(Collection<RegistryObject<K, V>> collection) {
-        this(collection, null, null, null, null);
-    }
-    
-    public Registry(Collection<RegistryObject<K, V>> collection, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever, KeyGenerator<V, K> keyGenerator, KeySetter<K, V> keySetter) {
-//        super(collection);
+    /**
+     * Constructs a registry with the functions
+     *
+     * @param keyNormalizer The key normalizer
+     * @param keyRetriever  The key retriever
+     * @param keyGenerator  The key generator
+     * @param keySetter     The key setter
+     */
+    public Registry(KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever, KeyGenerator<V, K> keyGenerator, KeySetter<K, V> keySetter) {
         this.keyNormalizer = keyNormalizer;
         this.keyRetriever = keyRetriever;
         this.keyGenerator = keyGenerator;
@@ -65,36 +69,251 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         });
     }
     
+    /**
+     * Constructs a registry based on a builder instance
+     *
+     * @param builder The builder
+     */
+    public Registry(Builder<K, V, ?, ?> builder) {
+        this(builder.keyNormalizer, builder.keyRetriever, builder.keyGenerator, builder.keySetter);
+        builder.objects.forEach(this::register);
+        this.changeListeners.addAll(builder.changeListeners);
+    }
+    
+    /**
+     * Constructs a Registry with a normalizer and retriever
+     *
+     * @param keyNormalizer The normalizer
+     * @param keyRetriever  The retriever
+     */
+    public Registry(KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever) {
+        this(keyNormalizer, keyRetriever, null, null);
+    }
+    
+    /**
+     * Constructs a registry with just a retriever
+     *
+     * @param keyRetriever The retriever
+     */
+    public Registry(KeyRetriever<V, K> keyRetriever) {
+        this((KeyNormalizer<K>) null, keyRetriever);
+    }
+    
+    /**
+     * Constrcts a registry with a normalizer, generator and setter
+     *
+     * @param keyNormalizer The normalizer
+     * @param keyGenerator  The generator
+     * @param keySetter     The setter
+     */
+    public Registry(KeyNormalizer<K> keyNormalizer, KeyGenerator<V, K> keyGenerator, KeySetter<K, V> keySetter) {
+        this(keyNormalizer, null, keyGenerator, keySetter);
+    }
+    
+    /**
+     * Constructs a registry with a generator and setter
+     *
+     * @param keyGenerator The generator
+     * @param keySetter    The setter
+     */
+    public Registry(KeyGenerator<V, K> keyGenerator, KeySetter<K, V> keySetter) {
+        this((KeyNormalizer<K>) null, keyGenerator, keySetter);
+    }
+    
+    /**
+     * Constructs a registry with a normalizer and a generator
+     *
+     * @param keyNormalizer The normalizer
+     * @param keyGenerator  The generator
+     */
+    public Registry(KeyNormalizer<K> keyNormalizer, KeyGenerator<V, K> keyGenerator) {
+        this(keyNormalizer, keyGenerator, null);
+    }
+    
+    /**
+     * Constructs a registry with a normalizer and setter
+     *
+     * @param keyNormalizer The normalizer
+     * @param keySetter     The setter
+     */
+    public Registry(KeyNormalizer<K> keyNormalizer, KeySetter<K, V> keySetter) {
+        this(keyNormalizer, null, null, keySetter);
+    }
+    
+    /**
+     * Constructs a register with a setter
+     *
+     * @param keySetter The setter
+     */
+    public Registry(KeySetter<K, V> keySetter) {
+        this((KeyNormalizer<K>) null, null, null, keySetter);
+    }
+    
+    /**
+     * Constructs a registry with no functions or predefined registered objects
+     */
+    public Registry() {
+        this((KeyNormalizer<K>) null, null, null, null);
+    }
+    
+    /**
+     * Constructs a registry with the functions
+     *
+     * @param existingValues The existing values
+     * @param keyNormalizer  The key normalizer
+     * @param keyRetriever   The key retriever
+     * @param keyGenerator   The key generator
+     * @param keySetter      The key setter
+     */
+    public Registry(Map<K, V> existingValues, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever, KeyGenerator<V, K> keyGenerator, KeySetter<K, V> keySetter) {
+        this(keyNormalizer, keyRetriever, keyGenerator, keySetter);
+        if (existingValues != null) {
+            existingValues.forEach(this::register);
+        }
+    }
+    
+    /**
+     * Constructs a Registry with a normalizer and retriever
+     *
+     * @param existingValues The existing values
+     * @param keyNormalizer  The normalizer
+     * @param keyRetriever   The retriever
+     */
+    public Registry(Map<K, V> existingValues, KeyNormalizer<K> keyNormalizer, KeyRetriever<V, K> keyRetriever) {
+        this(existingValues, keyNormalizer, keyRetriever, null, null);
+    }
+    
+    /**
+     * Constructs a registry with just a retriever
+     *
+     * @param existingValues The existing values
+     * @param keyRetriever   The retriever
+     */
+    public Registry(Map<K, V> existingValues, KeyRetriever<V, K> keyRetriever) {
+        this(existingValues, null, keyRetriever);
+    }
+    
+    /**
+     * Constrcts a registry with a normalizer, generator and setter
+     *
+     * @param existingValues The existing values
+     * @param keyNormalizer  The normalizer
+     * @param keyGenerator   The generator
+     * @param keySetter      The setter
+     */
+    public Registry(Map<K, V> existingValues, KeyNormalizer<K> keyNormalizer, KeyGenerator<V, K> keyGenerator, KeySetter<K, V> keySetter) {
+        this(existingValues, keyNormalizer, null, keyGenerator, keySetter);
+    }
+    
+    /**
+     * Constructs a registry with a generator and setter
+     *
+     * @param existingValues The existing values
+     * @param keyGenerator   The generator
+     * @param keySetter      The setter
+     */
+    public Registry(Map<K, V> existingValues, KeyGenerator<V, K> keyGenerator, KeySetter<K, V> keySetter) {
+        this(existingValues, null, keyGenerator, keySetter);
+    }
+    
+    /**
+     * Constructs a registry with a normalizer and a generator
+     *
+     * @param existingValues The existing values
+     * @param keyNormalizer  The normalizer
+     * @param keyGenerator   The generator
+     */
+    public Registry(Map<K, V> existingValues, KeyNormalizer<K> keyNormalizer, KeyGenerator<V, K> keyGenerator) {
+        this(existingValues, keyNormalizer, keyGenerator, null);
+    }
+    
+    /**
+     * Constructs a registry with a normalizer and setter
+     *
+     * @param existingValues The existing values
+     * @param keyNormalizer  The normalizer
+     * @param keySetter      The setter
+     */
+    public Registry(Map<K, V> existingValues, KeyNormalizer<K> keyNormalizer, KeySetter<K, V> keySetter) {
+        this(existingValues, keyNormalizer, null, null, keySetter);
+    }
+    
+    /**
+     * Constructs a register with a setter
+     *
+     * @param existingValues The existing values
+     * @param keySetter      The setter
+     */
+    public Registry(Map<K, V> existingValues, KeySetter<K, V> keySetter) {
+        this(existingValues, null, null, null, keySetter);
+    }
+    
+    /**
+     * Constructs a registry with no functions
+     *
+     * @param existingValues The existing values
+     */
+    public Registry(Map<K, V> existingValues) {
+        this(existingValues, null, null, null, null);
+    }
+    
+    /**
+     * Freezes registration of objects to this registry
+     */
     public final void freeze() {
         this.frozen = true;
     }
     
+    /**
+     * Unfreezes registration of objects to this registry <br>
+     * Subclasses must make it public to actually allow it, by default it is not allowed
+     */
+    protected void unfreeze() {
+        this.frozen = false;
+    }
+    
+    /**
+     * Checks to see if this registry is frozen
+     *
+     * @return The frozen status of the registry
+     */
     public final boolean isFrozen() {
         return frozen;
     }
     
+    /**
+     * Fires changes listeners for when things change
+     *
+     * @param change The change that occured
+     * @return If the change was cancelled
+     */
     protected boolean fireChangeListeners(Change<K, V> change) {
         if (frozen) {
             return true;
         }
         
-        boolean cancelled = false;
         for (RegistryChangeListener<K, V> listener : this.changeListeners) {
             listener.changed(change);
-            if (!cancelled) {
-                if (change.cancelled().get()) {
-                    cancelled = true;
-                }
-            }
         }
         
-        return cancelled;
+        return change.cancelled().get();
     }
     
+    /**
+     * Adds a change listener to this registry
+     *
+     * @param listener the listener to add
+     */
     public void addChangeListener(RegistryChangeListener<K, V> listener) {
         this.changeListeners.add(listener);
     }
     
+    /**
+     * Gets the full RegistryObject associated with the key
+     *
+     * @param key The key
+     * @return The object or null if not found
+     */
     public RegistryObject<K, V> getObject(K key) {
         for (RegistryObject<K, V> registryObject : this.backingSet) {
             if (registryObject.getKey().equals(key)) {
@@ -105,6 +324,12 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return null;
     }
     
+    /**
+     * Returns the value associated with the key
+     *
+     * @param key The key
+     * @return The value or null if not found
+     */
     public V get(K key) {
         RegistryObject<K, V> object = getObject(key);
         if (object != null) {
@@ -113,15 +338,36 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return null;
     }
     
+    /**
+     * Returns the object associated with the key or the default provided
+     *
+     * @param key          the key
+     * @param defaultValue The value to return if not null
+     * @return The key or default value
+     */
     public RegistryObject<K, V> getObjectOrDefault(K key, V defaultValue) {
         RegistryObject<K, V> object = getObject(key);
         return object != null ? object : new RegistryObject<>(this, key, defaultValue);
     }
     
+    /**
+     * Gets the value with the key or a default value if not found
+     *
+     * @param key          The key
+     * @param defaultValue The default value
+     * @return The value or the default value if not found
+     */
     public V getOrDefault(K key, V defaultValue) {
         return getObjectOrDefault(key, defaultValue).get();
     }
     
+    /**
+     * Similar to {@link #getObjectOrDefault(Comparable, Object)} but registers the default value to the key if not found
+     *
+     * @param key          The key
+     * @param defaultValue The default value
+     * @return The RegistryObject
+     */
     public RegistryObject<K, V> computeObjectIfAbsent(K key, V defaultValue) {
         RegistryObject<K, V> registryObject = getObjectOrDefault(key, defaultValue);
         if (!frozen) {
@@ -132,6 +378,13 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return null;
     }
     
+    /**
+     * Same as {@link #computeObjectIfAbsent(Comparable, Object)}
+     *
+     * @param key          The key
+     * @param defaultValue The default value
+     * @return The value that was assigned
+     */
     public V computeIfAbsent(K key, V defaultValue) {
         RegistryObject<K, V> registryObject = computeObjectIfAbsent(key, defaultValue);
         if (registryObject != null) {
@@ -140,6 +393,13 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return null;
     }
     
+    /**
+     * Similar to {@link #computeObjectIfAbsent(Comparable, Object)}
+     *
+     * @param key          The key
+     * @param defaultValue The default value
+     * @return The registry object
+     */
     public RegistryObject<K, V> computeIfAbsent(K key, RegistryObject<K, V> defaultValue) {
         for (RegistryObject<K, V> registryObject : this.backingSet) {
             if (registryObject.getKey().equals(key)) {
@@ -155,6 +415,13 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return null;
     }
     
+    /**
+     * Registers an object to this registry if it is not frozen
+     *
+     * @param key   The key
+     * @param value The value
+     * @return The RegistryObject associated with the value
+     */
     public RegistryObject<K, V> register(K key, V value) {
         if (frozen) {
             return null;
@@ -164,16 +431,49 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
             throw new NullPointerException("Key cannot be null");
         }
         
-        return computeObjectIfAbsent(key, value);
+        RegistryObject<K, V> object = getObject(key);
+        if (object == null) {
+            object = new RegistryObject<>(this, key, value);
+        }
+        
+        object.set(value);
+        
+        if (keySetter != null) {
+            keySetter.accept(key, value);
+        }
+        
+        return object;
     }
     
+    /**
+     * Registers a registry object to this registry
+     *
+     * @param registryObject The registry object to register
+     * @return The instance of the registry object
+     */
     public RegistryObject<K, V> register(RegistryObject<K, V> registryObject) {
         if (frozen) {
             return null;
         }
-        return computeIfAbsent(registryObject.getKey(), registryObject);
+        
+        RegistryObject<K, V> object = getObject(registryObject.getKey());
+        if (object == null) {
+            object = registryObject;
+            this.backingSet.add(object);
+        } else {
+            this.backingSet.remove(object);
+            this.backingSet.add(registryObject);
+        }
+        
+        return object;
     }
     
+    /**
+     * Registers all key-values in the map this this registry
+     *
+     * @param map The map with the key and value pairs
+     * @return A list of all registry objects in order of the map if they were successful
+     */
     public List<RegistryObject<K, V>> registerAll(Map<K, V> map) {
         if (frozen) {
             return List.of();
@@ -183,6 +483,13 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return objects;
     }
     
+    /**
+     * Registers an object to this registry <br>
+     * A KeyRetriever or a KeyGenerator must be present in order for this to work properly
+     *
+     * @param value The value
+     * @return The registry object instance
+     */
     public RegistryObject<K, V> register(V value) {
         if (frozen) {
             return null;
@@ -204,13 +511,31 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return register(key, value);
     }
     
-    public List<RegistryObject<K, V>> registerAll(Collection<V> collection) {
+    /**
+     * Similar to {@link #register(Object)} but goes through the Iterable provided
+     *
+     * @param iterable The iterable
+     * @return The list of registry objects in the order of the iterable
+     */
+    public List<RegistryObject<K, V>> registerAll(Iterable<V> iterable) {
         if (frozen) {
             return List.of();
         }
-        return collection.stream().map(this::register).collect(Collectors.toCollection(LinkedList::new));
+        
+        List<RegistryObject<K, V>> objects = new LinkedList<>();
+        for (V value : iterable) {
+            objects.add(this.register(value));
+        }
+        
+        return objects;
     }
     
+    /**
+     * Similar to {@link #registerAll(Iterable)} but in varargs form
+     *
+     * @param values The values
+     * @return The list of registry objects in the order of the varargs
+     */
     @SafeVarargs
     public final List<RegistryObject<K, V>> registerAll(V... values) {
         if (values == null || frozen) {
@@ -224,6 +549,12 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return objects;
     }
     
+    /**
+     * Removes a registration
+     *
+     * @param key The key
+     * @return If the removal was successful
+     */
     public boolean unregister(K key) {
         if (frozen) {
             return false;
@@ -235,6 +566,12 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return this.backingSet.removeIf(object -> object.getKey().equals(finalKey));
     }
     
+    /**
+     * Similar to {@link #unregister(Comparable)} but removes all of the values associated
+     *
+     * @param value The value
+     * @return If the removal was successful in any way
+     */
     public boolean unregister(V value) {
         if (frozen) {
             return false;
@@ -242,7 +579,13 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return this.backingSet.removeIf(object -> object.get() != null && object.get().equals(value));
     }
     
-    public boolean containsKey(Object key) {
+    /**
+     * Checks to see if this registry contains the key
+     *
+     * @param key The key
+     * @return If the key exists
+     */
+    public boolean containsKey(K key) {
         for (RegistryObject<K, V> registryObject : this.backingSet) {
             if (registryObject.getKey().equals(key)) {
                 return true;
@@ -252,7 +595,13 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return false;
     }
     
-    public boolean containsValue(Object value) {
+    /**
+     * Checks to see if this registry contains the value
+     *
+     * @param value The value
+     * @return If the value exists
+     */
+    public boolean containsValue(V value) {
         for (RegistryObject<K, V> registryObject : this.backingSet) {
             if (registryObject.get() != null && registryObject.get().equals(value)) {
                 return true;
@@ -261,6 +610,12 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return false;
     }
     
+    /**
+     * Returns a set of keys that this registry has. <br>
+     * NOTE: This is a copy of the key set and is not backed by the registry in any way (This is WIP)
+     *
+     * @return The keyset copy
+     */
     public Set<K> keySet() {
         Set<K> keySet = new TreeSet<>();
         for (RegistryObject<K, V> registryObject : this.backingSet) {
@@ -269,6 +624,12 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return keySet;
     }
     
+    /**
+     * Returns a collection of values that this registry has. <br>
+     * NOTE: This is a copy of the values and is not backed by the registry in any way (This is WIP)
+     *
+     * @return The values copy
+     */
     public Collection<V> values() {
         List<V> values = new LinkedList<>();
         for (RegistryObject<K, V> registryObject : this.backingSet) {
@@ -361,6 +722,12 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         this.backingSet.clear();
     }
     
+    /**
+     * Returns this registry as a Map. <br>
+     * This is a copy and is not backed by the Registry in any way (This is WIP)
+     *
+     * @return The registry as a map copy
+     */
     public Map<K, V> asMap() {
         Map<K, V> map = new TreeMap<>();
         for (RegistryObject<K, V> registryObject : this.backingSet) {
@@ -370,13 +737,54 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
         return map;
     }
     
+    /**
+     * Copies everthing into a Builder instance
+     *
+     * @return The new builder instance
+     */
     public Builder<K, V, ?, ?> asBuilder() {
         Builder<K, V, ?, ?> builder = new Builder<>();
-        builder.initialObjects(this.backingSet).keyGenerator(this.keyGenerator).keyNormalizer(this.keyNormalizer).keyRetriever(this.keyRetriever);
+        builder.initialObjects(asMap()).keyGenerator(this.keyGenerator).keyNormalizer(this.keyNormalizer).keyRetriever(this.keyRetriever);
         for (RegistryChangeListener<K, V> changeListener : this.changeListeners) {
             builder.addChangeListener(changeListener);
         }
         return builder;
+    }
+    
+    /**
+     * The KeyNormalizer transforms the keys into a standard form or format and is applied to all keys when registering and when used as a check
+     *
+     * @return the key normalizer
+     */
+    public KeyNormalizer<K> getKeyNormalizer() {
+        return keyNormalizer;
+    }
+    
+    /**
+     * The KeyRetriever is used to retrieve keys from an object
+     *
+     * @return The key retriever
+     */
+    public KeyRetriever<V, K> getKeyRetriever() {
+        return keyRetriever;
+    }
+    
+    /**
+     * The KeyGenerator is used to generate keys automatically
+     *
+     * @return The Key Generator
+     */
+    public KeyGenerator<V, K> getKeyGenerator() {
+        return keyGenerator;
+    }
+    
+    /**
+     * The key setter is used to set the key to an object
+     *
+     * @return The key setter
+     */
+    public KeySetter<K, V> getKeySetter() {
+        return keySetter;
     }
     
     public static <K extends Comparable<K>, V> Builder<K, V, Registry<K, V>, ?> builder() {
@@ -392,36 +800,14 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
      * @param <B> The builder type
      */
     public static class Builder<K extends Comparable<K>, V, R extends Registry<K, V>, B extends Registry.Builder<K, V, R, B>> implements IBuilder<R, B> {
-        /**
-         * Initial objects
-         */
-        protected final TreeSet<RegistryObject<K, V>> objects = new TreeSet<>();
+        protected final Map<K, V> objects = new TreeMap<>();
         
-        /**
-         * Key normalizer
-         */
         protected KeyNormalizer<K> keyNormalizer;
-        
-        /**
-         * Key retriever
-         */
         protected KeyRetriever<V, K> keyRetriever;
-        
-        /**
-         * Key generator
-         */
         protected KeyGenerator<V, K> keyGenerator;
-        
-        /**
-         * Key setter
-         */
         protected KeySetter<K, V> keySetter;
-        
         protected final List<RegistryChangeListener<K, V>> changeListeners = new LinkedList<>();
         
-        /**
-         * Emtpy builder
-         */
         public Builder() {
         }
         
@@ -431,7 +817,7 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
          * @param builder other builder
          */
         public Builder(Builder<K, V, R, B> builder) {
-            this.objects.addAll(builder.objects);
+            this.objects.putAll(builder.objects);
             this.keyNormalizer = builder.keyNormalizer;
             this.keyRetriever = builder.keyRetriever;
             this.keyGenerator = builder.keyGenerator;
@@ -445,8 +831,8 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
          * @param objects The objects
          * @return This builder
          */
-        public B initialObjects(Collection<RegistryObject<K, V>> objects) {
-            this.objects.addAll(objects);
+        public B initialObjects(Map<K, V> objects) {
+            this.objects.putAll(objects);
             return self();
         }
         
@@ -505,7 +891,7 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
          * @return The new registry
          */
         public R build() {
-            Registry<K, V> registry = new Registry<>(objects, keyNormalizer, keyRetriever, keyGenerator, keySetter);
+            Registry<K, V> registry = new Registry<>(this);
             this.changeListeners.forEach(registry::addChangeListener);
             return (R) registry;
         }
