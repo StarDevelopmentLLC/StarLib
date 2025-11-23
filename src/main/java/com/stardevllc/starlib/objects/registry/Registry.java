@@ -1,6 +1,5 @@
 package com.stardevllc.starlib.objects.registry;
 
-import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.registry.RegistryChangeListener.Change;
 import com.stardevllc.starlib.objects.registry.functions.*;
 import com.stardevllc.starlib.observable.collections.set.ObservableTreeSet;
@@ -70,14 +69,17 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
     }
     
     /**
-     * Constructs a registry based on a builder instance
+     * Copy constructor <br>
+     * This references the same KeyNormalizer, KeyRetriever, KeyGenerator, KeySetter from the passed in registry. But these are final and functional interfaces so that is perfectly fine as they are immutable<br>
+     * It also does the {@link Registry#asMap()} method on the passed in registry and creates new {@link RegistryObject}s for each entry <br>
+     * This does not copy the frozen status of the registry and sets it to false
      *
-     * @param builder The builder
+     * @param registry The registry to copy
      */
-    public Registry(Builder<K, V, ?, ?> builder) {
-        this(builder.keyNormalizer, builder.keyRetriever, builder.keyGenerator, builder.keySetter);
-        builder.objects.forEach(this::register);
-        this.changeListeners.addAll(builder.changeListeners);
+    public Registry(Registry<K, V> registry) {
+        this(registry.keyNormalizer, registry.keyRetriever, registry.keyGenerator, registry.keySetter);
+        registry.asMap().forEach((key, value) -> this.backingSet.add(new RegistryObject<>(this, key, value)));
+        this.frozen = false;
     }
     
     /**
@@ -287,7 +289,7 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
      * @param change The change that occured
      * @return If the change was cancelled
      */
-    protected boolean fireChangeListeners(Change<K, V> change) {
+    protected final boolean fireChangeListeners(Change<K, V> change) {
         if (frozen) {
             return true;
         }
@@ -304,7 +306,7 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
      *
      * @param listener the listener to add
      */
-    public void addChangeListener(RegistryChangeListener<K, V> listener) {
+    public void addListener(RegistryChangeListener<K, V> listener) {
         this.changeListeners.add(listener);
     }
     
@@ -747,20 +749,6 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
     }
     
     /**
-     * Copies everthing into a Builder instance
-     *
-     * @return The new builder instance
-     */
-    public Builder<K, V, ?, ?> asBuilder() {
-        Builder<K, V, ?, ?> builder = new Builder<>();
-        builder.initialObjects(asMap()).keyGenerator(this.keyGenerator).keyNormalizer(this.keyNormalizer).keyRetriever(this.keyRetriever);
-        for (RegistryChangeListener<K, V> changeListener : this.changeListeners) {
-            builder.addChangeListener(changeListener);
-        }
-        return builder;
-    }
-    
-    /**
      * The KeyNormalizer transforms the keys into a standard form or format and is applied to all keys when registering and when used as a check
      *
      * @return the key normalizer
@@ -794,123 +782,5 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
      */
     public KeySetter<K, V> getKeySetter() {
         return keySetter;
-    }
-    
-    public static <K extends Comparable<K>, V> Builder<K, V, Registry<K, V>, ?> builder() {
-        return new Builder<>();
-    }
-    
-    /**
-     * A builder to make creating registries easier
-     *
-     * @param <K> The key type
-     * @param <V> The value type
-     * @param <R> The registry type
-     * @param <B> The builder type
-     */
-    public static class Builder<K extends Comparable<K>, V, R extends Registry<K, V>, B extends Registry.Builder<K, V, R, B>> implements IBuilder<R, B> {
-        protected final Map<K, V> objects = new TreeMap<>();
-        
-        protected KeyNormalizer<K> keyNormalizer;
-        protected KeyRetriever<V, K> keyRetriever;
-        protected KeyGenerator<V, K> keyGenerator;
-        protected KeySetter<K, V> keySetter;
-        protected final List<RegistryChangeListener<K, V>> changeListeners = new LinkedList<>();
-        
-        public Builder() {
-        }
-        
-        /**
-         * Copy constructor
-         *
-         * @param builder other builder
-         */
-        public Builder(Builder<K, V, R, B> builder) {
-            this.objects.putAll(builder.objects);
-            this.keyNormalizer = builder.keyNormalizer;
-            this.keyRetriever = builder.keyRetriever;
-            this.keyGenerator = builder.keyGenerator;
-            this.keySetter = builder.keySetter;
-            this.changeListeners.addAll(builder.changeListeners);
-        }
-        
-        /**
-         * Initial objects
-         *
-         * @param objects The objects
-         * @return This builder
-         */
-        public B initialObjects(Map<K, V> objects) {
-            this.objects.putAll(objects);
-            return self();
-        }
-        
-        /**
-         * Key normalizer
-         *
-         * @param keyNormalizer The normalizer
-         * @return This builder
-         */
-        public B keyNormalizer(KeyNormalizer<K> keyNormalizer) {
-            this.keyNormalizer = keyNormalizer;
-            return self();
-        }
-        
-        /**
-         * Key retriever
-         *
-         * @param keyRetriever The retriever
-         * @return This builder
-         */
-        public B keyRetriever(KeyRetriever<V, K> keyRetriever) {
-            this.keyRetriever = keyRetriever;
-            return self();
-        }
-        
-        /**
-         * Key generator
-         *
-         * @param keyGenerator The generator
-         * @return This builder
-         */
-        public B keyGenerator(KeyGenerator<V, K> keyGenerator) {
-            this.keyGenerator = keyGenerator;
-            return self();
-        }
-        
-        /**
-         * Key setter
-         *
-         * @param keySetter The setter
-         * @return This builder
-         */
-        public B keySetter(KeySetter<K, V> keySetter) {
-            this.keySetter = keySetter;
-            return self();
-        }
-        
-        public B addChangeListener(RegistryChangeListener<K, V> listener) {
-            this.changeListeners.add(listener);
-            return self();
-        }
-        
-        /**
-         * Builds the registry
-         *
-         * @return The new registry
-         */
-        public R build() {
-            Registry<K, V> registry = new Registry<>(this);
-            this.changeListeners.forEach(registry::addChangeListener);
-            return (R) registry;
-        }
-        
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public B clone() {
-            return (B) new Builder<>(this);
-        }
     }
 }
