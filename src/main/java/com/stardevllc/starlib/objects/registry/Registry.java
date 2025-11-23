@@ -69,17 +69,49 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
     }
     
     /**
+     * Options when used for the copy constructor
+     */
+    public enum CopyOption {
+        /**
+         * This is to specify if the objects are to be copied
+         */
+        COPY_OBJECTS,
+        
+        /**
+         * This specified if the frozen status is to be copied. Otherwise it false (Boolean default)
+         */
+        COPY_FROZEN
+    }
+    
+    /**
      * Copy constructor <br>
      * This references the same KeyNormalizer, KeyRetriever, KeyGenerator, KeySetter from the passed in registry. But these are final and functional interfaces so that is perfectly fine as they are immutable<br>
-     * It also does the {@link Registry#asMap()} method on the passed in registry and creates new {@link RegistryObject}s for each entry <br>
-     * This does not copy the frozen status of the registry and sets it to false
+     * If the {@link CopyOption#COPY_OBJECTS} option is provided it will call the {@link Registry#asMap()} method on the passed in registry and creates new {@link RegistryObject}s for each entry <br>
+     * If the {@link CopyOption#COPY_FROZEN} option is provided, it will copy the frozen status
      *
      * @param registry The registry to copy
+     * @param options  The options to use when copying the registry
      */
-    public Registry(Registry<K, V> registry) {
+    public Registry(Registry<K, V> registry, CopyOption... options) {
         this(registry.keyNormalizer, registry.keyRetriever, registry.keyGenerator, registry.keySetter);
-        registry.asMap().forEach((key, value) -> this.backingSet.add(new RegistryObject<>(this, key, value)));
-        this.frozen = false;
+        boolean copyObjects = false, copyFrozen = false;
+        if (options != null) {
+            for (CopyOption option : options) {
+                if (option == CopyOption.COPY_OBJECTS) {
+                    copyObjects = true;
+                } else if (option == CopyOption.COPY_FROZEN) {
+                    copyFrozen = true;
+                }
+            }
+        }
+        
+        if (copyObjects) {
+            registry.asMap().forEach((key, value) -> this.backingSet.add(new RegistryObject<>(this, key, value)));
+        }
+        
+        if (copyFrozen) {
+            this.frozen = registry.frozen;
+        }
     }
     
     /**
