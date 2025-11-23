@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.observable.collections.listener;
 
 import com.stardevllc.starlib.eventbus.SubscribeEvent;
-import com.stardevllc.starlib.observable.collections.ObservableMap;
+import com.stardevllc.starlib.observable.collections.map.ObservableMap;
 import com.stardevllc.starlib.value.WritableBooleanValue;
 import com.stardevllc.starlib.value.impl.SimpleBooleanValue;
 

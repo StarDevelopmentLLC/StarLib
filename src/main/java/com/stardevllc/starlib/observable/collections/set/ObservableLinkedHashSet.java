@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.observable.collections;
+package com.stardevllc.starlib.observable.collections.set;
 
 import java.util.*;
 
@@ -7,7 +7,7 @@ import java.util.*;
  *
  * @param <E> The element type
  */
-public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> implements SequencedSet<E> {
+public class ObservableLinkedHashSet<E> extends AbstractObservableSequencedSet<E> {
     
     private final LinkedHashSet<E> backingLinkedSet = new LinkedHashSet<>();
     
@@ -15,6 +15,11 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
      * Creates an empty observable linked hash set
      */
     public ObservableLinkedHashSet() {
+    }
+    
+    @Override
+    protected SequencedSet<E> getBackingSequencedSet() {
+        return this.backingLinkedSet;
     }
     
     /**
@@ -26,30 +31,6 @@ public class ObservableLinkedHashSet<E> extends AbstractObservableSet<E> impleme
         if (collection != null) {
             this.backingLinkedSet.addAll(collection);
         }
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Set<E> getBackingSet() {
-        return backingLinkedSet;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SequencedSet<E> reversed() {
-        ObservableLinkedHashSet<E> reversed = new ObservableLinkedHashSet<>(backingLinkedSet.reversed());
-        reversed.addListener(c -> {
-            if (c.added() != null) {
-                add(c.added());
-            } else if (c.removed() != null) {
-                remove(c.removed());
-            }
-        });
-        return reversed;
     }
     
     /**

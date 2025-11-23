@@ -1,6 +1,9 @@
-package com.stardevllc.starlib.observable.collections;
+package com.stardevllc.starlib.observable.collections.set;
 
 import com.stardevllc.starlib.observable.Observable;
+import com.stardevllc.starlib.observable.collections.AbstractObservableCollection;
+import com.stardevllc.starlib.observable.collections.handler.SetListenerHandler;
+import com.stardevllc.starlib.observable.collections.listener.SetChangeListener;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -11,6 +14,8 @@ import java.util.function.Consumer;
  * @param <E> The element type
  */
 public abstract class AbstractObservableSet<E> extends AbstractObservableCollection<E> implements ObservableSet<E> {
+    
+    protected final SetListenerHandler<E> handler = new SetListenerHandler<>();
     
     /**
      * Constructs an empty ObservableSet
@@ -41,12 +46,58 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
      */
     protected abstract Set<E> getBackingSet();
     
+    @Override
+    public void addListener(SetChangeListener<E> changeListener) {
+        handler.addListener(changeListener);
+    }
+    
+    @Override
+    public void removeListener(SetChangeListener<E> changeListener) {
+        handler.removeListener(changeListener);
+    }
+    
+    @Override
+    public boolean add(E e) {
+        return !handler.handleChange(this, e, null) && this.getBackingSet().add(e);
+    }
+    
+    @Override
+    public boolean remove(Object o) {
+        return !handler.handleChange(this, null, (E) o) && this.getBackingSet().remove(o);
+    }
+    
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        boolean modified = false;
+        for (E e : c) {
+            boolean added = add(e);
+            if (!modified) {
+                modified = added;
+            }
+        }
+        
+        return modified;
+    }
+    
+    public <S extends Set<E>> S addContentMirror(S set) {
+        set.addAll(this);
+        handler.addListener(c -> {
+            if (c.added() != null) {
+                set.add(c.added());
+            } else if (c.removed() != null) {
+                set.remove(c.removed());
+            }
+        });
+        
+        return set;
+    }
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public Iterator<E> iterator() {
-        return new ObservableSetIterator<>(this, getBackingSet().iterator());
+        return new ObservableSetIterator<>(this, handler, getBackingSet().iterator());
     }
     
     /**
@@ -74,6 +125,8 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
          */
         protected final ObservableSet<E> backingSet;
         
+        protected final SetListenerHandler<E> handler;
+        
         /**
          * The backing Iterator
          */
@@ -90,9 +143,10 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
          * @param backingSet      The backing observable set
          * @param backingIterator The backing iterator
          */
-        public ObservableSetIterator(ObservableSet<E> backingSet, Iterator<E> backingIterator) {
+        public ObservableSetIterator(ObservableSet<E> backingSet, SetListenerHandler<E> handler, Iterator<E> backingIterator) {
             this.backingSet = backingSet;
             this.backingIterator = backingIterator;
+            this.handler = handler;
         }
         
         /**
@@ -117,7 +171,7 @@ public abstract class AbstractObservableSet<E> extends AbstractObservableCollect
          */
         @Override
         public void remove() {
-            if (!backingSet.getHandler().handleChange(backingSet, null, current)) {
+            if (!handler.handleChange(backingSet, null, current)) {
                 backingIterator.remove();
             }
         }

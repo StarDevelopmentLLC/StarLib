@@ -1,6 +1,4 @@
-package com.stardevllc.starlib.observable.collections;
-
-import com.stardevllc.starlib.observable.collections.listener.CollectionChangeListener;
+package com.stardevllc.starlib.observable.collections.set;
 
 import java.util.*;
 
@@ -10,7 +8,7 @@ import java.util.*;
  * @param <E> The element type
  */
 @SuppressWarnings("SortedCollectionWithNonComparableKeys")
-public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements NavigableSet<E> {
+public class ObservableTreeSet<E> extends AbstractObservableSequencedSet<E> implements NavigableSet<E> {
     private final TreeSet<E> backingTreeSet = new TreeSet<>();
     
     /**
@@ -29,12 +27,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
         }
     }
     
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected Set<E> getBackingSet() {
-        return backingTreeSet;
+    protected SequencedSet<E> getBackingSequencedSet() {
+        return this.backingTreeSet;
     }
     
     /**
@@ -116,18 +111,7 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
      */
     @Override
     public Iterator<E> descendingIterator() {
-        return new ObservableSetIterator<>(this, backingTreeSet.descendingIterator());
-    }
-    
-    private class SubSetListener implements CollectionChangeListener<E> {
-        @Override
-        public void changed(Change<E> c) {
-            if (c.added() != null) {
-                add(c.added());
-            } else if (c.removed() != null) {
-                remove(c.removed());
-            }
-        }
+        return new ObservableSetIterator<>(this, this.handler, backingTreeSet.descendingIterator());
     }
     
     /**
@@ -136,7 +120,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public NavigableSet<E> subSet(E fromElement, boolean fromInclusive, E toElement, boolean toInclusive) {
         ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.subSet(fromElement, fromInclusive, toElement, toInclusive));
-        set.addListener(new SubSetListener());
+        SubSetListener listener = new SubSetListener(this, set);
+        set.addListener(listener);
+        this.addListener(listener);
         return set;
     }
     
@@ -146,7 +132,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public NavigableSet<E> headSet(E toElement, boolean inclusive) {
         ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.headSet(toElement, inclusive));
-        set.addListener(new SubSetListener());
+        SubSetListener listener = new SubSetListener(this, set);
+        set.addListener(listener);
+        this.addListener(listener);
         return set;
     }
     
@@ -156,7 +144,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public NavigableSet<E> tailSet(E fromElement, boolean inclusive) {
         ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.tailSet(fromElement, inclusive));
-        set.addListener(new SubSetListener());
+        SubSetListener listener = new SubSetListener(this, set);
+        set.addListener(listener);
+        this.addListener(listener);
         return set;
     }
     
@@ -174,7 +164,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public SortedSet<E> subSet(E fromElement, E toElement) {
         ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.subSet(fromElement, toElement));
-        set.addListener(new SubSetListener());
+        SubSetListener listener = new SubSetListener(this, set);
+        set.addListener(listener);
+        this.addListener(listener);
         return set;
     }
     
@@ -184,7 +176,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public SortedSet<E> headSet(E toElement) {
         ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.headSet(toElement));
-        set.addListener(new SubSetListener());
+        SubSetListener listener = new SubSetListener(this, set, null, false, toElement, false);
+        set.addListener(listener);
+        this.addListener(listener);
         return set;
     }
     
@@ -194,7 +188,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public SortedSet<E> tailSet(E fromElement) {
         ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.tailSet(fromElement));
-        set.addListener(new SubSetListener());
+        SubSetListener listener = new SubSetListener(this, set, fromElement, true, null, false);
+        set.addListener(listener);
+        this.addListener(listener);
         return set;
     }
     
@@ -230,7 +226,9 @@ public class ObservableTreeSet<E> extends AbstractObservableSet<E> implements Na
     @Override
     public NavigableSet<E> reversed() {
         ObservableTreeSet<E> set = new ObservableTreeSet<>(this.backingTreeSet.reversed());
-        set.addListener(new SubSetListener());
+        SubSetListener listener = new SubSetListener(this, set);
+        set.addListener(listener);
+        this.addListener(listener);
         return set;
     }
     

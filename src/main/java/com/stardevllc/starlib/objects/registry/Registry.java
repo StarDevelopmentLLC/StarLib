@@ -3,7 +3,7 @@ package com.stardevllc.starlib.objects.registry;
 import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.registry.RegistryChangeListener.Change;
 import com.stardevllc.starlib.objects.registry.functions.*;
-import com.stardevllc.starlib.observable.collections.ObservableTreeSet;
+import com.stardevllc.starlib.observable.collections.set.ObservableTreeSet;
 
 import java.util.*;
 

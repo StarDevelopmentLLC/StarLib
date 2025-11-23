@@ -1,6 +1,8 @@
-package com.stardevllc.starlib.observable.collections;
+package com.stardevllc.starlib.observable.collections.map;
 
 import com.stardevllc.starlib.observable.collections.handler.MapListenerHandler;
+import com.stardevllc.starlib.observable.collections.list.ObservableLinkedList;
+import com.stardevllc.starlib.observable.collections.listener.MapChangeListener;
 
 import java.util.Collection;
 import java.util.Map;
@@ -43,8 +45,40 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     }
     
     @Override
-    public MapListenerHandler<K, V> getHandler() {
+    public <M extends Map<K, V> > M addContentMirror(M map) {
+        map.putAll(this);
+        getHandler().addListener(c -> {
+            if (c.added() != null && !map.containsValue(c.added())) {
+                map.put(c.key(), c.added());
+            } else if (c.removed() != null && c.added() == null) {
+                map.remove(c.key());
+            }
+        });
+        return map;
+    }
+    
+    protected MapListenerHandler<K, V> getHandler() {
         return handler;
+    }
+    
+    /**
+     * Adds a change listener to this ObservableMap
+     *
+     * @param listener the listener to add
+     */
+    @Override
+    public void addListener(MapChangeListener<K, V> listener) {
+        getHandler().addListener(listener);
+    }
+    
+    /**
+     * Removes the change listener from this ObservableMap
+     *
+     * @param listener The listener to remove
+     */
+    @Override
+    public void removeListener(MapChangeListener<K, V> listener) {
+        getHandler().removeListener(listener);
     }
     
     /**
@@ -326,5 +360,36 @@ public abstract class AbstractObservableMap<K, V> implements ObservableMap<K, V>
     @Override
     public String toString() {
         return getBackingMap().toString();
+    }
+    
+    @SuppressWarnings("ClassCanBeRecord")
+    public static class ObservableEntry<K, V> implements Map.Entry<K, V> {
+        private final AbstractObservableMap<K, V> backingMap;
+        private final Map.Entry<K, V> backingEntry;
+        
+        public ObservableEntry(AbstractObservableMap<K, V> backingMap, Map.Entry<K, V> backingEntry) {
+            this.backingMap = backingMap;
+            this.backingEntry = backingEntry;
+        }
+        
+        @Override
+        public K getKey() {
+            return backingEntry.getKey();
+        }
+        
+        @Override
+        public V getValue() {
+            return backingEntry.getValue();
+        }
+        
+        @Override
+        public V setValue(V value) {
+            if (backingEntry.getValue() != null && !backingEntry.getValue().equals(value)) {
+                if (!backingMap.getHandler().handleChange(backingMap, backingEntry.getKey(), value, backingEntry.getValue())) {
+                    return backingEntry.setValue(value);
+                }
+            }
+            return null;
+        }
     }
 }

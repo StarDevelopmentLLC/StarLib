@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.observable.collections;
+package com.stardevllc.starlib.observable.collections.set;
 
 import java.util.*;
 

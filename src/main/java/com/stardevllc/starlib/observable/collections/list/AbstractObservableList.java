@@ -1,7 +1,11 @@
-package com.stardevllc.starlib.observable.collections;
+package com.stardevllc.starlib.observable.collections.list;
 
 import com.stardevllc.starlib.observable.Observable;
+import com.stardevllc.starlib.observable.collections.AbstractObservableCollection;
+import com.stardevllc.starlib.observable.collections.handler.ListListenerHandler;
+import com.stardevllc.starlib.observable.collections.listener.ListChangeListener;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
@@ -12,6 +16,8 @@ import java.util.function.UnaryOperator;
  */
 @SuppressWarnings("RedundantNoArgConstructor")
 public abstract class AbstractObservableList<E> extends AbstractObservableCollection<E> implements ObservableList<E> {
+    
+    protected final ListListenerHandler<E> handler = new ListListenerHandler<>();
     
     /**
      * Constructs an empty obserable list
@@ -33,6 +39,55 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
      * @return The list that backs this collection
      */
     protected abstract List<E> getBackingList();
+    
+    @Override
+    public <L extends List<E>> L addContentMirror(L list) {
+        list.addAll(this);
+        handler.addListener(c -> {
+            if (c.added() != null && !list.contains(c.added())) {
+                list.add(c.added());
+            } else if (c.removed() != null && c.added() == null) {
+                list.remove(c.removed());
+            }
+        });
+        
+        return list;
+    }
+    
+    @Override
+    public void addListener(ListChangeListener<E> changeListener) {
+        handler.addListener(changeListener);
+    }
+    
+    @Override
+    public void removeListener(ListChangeListener<E> changeListener) {
+        handler.addListener(changeListener);
+    }
+    
+    @SuppressWarnings("ConstantValue")
+    @Override
+    public boolean add(E e) {
+        return !handler.handleChange(this, size() - 1, e, null) && this.getBackingList().add(e);
+    }
+    
+    @Override
+    public boolean remove(Object o) {
+        int index = indexOf(o);
+        if (index < 0) {
+            return false;
+        }
+        return !handler.handleChange(this, index, null, (E) o) && this.getBackingList().remove(o);
+    }
+    
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        boolean modified = false;
+        for (E e : c) {
+            add(e);
+            modified = true;
+        }
+        return modified;
+    }
     
     /**
      * {@inheritDoc}
@@ -61,7 +116,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
     @Override
     public E set(int index, E element) {
         E replaced = getBackingList().set(index, element);
-        boolean cancelled = this.handler.handleChange(this, element, replaced);
+        boolean cancelled = this.handler.handleChange(this, index, element, replaced);
         if (cancelled) {
             getBackingList().set(index, replaced);
             return null;
@@ -74,7 +129,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
      */
     @Override
     public void add(int index, E element) {
-        if (!this.handler.handleChange(this, element, null)) {
+        if (!this.handler.handleChange(this, index, element, null)) {
             getBackingList().add(index, element);
         }
     }
@@ -85,7 +140,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
     @Override
     public E remove(int index) {
         E removed = getBackingList().remove(index);
-        boolean cancelled = this.handler.handleChange(this, null, removed);
+        boolean cancelled = this.handler.handleChange(this, index, null, removed);
         if (removed != null && cancelled) {
             getBackingList().set(index, removed);
             return null;
@@ -123,7 +178,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
      */
     @Override
     public ListIterator<E> listIterator() {
-        return new ObservableListIterator<>(this, getBackingList().listIterator());
+        return new ObservableListIterator<>(this, handler, getBackingList().listIterator());
     }
     
     /**
@@ -131,7 +186,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
      */
     @Override
     public ListIterator<E> listIterator(int index) {
-        return new ObservableListIterator<>(this, getBackingList().listIterator(), index);
+        return new ObservableListIterator<>(this, handler, getBackingList().listIterator(), index);
     }
     
     /**
@@ -214,6 +269,71 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
         return getBackingList().toString();
     }
     
+    protected class SubListListener implements ListChangeListener<E> {
+        
+        private final WeakReference<AbstractObservableList<E>> backingListRef;
+        private final WeakReference<AbstractObservableList<E>> subListRef;
+        
+        private int fromIndex = -1, toIndex = -1;
+        
+        public SubListListener(AbstractObservableList<E> backingArrayList, AbstractObservableList<E> subList) {
+            this.backingListRef = new WeakReference<>(backingArrayList);
+            this.subListRef = new WeakReference<>(subList);
+        }
+        
+        public SubListListener(AbstractObservableList<E> backingList, AbstractObservableList<E> subList, int fromIndex, int toIndex) {
+            this(backingList, subList);
+            this.fromIndex = fromIndex;
+            this.toIndex = toIndex;
+        }
+        
+        @Override
+        public void changed(Change<E> change) {
+            AbstractObservableList<E> backingList = this.backingListRef.get();
+            AbstractObservableList<E> subList = subListRef.get();
+            if (backingList == null && subList == null) {
+                return;
+            } else if (backingList == null) {
+                subList.removeListener(this);
+                return;
+            } else if (subList == null) {
+                backingList.removeListener(this);
+                return;
+            }
+            
+            AbstractObservableList<E> listToChange;
+            if (change.collection() == backingList) {
+                listToChange = subList;
+            } else if (change.collection() == subList) {
+                listToChange = backingList;
+            } else {
+                return;
+            }
+            
+            if (fromIndex > -1 && toIndex > -1) {
+                if (!(change.index() >= fromIndex && change.index() < toIndex)) {
+                    return;
+                }
+            }
+            
+            if (change.added() != null && change.removed() != null) {
+                listToChange.getBackingList().set(change.index(), change.added());
+            } else if (change.added() != null) {
+                listToChange.getBackingList().add(change.index(), change.added());
+            } else if (change.removed() != null) {
+                listToChange.getBackingList().remove(change.index());
+            }
+            
+            if (fromIndex > -1 && toIndex > -1) {
+                ListIterator<E> iterator = listToChange.getBackingList().listIterator(toIndex);
+                while (iterator.hasNext()) {
+                    iterator.next();
+                    iterator.remove();
+                }
+            }
+        }
+    }
+    
     /**
      * The obserable list iterator that allows for listening to changes when using an iterator
      *
@@ -231,6 +351,8 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
          */
         protected final ListIterator<E> backingIterator;
         
+        private final ListListenerHandler<E> handler;
+        
         /**
          * The current element of the iterator
          */
@@ -242,9 +364,10 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
          * @param backingList     The backing list
          * @param backingIterator The backing iterator
          */
-        public ObservableListIterator(ObservableList<E> backingList, ListIterator<E> backingIterator) {
+        public ObservableListIterator(ObservableList<E> backingList, ListListenerHandler<E> handler, ListIterator<E> backingIterator) {
             this.backingList = backingList;
             this.backingIterator = backingIterator;
+            this.handler = handler;
         }
         
         /**
@@ -254,8 +377,8 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
          * @param backingIterator The backing iterator
          * @param startingIndex   The index to start at
          */
-        public ObservableListIterator(ObservableList<E> backingList, ListIterator<E> backingIterator, int startingIndex) {
-            this(backingList, backingIterator);
+        public ObservableListIterator(ObservableList<E> backingList, ListListenerHandler<E> handler, ListIterator<E> backingIterator, int startingIndex) {
+            this(backingList, handler, backingIterator);
             for (int i = 0; i < startingIndex; i++) {
                 next();
             }
@@ -316,7 +439,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
          */
         @Override
         public void remove() {
-            if (!backingList.getHandler().handleChange(backingList, null, current)) {
+            if (!handler.handleChange(backingList, nextIndex() - 1, null, current)) {
                 backingIterator.remove();
             }
         }
@@ -326,7 +449,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
          */
         @Override
         public void set(E e) {
-            if (!backingList.getHandler().handleChange(backingList, e, current)) {
+            if (!handler.handleChange(backingList, nextIndex() - 1, e, current)) {
                 backingIterator.set(e);
             }
         }
@@ -336,7 +459,7 @@ public abstract class AbstractObservableList<E> extends AbstractObservableCollec
          */
         @Override
         public void add(E e) {
-            if (!backingList.getHandler().handleChange(backingList, e, null)) {
+            if (!handler.handleChange(backingList, nextIndex() - 1, e, null)) {
                 backingIterator.add(e);
             }
         }

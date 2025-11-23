@@ -1,4 +1,7 @@
-package com.stardevllc.starlib.observable.collections;
+package com.stardevllc.starlib.observable.collections.set;
+
+import com.stardevllc.starlib.observable.collections.ObservableCollection;
+import com.stardevllc.starlib.observable.collections.listener.SetChangeListener;
 
 import java.util.Set;
 
@@ -9,22 +12,15 @@ import java.util.Set;
  */
 public interface ObservableSet<E> extends ObservableCollection<E>, Set<E> {
     
+    void addListener(SetChangeListener<E> changeListener);
+    
+    void removeListener(SetChangeListener<E> changeListener);
+    
     /**
      * Adds a listener that mirrors changes in this observable set to the set passed in. <br>
      *
      * @param set The set to mirror changes into
      * @return The same set passed in
      */
-    default <S extends Set<E>> S addContentMirror(S set) {
-        set.addAll(this);
-        getHandler().addListener(c -> {
-            if (c.added() != null) {
-                set.add(c.added());
-            } else if (c.removed() != null) {
-                set.remove(c.removed());
-            }
-        });
-        
-        return set;
-    }
+    <S extends Set<E>> S addContentMirror(S set);
 }

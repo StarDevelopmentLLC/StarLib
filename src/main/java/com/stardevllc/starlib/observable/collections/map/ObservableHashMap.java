@@ -1,4 +1,6 @@
-package com.stardevllc.starlib.observable.collections;
+package com.stardevllc.starlib.observable.collections.map;
+
+import com.stardevllc.starlib.observable.collections.set.ObservableHashSet;
 
 import java.util.*;
 
