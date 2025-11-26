@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.units;
 
-public enum WeightUnit {
+public enum WeightUnit implements Unit {
     GRAM(1, "g"), 
     OUNCE(28.3495, "oz"), 
     POUND(453.592, "lb"), 

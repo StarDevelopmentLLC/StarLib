@@ -6,7 +6,7 @@ import com.stardevllc.starlib.converter.string.StringConverters;
 /**
  * Represents a unit of length
  */
-public enum LengthUnit {
+public enum LengthUnit implements Unit {
     /**
      * Millimeters (base unit)
      */
