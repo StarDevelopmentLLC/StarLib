@@ -2,25 +2,32 @@ package com.stardevllc.starlib.temporal;
 
 import com.stardevllc.starlib.time.TimeUnit;
 
+import java.util.Map;
+
 public class TimeOfHour implements Temporal {
 
-    protected final TimeValue timeValue = new TimeValue();
+    protected final TimeValue timeValue;
 
     public static TimeOfHour timeOfHour(long minute, long second) {
         return new TimeOfHour(minute, second);
     }
 
     public TimeOfHour() {
+        this.timeValue = new TimeValue();
     }
 
     public TimeOfHour(long minute, long second) {
+        this();
         timeValue.add(TimeUnit.MINUTES, minute);
         timeValue.add(TimeUnit.SECONDS, second);
     }
 
     protected TimeOfHour(TimeValue timeValue) {
-        this.timeValue.setYear(timeValue.getYear());
-        this.timeValue.setTimeOfYear(timeValue.getTimeOfYear());
+        this.timeValue = new TimeValue(timeValue.getYear(), timeValue.getTimeOfYear());
+    }
+    
+    public TimeOfHour(Map<String, Object> serialized) {
+        this.timeValue = (TimeValue) serialized.get("timevalue");
     }
 
     @Override

@@ -1,18 +1,20 @@
 package com.stardevllc.starlib.time;
 
+import com.stardevllc.starlib.serialization.StarSerializable;
+
 import java.text.DecimalFormat;
 import java.util.*;
 
 /**
- * Allows formatting a time in milliseconds similar to how the Java NumberFormat works. 
+ * Allows formatting a time in milliseconds similar to how the Java NumberFormat works.
  * This does use the DecimalFormat class for formatting the numbers themselves
  * This uses the {@link TimeUnit} class to parse time arguments. You can use any of the aliases in that class to denote the unit to parse
- * All time formats must be encased in opening and closing % symbols. 
+ * All time formats must be encased in opening and closing % symbols.
  * The alias used in the format will also be the one used as suffix after the numeric time
  * Use a * after the first % sign to have it not show if the value for that unit is a 0
- * Example: %00s% will format 5000 as 05s. 
+ * Example: %00s% will format 5000 as 05s.
  */
-public class TimeFormat {
+public class TimeFormat implements StarSerializable {
     private static final Comparator<TimeUnit> UNIT_COMPARATOR = (o1, o2) -> {
         if (o1.ordinal() < o2.ordinal()) {
             return 1;
@@ -21,27 +23,34 @@ public class TimeFormat {
         }
         return -1;
     };
-
+    
     private static final Set<TimeUnit> UNIT_ORDER = new TreeSet<>(UNIT_COMPARATOR);
-
+    
     static {
         UNIT_ORDER.addAll(Arrays.asList(TimeUnit.values()));
     }
-
+    
     private String pattern;
     private final Map<TimeUnit, TimePattern> unitPatterns = new EnumMap<>(TimeUnit.class);
-
+    
     /**
      * Constructs a new time format
+     *
      * @param pattern The pattern to use for the format
      */
     public TimeFormat(String pattern) {
         this.pattern = pattern;
         parsePattern();
     }
-
+    
+    public TimeFormat(Map<String, Object> serialized) {
+        this.pattern = (String) serialized.get("pattern");
+        parsePattern();
+    }
+    
     /**
      * Formats the time based on the pattern
+     *
      * @param time The time in milliseconds to format
      * @return The formatted time
      */
@@ -52,11 +61,11 @@ public class TimeFormat {
             if (!unitPatterns.containsKey(unit)) {
                 continue;
             }
-
+            
             long unitLength = (long) unit.fromMillis(totalTime);
             //totalTime -= unit.toMillis(unitLength);
             totalTime = totalTime % unit.getMsPerUnit();
-
+            
             TimePattern timePattern = unitPatterns.get(unit);
             String value;
             if (unitLength == 0 && !timePattern.showIfZero()) {
@@ -66,12 +75,13 @@ public class TimeFormat {
             }
             formattedTime = formattedTime.replace("%" + timePattern.numberPattern() + timePattern.unitPattern() + "%", value);
         }
-
+        
         return formattedTime;
     }
-
+    
     /**
      * Sets the pattern to be used.
+     *
      * @param pattern The new pattern string
      */
     public void setPattern(String pattern) {
@@ -79,13 +89,13 @@ public class TimeFormat {
         this.pattern = pattern;
         parsePattern();
     }
-
+    
     private void parsePattern() {
         int startIndex = -1, endIndex = -1;
         StringBuilder patternBuilder = new StringBuilder();
         StringBuilder unitBuilder = new StringBuilder();
         boolean showIfZero = true;
-
+        
         for (int i = 0; i < this.pattern.length(); i++) {
             char c = this.pattern.charAt(i);
             if (c == '%') {
@@ -96,17 +106,17 @@ public class TimeFormat {
                     endIndex = i;
                 }
             }
-
+            
             if (startIndex != -1 && endIndex != -1) {
                 TimeUnit unit = TimeUnit.matchUnit(unitBuilder.toString().trim());
                 if (unit == null) {
                     continue;
                 }
-
+                
                 if (patternBuilder.toString().startsWith("*")) {
                     showIfZero = false;
                 }
-
+                
                 unitPatterns.put(unit, new TimePattern(unitBuilder.toString(), patternBuilder.toString(), showIfZero));
                 startIndex = -1;
                 endIndex = -1;
@@ -122,6 +132,11 @@ public class TimeFormat {
             }
         }
     }
-
+    
+    @Override
+    public Map<String, Object> serialize() {
+        return Map.of("pattern", this.pattern);
+    }
+    
     record TimePattern(String unitPattern, String numberPattern, boolean showIfZero) {}
 }

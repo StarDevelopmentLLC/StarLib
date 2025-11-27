@@ -2,22 +2,31 @@ package com.stardevllc.starlib.temporal;
 
 import com.stardevllc.starlib.time.TimeUnit;
 
+import java.util.Map;
+
 public class Date implements Temporal {
 
-    protected final TimeValue timeValue = new TimeValue();
+    protected final TimeValue timeValue;
 
     public Date() {
+        this.timeValue = new TimeValue();
     }
 
     public Date(long year, long month, long day) {
+        this.timeValue = new TimeValue();
         timeValue.setYear(year);
         timeValue.add(TimeUnit.MONTHS, month - 1);
         timeValue.add(TimeUnit.DAYS, day - 1);
     }
 
     protected Date(TimeValue timeValue) {
+        this.timeValue = new TimeValue();
         this.timeValue.setYear(timeValue.getYear());
         this.timeValue.setTimeOfYear(timeValue.getTimeOfYear());
+    }
+    
+    public Date(Map<String, Object> serialized) {
+        this.timeValue = (TimeValue) serialized.get("timevalue");
     }
 
     @Override

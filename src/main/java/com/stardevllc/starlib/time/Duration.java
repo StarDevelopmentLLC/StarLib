@@ -2,7 +2,9 @@ package com.stardevllc.starlib.time;
 
 /**
  * Utility class for durations
+ * @deprecated See {@link com.stardevllc.starlib.temporal.Duration}
  */
+@Deprecated(forRemoval = true, since = "0.22.0")
 public class Duration {
     private long time;
     

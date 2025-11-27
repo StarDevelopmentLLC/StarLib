@@ -1,10 +1,12 @@
 package com.stardevllc.starlib.temporal;
 
+import com.stardevllc.starlib.serialization.StarSerializable;
 import com.stardevllc.starlib.time.TimeUnit;
 
 import java.text.DecimalFormat;
+import java.util.Map;
 
-public interface Temporal extends Comparable<Temporal>, Cloneable {
+public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializable {
 
     DecimalFormat format = new DecimalFormat("###,###,###,###,###,###.####");
     
@@ -144,5 +146,10 @@ public interface Temporal extends Comparable<Temporal>, Cloneable {
     
     default boolean isNotEmpty() {
         return !isEmpty();
+    }
+    
+    @Override
+    default Map<String, Object> serialize() {
+        return Map.of("timevalue", getTime());
     }
 }

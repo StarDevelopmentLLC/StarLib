@@ -2,18 +2,23 @@ package com.stardevllc.starlib.temporal;
 
 import com.stardevllc.starlib.time.TimeUnit;
 
+import java.util.Map;
+
 public class Instant implements Temporal {
 
-    protected final TimeValue timeValue = new TimeValue();
+    protected final TimeValue timeValue;
 
     public Instant() {
+        this.timeValue = new TimeValue();
     }
 
     public Instant(Temporal temporal, Temporal... temporals) {
+        this();
         add(temporal, temporals);
     }
 
     public Instant(long month, long day, long year, long hour, long minute, long second) {
+        this();
         timeValue.setYear(year);
         timeValue.add(TimeUnit.MONTHS, month - 1);
         timeValue.add(TimeUnit.DAYS, day - 1);
@@ -23,8 +28,11 @@ public class Instant implements Temporal {
     }
 
     protected Instant(TimeValue timeValue) {
-        this.timeValue.setYear(timeValue.getYear());
-        this.timeValue.setTimeOfYear(timeValue.getTimeOfYear());
+        this.timeValue = new TimeValue(timeValue.getYear(), timeValue.getTimeOfYear());
+    }
+    
+    public Instant(Map<String, Object> serialized) {
+        this.timeValue = (TimeValue) serialized.get("timevalue");
     }
 
     public Duration distance(Instant other) {

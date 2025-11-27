@@ -232,7 +232,7 @@ public final class ReflectionHelper {
      * @param parameters The parameters of the constructor
      * @return An optional of the constructor instance
      */
-    public static Optional<Constructor<?>> getClassConstructor(Class<?> clazz, Class<?>... parameters) {
+    public static <T> Optional<Constructor<T>> getClassConstructor(Class<T> clazz, Class<?>... parameters) {
         if (clazz == null) {
             return Optional.empty();
         }
@@ -259,7 +259,7 @@ public final class ReflectionHelper {
                 }
             }
             
-            return Optional.of(constructor);
+            return Optional.of((Constructor<T>) constructor);
         }
         
         return Optional.empty();

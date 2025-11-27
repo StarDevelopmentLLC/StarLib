@@ -2,6 +2,8 @@ package com.stardevllc.starlib.temporal;
 
 import com.stardevllc.starlib.time.TimeUnit;
 
+import java.util.Map;
+
 @SuppressWarnings({"ConstantValue", "SameParameterValue"})
 public class Duration implements Temporal {
     public static Duration addOrClone(Duration base, Duration toAdd) {
@@ -56,14 +58,18 @@ public class Duration implements Temporal {
         return days(weeks * 7);
     }
     
-    protected final TimeValue timeValue = new TimeValue();
+    protected final TimeValue timeValue;
     
     public Duration() {
+        this.timeValue = new TimeValue();
     }
     
     protected Duration(TimeValue timeValue) {
-        this.timeValue.setYear(timeValue.getYear());
-        this.timeValue.setTimeOfYear(timeValue.getTimeOfYear());
+        this.timeValue = new TimeValue(timeValue.getYear(), timeValue.getTimeOfYear());
+    }
+    
+    public Duration(Map<String, Object> serialized) {
+        this.timeValue = (TimeValue) serialized.get("timevalue");
     }
     
     @Override

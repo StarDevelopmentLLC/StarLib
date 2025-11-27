@@ -1,13 +1,15 @@
 package com.stardevllc.starlib.temporal;
 
+import com.stardevllc.starlib.serialization.StarSerializable;
 import com.stardevllc.starlib.time.TimeUnit;
 
 import java.math.BigInteger;
+import java.util.Map;
 
 /**
  * This class represents a time value and has all of the math associated with it. 
  */
-public final class TimeValue implements Comparable<TimeValue>, Cloneable {
+public final class TimeValue implements Comparable<TimeValue>, Cloneable, StarSerializable {
     
     public static final long MILLISECONDS_IN_YEAR = TimeUnit.YEARS.getMsPerUnit();
     public static final BigInteger MILLISECONDS_IN_YEAR_BIG = BigInteger.valueOf(MILLISECONDS_IN_YEAR);
@@ -20,6 +22,11 @@ public final class TimeValue implements Comparable<TimeValue>, Cloneable {
     public TimeValue(long year, long timeOfYear) {
         this.year = year;
         this.timeOfYear = timeOfYear;
+    }
+    
+    public TimeValue(Map<String, Object> serialized) {
+        this.year = (long) serialized.get("year");
+        this.timeOfYear = (long) serialized.get("timeofyear");
     }
     
     public TimeValue(BigInteger value) {
@@ -226,5 +233,10 @@ public final class TimeValue implements Comparable<TimeValue>, Cloneable {
         return "TimeValue{" + "year=" + year +
                 ", timeOfYear=" + timeOfYear +
                 '}';
+    }
+    
+    @Override
+    public Map<String, Object> serialize() {
+        return Map.of("year", this.year, "timeofyear", this.timeOfYear);
     }
 }

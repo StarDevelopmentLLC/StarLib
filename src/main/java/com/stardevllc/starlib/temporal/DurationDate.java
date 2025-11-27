@@ -1,6 +1,10 @@
 package com.stardevllc.starlib.temporal;
 
-public class DurationDate implements Cloneable {
+import com.stardevllc.starlib.serialization.StarSerializable;
+
+import java.util.Map;
+
+public class DurationDate implements Cloneable, StarSerializable {
     protected final Duration duration = new Duration();
     protected final Instant date = new Instant();
     protected boolean override;
@@ -10,7 +14,7 @@ public class DurationDate implements Cloneable {
         this.date.set(date);
         this.override = override;
     }
-
+    
     public DurationDate(Duration duration, Instant date) {
         this(duration, date, false);
     }
@@ -27,6 +31,12 @@ public class DurationDate implements Cloneable {
         this(null, null, false);
     }
     
+    public DurationDate(Map<String, Object> serialized) {
+        this.duration.set((Temporal) serialized.get("duration"));
+        this.date.set((Temporal) serialized.get("date"));
+        this.override = (boolean) serialized.get("override");
+    }
+    
     public void set(DurationDate durationDate) {
         this.setDuration(durationDate.getDuration());
         this.setDate(durationDate.getDate());
@@ -40,11 +50,11 @@ public class DurationDate implements Cloneable {
     public void setDate(Instant date) {
         this.date.set(date);
     }
-
+    
     public Duration getDuration() {
         return duration.clone();
     }
-
+    
     public Instant getDate() {
         return date.clone();
     }
@@ -57,7 +67,7 @@ public class DurationDate implements Cloneable {
         this.date.set(previous).add(this.duration);
         return getDate();
     }
-
+    
     public boolean isOverride() {
         return override;
     }
@@ -65,5 +75,10 @@ public class DurationDate implements Cloneable {
     @Override
     public DurationDate clone() {
         return new DurationDate(this.duration, this.date, this.override);
+    }
+    
+    @Override
+    public Map<String, Object> serialize() {
+        return Map.of("duration", this.duration, "date", this.date, "override", this.override);
     }
 }
