@@ -6,8 +6,13 @@ import java.util.ArrayList;
  * A runnable that makes clocks do things. You can have your own if you want, Its a runnable to allow flexibility
  */
 public final class ClockRunnable implements Runnable {
+    public enum Status {
+        TICKING_CLOCKS, 
+        UNDEFINED
+    }
     
     private ClockManager clockManager;
+    private Status status;
     
     /**
      * Constructs a new clock runnable
@@ -19,6 +24,7 @@ public final class ClockRunnable implements Runnable {
     
     @Override
     public void run() {
+        this.status = Status.TICKING_CLOCKS;
         for (Clock<?> clock : new ArrayList<>(clockManager.getClocks())) {
             clock.tick();
             
@@ -26,5 +32,6 @@ public final class ClockRunnable implements Runnable {
                 clockManager.removeClock(clock);
             }
         }
+        this.status = Status.UNDEFINED;
     }
 }

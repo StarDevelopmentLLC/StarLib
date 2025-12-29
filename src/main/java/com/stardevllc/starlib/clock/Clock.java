@@ -58,6 +58,17 @@ public abstract class Clock<T extends ClockSnapshot> {
      */
     protected ClockEndCondition<T> endCondition;
     
+    public interface CStatus {
+        String name();
+        int ordinal();
+    }
+    
+    public enum Status implements CStatus {
+        TICKING, CREATED_SNAPSHOT, CALLED_BACK, COUNTED, UNPAUSED_DUE_TO_TIMES_DIFFERENT, PAUSED_DUE_TO_TIMES_SAME, CANCELLED_DUE_TO_END_CONDITION, UNDEFINED
+    }
+    
+    private final ReadWriteObjectProperty<CStatus> status;
+    
     /**
      * Constructs a new Clock
      *
@@ -85,6 +96,8 @@ public abstract class Clock<T extends ClockSnapshot> {
         this.cancelled = new ReadWriteBooleanProperty(this, "cancelled", false);
         this.countAmount = countAmount;
         
+        this.status = new ReadWriteObjectProperty<>(this, "status", Status.UNDEFINED);
+        
         this.time.addListener(c -> unpause());
     }
     
@@ -97,23 +110,34 @@ public abstract class Clock<T extends ClockSnapshot> {
             return;
         }
         
+        this.status.set(Status.TICKING);
         T snapshot = createSnapshot();
+        this.status.set(Status.CREATED_SNAPSHOT);
         callback(snapshot);
+        this.status.set(Status.CALLED_BACK);
         long oldTime = time.get();
         count();
         long newTime = time.get();
+        this.status.set(Status.COUNTED);
         
         if (oldTime != newTime) {
             unpause();
+            this.status.set(Status.UNPAUSED_DUE_TO_TIMES_DIFFERENT);
         } else {
             pause();
+            this.status.set(Status.PAUSED_DUE_TO_TIMES_SAME);
         }
         
         if (endCondition != null) {
             if (endCondition.shouldEnd(snapshot)) {
                 cancel();
+                this.status.set(Status.CANCELLED_DUE_TO_END_CONDITION);
             }
         }
+    }
+    
+    public ReadWriteObjectProperty<CStatus> statusProperty() {
+        return status;
     }
     
     /**
