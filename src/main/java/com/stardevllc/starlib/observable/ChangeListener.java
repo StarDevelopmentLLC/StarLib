@@ -19,12 +19,12 @@ public interface ChangeListener<T> {
             if (cancelled != null) {
                 this.cancelled = cancelled;
             } else {
-                this.cancelled = new SimpleBooleanValue();
+                this.cancelled = new SimpleBooleanValue(false);
             }
         }
         
         public Change(ObservableValue<T> observableValue, T oldValue, T newValue) {
-            this(observableValue, oldValue, newValue, new SimpleBooleanValue());
+            this(observableValue, oldValue, newValue, new SimpleBooleanValue(false));
         }
     }
     
