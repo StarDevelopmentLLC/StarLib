@@ -91,6 +91,9 @@ public class Timer extends Clock<TimerSnapshot> {
      */
     public void reset() {
         setTime(getLength());
+        for (CallbackHolder<TimerSnapshot> holder : this.callbacks.values()) {
+            holder.setHasRun(false);
+        }
     }
     
     /**
