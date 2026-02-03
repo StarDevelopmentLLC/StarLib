@@ -44,7 +44,7 @@ public class ListenerHandler<T> {
      * @return The changed status
      */
     public boolean handleChange(Change<T> change) {
-        if (Objects.equals(change.oldValue(), change.newValue())) {
+        if (!Objects.equals(change.oldValue(), change.newValue())) {
             for (ChangeListener<T> listener : listeners) {
                 listener.changed(change);
             }
