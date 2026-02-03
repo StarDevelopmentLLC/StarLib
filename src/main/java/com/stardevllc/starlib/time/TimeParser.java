@@ -27,9 +27,11 @@ public class TimeParser {
         ParsedTime weeks = extractRawTime(months.leftOverInput(), TimeUnit.WEEKS);
         ParsedTime days = extractRawTime(weeks.leftOverInput(), TimeUnit.DAYS);
         ParsedTime hours = extractRawTime(days.leftOverInput(), TimeUnit.HOURS);
-        ParsedTime minutes = extractRawTime(hours.leftOverInput(), TimeUnit.MINUTES);
+        ParsedTime milliseconds = extractRawTime(hours.leftOverInput(), TimeUnit.MILLISECONDS);
+        ParsedTime minutes = extractRawTime(milliseconds.leftOverInput(), TimeUnit.MINUTES);
         ParsedTime seconds = extractRawTime(minutes.leftOverInput(), TimeUnit.SECONDS);
-        return Stream.of(years, months, weeks, days, hours, minutes, seconds).mapToLong(ParsedTime::timeInMillis).sum();
+        ParsedTime ticks = extractRawTime(seconds.leftOverInput(), TimeUnit.TICKS);
+        return Stream.of(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks).mapToLong(ParsedTime::timeInMillis).sum();
     }
     
     /**
@@ -100,6 +102,9 @@ public class TimeParser {
             alias = alias.toLowerCase();
             if (rawTime.contains(alias)) {
                 rawArray = rawTime.split(alias);
+                if (rawArray.length == 0) {
+                    continue;
+                }
                 String fh = rawArray[0];
                 long rawLength;
                 try {
