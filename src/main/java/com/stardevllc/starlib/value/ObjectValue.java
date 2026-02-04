@@ -7,6 +7,17 @@ package com.stardevllc.starlib.value;
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface ObjectValue<T> extends Value<T> {
+    
+    /**
+     * Creates a constant value using the parameter
+     *
+     * @param v The value
+     * @return The value
+     */
+    static <T> ObjectValue<T> of(T v) {
+        return () -> v;
+    }
+    
     /**
      * Gets this value. Mainly for consistency with the others
      *

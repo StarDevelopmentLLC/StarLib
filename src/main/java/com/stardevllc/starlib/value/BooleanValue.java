@@ -7,6 +7,16 @@ package com.stardevllc.starlib.value;
 public interface BooleanValue extends Value<Boolean> {
     
     /**
+     * Creates a constant value using the parameter
+     *
+     * @param v The value
+     * @return The boolean value
+     */
+    static BooleanValue of(boolean v) {
+        return () -> v;
+    }
+    
+    /**
      * Gets this value as a primitive
      *
      * @return The vlaue

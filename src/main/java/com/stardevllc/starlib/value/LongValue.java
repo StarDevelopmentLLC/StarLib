@@ -5,6 +5,17 @@ package com.stardevllc.starlib.value;
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface LongValue extends NumberValue<Long> {
+    
+    /**
+     * Creates a constant value using the parameter
+     *
+     * @param v The value
+     * @return The value
+     */
+    static LongValue of(long v) {
+        return () -> v;
+    }
+    
     /**
      * Gets this value as a primitive
      *

@@ -5,6 +5,17 @@ package com.stardevllc.starlib.value;
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface StringValue extends ObjectValue<String> {
+    
+    /**
+     * Creates a constant value using the parameter
+     *
+     * @param v The value
+     * @return The value
+     */
+    static StringValue of(String v) {
+        return () -> v;
+    }
+    
     /**
      * Gets the value as a safe string
      *

@@ -5,6 +5,17 @@ package com.stardevllc.starlib.value;
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
 public interface DoubleValue extends NumberValue<Double> {
+    
+    /**
+     * Creates a constant value using the parameter
+     *
+     * @param v The value
+     * @return The value
+     */
+    static DoubleValue of(double v) {
+        return () -> v;
+    }
+    
     /**
      * Gets this value as a primitive
      *
