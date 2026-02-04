@@ -7,11 +7,13 @@ import java.util.stream.Stream;
 /**
  * Parses times using a format similar to the output of a {@link TimeFormat}
  */
-public class TimeParser {
+@SuppressWarnings({"UtilityClassWithPublicConstructor", "RedundantNoArgConstructor"})
+public final class TimeParser {
     
     /**
      * Constructs a TimeParser
      */
+    @Deprecated(forRemoval = true, since = "0.23.0")
     public TimeParser() {
     }
     
@@ -21,7 +23,7 @@ public class TimeParser {
      * @param rawTime The raw time
      * @return The time in milliseconds represented by the string
      */
-    public long parseTime(String rawTime) {
+    public static long parseTime(String rawTime) {
         ParsedTime years = extractRawTime(rawTime, TimeUnit.YEARS);
         ParsedTime months = extractRawTime(years.leftOverInput(), TimeUnit.MONTHS);
         ParsedTime weeks = extractRawTime(months.leftOverInput(), TimeUnit.WEEKS);
@@ -41,7 +43,7 @@ public class TimeParser {
      * @return The date as a representation of milliseconds from the unix epoc
      * @throws IllegalArgumentException If the date is invalid
      */
-    public long parseDate(String rawDate) throws IllegalArgumentException {
+    public static long parseDate(String rawDate) throws IllegalArgumentException {
         ParsedDate parsedDate = parseRawDate(rawDate);
         if (parsedDate == null) {
             return 0;
@@ -50,7 +52,7 @@ public class TimeParser {
         return zonedDateTime.toInstant().toEpochMilli();
     }
     
-    private ParsedDate parseRawDate(String rawDate) throws IllegalArgumentException {
+    private static ParsedDate parseRawDate(String rawDate) throws IllegalArgumentException {
         String[] inputArray = rawDate.split(" ");
         if (inputArray.length < 1) {
             return null;
@@ -87,7 +89,7 @@ public class TimeParser {
         return new ParsedDate().setMonth(month).setDay(day).setYear(year).setHour(hour).setMinute(minute).setSecond(second);
     }
     
-    private short parseTimeArgument(String arg) {
+    private static short parseTimeArgument(String arg) {
         try {
             return Short.parseShort(arg);
         } catch (NumberFormatException e) {
@@ -95,7 +97,7 @@ public class TimeParser {
         }
     }
     
-    private ParsedTime extractRawTime(String rawTime, TimeUnit unit) {
+    private static ParsedTime extractRawTime(String rawTime, TimeUnit unit) {
         rawTime = rawTime.toLowerCase();
         String[] rawArray;
         for (String alias : unit.getAliases()) {
