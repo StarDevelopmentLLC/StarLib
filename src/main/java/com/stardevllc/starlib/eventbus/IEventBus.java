@@ -6,9 +6,8 @@ import java.util.function.Predicate;
  * Represents a bus where events are passed to and listeners are used to react to those events
  *
  * @param <T> The event type
- * @param <C> The cancellable type
  */
-public interface IEventBus<T, C> {
+public interface IEventBus<T> {
     /**
      * Posts an event to the bus, calling listeners
      *
@@ -51,20 +50,17 @@ public interface IEventBus<T, C> {
      *
      * @param childBus The child bus
      */
-    default void addChildBus(IEventBus<?, ?> childBus) {
-        
-    }
-    
-    default void setCancelMapper(Predicate<C> mapper) {
+    default void addChildBus(IEventBus<?> childBus) {
         
     }
     
     /**
      * Sets the handler used to check to see if an event is cancelled
+     *
      * @param cancellableClass The class used as the marker of a cancellable event
-     * @param mapper The mapper that maps an event instance to check
+     * @param mapper           The mapper that maps an event instance to check
      */
-    default void setCancelHandler(Class<C> cancellableClass, Predicate<C> mapper) {
+    default <C> void addCancelHandler(Class<C> cancellableClass, Predicate<C> mapper) {
         
     }
 }
