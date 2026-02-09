@@ -7,5 +7,6 @@ package com.stardevllc.starlib.helper;
  * @param <F> First type
  * @param <S> Second type
  */
+@Deprecated(since = "0.23.2")
 public record Pair<F, S>(F first, S second) {
 }

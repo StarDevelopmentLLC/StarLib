@@ -1,6 +1,7 @@
 package com.stardevllc.starlib.generator;
 
-import com.stardevllc.starlib.helper.Pair;
+import com.stardevllc.starlib.tuple.ImmutablePair;
+import com.stardevllc.starlib.tuple.Pair;
 
 import java.util.*;
 import java.util.function.*;
@@ -74,14 +75,14 @@ class GeneratorImpl<T> implements Generator<T> {
         }
         
         if (whileTrueCondition != null && !whileTrueCondition.test(object, paramsCopy)) {
-            return new Pair<>(object, false);
+            return ImmutablePair.of(object, false);
         }
         
         if (whileFalseCondition != null && whileFalseCondition.test(object, paramsCopy)) {
-            return new Pair<>(object, false);
+            return ImmutablePair.of(object, false);
         }
         
-        return new Pair<>(object, true);
+        return ImmutablePair.of(object, true);
     }
     
     @Override
@@ -97,7 +98,7 @@ class GeneratorImpl<T> implements Generator<T> {
             }
             
             Pair<T, Boolean> result = generateObject(params);
-            if (!result.second()) {
+            if (!result.getRight()) {
                 return;
             }
             
@@ -120,11 +121,11 @@ class GeneratorImpl<T> implements Generator<T> {
             
             Pair<T, Boolean> result = generateObject(params);
             
-            if (!result.second()) {
+            if (!result.getRight()) {
                 return objects;
             }
             
-            objects.add(result.first());
+            objects.add(result.getLeft());
         }
     }
     
