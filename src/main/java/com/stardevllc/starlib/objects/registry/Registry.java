@@ -5,6 +5,7 @@ import com.stardevllc.starlib.objects.registry.functions.*;
 import com.stardevllc.starlib.observable.collections.set.ObservableTreeSet;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * Represents a Registry of objects for storage in memory
@@ -814,5 +815,16 @@ public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<
      */
     public KeySetter<K, V> getKeySetter() {
         return keySetter;
+    }
+    
+    /**
+     * A for-each implementation using a lambda to make things a bit cleaner
+     *
+     * @param biConsumer The consumer for each element
+     */
+    public void forEach(BiConsumer<K, V> biConsumer) {
+        for (RegistryObject<K, V> object : this) {
+            biConsumer.accept(object.getKey(), object.get());
+        }
     }
 }
