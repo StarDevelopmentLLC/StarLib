@@ -5,6 +5,7 @@ package com.stardevllc.starlib.value;
  * 
  * @param <T> The Object type
  */
+@Deprecated(since = "0.24.0")
 public interface WritableObjectValue<T> extends ObjectValue<T>, WritableValue<T> {
     /**
      * Sets the value to the provided value

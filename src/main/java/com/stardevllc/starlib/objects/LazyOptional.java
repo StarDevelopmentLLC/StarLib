@@ -1,7 +1,6 @@
 package com.stardevllc.starlib.objects;
 
-import com.stardevllc.starlib.value.WritableValue;
-import com.stardevllc.starlib.value.impl.SimpleObjectValue;
+import com.stardevllc.starlib.values.MutableObject;
 
 import java.util.Optional;
 import java.util.function.*;
@@ -9,7 +8,7 @@ import java.util.function.*;
 public class LazyOptional<T> {
     private final Supplier<T> supplier;
     private final Object lock = new Object();
-    private volatile WritableValue<T> resolved;
+    private volatile MutableObject<T> resolved;
     
     private static final LazyOptional<Void> EMPTY = new LazyOptional<>(null);
     
@@ -41,7 +40,7 @@ public class LazyOptional<T> {
                     if (temp == null) {
                         throw new IllegalStateException("Supplier cannot return a null value");
                     }
-                    resolved = new SimpleObjectValue<>(temp);
+                    resolved = new MutableObject<>(temp);
                 }
             }
         }

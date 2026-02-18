@@ -2,6 +2,7 @@ package com.stardevllc.starlib.value.impl;
 
 import com.stardevllc.starlib.value.WritableLongValue;
 
+@Deprecated(since = "0.24.0")
 public class SimpleLongValue implements WritableLongValue {
     
     protected long value;

@@ -3,6 +3,7 @@ package com.stardevllc.starlib.value;
 /**
  * Represents a Writable Integer Observable value
  */
+@Deprecated(since = "0.24.0")
 public interface WritableIntegerValue extends IntegerValue, WritableNumberValue<Integer> {
     /**
      * Sets the value to the provided value

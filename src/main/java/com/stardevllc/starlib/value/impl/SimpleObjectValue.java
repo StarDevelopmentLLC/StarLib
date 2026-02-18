@@ -2,6 +2,7 @@ package com.stardevllc.starlib.value.impl;
 
 import com.stardevllc.starlib.value.WritableObjectValue;
 
+@Deprecated(since = "0.24.0")
 public class SimpleObjectValue<T> implements WritableObjectValue<T> {
     
     protected T value;

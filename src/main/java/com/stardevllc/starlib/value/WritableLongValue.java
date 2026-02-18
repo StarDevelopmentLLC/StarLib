@@ -3,6 +3,7 @@ package com.stardevllc.starlib.value;
 /**
  * Represents a Writable Long Observable value
  */
+@Deprecated(since = "0.24.0")
 public interface WritableLongValue extends LongValue, WritableNumberValue<Long> {
     /**
      * Sets the value to the provided value

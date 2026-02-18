@@ -3,6 +3,7 @@ package com.stardevllc.starlib.value;
 /**
  * Represents a Writable Double Observable value
  */
+@Deprecated(since = "0.24.0")
 public interface WritableDoubleValue extends DoubleValue, WritableNumberValue<Double> {
     /**
      * Sets the value to the provided value

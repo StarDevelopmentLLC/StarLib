@@ -4,6 +4,7 @@ package com.stardevllc.starlib.value;
  * Represents a short that can be observed
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
+@Deprecated(since = "0.24.0")
 public interface ShortValue extends NumberValue<Short> {
     
     /**

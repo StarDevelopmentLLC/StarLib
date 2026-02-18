@@ -2,6 +2,7 @@ package com.stardevllc.starlib.value.impl;
 
 import com.stardevllc.starlib.value.WritableDoubleValue;
 
+@Deprecated(since = "0.24.0")
 public class SimpleDoubleValue implements WritableDoubleValue {
     protected double value;
     

@@ -3,6 +3,7 @@ package com.stardevllc.starlib.value;
 /**
  * Represents a Writable Boolean Observable value
  */
+@Deprecated(since = "0.24.0")
 public interface WritableBooleanValue extends BooleanValue, WritableValue<Boolean> {
     /**
      * Sets the value to the provided value

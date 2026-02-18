@@ -3,6 +3,7 @@ package com.stardevllc.starlib.value;
 /**
  * Represents a Writable Byte Observable value
  */
+@Deprecated(since = "0.24.0")
 public interface WritableByteValue extends ByteValue, WritableNumberValue<Byte> {
     /**
      * Sets the value to the provided value

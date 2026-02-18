@@ -4,6 +4,7 @@ import com.stardevllc.starlib.value.WritableUUIDValue;
 
 import java.util.UUID;
 
+@Deprecated(since = "0.24.0")
 public class SimpleUUIDValue extends SimpleObjectValue<UUID> implements WritableUUIDValue {
     public SimpleUUIDValue() {
     }

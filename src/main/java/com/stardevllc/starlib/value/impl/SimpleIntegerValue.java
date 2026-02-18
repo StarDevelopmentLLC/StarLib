@@ -2,6 +2,7 @@ package com.stardevllc.starlib.value.impl;
 
 import com.stardevllc.starlib.value.WritableIntegerValue;
 
+@Deprecated(since = "0.24.0")
 public class SimpleIntegerValue implements WritableIntegerValue {
     
     protected int value;

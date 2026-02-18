@@ -6,6 +6,7 @@ package com.stardevllc.starlib.value;
  * @param <T> The Number Type
  */
 @FunctionalInterface
+@Deprecated(since = "0.24.0")
 public interface NumberValue<T extends Number> extends Value<T> {
     /**
      * Returns the value as an int

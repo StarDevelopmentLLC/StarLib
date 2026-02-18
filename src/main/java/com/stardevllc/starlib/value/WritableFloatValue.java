@@ -3,6 +3,7 @@ package com.stardevllc.starlib.value;
 /**
  * Represents a Writable Float Observable value
  */
+@Deprecated(since = "0.24.0")
 public interface WritableFloatValue extends FloatValue, WritableNumberValue<Float> {
     /**
      * Sets the value to the provided value

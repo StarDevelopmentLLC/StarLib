@@ -3,6 +3,7 @@ package com.stardevllc.starlib.value;
 /**
  * Represents a Writable Short Observable value
  */
+@Deprecated(since = "0.24.0")
 public interface WritableShortValue extends ShortValue, WritableNumberValue<Short> {
     /**
      * Sets the value to the provided value

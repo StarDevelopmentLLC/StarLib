@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.value;
+package com.stardevllc.starlib.values;
 
 /**
  * An object that holds a value
@@ -6,7 +6,6 @@ package com.stardevllc.starlib.value;
  * @param <T> The value type
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
-@Deprecated(since = "0.24.0")
 public interface Value<T> {
     /**
      * Gets the value that this object wraps

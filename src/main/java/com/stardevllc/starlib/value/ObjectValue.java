@@ -6,6 +6,7 @@ package com.stardevllc.starlib.value;
  * @param <T> The object type
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
+@Deprecated(since = "0.24.0")
 public interface ObjectValue<T> extends Value<T> {
     
     /**

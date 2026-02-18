@@ -4,6 +4,7 @@ package com.stardevllc.starlib.value;
  * Represents a character that can be observed
  */
 @SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
+@Deprecated(since = "0.24.0")
 public interface CharacterValue extends Value<Character> {
     
     /**

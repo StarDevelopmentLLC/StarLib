@@ -2,6 +2,7 @@ package com.stardevllc.starlib.value.impl;
 
 import com.stardevllc.starlib.value.WritableByteValue;
 
+@Deprecated(since = "0.24.0")
 public class SimpleByteValue implements WritableByteValue {
     
     protected byte value;
