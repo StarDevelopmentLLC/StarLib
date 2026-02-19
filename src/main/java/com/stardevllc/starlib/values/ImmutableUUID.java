@@ -23,4 +23,21 @@ public final class ImmutableUUID implements Value<UUID> {
     public UUID getValue() {
         return get();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        
+        if (value == obj) {
+            return true;
+        }
+        
+        if (value != null) {
+            return value.equals(obj);
+        }
+        
+        return false;
+    }
 }

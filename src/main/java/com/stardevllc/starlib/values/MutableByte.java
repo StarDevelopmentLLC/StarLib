@@ -35,4 +35,18 @@ public class MutableByte implements MutableValue<Byte> {
     public Byte getValue() {
         return get();
     }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Byte v) {
+            return value == v;
+        }
+        
+        return this == obj;
+    }
 }

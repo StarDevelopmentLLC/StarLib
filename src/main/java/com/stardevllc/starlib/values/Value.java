@@ -5,7 +5,7 @@ package com.stardevllc.starlib.values;
  *
  * @param <T> The value type
  */
-@SuppressWarnings("InterfaceMayBeAnnotatedFunctional")
+@FunctionalInterface
 public interface Value<T> {
     /**
      * Gets the value that this object wraps
@@ -13,4 +13,10 @@ public interface Value<T> {
      * @return The value
      */
     T getValue();
+    
+    String toString();
+    
+    boolean equals(Object o);
+    
+    int hashCode();
 }

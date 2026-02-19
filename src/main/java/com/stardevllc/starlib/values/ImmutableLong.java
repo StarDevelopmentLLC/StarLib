@@ -20,4 +20,18 @@ public final class ImmutableLong implements Value<Long> {
     public Long getValue() {
         return get();
     }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Long v) {
+            return value == v;
+        }
+        
+        return this == obj;
+    }
 }

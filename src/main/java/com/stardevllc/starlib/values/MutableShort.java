@@ -35,4 +35,18 @@ public class MutableShort implements MutableValue<Short> {
     public Short getValue() {
         return get();
     }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Short v) {
+            return value == v;
+        }
+        
+        return this == obj;
+    }
 }

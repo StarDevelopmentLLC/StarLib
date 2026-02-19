@@ -20,4 +20,18 @@ public final class ImmutableInt implements Value<Integer> {
     public Integer getValue() {
         return get();
     }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Integer v) {
+            return value == v;
+        }
+        
+        return this == obj;
+    }
 }

@@ -35,4 +35,18 @@ public class MutableChar implements MutableValue<Character> {
     public Character getValue() {
         return get();
     }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Character v) {
+            return value == v;
+        }
+        
+        return this == obj;
+    }
 }

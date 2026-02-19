@@ -23,4 +23,18 @@ public final class ImmutableBoolean implements Value<Boolean> {
     public Boolean getValue() {
         return get();
     }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Boolean bool) {
+            return value == bool;
+        }
+        
+        return this == obj;
+    }
 }

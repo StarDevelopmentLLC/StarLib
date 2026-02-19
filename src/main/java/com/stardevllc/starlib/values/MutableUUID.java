@@ -37,4 +37,26 @@ public class MutableUUID implements MutableValue<UUID> {
     public UUID getValue() {
         return get();
     }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        
+        if (value == obj) {
+            return true;
+        }
+        
+        if (value != null) {
+            return value.equals(obj);
+        }
+        
+        return false;
+    }
 }

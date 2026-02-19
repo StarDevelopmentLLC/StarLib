@@ -21,4 +21,21 @@ public final class ImmutableString implements Value<String> {
     public String getValue() {
         return get();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        
+        if (value == obj) {
+            return true;
+        }
+        
+        if (value != null) {
+            return value.equals(obj);
+        }
+        
+        return false;
+    }
 }

@@ -35,4 +35,18 @@ public class MutableDouble implements MutableValue<Double> {
     public Double getValue() {
         return get();
     }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Double v) {
+            return value == v;
+        }
+        
+        return this == obj;
+    }
 }
