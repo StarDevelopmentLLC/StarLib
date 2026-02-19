@@ -45,7 +45,7 @@ public enum TimeUnit {
     /**
      * Months (30 days)
      */
-    MONTHS(DAYS.msPerUnit * 30, "month", "mo"),
+    MONTHS((long) (DAYS.msPerUnit * 30.416666666667), "month", "mo"),
     
     /**
      * Years (365 days)
