@@ -129,6 +129,11 @@ public final class ReflectionHelper {
                 A a = clazzInterface.getAnnotation(annotation);
                 classAnnotations.put(clazz, a);
                 return a;
+            } else {
+                A ca = getClassAnnotation(clazzInterface, annotation);
+                if (ca != null) {
+                    return ca;
+                }
             }
         }
         
