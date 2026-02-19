@@ -9,5 +9,6 @@ import java.util.function.BiConsumer;
  * @param <V> The value type
  */
 @FunctionalInterface
+@Deprecated(since = "0.24.0")
 public interface KeySetter<K extends Comparable<K>, V> extends BiConsumer<K, V> {
 }

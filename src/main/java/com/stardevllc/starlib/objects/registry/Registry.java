@@ -13,6 +13,7 @@ import java.util.function.BiConsumer;
  * @param <K> The key type for the registry
  * @param <V> The type for the objects actually stored
  */
+@Deprecated(since = "0.24.0")
 public class Registry<K extends Comparable<K>, V> implements Set<RegistryObject<K, V>> {
     
     private final ObservableTreeSet<RegistryObject<K, V>> backingSet = new ObservableTreeSet<>();

@@ -12,6 +12,7 @@ import com.stardevllc.starlib.value.impl.SimpleBooleanValue;
  */
 @SubscribeEvent
 @FunctionalInterface
+@Deprecated(since = "0.24.0")
 public interface RegistryChangeListener<K extends Comparable<K>, V> {
     
     record Change<K extends Comparable<K>, V>(Registry<K, V> registry, K key, V added, V removed, WritableBooleanValue cancelled) {

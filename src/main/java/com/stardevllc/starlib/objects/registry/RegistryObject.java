@@ -12,6 +12,7 @@ import java.util.function.Consumer;
  * @param <K> The key type
  * @param <V> The value type
  */
+@Deprecated(since = "0.24.0")
 public class RegistryObject<K extends Comparable<K>, V> implements Comparable<RegistryObject<K, V>> {
     private final Registry<K, V> registry;
     

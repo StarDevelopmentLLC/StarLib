@@ -7,5 +7,6 @@ import java.util.function.Function;
  * @param <K> The key type
  */
 @FunctionalInterface
+@Deprecated(since = "0.24.0")
 public interface KeyNormalizer<K extends Comparable<K>> extends Function<K, K> {
 }

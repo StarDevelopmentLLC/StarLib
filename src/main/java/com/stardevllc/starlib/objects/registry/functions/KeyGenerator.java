@@ -9,5 +9,6 @@ import java.util.function.Function;
  * @param <K> The key type
  */
 @FunctionalInterface
+@Deprecated(since = "0.24.0")
 public interface KeyGenerator<V, K extends Comparable<K>> extends Function<V, K> {
 }
