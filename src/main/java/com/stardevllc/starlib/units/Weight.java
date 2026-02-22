@@ -7,6 +7,9 @@ import com.stardevllc.starlib.random.Bounds;
 import java.util.Objects;
 
 public record Weight(double value, WeightUnit unit) {
+    
+    public static final WeightUnit DEFAULT_UNIT = WeightUnit.POUND;
+    
     public double get(WeightUnit newUnit) {
         return unit.toUnit(value, newUnit);
     }

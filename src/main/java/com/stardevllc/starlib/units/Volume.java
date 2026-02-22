@@ -7,6 +7,9 @@ import com.stardevllc.starlib.random.Bounds;
 import java.util.Objects;
 
 public record Volume(double value, VolumeUnit unit) {
+    
+    public static final VolumeUnit DEFAULT_UNIT = VolumeUnit.FLUID_OUNCE;
+    
     public double get(VolumeUnit newUnit) {
         return unit.toUnit(value, newUnit);
     }

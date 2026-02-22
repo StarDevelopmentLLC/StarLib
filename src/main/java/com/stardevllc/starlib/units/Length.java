@@ -7,6 +7,9 @@ import com.stardevllc.starlib.random.Bounds;
 import java.util.Objects;
 
 public record Length(double value, LengthUnit unit) {
+    
+    public static final LengthUnit DEFAULT_UNIT = LengthUnit.INCH;
+    
     public double get(LengthUnit newUnit) {
         return unit.toUnit(value, newUnit);
     }
