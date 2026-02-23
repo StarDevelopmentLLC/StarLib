@@ -25,6 +25,7 @@ public interface IRegistry<V> extends Iterable<V> {
         FREEZING, UNFREEZING;
         
         private final Flag[] parentFlags;
+        
         Flag() {
             parentFlags = null;
         }
@@ -166,6 +167,16 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     /**
+     * Creates a key for the object. This returns the empty key by default and must be overridden for functionality
+     *
+     * @param object The object that the key is for
+     * @return The Key Value
+     */
+    default @NotNull RegistryKey createKey(V object) {
+        return RegistryKey.EMPTY;
+    }
+    
+    /**
      * Gets the total size of the registry
      *
      * @return The registry size
@@ -244,7 +255,8 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface FreezeListener extends RegistryListener<FreezeEvent> {}
+    interface FreezeListener extends RegistryListener<FreezeEvent> {
+    }
     
     /**
      * Type specific way to add a listener for the FreezeEvent that does not conflict with other methods
@@ -303,7 +315,8 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface UnfreezeListener extends RegistryListener<UnfreezeEvent> {}
+    interface UnfreezeListener extends RegistryListener<UnfreezeEvent> {
+    }
     
     /**
      * Type specific way to add a listener for the UnfreezeEvent that does not conflict with other methods
@@ -433,7 +446,8 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface RegisterListener<V> extends RegistryListener<RegisterEvent<V>> {}
+    interface RegisterListener<V> extends RegistryListener<RegisterEvent<V>> {
+    }
     
     /**
      * Type specific way to add a listener for the RegisterEvent that does not conflict with other methods
@@ -504,7 +518,8 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface RemoveListener<V> extends RegistryListener<RemoveEvent<V>> {}
+    interface RemoveListener<V> extends RegistryListener<RemoveEvent<V>> {
+    }
     
     /**
      * Type specific way to add a listener for the RemoveEvent that does not conflict with other methods
@@ -571,7 +586,8 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface ClearListener<V> extends RegistryListener<ClearEvent<V>> {}
+    interface ClearListener<V> extends RegistryListener<ClearEvent<V>> {
+    }
     
     /**
      * Type specific way to add a listener for the ClearEvent that does not conflict with other methods
