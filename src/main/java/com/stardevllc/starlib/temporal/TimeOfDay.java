@@ -24,7 +24,7 @@ public class TimeOfDay implements Temporal {
     }
 
     protected TimeOfDay(TimeValue timeValue) {
-        this.timeValue = new TimeValue(timeValue.getYear(), timeValue.getTimeOfYear());
+        this.timeValue = new TimeValue(timeValue.getTime());
     }
     
     public TimeOfDay(Map<String, Object> serialized) {
@@ -46,7 +46,7 @@ public class TimeOfDay implements Temporal {
     }
 
     public long getHour() {
-        return this.timeValue.getTimeOfYear() / TimeUnit.HOURS.getMsPerUnit();
+        return this.timeValue.getTime() / TimeUnit.HOURS.getMsPerUnit();
     }
 
     public TimeOfDay addHours(long hours) {
@@ -58,7 +58,7 @@ public class TimeOfDay implements Temporal {
     }
 
     public long getMinute() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.HOURS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.HOURS.getMsPerUnit();
         return remaining / TimeUnit.MINUTES.getMsPerUnit();
     }
 
@@ -71,7 +71,7 @@ public class TimeOfDay implements Temporal {
     }
 
     public long getSecond() {
-        return this.timeValue.getTimeOfYear() % TimeUnit.MINUTES.getMsPerUnit();
+        return this.timeValue.getTime() % TimeUnit.MINUTES.getMsPerUnit();
     }
 
     public TimeOfDay addSeconds(long seconds) {
@@ -115,15 +115,5 @@ public class TimeOfDay implements Temporal {
     @Override
     public TimeOfDay subtract(Temporal temporal, Temporal... temporals) {
         return (TimeOfDay) Temporal.super.subtract(temporal, temporals);
-    }
-
-    @Override
-    public TimeOfDay addYears(long years) {
-        return (TimeOfDay) Temporal.super.addYears(years);
-    }
-
-    @Override
-    public TimeOfDay subtractYears(long years) {
-        return (TimeOfDay) Temporal.super.subtractYears(years);
     }
 }

@@ -14,15 +14,14 @@ public class Date implements Temporal {
 
     public Date(long year, long month, long day) {
         this.timeValue = new TimeValue();
-        timeValue.setYear(year);
+        timeValue.add(TimeUnit.YEARS, year);
         timeValue.add(TimeUnit.MONTHS, month - 1);
         timeValue.add(TimeUnit.DAYS, day - 1);
     }
 
     protected Date(TimeValue timeValue) {
         this.timeValue = new TimeValue();
-        this.timeValue.setYear(timeValue.getYear());
-        this.timeValue.setTimeOfYear(timeValue.getTimeOfYear());
+        this.timeValue.set(timeValue.getTime());
     }
     
     public Date(Map<String, Object> serialized) {
@@ -44,11 +43,12 @@ public class Date implements Temporal {
     }
 
     public long getYear() {
-        return this.timeValue.getYear();
+        return this.timeValue.getTime() / TimeUnit.YEARS.getMsPerUnit();
     }
 
     public long getMonth() {
-        return this.timeValue.getTimeOfYear() / TimeUnit.MONTHS.getMsPerUnit() + 1;
+        long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
+        return remaining / TimeUnit.MONTHS.getMsPerUnit() + 1;
     }
 
     public Date addMonths(long months) {
@@ -60,7 +60,7 @@ public class Date implements Temporal {
     }
 
     public long getDay() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.MONTHS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.MONTHS.getMsPerUnit();
         return remaining / TimeUnit.DAYS.getMsPerUnit() + 1;
     }
 
@@ -105,15 +105,5 @@ public class Date implements Temporal {
     @Override
     public Date subtract(Temporal temporal, Temporal... temporals) {
         return (Date) Temporal.super.subtract(temporal, temporals);
-    }
-
-    @Override
-    public Date addYears(long years) {
-        return (Date) Temporal.super.addYears(years);
-    }
-
-    @Override
-    public Date subtractYears(long years) {
-        return (Date) Temporal.super.subtractYears(years);
     }
 }

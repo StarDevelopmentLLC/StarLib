@@ -19,7 +19,7 @@ public class Instant implements Temporal {
 
     public Instant(long month, long day, long year, long hour, long minute, long second) {
         this();
-        timeValue.setYear(year);
+        timeValue.add(TimeUnit.YEARS, year);
         timeValue.add(TimeUnit.MONTHS, month - 1);
         timeValue.add(TimeUnit.DAYS, day - 1);
         timeValue.add(TimeUnit.HOURS, hour);
@@ -28,7 +28,7 @@ public class Instant implements Temporal {
     }
 
     protected Instant(TimeValue timeValue) {
-        this.timeValue = new TimeValue(timeValue.getYear(), timeValue.getTimeOfYear());
+        this.timeValue = new TimeValue(timeValue.getTime());
     }
     
     public Instant(Map<String, Object> serialized) {
@@ -59,11 +59,12 @@ public class Instant implements Temporal {
     }
 
     public long getYear() {
-        return this.timeValue.getYear();
+        return this.timeValue.getTime() / TimeUnit.YEARS.getMsPerUnit();
     }
 
     public long getMonth() {
-        return this.timeValue.getTimeOfYear() / TimeUnit.MONTHS.getMsPerUnit() + 1;
+        long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
+        return this.timeValue.getTime() / TimeUnit.MONTHS.getMsPerUnit() + 1;
     }
 
     public Instant addMonths(long months) {
@@ -75,7 +76,7 @@ public class Instant implements Temporal {
     }
 
     public long getDay() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.MONTHS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.MONTHS.getMsPerUnit();
         return remaining / TimeUnit.DAYS.getMsPerUnit() + 1;
     }
 
@@ -88,7 +89,7 @@ public class Instant implements Temporal {
     }
 
     public long getHour() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.DAYS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.DAYS.getMsPerUnit();
         return remaining / TimeUnit.HOURS.getMsPerUnit();
     }
 
@@ -101,7 +102,7 @@ public class Instant implements Temporal {
     }
 
     public long getMinute() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.HOURS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.HOURS.getMsPerUnit();
         return remaining / TimeUnit.MINUTES.getMsPerUnit();
     }
 
@@ -114,7 +115,7 @@ public class Instant implements Temporal {
     }
 
     public long getSecond() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.MINUTES.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.MINUTES.getMsPerUnit();
         return remaining / TimeUnit.SECONDS.getMsPerUnit();
     }
 
@@ -127,7 +128,7 @@ public class Instant implements Temporal {
     }
     
     public long getMillisecond() {
-        return this.timeValue.getTimeOfYear() / TimeUnit.MILLISECONDS.getMsPerUnit();
+        return this.timeValue.getTime() / TimeUnit.SECONDS.getMsPerUnit();
     }
     
     public Instant addMilliseconds(long milliseconds) {
@@ -173,13 +174,11 @@ public class Instant implements Temporal {
         return (Instant) Temporal.super.subtract(temporal, temporals);
     }
 
-    @Override
     public Instant addYears(long years) {
-        return (Instant) Temporal.super.addYears(years);
+        return add(TimeUnit.YEARS, years);
     }
 
-    @Override
     public Instant subtractYears(long years) {
-        return (Instant) Temporal.super.subtractYears(years);
+        return subtract(TimeUnit.YEARS, years);
     }
 }

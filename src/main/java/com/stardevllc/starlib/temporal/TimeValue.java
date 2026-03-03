@@ -3,7 +3,6 @@ package com.stardevllc.starlib.temporal;
 import com.stardevllc.starlib.serialization.StarSerializable;
 import com.stardevllc.starlib.time.TimeUnit;
 
-import java.math.BigInteger;
 import java.util.Map;
 
 /**
@@ -11,88 +10,37 @@ import java.util.Map;
  */
 public final class TimeValue implements Comparable<TimeValue>, Cloneable, StarSerializable {
     
-    public static final long MILLISECONDS_IN_YEAR = TimeUnit.YEARS.getMsPerUnit();
-    public static final BigInteger MILLISECONDS_IN_YEAR_BIG = BigInteger.valueOf(MILLISECONDS_IN_YEAR);
-    
-    private long year;
-    private long timeOfYear;
+    private long time;
 
     public TimeValue() {}
 
-    public TimeValue(long year, long timeOfYear) {
-        this.year = year;
-        this.timeOfYear = timeOfYear;
+    public TimeValue(long time) {
+        this.time = time;
     }
     
     public TimeValue(Map<String, Object> serialized) {
-        this.year = (long) serialized.get("year");
-        this.timeOfYear = (long) serialized.get("timeofyear");
+        this.time = (long) serialized.get("time");
     }
     
-    public TimeValue(BigInteger value) {
-        BigInteger[] result = value.divideAndRemainder(MILLISECONDS_IN_YEAR_BIG);
-        this.year = result[0].longValue();
-        this.timeOfYear = result[1].longValue();
+    public void divide(long divisor) {
+        this.time /= divisor;
     }
     
-    public TimeValue divide(long divisor) {
-        long year = this.year / divisor;
-        long timeOfYear = this.timeOfYear / divisor;
-        
-        return new TimeValue(year, timeOfYear);
+    public void divide(TimeValue divisor) {
+        this.time /= divisor.time;
     }
     
-    public TimeValue divide(TimeValue divisor) {
-        BigInteger currentValue = toBigInteger();
-        BigInteger divisorValue = divisor.toBigInteger();
-        
-        BigInteger quotient = currentValue.divide(divisorValue);
-        return new TimeValue(quotient);
+    public void multiply(double factor) {
+        this.time *= (long) factor;
     }
     
-    public TimeValue multiply(double factor) {
-        double rawYear = this.year * factor;
-        long wholeYears = (long) rawYear;
-        double factionalYears = rawYear - wholeYears;
-        double rawTimeOfYear = this.timeOfYear * factor;
-        
-        wholeYears += (long) rawTimeOfYear / MILLISECONDS_IN_YEAR;
-        rawTimeOfYear %= MILLISECONDS_IN_YEAR;
-        
-        return new TimeValue(wholeYears, (long) (rawTimeOfYear + MILLISECONDS_IN_YEAR * factionalYears));
-    }
-    
-    public BigInteger toBigInteger() {
-        return BigInteger.valueOf(this.year).multiply(MILLISECONDS_IN_YEAR_BIG).add(BigInteger.valueOf(this.timeOfYear));
-    }
-    
-    public void addYears(long years) {
-        this.year += years;
-    }
-    
-    public void subtractYears(long years) {
-        this.year -= years;
-    }
-
-    public long getYear() {
-        return year;
-    }
-
-    public long getTimeOfYear() {
-        return timeOfYear;
-    }
-
-    public void setYear(long year) {
-        this.year = year;
-    }
-
-    public void setTimeOfYear(long timeOfYear) {
-        this.timeOfYear = timeOfYear;
+    public long getTime() {
+        return time;
     }
 
     public boolean equals(Object other) {
         if (other instanceof TimeValue instant) {
-            return this.year == instant.year && this.timeOfYear == instant.timeOfYear;
+            return this.time == instant.time;
         }
         
         return false;
@@ -100,9 +48,7 @@ public final class TimeValue implements Comparable<TimeValue>, Cloneable, StarSe
     
     @Override
     public int hashCode() {
-        int result = Long.hashCode(year);
-        result = 31 * result + Long.hashCode(timeOfYear);
-        return result;
+        return Long.hashCode(this.time);
     }
     
     @Override
@@ -111,69 +57,36 @@ public final class TimeValue implements Comparable<TimeValue>, Cloneable, StarSe
             return 1;
         }
         
-        int yearCompare = Long.compare(this.year, other.year);
-        if (yearCompare != 0) {
-            return yearCompare;
-        }
-        
-        return Long.compare(this.timeOfYear, other.timeOfYear);
+        return Long.compare(this.time, other.time);
     }
     
     @Override
     public TimeValue clone() {
-        return new TimeValue(this.year, this.timeOfYear);
+        return new TimeValue(this.time);
     }
 
     public void add(TimeValue other) {
-        this.year += other.year;
-        this.add(other.timeOfYear);
+        this.add(other.time);
     }
     
     public void subtract(TimeValue other) {
-        this.year -= other.year;
-        this.subtract(other.timeOfYear);
+        this.subtract(other.time);
     }
     
     public void add(TimeUnit unit, long amount) {
-        this.add((long) unit.toSeconds(amount));
+        this.add(unit.toMillis(amount));
     }
     
     public void subtract(TimeUnit unit, long amount) {
-        this.subtract((long) unit.toSeconds(amount));
+        this.subtract(unit.toMillis(amount));
     }
     
     public void add(long milliseconds) {
-        this.timeOfYear += milliseconds;
-        
-        if (this.timeOfYear < MILLISECONDS_IN_YEAR) {
-            return;
-        }
-        
-        this.year += this.timeOfYear / MILLISECONDS_IN_YEAR;
-        this.timeOfYear = this.timeOfYear % MILLISECONDS_IN_YEAR;
+        this.time += milliseconds;
     }
     
     public void subtract(long milliseconds) {
-        if (this.timeOfYear >= milliseconds) {
-            this.timeOfYear -= milliseconds;
-            return;
-        }
-
-        this.year -= milliseconds / MILLISECONDS_IN_YEAR; 
-        milliseconds -= milliseconds / MILLISECONDS_IN_YEAR;
-        
-        if (this.timeOfYear >= milliseconds) {
-            this.timeOfYear -= milliseconds;
-            return;
-        }
-        
-        this.year--;
-        this.timeOfYear += MILLISECONDS_IN_YEAR;
-        this.timeOfYear -= milliseconds;
-        
-        //This ensures that nothing goes to the negative
-        this.year = Math.max(0, this.year);
-        this.timeOfYear = Math.max(0, this.timeOfYear);
+        this.time -= milliseconds;
     }
     
     public boolean lessThan(TimeValue other) {
@@ -181,13 +94,7 @@ public final class TimeValue implements Comparable<TimeValue>, Cloneable, StarSe
             return false;
         }
         
-        if (this.year < other.year) {
-            return true;
-        } else if (this.year > other.year) {
-            return false;
-        }
-        
-        return this.timeOfYear < other.timeOfYear;
+        return this.time < other.time;
     }
     
     public boolean lessThanOrEqualTo(TimeValue other) {
@@ -207,13 +114,7 @@ public final class TimeValue implements Comparable<TimeValue>, Cloneable, StarSe
             return false;
         }
 
-        if (this.year > other.year) {
-            return true;
-        } else if (this.year < other.year) {
-            return false;
-        }
-
-        return this.timeOfYear > other.timeOfYear;
+        return this.time > other.time;
     }
     
     public boolean greaterThanOrEqualTo(TimeValue other) {
@@ -227,16 +128,20 @@ public final class TimeValue implements Comparable<TimeValue>, Cloneable, StarSe
 
         return greaterThan(other);
     }
-
+    
     @Override
     public String toString() {
-        return "TimeValue{" + "year=" + year +
-                ", timeOfYear=" + timeOfYear +
+        return "TimeValue{" +
+                "time=" + time +
                 '}';
     }
     
     @Override
     public Map<String, Object> serialize() {
-        return Map.of("year", this.year, "timeofyear", this.timeOfYear);
+        return Map.of("time", this.time);
+    }
+    
+    public void set(long time) {
+        this.time = time;
     }
 }

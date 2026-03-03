@@ -12,14 +12,6 @@ public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializa
     
     TimeValue getTime();
     
-    default long getYear() {
-        return getTime().getYear();
-    }
-    
-    default long getTimeOfYear() {
-        return getTime().getTimeOfYear();
-    }
-    
     Temporal clone();
     
     String toString();
@@ -106,42 +98,28 @@ public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializa
         return this;
     }
 
-    default Temporal addYears(long years) {
-        getTime().addYears(years);
-        return this;
-    }
-
-    default Temporal subtractYears(long years) {
-        getTime().subtractYears(years);
-        return this;
-    }
-
-    default Temporal set(long year, long timeOfYear) {
-        getTime().setYear(year);
-        getTime().setYear(timeOfYear);
+    default Temporal set(long time) {
+        getTime().set(time);
         return this;
     }
     
     default Temporal set(Temporal temporal, Temporal temporals) {
-        getTime().setYear(0);
-        getTime().setTimeOfYear(0);
+        getTime().set(0);
         add(temporal, temporals);
         return this;
     }
     
     default Temporal set(Temporal temporal) {
         if (temporal == null) {
-            getTime().setYear(0);
-            getTime().setTimeOfYear(0);
+            getTime().set(0);
         } else {
-            getTime().setYear(temporal.getTime().getYear());
-            getTime().setTimeOfYear(temporal.getTime().getTimeOfYear());
+            getTime().set(temporal.getTime().getTime());
         }
         return this;
     }
     
     default boolean isEmpty() {
-        return getTime().getYear() == 0 && getTime().getTimeOfYear() == 0;
+        return getTime().getTime() == 0;
     }
     
     default boolean isNotEmpty() {

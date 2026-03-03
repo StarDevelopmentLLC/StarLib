@@ -19,7 +19,7 @@ public class MonthDay implements Temporal {
     }
 
     protected MonthDay(TimeValue timeValue) {
-        this.timeValue = new TimeValue(timeValue.getYear(), timeValue.getTimeOfYear());
+        this.timeValue = new TimeValue(timeValue.getTime());
     }
     
     public MonthDay(Map<String, Object> serialized) {
@@ -37,7 +37,7 @@ public class MonthDay implements Temporal {
     }
 
     public long getMonth() {
-        return this.timeValue.getTimeOfYear() / TimeUnit.MONTHS.getMsPerUnit() + 1;
+        return this.timeValue.getTime() / TimeUnit.MONTHS.getMsPerUnit() + 1;
     }
 
     public MonthDay addMonths(long months) {
@@ -49,7 +49,7 @@ public class MonthDay implements Temporal {
     }
 
     public long getDay() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.MONTHS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.MONTHS.getMsPerUnit();
         return remaining / TimeUnit.DAYS.getMsPerUnit() + 1;
     }
 
@@ -94,15 +94,5 @@ public class MonthDay implements Temporal {
     @Override
     public MonthDay subtract(Temporal temporal, Temporal... temporals) {
         return (MonthDay) Temporal.super.subtract(temporal, temporals);
-    }
-
-    @Override
-    public MonthDay addYears(long years) {
-        return (MonthDay) Temporal.super.addYears(years);
-    }
-
-    @Override
-    public MonthDay subtractYears(long years) {
-        return (MonthDay) Temporal.super.subtractYears(years);
     }
 }

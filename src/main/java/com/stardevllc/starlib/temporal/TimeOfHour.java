@@ -23,7 +23,7 @@ public class TimeOfHour implements Temporal {
     }
 
     protected TimeOfHour(TimeValue timeValue) {
-        this.timeValue = new TimeValue(timeValue.getYear(), timeValue.getTimeOfYear());
+        this.timeValue = new TimeValue(timeValue.getTime());
     }
     
     public TimeOfHour(Map<String, Object> serialized) {
@@ -45,7 +45,7 @@ public class TimeOfHour implements Temporal {
     }
 
     public long getMinute() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.HOURS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.HOURS.getMsPerUnit();
         return remaining / TimeUnit.MINUTES.getMsPerUnit();
     }
 
@@ -58,7 +58,7 @@ public class TimeOfHour implements Temporal {
     }
 
     public long getSecond() {
-        return this.timeValue.getTimeOfYear() % TimeUnit.MINUTES.getMsPerUnit();
+        return this.timeValue.getTime() % TimeUnit.MINUTES.getMsPerUnit();
     }
 
     public TimeOfHour addSeconds(long seconds) {
@@ -102,15 +102,5 @@ public class TimeOfHour implements Temporal {
     @Override
     public TimeOfHour subtract(Temporal temporal, Temporal... temporals) {
         return (TimeOfHour) Temporal.super.subtract(temporal, temporals);
-    }
-
-    @Override
-    public TimeOfHour addYears(long years) {
-        return (TimeOfHour) Temporal.super.addYears(years);
-    }
-
-    @Override
-    public TimeOfHour subtractYears(long years) {
-        return (TimeOfHour) Temporal.super.subtractYears(years);
     }
 }

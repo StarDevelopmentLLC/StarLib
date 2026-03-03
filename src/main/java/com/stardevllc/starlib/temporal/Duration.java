@@ -65,7 +65,7 @@ public class Duration implements Temporal {
     }
     
     protected Duration(TimeValue timeValue) {
-        this.timeValue = new TimeValue(timeValue.getYear(), timeValue.getTimeOfYear());
+        this.timeValue = new TimeValue(timeValue.getTime());
     }
     
     public Duration(Map<String, Object> serialized) {
@@ -98,8 +98,8 @@ public class Duration implements Temporal {
     }
     
     @Override
-    public Duration set(long year, long timeOfYear) {
-        return (Duration) Temporal.super.set(year, timeOfYear);
+    public Duration set(long time) {
+        return (Duration) Temporal.super.set(time);
     }
     
     @Override
@@ -108,11 +108,16 @@ public class Duration implements Temporal {
     }
     
     public long getYears() {
-        return this.timeValue.getYear();
+        return this.timeValue.getTime() / TimeUnit.YEARS.getMsPerUnit();
+    }
+    
+    public Duration addYears(long years) {
+        return add(TimeUnit.YEARS, years);
     }
     
     public long getMonths() {
-        return this.timeValue.getTimeOfYear() / TimeUnit.MONTHS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
+        return remaining / TimeUnit.MONTHS.getMsPerUnit();
     }
     
     public Duration addMonths(long months) {
@@ -124,7 +129,7 @@ public class Duration implements Temporal {
     }
     
     public long getDays() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.MONTHS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.MONTHS.getMsPerUnit();
         return remaining / TimeUnit.DAYS.getMsPerUnit();
     }
     
@@ -137,7 +142,7 @@ public class Duration implements Temporal {
     }
     
     public long getHours() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.DAYS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.DAYS.getMsPerUnit();
         return remaining / TimeUnit.HOURS.getMsPerUnit();
     }
     
@@ -150,7 +155,7 @@ public class Duration implements Temporal {
     }
     
     public long getMinutes() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.HOURS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.HOURS.getMsPerUnit();
         return remaining / TimeUnit.MINUTES.getMsPerUnit();
     }
     
@@ -163,7 +168,7 @@ public class Duration implements Temporal {
     }
     
     public long getSeconds() {
-        long remaining = this.timeValue.getTimeOfYear() % TimeUnit.MINUTES.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.MINUTES.getMsPerUnit();
         return remaining / TimeUnit.SECONDS.getMsPerUnit();
     }
     
@@ -176,7 +181,7 @@ public class Duration implements Temporal {
     }
     
     public long getMilliseconds() {
-        return this.timeValue.getTimeOfYear() % TimeUnit.MILLISECONDS.getMsPerUnit();
+        return this.timeValue.getTime() % TimeUnit.SECONDS.getMsPerUnit();
     }
     
     public Duration addMilliseconds(long milliseconds) {
@@ -188,15 +193,18 @@ public class Duration implements Temporal {
     }
     
     public Duration divide(long divisor) {
-        return new Duration(timeValue.divide(divisor));
+        timeValue.divide(divisor);
+        return this;
     }
     
     public Duration divide(Duration divisor) {
-        return new Duration(timeValue.divide(divisor.timeValue));
+        timeValue.divide(divisor.getTime());
+        return this;
     }
     
     public Duration multiply(double factor) {
-        return new Duration(timeValue.multiply(factor));
+        timeValue.multiply(factor);
+        return this;
     }
     
     public String toStringShort() {
@@ -305,15 +313,5 @@ public class Duration implements Temporal {
     @Override
     public Duration subtract(Temporal temporal, Temporal... temporals) {
         return (Duration) Temporal.super.subtract(temporal, temporals);
-    }
-    
-    @Override
-    public Duration addYears(long years) {
-        return (Duration) Temporal.super.addYears(years);
-    }
-    
-    @Override
-    public Duration subtractYears(long years) {
-        return (Duration) Temporal.super.subtractYears(years);
     }
 }
