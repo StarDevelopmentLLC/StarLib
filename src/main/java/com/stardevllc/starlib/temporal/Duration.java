@@ -1,5 +1,8 @@
 package com.stardevllc.starlib.temporal;
 
+import com.stardevllc.starlib.objects.builder.IBuilder;
+import com.stardevllc.starlib.objects.factory.IFactory;
+import com.stardevllc.starlib.random.Bounds;
 import com.stardevllc.starlib.time.TimeUnit;
 
 import java.util.Map;
@@ -313,5 +316,54 @@ public class Duration implements Temporal {
     @Override
     public Duration subtract(Temporal temporal, Temporal... temporals) {
         return (Duration) Temporal.super.subtract(temporal, temporals);
+    }
+    
+    public static class Builder implements IBuilder<Duration, Builder> {
+        
+        protected long time;
+        
+        public Builder() {
+        }
+        
+        public Builder(Builder builder) {
+            this.time = builder.time;
+        }
+        
+        public Builder time(long time) {
+            this.time = time;
+            return self();
+        }
+        
+        @Override
+        public Duration build() {
+            return new Duration(new TimeValue(time));
+        }
+        
+        @Override
+        public Builder clone() {
+            return new Builder(this);
+        }
+    }
+    
+    public static class Factory implements IFactory<Duration, Factory> {
+        
+        protected Bounds bounds;
+        
+        public Factory() {
+        }
+        
+        public Factory(Factory factory) {
+            this.bounds = bounds != null ? bounds.clone() : null;
+        }
+        
+        public Factory bounds(Bounds bounds) {
+            this.bounds = bounds;
+            return self();
+        }
+        
+        @Override
+        public Duration create(Object[] parameters) {
+            return new Duration(new TimeValue((long) bounds.generateAndDivide()));
+        }
     }
 }
