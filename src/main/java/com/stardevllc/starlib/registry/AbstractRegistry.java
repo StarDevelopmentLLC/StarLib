@@ -9,6 +9,7 @@ import java.util.function.BiConsumer;
 
 public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
+    private final Class<V> valueType;
     private final RegistryKey id;
     private final String name;
     protected final Map<RegistryKey, V> backingMap;
@@ -18,7 +19,8 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     private final Set<Flag> flags;
     
-    public AbstractRegistry(RegistryKey id, String name, Map<RegistryKey, V> backingMap, boolean frozen, EventDispatcher<?> dispatcher, Set<Flag> flags) {
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, boolean frozen, EventDispatcher<?> dispatcher, Set<Flag> flags) {
+        this.valueType = valueType;
         this.id = id;
         this.name = name;
         this.backingMap = backingMap;
@@ -35,8 +37,8 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         }
     }
     
-    public AbstractRegistry(RegistryKey id, String name, Map<RegistryKey, V> backingMap, Flag... flags) {
-        this(id, name, backingMap, false, null, ofFlagSet(flags));
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, Flag... flags) {
+        this(valueType, id, name, backingMap, false, null, ofFlagSet(flags));
     }
     
     private static Set<Flag> ofFlagSet(Flag... flags) {
@@ -47,16 +49,21 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         }
     }
     
-    public AbstractRegistry(Map<RegistryKey, V> backingMap) {
-        this(null, null, backingMap);
+    public AbstractRegistry(Class<V> valueType, Map<RegistryKey, V> backingMap) {
+        this(valueType, null, null, backingMap);
     }
     
-    public AbstractRegistry(RegistryKey id, Map<RegistryKey, V> backingMap) {
-        this(id, id.toString(), backingMap);
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, Map<RegistryKey, V> backingMap) {
+        this(valueType, id, id.toString(), backingMap);
     }
     
-    public AbstractRegistry(String name, Map<RegistryKey, V> backingMap) {
-        this(RegistryKey.of(name), name, backingMap);
+    public AbstractRegistry(Class<V> valueType, String name, Map<RegistryKey, V> backingMap) {
+        this(valueType, RegistryKey.of(name), name, backingMap);
+    }
+    
+    @Override
+    public Class<V> getValueType() {
+        return valueType;
     }
     
     @Override

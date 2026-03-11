@@ -18,12 +18,17 @@ public final class Registries {
     }
     
     public static class RegistryBuilder<V> {
+        private final Class<V> valueType;
         private Supplier<Map<RegistryKey, V>> mapSupplier;
         private RegistryKey id;
         private String name;
         private EventDispatcher<?> dispatcher;
         private Set<IRegistry.Flag> flags = EnumSet.noneOf(IRegistry.Flag.class);
         private boolean global;
+        
+        public RegistryBuilder(Class<V> valueType) {
+            this.valueType = valueType;
+        }
         
         public RegistryBuilder<V> withSupplier(Supplier<Map<RegistryKey, V>> mapSupplier) {
             this.mapSupplier = mapSupplier;
@@ -84,7 +89,7 @@ public final class Registries {
                 throw new IllegalStateException("Map Supplier cannot return a null map");
             }
             
-            IRegistry<V> registry = new AbstractRegistry<>(id, name, backingMap, false, dispatcher, this.flags) {};
+            IRegistry<V> registry = new AbstractRegistry<>(valueType, id, name, backingMap, false, dispatcher, this.flags) {};
             
             if (global) {
                 if (id != null && id.isNotEmpty()) {
@@ -97,10 +102,10 @@ public final class Registries {
     }
     
     public static <V> RegistryBuilder<V> create(Class<V> type) {
-        return new RegistryBuilder<>();
+        return new RegistryBuilder<>(type);
     }
     
     public static <V> RegistryBuilder<V> create(Class<V> type, Supplier<Map<RegistryKey, V>> supplier) {
-        return new RegistryBuilder<V>().withSupplier(supplier);
+        return new RegistryBuilder<>(type).withSupplier(supplier);
     }
 }

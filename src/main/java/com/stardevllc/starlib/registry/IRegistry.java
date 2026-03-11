@@ -98,6 +98,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
         return RegistryKey.EMPTY;
     }
     
+    Class<V> getValueType();
+    
     /**
      * Checks to see if the registry has a Key. This checks against the Emtpy Key due to how the equals logic works, this will be fine for sub-classes as well
      *
