@@ -15,18 +15,6 @@ public final class StringHelper {
     private static final Map<String, UUID> uuidCache = new HashMap<>();
     
     /**
-     * Pluralizes a word using some very basic rules
-     *
-     * @param word The word
-     * @return the result
-     * @deprecated Use {@link Pluralizer}
-     */
-    @Deprecated
-    public static String pluralize(String word) {
-        return new Pluralizer().pluralize(word);
-    }
-    
-    /**
      * Capitalize every word in a string. This treats underscores as a space
      *
      * @param string The string

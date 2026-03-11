@@ -30,46 +30,6 @@ public interface FieldInjector {
      */
     <I> I inject(I object);
     
-    /**
-     * Sets the instance to use in injections to the provided instance
-     *
-     * @param clazz    The class type
-     * @param instance The instance
-     * @param <T>      The class type
-     * @param <I>      The instance type
-     * @return The instance
-     */
-    @Deprecated(forRemoval = true)
-    default <T, I extends T> I setInstance(Class<T> clazz, I instance) {
-        return set(clazz, instance);
-    }
-    
-    /**
-     * Sets the instance to use in injections to the provided instance
-     *
-     * @param instance The instance
-     * @param <I>      The instance type
-     * @return The instnace
-     */
-    @Deprecated(forRemoval = true)
-    default <I> I setInstance(I instance) {
-        return set(instance);
-    }
-    
-    /**
-     * Sets the object provider to use in instance setting
-     *
-     * @param clazz    The class type
-     * @param provider The provider
-     * @param <T>      The class type
-     * @param <I>      The instance type
-     * @return The provider
-     */
-    @Deprecated(forRemoval = true)
-    default <T, I extends T> ObjectProvider<I> setProvider(Class<T> clazz, ObjectProvider<I> provider) {
-        return set(clazz, provider);
-    }
-    
     <I> ObjectProvider<I> getProvider(Class<? super I> clazz);
     
     default <T, I extends T> ObjectProvider<I> set(Class<T> clazz, ObjectProvider<I> provider) {

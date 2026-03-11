@@ -1,6 +1,6 @@
-package com.stardevllc.starlib.eventbus;
+package com.stardevllc.starlib.event.bus;
 
-import com.stardevllc.starlib.eventbus.impl.StarEventBus;
+import com.stardevllc.starlib.event.bus.impl.StarEventBus;
 
 import java.lang.annotation.*;
 

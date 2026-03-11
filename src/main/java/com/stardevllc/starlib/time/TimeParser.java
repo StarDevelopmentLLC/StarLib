@@ -7,15 +7,7 @@ import java.util.stream.Stream;
 /**
  * Parses times using a format similar to the output of a {@link TimeFormat}
  */
-@SuppressWarnings({"UtilityClassWithPublicConstructor", "RedundantNoArgConstructor"})
 public final class TimeParser {
-    
-    /**
-     * Constructs a TimeParser
-     */
-    @Deprecated(forRemoval = true, since = "0.23.0")
-    public TimeParser() {
-    }
     
     /**
      * Parses the time

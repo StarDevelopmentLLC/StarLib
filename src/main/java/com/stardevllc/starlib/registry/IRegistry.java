@@ -2,8 +2,8 @@ package com.stardevllc.starlib.registry;
 
 import com.stardevllc.starlib.collections.RemoveOnlyArrayList;
 import com.stardevllc.starlib.event.EventDispatcher;
-import com.stardevllc.starlib.eventbus.IEventBus;
-import com.stardevllc.starlib.eventbus.SubscribeEvent;
+import com.stardevllc.starlib.event.bus.IEventBus;
+import com.stardevllc.starlib.event.bus.SubscribeEvent;
 import com.stardevllc.starlib.objects.Nameable;
 import com.stardevllc.starlib.objects.id.Identifiable;
 import com.stardevllc.starlib.tuple.ImmutablePair;
@@ -88,7 +88,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @return The key, or just a blank registry key
      */
-    @Deprecated(since = "0.24.1")
+    @Deprecated(since = "0.25.0")
     default @NotNull RegistryKey getKey() {
         return getId();
     }

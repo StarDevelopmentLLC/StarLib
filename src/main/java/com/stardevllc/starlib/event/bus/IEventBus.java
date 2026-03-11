@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.eventbus;
+package com.stardevllc.starlib.event.bus;
 
 import java.util.function.Predicate;
 

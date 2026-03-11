@@ -53,7 +53,6 @@ public interface GenericPartitioningStrategy extends PartitioningStrategy<Object
     }
 
     @Override
-    @Deprecated
     default int allocate(Object object, Bucket<Object> bucket) {
         return allocate(bucket);
     }
