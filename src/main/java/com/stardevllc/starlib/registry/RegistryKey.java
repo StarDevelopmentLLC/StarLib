@@ -1,5 +1,8 @@
 package com.stardevllc.starlib.registry;
 
+import com.stardevllc.starlib.objects.id.ID;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Represents a Registry Key
  * <p>
@@ -10,7 +13,7 @@ package com.stardevllc.starlib.registry;
  *     This will be a Value class when Project Valhalla from Oracle is ready for use as the keys shouldn't have identity, they are the identity
  * </p>
  */
-public abstract class RegistryKey implements Comparable<RegistryKey> {
+public abstract class RegistryKey implements ID {
     
     /**
      * This is just an emtpy RegistryKey
@@ -30,11 +33,17 @@ public abstract class RegistryKey implements Comparable<RegistryKey> {
         };
     }
     
-    public abstract String toString();
+    @Override
+    public boolean isEmpty() {
+        return toString().isEmpty();
+    }
     
+    @Override
     public int hashCode() {
         return toString().hashCode();
     }
+    
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof RegistryKey k) {
             return this.toString().equals(k.toString());
@@ -43,7 +52,8 @@ public abstract class RegistryKey implements Comparable<RegistryKey> {
         return false;
     }
     
-    public int compareTo(RegistryKey o) {
+    @Override
+    public int compareTo(@NotNull ID o) {
         return toString().compareTo(o.toString());
     }
 }

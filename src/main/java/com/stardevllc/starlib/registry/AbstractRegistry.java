@@ -9,21 +9,41 @@ import java.util.function.BiConsumer;
 
 public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
-    private final RegistryKey key;
+    private final RegistryKey id;
     private final String name;
+    protected final Map<RegistryKey, V> backingMap;
     
     private boolean frozen;
     private EventDispatcher<?> dispatcher;
     
-    private final Set<Flag> flags = EnumSet.noneOf(Flag.class);
-    protected final Map<RegistryKey, V> backingMap;
+    private final Set<Flag> flags;
     
-    public AbstractRegistry(RegistryKey key, String name, Map<RegistryKey, V> backingMap, Flag... flags) {
-        this.key = key;
+    public AbstractRegistry(RegistryKey id, String name, Map<RegistryKey, V> backingMap, boolean frozen, EventDispatcher<?> dispatcher, Set<Flag> flags) {
+        this.id = id;
         this.name = name;
         this.backingMap = backingMap;
+        this.frozen = frozen;
+        if (dispatcher != null) {
+            this.dispatcher = dispatcher;
+        } else {
+            this.dispatcher = new Dispatcher();
+        }
         if (flags != null) {
-            this.flags.addAll(List.of(flags));
+            this.flags = EnumSet.copyOf(flags);
+        } else {
+            this.flags = EnumSet.noneOf(Flag.class);
+        }
+    }
+    
+    public AbstractRegistry(RegistryKey id, String name, Map<RegistryKey, V> backingMap, Flag... flags) {
+        this(id, name, backingMap, false, null, ofFlagSet(flags));
+    }
+    
+    private static Set<Flag> ofFlagSet(Flag... flags) {
+        if (flags == null) {
+            return Set.of();
+        } else {
+            return Set.of(flags);
         }
     }
     
@@ -31,22 +51,20 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         this(null, null, backingMap);
     }
     
-    public AbstractRegistry(RegistryKey key, Map<RegistryKey, V> backingMap) {
-        this(key, key.toString(), backingMap);
+    public AbstractRegistry(RegistryKey id, Map<RegistryKey, V> backingMap) {
+        this(id, id.toString(), backingMap);
     }
     
     public AbstractRegistry(String name, Map<RegistryKey, V> backingMap) {
-        this.key = createKey(name);
-        this.name = name;
-        this.backingMap = backingMap;
+        this(RegistryKey.of(name), name, backingMap);
     }
     
     @Override
-    public final @NotNull RegistryKey getKey() {
-        if (this.key == null) {
-            return IRegistry.super.getKey();
+    public final @NotNull RegistryKey getId() {
+        if (this.id == null) {
+            return IRegistry.super.getId();
         }
-        return this.key;
+        return this.id;
     }
     
     @Override
@@ -68,7 +86,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     }
     
     @Override
-    public <E extends Event> void addListener(RegistryListener<E> listener) {
+    public <E extends Event> void addListener(Listener<E> listener) {
         getDispatcher().addListener(listener);
     }
     
@@ -163,6 +181,12 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         }
         
         V oldValue = get(key);
+        
+        if (oldValue != null) {
+            if (!hasFlag(Flag.REPLACING)) {
+                return null;
+            }
+        }
         
         RegisterEvent<V> e = getDispatcher().dispatch(new RegisterEvent<>(this, key, value, oldValue));
         if (e.isCancelled()) {
@@ -264,5 +288,24 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     @Override
     public final Iterator<V> iterator() {
         return values().iterator();
+    }
+    
+    protected static class Dispatcher implements EventDispatcher<IRegistry.Event> {
+        
+        private final List<Listener<Event>> listeners = new ArrayList<>();
+        
+        @Override
+        public @NotNull <I extends Event> I dispatch(I event) {
+            this.listeners.forEach(l -> l.onEvent(event));
+            
+            return null;
+        }
+        
+        @Override
+        public void addListener(Object listener) {
+            if (listener instanceof IRegistry.Listener<?> l) {
+                listeners.add((Listener<Event>) l);
+            }
+        }
     }
 }

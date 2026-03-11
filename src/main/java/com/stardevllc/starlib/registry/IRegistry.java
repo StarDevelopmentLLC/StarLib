@@ -4,11 +4,14 @@ import com.stardevllc.starlib.collections.RemoveOnlyArrayList;
 import com.stardevllc.starlib.event.EventDispatcher;
 import com.stardevllc.starlib.eventbus.IEventBus;
 import com.stardevllc.starlib.eventbus.SubscribeEvent;
+import com.stardevllc.starlib.objects.Nameable;
+import com.stardevllc.starlib.objects.id.Identifiable;
 import com.stardevllc.starlib.tuple.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.*;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * A Registry maps values to a special type of Key
@@ -20,9 +23,11 @@ import java.util.function.*;
  *
  * @param <V> The Value Type
  */
-public interface IRegistry<V> extends Iterable<V> {
+public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     enum Flag {
-        FREEZING, UNFREEZING;
+        FREEZING, 
+        UNFREEZING, 
+        REPLACING;
         
         private final Flag[] parentFlags;
         
@@ -83,7 +88,13 @@ public interface IRegistry<V> extends Iterable<V> {
      *
      * @return The key, or just a blank registry key
      */
+    @Deprecated(since = "0.24.1")
     default @NotNull RegistryKey getKey() {
+        return getId();
+    }
+    
+    @Override
+    default @NotNull RegistryKey getId() {
         return RegistryKey.EMPTY;
     }
     
@@ -103,15 +114,6 @@ public interface IRegistry<V> extends Iterable<V> {
      */
     default @NotNull String getName() {
         return "";
-    }
-    
-    /**
-     * Checks to see if the registry has a human-readable name. If the name isn't an empty string, it has a name
-     *
-     * @return If this registry has a human readable name
-     */
-    default boolean hasName() {
-        return !getName().isEmpty();
     }
     
     /**
@@ -139,7 +141,7 @@ public interface IRegistry<V> extends Iterable<V> {
      */
     @FunctionalInterface
     @SubscribeEvent
-    interface RegistryListener<E extends Event> {
+    interface Listener<E extends Event> {
         /**
          * The functional method that takes in the event <br>
          *
@@ -154,7 +156,7 @@ public interface IRegistry<V> extends Iterable<V> {
      * @param listener The listener instance
      * @param <E>      The event type
      */
-    <E extends Event> void addListener(RegistryListener<E> listener);
+    <E extends Event> void addListener(Listener<E> listener);
     
     /**
      * Method to create a Key from a String. Used in the String convenience methods, or can be used outside of them
@@ -192,10 +194,30 @@ public interface IRegistry<V> extends Iterable<V> {
         return size() == 0;
     }
     
+    /**
+     * Gets if this registry is not empty
+     *
+     * @return If the size > 0
+     */
+    default boolean isNotEmpty() {
+        return size() > 0;
+    }
+    
+    /**
+     * Gets a copy of the flags that this Registry has
+     *
+     * @return The copy of the flags
+     */
     default @NotNull Set<Flag> getFlags() {
         return EnumSet.noneOf(Flag.class);
     }
     
+    /**
+     * Checks to see if this registry has the given flag
+     *
+     * @param flag The flag to check
+     * @return If the Registry has the flag
+     */
     default boolean hasFlag(Flag flag) {
         return getFlags().contains(flag);
     }
@@ -255,7 +277,7 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface FreezeListener extends RegistryListener<FreezeEvent> {
+    interface FreezeListener extends Listener<FreezeEvent> {
     }
     
     /**
@@ -315,7 +337,7 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface UnfreezeListener extends RegistryListener<UnfreezeEvent> {
+    interface UnfreezeListener extends Listener<UnfreezeEvent> {
     }
     
     /**
@@ -446,7 +468,7 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface RegisterListener<V> extends RegistryListener<RegisterEvent<V>> {
+    interface RegisterListener<V> extends Listener<RegisterEvent<V>> {
     }
     
     /**
@@ -518,7 +540,7 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface RemoveListener<V> extends RegistryListener<RemoveEvent<V>> {
+    interface RemoveListener<V> extends Listener<RemoveEvent<V>> {
     }
     
     /**
@@ -586,7 +608,7 @@ public interface IRegistry<V> extends Iterable<V> {
     }
     
     @FunctionalInterface
-    interface ClearListener<V> extends RegistryListener<ClearEvent<V>> {
+    interface ClearListener<V> extends Listener<ClearEvent<V>> {
     }
     
     /**
@@ -679,11 +701,4 @@ public interface IRegistry<V> extends Iterable<V> {
             register(key, mappingFunction.apply(key));
         }
     }
-    
-    /**
-     * Make a view in the form of a Map of the registry that is not backed by the registry
-     *
-     * @return The Map structure of the Registry
-     */
-    Map<RegistryKey, V> toMapCopy();
 }

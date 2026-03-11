@@ -19,7 +19,7 @@ public final class Registries {
     
     public static class RegistryBuilder<V> {
         private Supplier<Map<RegistryKey, V>> mapSupplier;
-        private RegistryKey key;
+        private RegistryKey id;
         private String name;
         private EventDispatcher<?> dispatcher;
         private Set<IRegistry.Flag> flags = EnumSet.noneOf(IRegistry.Flag.class);
@@ -30,8 +30,8 @@ public final class Registries {
             return this;
         }
         
-        public RegistryBuilder<V> withKey(RegistryKey key) {
-            this.key = key;
+        public RegistryBuilder<V> withId(RegistryKey key) {
+            this.id = key;
             return this;
         }
         
@@ -69,30 +69,26 @@ public final class Registries {
         }
         
         public IRegistry<V> build() {
-            if (key == null && name != null) {
-                this.key = RegistryKey.of(name);
-            } else if (key != null && name == null) {
-                this.name = this.key.toString();
+            if (id == null && name != null) {
+                this.id = RegistryKey.of(name);
+            } else if (id != null && name == null) {
+                this.name = this.id.toString();
             }
             
             if (mapSupplier == null) {
                 throw new IllegalStateException("Map Supplier cannot be null");
             }
             
-            IRegistry<V> registry = new AbstractRegistry<>(key, name, mapSupplier.get(), this.flags.toArray(new IRegistry.Flag[0])) {
-                @Override
-                public Map<RegistryKey, V> toMapCopy() {
-                    Map<RegistryKey, V> map = mapSupplier.get();
-                    map.putAll(this.backingMap);
-                    return map;
-                }
-            };
+            Map<RegistryKey, V> backingMap = mapSupplier.get();
+            if (backingMap == null) {
+                throw new IllegalStateException("Map Supplier cannot return a null map");
+            }
             
-            registry.setDispatcher(dispatcher);
+            IRegistry<V> registry = new AbstractRegistry<>(id, name, backingMap, false, dispatcher, this.flags) {};
             
             if (global) {
-                if (key != null && !RegistryKey.EMPTY.equals(key)) {
-                    REGISTRIES.put(key, registry);
+                if (id != null && id.isNotEmpty()) {
+                    REGISTRIES.put(id, registry);
                 }
             }
             
