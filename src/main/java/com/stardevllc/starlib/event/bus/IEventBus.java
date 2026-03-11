@@ -1,5 +1,8 @@
 package com.stardevllc.starlib.event.bus;
 
+import com.stardevllc.starlib.event.EventDispatcher;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.function.Predicate;
 
 /**
@@ -7,7 +10,7 @@ import java.util.function.Predicate;
  *
  * @param <T> The event type
  */
-public interface IEventBus<T> {
+public interface IEventBus<T> extends EventDispatcher<T> {
     /**
      * Posts an event to the bus, calling listeners
      *
@@ -17,6 +20,12 @@ public interface IEventBus<T> {
      */
     <E extends T> E post(E event);
     
+    @Override
+    @NotNull
+    default <I extends T> I dispatch(I event) {
+        return post(event);
+    }
+    
     /**
      * Subscribes to the bus for events
      *
@@ -24,6 +33,11 @@ public interface IEventBus<T> {
      * @return If the subscription was successful
      */
     boolean subscribe(Object object);
+    
+    @Override
+    default void addListener(Object listener) {
+        subscribe(listener);
+    }
     
     /**
      * Unsubscribes from the bus

@@ -17,6 +17,12 @@ public final class Registries {
         return null;
     }
     
+    public static void addRegistry(IRegistry<?> registry) {
+        if (registry.hasId()) {
+            REGISTRIES.put(registry.getId(), registry);
+        }
+    }
+    
     public static class RegistryBuilder<V> {
         private final Class<V> valueType;
         private Supplier<Map<RegistryKey, V>> mapSupplier;
@@ -26,7 +32,7 @@ public final class Registries {
         private Set<IRegistry.Flag> flags = EnumSet.noneOf(IRegistry.Flag.class);
         private boolean global;
         
-        public RegistryBuilder(Class<V> valueType) {
+        private RegistryBuilder(Class<V> valueType) {
             this.valueType = valueType;
         }
         

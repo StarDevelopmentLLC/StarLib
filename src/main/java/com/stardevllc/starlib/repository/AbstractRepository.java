@@ -12,22 +12,22 @@ import java.util.function.Function;
 
 public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     
-    protected final Class<K> keyType;
-    protected final Class<V> valueType;
+    private final Class<K> keyType;
+    private final Class<V> valueType;
     
-    protected final ID id;
-    protected final String name;
+    private final ID id;
+    private final String name;
     
-    protected final Map<K, V> backingMap;
+    private final Map<K, V> backingMap;
     
-    protected Function<K, V> fetcher;
-    protected EventDispatcher<Event> dispatcher;
+    private Function<K, V> fetcher;
+    private EventDispatcher<Event> dispatcher;
     
-    protected long timeout;
+    private long timeout;
     
-    protected final Map<K, MutableLong> accessMap = new HashMap<>();
+    private final Map<K, MutableLong> accessMap = new HashMap<>();
     
-    protected TaskSubmitter taskSubmitter;
+    private TaskSubmitter taskSubmitter;
     
     public AbstractRepository(Class<K> keyType, Class<V> valueType, Map<K, V> backingMap, ID id, String name, Function<K, V> fetcher, EventDispatcher<Event> dispatcher, long timeout, TaskSubmitter taskSubmitter) {
         this.keyType = keyType;
@@ -50,77 +50,77 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     }
     
     @Override
-    public String getName() {
+    public final String getName() {
         return name;
     }
     
     @Override
-    public @Nullable TaskSubmitter getTaskSubmitter() {
+    public final @Nullable TaskSubmitter getTaskSubmitter() {
         return taskSubmitter;
     }
     
     @Override
-    public ID getId() {
+    public final ID getId() {
         return id;
     }
     
     @Override
-    public void setTaskSubmitter(TaskSubmitter taskSubmitter) {
+    public final void setTaskSubmitter(TaskSubmitter taskSubmitter) {
         this.taskSubmitter = taskSubmitter;
     }
     
     @Override
-    public void setValueFetcher(@Nullable Function<K, V> fetcher) {
+    public final void setValueFetcher(@Nullable Function<K, V> fetcher) {
         this.fetcher = fetcher;
     }
     
     @Override
-    public long getTimeout() {
+    public final long getTimeout() {
         return this.timeout;
     }
     
     @Override
-    public void setTimeout(long milliseconds) {
+    public final void setTimeout(long milliseconds) {
         this.timeout = milliseconds;
     }
     
     @Override
-    public <E extends Event> void setDispatcher(@NotNull EventDispatcher<E> dispatcher) {
+    public final <E extends Event> void setDispatcher(@NotNull EventDispatcher<E> dispatcher) {
         this.dispatcher = (EventDispatcher<Event>) dispatcher;
     }
     
     @Override
-    public @NotNull Iterator<Map.Entry<K, V>> iterator() {
+    public final @NotNull Iterator<Map.Entry<K, V>> iterator() {
         return entrySet().iterator();
     }
     
     @Override
-    public Class<K> getKeyType() {
+    public final Class<K> getKeyType() {
         return keyType;
     }
     
     @Override
-    public Class<V> getValueType() {
+    public final Class<V> getValueType() {
         return valueType;
     }
     
     @Override
-    public int size() {
+    public final int size() {
         return this.backingMap.size();
     }
     
     @Override
-    public @Nullable Function<K, V> getValueFetcher() {
+    public final @Nullable Function<K, V> getValueFetcher() {
         return this.fetcher;
     }
     
     @Override
-    public boolean containsKey(K key) {
+    public final boolean containsKey(K key) {
         return this.backingMap.containsKey(key);
     }
     
     @Override
-    public boolean containsValue(V value) {
+    public final boolean containsValue(V value) {
         return this.backingMap.containsValue(value);
     }
     
@@ -129,8 +129,11 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
         V value = this.backingMap.get(key);
         MutableLong lastAccess = this.accessMap.computeIfAbsent(key, k -> new MutableLong());
         
-        if (value == null || lastAccess.get() > 0 && lastAccess.get() + timeout < System.currentTimeMillis()) {
+        if (timeout > 0 && lastAccess.get() + timeout < System.currentTimeMillis()) {
             value = null;
+        }
+        
+        if (value == null) {
             if (this.fetcher != null) {
                 value = this.fetcher.apply(key);
                 if (value != null) {
@@ -185,30 +188,31 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
         
         for (ImmutablePair<K, V> entry : event.getEntries()) {
             this.backingMap.remove(entry.getLeft());
+            this.accessMap.remove(entry.getLeft());
         }
     }
     
     @Override
-    public @NotNull Set<K> keySet() {
+    public final @NotNull Set<K> keySet() {
         return Collections.unmodifiableSet(backingMap.keySet());
     }
     
     @Override
-    public @NotNull Collection<V> values() {
+    public final @NotNull Collection<V> values() {
         return Collections.unmodifiableCollection(this.backingMap.values());
     }
     
     @Override
-    public @NotNull Set<Map.Entry<K, V>> entrySet() {
+    public final @NotNull Set<Map.Entry<K, V>> entrySet() {
         return Collections.unmodifiableSet(this.backingMap.entrySet());
     }
     
     @Override
-    public @NotNull <E extends Event> EventDispatcher<E> getDispatcher() {
+    public final @NotNull <E extends Event> EventDispatcher<E> getDispatcher() {
         return (EventDispatcher<E>) this.dispatcher;
     }
     
-    protected static class Dispatcher implements EventDispatcher<IRepository.Event> {
+    private static class Dispatcher implements EventDispatcher<IRepository.Event> {
         
         private final List<Listener<Event>> listeners = new ArrayList<>();
         

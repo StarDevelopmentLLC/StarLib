@@ -121,8 +121,8 @@ public final class Repositories {
                 throw new IllegalStateException("mapSupplier cannot return a null map");
             }
             
-            AbstractRepository<K, V> repository = new AbstractRepository<>(this.keyType, this.valueType, map, id, name, valueFetcher, dispatcher, timeout, taskSubmitter) {
-            };
+            AbstractRepository<K, V> repository = new AbstractRepository<>(this.keyType, this.valueType, map, id, name, valueFetcher, dispatcher, timeout, taskSubmitter) {};
+            
             if (this.global) {
                 if (id != null && id.isNotEmpty()) {
                     REPOSITORIES.put(repository.getId(), repository);

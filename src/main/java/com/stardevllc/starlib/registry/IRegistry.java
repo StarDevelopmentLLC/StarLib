@@ -105,6 +105,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @return If the registry has a key
      */
+    @Deprecated(since = "0.25.0")
     default boolean hasKey() {
         return !RegistryKey.EMPTY.equals(getKey());
     }
@@ -132,7 +133,9 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @return The event dispatcher
      */
-    @NotNull <E extends Event> EventDispatcher<E> getDispatcher();
+    default @NotNull <E extends Event> EventDispatcher<E> getDispatcher() {
+        return (EventDispatcher<E>) EventDispatcher.NOOP;
+    }
     
     /**
      * An interface that defines what a listener needs to be to listen for registry events<br>
@@ -158,7 +161,9 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param listener The listener instance
      * @param <E>      The event type
      */
-    <E extends Event> void addListener(Listener<E> listener);
+    default <E extends Event> void addListener(Listener<E> listener) {
+        getDispatcher().addListener(listener);
+    }
     
     /**
      * Method to create a Key from a String. Used in the String convenience methods, or can be used outside of them
@@ -553,6 +558,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     default void addRemoveListener(RemoveListener<V> listener) {
         addListener(listener);
     }
+    
+    //TODO Treat registerall like clear
     
     /**
      * Registers all values in the map to this registry

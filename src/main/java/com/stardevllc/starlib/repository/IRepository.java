@@ -29,6 +29,10 @@ public interface IRepository<K, V> extends Iterable<Map.Entry<K, V>>, Identifiab
     int size();
     
     default boolean isEmpty() {
+        return size() == 0;
+    }
+    
+    default boolean isNotEmpty() {
         return size() > 0;
     }
     

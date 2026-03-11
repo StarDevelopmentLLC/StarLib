@@ -12,7 +12,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     private final Class<V> valueType;
     private final RegistryKey id;
     private final String name;
-    protected final Map<RegistryKey, V> backingMap;
+    private final Map<RegistryKey, V> backingMap;
     
     private boolean frozen;
     private EventDispatcher<?> dispatcher;
@@ -62,7 +62,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     }
     
     @Override
-    public Class<V> getValueType() {
+    public final Class<V> getValueType() {
         return valueType;
     }
     
@@ -83,18 +83,13 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     }
     
     @Override
-    public void setDispatcher(EventDispatcher<?> dispatcher) {
+    public final void setDispatcher(EventDispatcher<?> dispatcher) {
         this.dispatcher = dispatcher;
     }
     
     @Override
-    public @NotNull <E extends Event> EventDispatcher<E> getDispatcher() {
+    public final @NotNull <E extends Event> EventDispatcher<E> getDispatcher() {
         return (EventDispatcher<E>) (dispatcher != null ? dispatcher : (EventDispatcher<E>) EventDispatcher.NOOP);
-    }
-    
-    @Override
-    public <E extends Event> void addListener(Listener<E> listener) {
-        getDispatcher().addListener(listener);
     }
     
     @Override
@@ -297,15 +292,14 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         return values().iterator();
     }
     
-    protected static class Dispatcher implements EventDispatcher<IRegistry.Event> {
+    private static class Dispatcher implements EventDispatcher<IRegistry.Event> {
         
         private final List<Listener<Event>> listeners = new ArrayList<>();
         
         @Override
         public @NotNull <I extends Event> I dispatch(I event) {
             this.listeners.forEach(l -> l.onEvent(event));
-            
-            return null;
+            return event;
         }
         
         @Override
