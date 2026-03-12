@@ -73,24 +73,29 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
         }
     }
     
-    /**
-     * This registers a cancel handler to an IEventBus for registry events. <br>
-     * Much like how the listener is annotated with {@link SubscribeEvent}, this is not required and exists as a convenience method
-     *
-     * @param bus The bus to support cancellation
-     */
-    static void registerCancelHandler(IEventBus<?> bus) {
-        bus.addCancelHandler(Event.class, Event::isCancelled);
-    }
-    
-    /**
-     * The is is the key of the registry itself. This should be used with other systems
-     *
-     * @return The key, or just a blank registry key
-     */
-    @Deprecated(since = "0.25.0")
-    default @NotNull RegistryKey getKey() {
-        return getId();
+    abstract class AbstractEvent implements Event {
+        
+        private final IRegistry<?> registry;
+        private boolean cancelled;
+        
+        public AbstractEvent(IRegistry<?> registry) {
+            this.registry = registry;
+        }
+        
+        @Override
+        public IRegistry<?> getRegistry() {
+            return registry;
+        }
+        
+        @Override
+        public boolean isCancelled() {
+            return cancelled;
+        }
+        
+        @Override
+        public void setCancelled(boolean cancelled) {
+            this.cancelled = cancelled;
+        }
     }
     
     @Override
@@ -99,16 +104,6 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     }
     
     Class<V> getValueType();
-    
-    /**
-     * Checks to see if the registry has a Key. This checks against the Emtpy Key due to how the equals logic works, this will be fine for sub-classes as well
-     *
-     * @return If the registry has a key
-     */
-    @Deprecated(since = "0.25.0")
-    default boolean hasKey() {
-        return !RegistryKey.EMPTY.equals(getKey());
-    }
     
     /**
      * This is a human-readable name and should be derived from the key or the key derived from the name
@@ -259,33 +254,14 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     /**
      * This event is fired when the registry is frozen
      */
-    final class FreezeEvent implements Event {
-        private IRegistry<?> registry;
-        private boolean cancelled;
-        
+    final class FreezeEvent extends AbstractEvent {
         public FreezeEvent(IRegistry<?> registry) {
-            this.registry = registry;
-        }
-        
-        @Override
-        public IRegistry<?> getRegistry() {
-            return registry;
-        }
-        
-        @Override
-        public boolean isCancelled() {
-            return cancelled;
-        }
-        
-        @Override
-        public void setCancelled(boolean cancelled) {
-            this.cancelled = cancelled;
+            super(registry);
         }
     }
     
     @FunctionalInterface
-    interface FreezeListener extends Listener<FreezeEvent> {
-    }
+    interface FreezeListener extends Listener<FreezeEvent> { }
     
     /**
      * Type specific way to add a listener for the FreezeEvent that does not conflict with other methods
@@ -319,33 +295,14 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     /**
      * This event is fired when the registry is unfrozen
      */
-    final class UnfreezeEvent implements Event {
-        private IRegistry<?> registry;
-        private boolean cancelled;
-        
+    final class UnfreezeEvent extends AbstractEvent {
         public UnfreezeEvent(IRegistry<?> registry) {
-            this.registry = registry;
-        }
-        
-        @Override
-        public IRegistry<?> getRegistry() {
-            return registry;
-        }
-        
-        @Override
-        public boolean isCancelled() {
-            return cancelled;
-        }
-        
-        @Override
-        public void setCancelled(boolean cancelled) {
-            this.cancelled = cancelled;
+            super(registry);
         }
     }
     
     @FunctionalInterface
-    interface UnfreezeListener extends Listener<UnfreezeEvent> {
-    }
+    interface UnfreezeListener extends Listener<UnfreezeEvent> { }
     
     /**
      * Type specific way to add a listener for the UnfreezeEvent that does not conflict with other methods
@@ -433,22 +390,15 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @param <V> The valu type
      */
-    final class RegisterEvent<V> implements Event {
-        private final IRegistry<V> registry;
+    final class RegisterEvent<V> extends AbstractEvent {
         private final RegistryKey key;
         private final V value, oldValue;
-        private boolean cancelled;
         
         public RegisterEvent(IRegistry<V> registry, RegistryKey key, V value, V oldValue) {
-            this.registry = registry;
+            super(registry);
             this.key = key;
             this.value = value;
             this.oldValue = oldValue;
-        }
-        
-        @Override
-        public IRegistry<V> getRegistry() {
-            return registry;
         }
         
         public RegistryKey key() {
@@ -461,16 +411,6 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
         
         public V value() {
             return value;
-        }
-        
-        @Override
-        public boolean isCancelled() {
-            return cancelled;
-        }
-        
-        @Override
-        public void setCancelled(boolean cancelled) {
-            this.cancelled = cancelled;
         }
     }
     
@@ -510,21 +450,14 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @param <V>
      */
-    final class RemoveEvent<V> implements Event {
-        private final IRegistry<V> registry;
+    final class RemoveEvent<V> extends AbstractEvent {
         private final RegistryKey key;
         private final V value;
-        private boolean cancelled;
         
         public RemoveEvent(IRegistry<V> registry, RegistryKey key, V value) {
-            this.registry = registry;
+            super(registry);
             this.key = key;
             this.value = value;
-        }
-        
-        @Override
-        public IRegistry<V> getRegistry() {
-            return registry;
         }
         
         public RegistryKey key() {
@@ -533,16 +466,6 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
         
         public V value() {
             return value;
-        }
-        
-        @Override
-        public boolean isCancelled() {
-            return cancelled;
-        }
-        
-        @Override
-        public void setCancelled(boolean cancelled) {
-            this.cancelled = cancelled;
         }
     }
     
@@ -584,35 +507,18 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @param <V> The Value Type
      */
-    final class ClearEvent<V> implements Event {
-        private final IRegistry<V> registry;
+    final class ClearEvent<V> extends AbstractEvent {
         private final List<ImmutablePair<RegistryKey, V>> values;
-        private boolean cancelled;
         
         public ClearEvent(IRegistry<V> registry) {
-            this.registry = registry;
+            super(registry);
             List<ImmutablePair<RegistryKey, V>> values = new ArrayList<>();
             registry.forEach((key, value) -> values.add(ImmutablePair.of(key, value)));
             this.values = new RemoveOnlyArrayList<>(values);
         }
         
-        @Override
-        public IRegistry<V> getRegistry() {
-            return registry;
-        }
-        
         public List<ImmutablePair<RegistryKey, V>> getValues() {
             return values;
-        }
-        
-        @Override
-        public boolean isCancelled() {
-            return cancelled;
-        }
-        
-        @Override
-        public void setCancelled(boolean cancelled) {
-            this.cancelled = cancelled;
         }
     }
     
