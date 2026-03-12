@@ -6,8 +6,8 @@ import com.stardevllc.starlib.clock.clocks.Stopwatch;
 import com.stardevllc.starlib.clock.clocks.Timer;
 import com.stardevllc.starlib.clock.condition.ClockEndCondition;
 import com.stardevllc.starlib.clock.snapshot.ClockSnapshot;
-import com.stardevllc.starlib.observable.property.readwrite.*;
 import com.stardevllc.starlib.time.TimeUnit;
+import com.stardevllc.starlib.values.property.*;
 
 import java.util.*;
 
@@ -21,27 +21,27 @@ public abstract class Clock<T extends ClockSnapshot> {
     /**
      * The UUID of the clock
      */
-    protected final ReadWriteUUIDProperty uniqueId;
+    protected final UUIDProperty uniqueId;
     
     /**
      * The name of the clock
      */
-    protected final ReadWriteStringProperty name;
+    protected final StringProperty name;
     
     /**
      * The time value of the clock
      */
-    protected final ReadWriteLongProperty time;
+    protected final LongProperty time;
     
     /**
      * The paused status of the clock
      */
-    protected final ReadWriteBooleanProperty paused;
+    protected final BooleanProperty paused;
     
     /**
      * The cancelled status of the clock
      */
-    protected final ReadWriteBooleanProperty cancelled;
+    protected final BooleanProperty cancelled;
     
     /**
      * The callbacks assigned to the clock
@@ -67,7 +67,7 @@ public abstract class Clock<T extends ClockSnapshot> {
         TICKING, CREATED_SNAPSHOT, CALLED_BACK, COUNTED, UNPAUSED_DUE_TO_TIMES_DIFFERENT, PAUSED_DUE_TO_TIMES_SAME, CANCELLED_DUE_TO_END_CONDITION, UNDEFINED
     }
     
-    private final ReadWriteObjectProperty<CStatus> status;
+    private final ObjectProperty<CStatus> status;
     
     /**
      * Constructs a new Clock
@@ -89,16 +89,20 @@ public abstract class Clock<T extends ClockSnapshot> {
      * @param countAmount The amount that counts by each time that a tick happens
      */
     public Clock(UUID uuid, String name, long time, long countAmount) {
-        this.uniqueId = new ReadWriteUUIDProperty(this, "uniqueid", uuid);
-        this.name = new ReadWriteStringProperty(this, "name", name);
-        this.time = new ReadWriteLongProperty(this, "time", time);
-        this.paused = new ReadWriteBooleanProperty(this, "paused", true);
-        this.cancelled = new ReadWriteBooleanProperty(this, "cancelled", false);
+        this.uniqueId = new UUIDProperty(this, "uniqueid", uuid) {
+            public void set(UUID value) {}
+        };
+        this.name = new StringProperty(this, "name", name) {
+            public void set(String value) {}
+        };
+        this.time = new LongProperty(this, "time", time);
+        this.paused = new BooleanProperty(this, "paused", true);
+        this.cancelled = new BooleanProperty(this, "cancelled", false);
         this.countAmount = countAmount;
         
-        this.status = new ReadWriteObjectProperty<>(this, "status", Status.UNDEFINED);
+        this.status = new ObjectProperty<>(this, "status", Status.UNDEFINED);
         
-        this.time.addListener(c -> unpause());
+        this.time.addChangeListener((v, o, n) -> unpause());
     }
     
     /**
@@ -136,7 +140,7 @@ public abstract class Clock<T extends ClockSnapshot> {
         }
     }
     
-    public ReadWriteObjectProperty<CStatus> statusProperty() {
+    public ObjectProperty<CStatus> statusProperty() {
         return status;
     }
     
@@ -504,7 +508,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      *
      * @return The property instance
      */
-    public ReadWriteLongProperty timeProperty() {
+    public LongProperty timeProperty() {
         return this.time;
     }
     
@@ -513,7 +517,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      *
      * @return The property instance
      */
-    public ReadWriteBooleanProperty pausedProperty() {
+    public BooleanProperty pausedProperty() {
         return this.paused;
     }
     
@@ -522,7 +526,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      *
      * @return The property instance
      */
-    public ReadWriteBooleanProperty cancelledProperty() {
+    public BooleanProperty cancelledProperty() {
         return this.cancelled;
     }
     
@@ -531,7 +535,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      *
      * @return The property instance
      */
-    public ReadWriteUUIDProperty uuidProperty() {
+    public UUIDProperty uuidProperty() {
         return this.uniqueId;
     }
     
@@ -540,7 +544,7 @@ public abstract class Clock<T extends ClockSnapshot> {
      *
      * @return The property instance
      */
-    public ReadWriteStringProperty nameProperty() {
+    public StringProperty nameProperty() {
         return this.name;
     }
 }

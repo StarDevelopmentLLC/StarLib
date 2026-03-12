@@ -3,7 +3,7 @@ package com.stardevllc.starlib.repository;
 import com.stardevllc.starlib.event.EventDispatcher;
 import com.stardevllc.starlib.objects.id.ID;
 import com.stardevllc.starlib.tuple.ImmutablePair;
-import com.stardevllc.starlib.values.MutableLong;
+import com.stardevllc.starlib.values.mutable.MutableLong;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

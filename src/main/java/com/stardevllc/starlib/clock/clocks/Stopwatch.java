@@ -3,7 +3,7 @@ package com.stardevllc.starlib.clock.clocks;
 import com.stardevllc.starlib.clock.Clock;
 import com.stardevllc.starlib.clock.callback.CallbackHolder;
 import com.stardevllc.starlib.clock.snapshot.StopwatchSnapshot;
-import com.stardevllc.starlib.observable.property.readwrite.ReadWriteLongProperty;
+import com.stardevllc.starlib.values.property.LongProperty;
 
 import java.util.UUID;
 
@@ -14,12 +14,12 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
     /**
      * The time to end the stopwatch at
      */
-    protected final ReadWriteLongProperty endTime;
+    protected final LongProperty endTime;
     
     /**
      * The time to start the stopwatch et
      */
-    protected final ReadWriteLongProperty startTime;
+    protected final LongProperty startTime;
     
     /**
      * Constructs a new stopwatch
@@ -44,9 +44,9 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
      */
     public Stopwatch(UUID uuid, String name, long startTime, long endTime, long countAmount) {
         super(uuid, name, startTime, countAmount);
-        this.startTime = new ReadWriteLongProperty(this, "startTime", startTime);
-        this.endTime = new ReadWriteLongProperty(this, "endTime", endTime);
-        this.endTime.addListener(c -> unpause());
+        this.startTime = new LongProperty(this, "startTime", startTime);
+        this.endTime = new LongProperty(this, "endTime", endTime);
+        this.endTime.addChangeListener((v, o, n) -> unpause());
     }
     
     /**
@@ -132,7 +132,7 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
      *
      * @return The endtime property
      */
-    public ReadWriteLongProperty endTimeProperty() {
+    public LongProperty endTimeProperty() {
         return this.endTime;
     }
     
@@ -141,7 +141,7 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
      *
      * @return The start time property
      */
-    public ReadWriteLongProperty startTimeProperty() {
+    public LongProperty startTimeProperty() {
         return this.startTime;
     }
 }

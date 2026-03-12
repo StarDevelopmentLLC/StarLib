@@ -3,7 +3,7 @@ package com.stardevllc.starlib.clock.clocks;
 import com.stardevllc.starlib.clock.Clock;
 import com.stardevllc.starlib.clock.callback.CallbackHolder;
 import com.stardevllc.starlib.clock.snapshot.TimerSnapshot;
-import com.stardevllc.starlib.observable.property.readwrite.ReadWriteLongProperty;
+import com.stardevllc.starlib.values.property.LongProperty;
 
 import java.util.UUID;
 
@@ -15,7 +15,7 @@ public class Timer extends Clock<TimerSnapshot> {
     /**
      * The length of the timer, or start point
      */
-    protected final ReadWriteLongProperty lengthProperty;
+    protected final LongProperty lengthProperty;
     
     /**
      * Constructs a new timer
@@ -38,8 +38,8 @@ public class Timer extends Clock<TimerSnapshot> {
      */
     public Timer(UUID uuid, String name, long length, long countAmount) {
         super(uuid, name, length, countAmount);
-        this.lengthProperty = new ReadWriteLongProperty(this, "length", length);
-        this.lengthProperty.addListener(c -> unpause());
+        this.lengthProperty = new LongProperty(this, "length", length);
+        this.lengthProperty.addChangeListener((v, o, n) -> unpause());
     }
     
     @Override
@@ -164,7 +164,7 @@ public class Timer extends Clock<TimerSnapshot> {
      *
      * @return The length property
      */
-    public ReadWriteLongProperty lengthProperty() {
+    public LongProperty lengthProperty() {
         return this.lengthProperty;
     }
 }

@@ -1,6 +1,6 @@
 package com.stardevllc.starlib.objects;
 
-import com.stardevllc.starlib.values.MutableObject;
+import com.stardevllc.starlib.values.mutable.MutableObject;
 
 import java.util.Optional;
 import java.util.function.*;
