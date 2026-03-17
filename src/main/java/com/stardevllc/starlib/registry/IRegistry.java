@@ -23,6 +23,7 @@ import java.util.function.Function;
  *
  * @param <V> The Value Type
  */
+@SuppressWarnings("DuplicatedCode")
 public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     enum Flag {
         FREEZING, 
@@ -48,9 +49,9 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * An interface that represents an Event fired from a Registry
      */
     @FunctionalInterface
-    interface Event {
+    interface Event<V> {
         
-        IRegistry<?> getRegistry();
+        IRegistry<V> getRegistry();
         
         /**
          * Checks to see if the event has been cancelled. <br>
@@ -73,17 +74,17 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
         }
     }
     
-    abstract class AbstractEvent implements Event {
+    abstract class AbstractEvent<V> implements Event<V> {
         
-        private final IRegistry<?> registry;
+        private final IRegistry<V> registry;
         private boolean cancelled;
         
-        public AbstractEvent(IRegistry<?> registry) {
+        public AbstractEvent(IRegistry<V> registry) {
             this.registry = registry;
         }
         
         @Override
-        public IRegistry<?> getRegistry() {
+        public IRegistry<V> getRegistry() {
             return registry;
         }
         
@@ -128,7 +129,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @return The event dispatcher
      */
-    default @NotNull <E extends Event> EventDispatcher<E> getDispatcher() {
+    default @NotNull <E extends Event<V>> EventDispatcher<E> getDispatcher() {
         return (EventDispatcher<E>) EventDispatcher.NOOP;
     }
     
@@ -141,7 +142,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      */
     @FunctionalInterface
     @SubscribeEvent
-    interface Listener<E extends Event> {
+    interface Listener<V, E extends Event<V>> {
         /**
          * The functional method that takes in the event <br>
          *
@@ -156,7 +157,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param listener The listener instance
      * @param <E>      The event type
      */
-    default <E extends Event> void addListener(Listener<E> listener) {
+    default <E extends Event<V>> void addListener(Listener<V, E> listener) {
         getDispatcher().addListener(listener);
     }
     
@@ -254,21 +255,21 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     /**
      * This event is fired when the registry is frozen
      */
-    final class FreezeEvent extends AbstractEvent {
-        public FreezeEvent(IRegistry<?> registry) {
+    final class FreezeEvent<V> extends AbstractEvent<V> {
+        public FreezeEvent(IRegistry<V> registry) {
             super(registry);
         }
     }
     
     @FunctionalInterface
-    interface FreezeListener extends Listener<FreezeEvent> { }
+    interface FreezeListener<V> extends Listener<V, FreezeEvent<V>> { }
     
     /**
      * Type specific way to add a listener for the FreezeEvent that does not conflict with other methods
      *
      * @param listener The listener
      */
-    default void addFreezeListener(FreezeListener listener) {
+    default void addFreezeListener(FreezeListener<V> listener) {
         addListener(listener);
     }
     
@@ -295,21 +296,21 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     /**
      * This event is fired when the registry is unfrozen
      */
-    final class UnfreezeEvent extends AbstractEvent {
-        public UnfreezeEvent(IRegistry<?> registry) {
+    final class UnfreezeEvent<V> extends AbstractEvent<V> {
+        public UnfreezeEvent(IRegistry<V> registry) {
             super(registry);
         }
     }
     
     @FunctionalInterface
-    interface UnfreezeListener extends Listener<UnfreezeEvent> { }
+    interface UnfreezeListener<V> extends Listener<V, UnfreezeEvent<V>> { }
     
     /**
      * Type specific way to add a listener for the UnfreezeEvent that does not conflict with other methods
      *
      * @param listener The listener
      */
-    default void addUnfreezeListener(UnfreezeListener listener) {
+    default void addUnfreezeListener(UnfreezeListener<V> listener) {
         addListener(listener);
     }
     
@@ -390,7 +391,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @param <V> The valu type
      */
-    final class RegisterEvent<V> extends AbstractEvent {
+    final class RegisterEvent<V> extends AbstractEvent<V> {
         private final RegistryKey key;
         private final V value, oldValue;
         
@@ -415,7 +416,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     }
     
     @FunctionalInterface
-    interface RegisterListener<V> extends Listener<RegisterEvent<V>> {
+    interface RegisterListener<V> extends Listener<V, RegisterEvent<V>> {
     }
     
     /**
@@ -450,7 +451,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @param <V>
      */
-    final class RemoveEvent<V> extends AbstractEvent {
+    final class RemoveEvent<V> extends AbstractEvent<V> {
         private final RegistryKey key;
         private final V value;
         
@@ -470,7 +471,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     }
     
     @FunctionalInterface
-    interface RemoveListener<V> extends Listener<RemoveEvent<V>> {
+    interface RemoveListener<V> extends Listener<V, RemoveEvent<V>> {
     }
     
     /**
@@ -482,38 +483,26 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
         addListener(listener);
     }
     
-    //TODO Treat registerall like clear
-    
     /**
      * Registers all values in the map to this registry
      *
      * @param m The map
      */
     default void registerAll(Map<RegistryKey, ? extends V> m) {
-        if (m != null) {
-            m.forEach(this::register);
+        if (m == null) {
+            return;
         }
+        
+        RegisterAllEvent<V> event = getDispatcher().dispatch(new RegisterAllEvent<>(this, m));
+        event.getValues().forEach(entry -> register(entry.getLeft(), entry.getRight()));
     }
     
-    /**
-     * Clears this registry of the values
-     */
-    void clear();
-    
-    /**
-     * This event is fired before the clear happens and has a list of Pairings that will be removed <br>
-     * This List is modifiable and you can remove elements from it and the clear will only clear elements in the lisl <br>
-     * The list is a {@link RemoveOnlyArrayList} so only removals are allowed. You cannot add elements to the list, you will get an {@link UnsupportedOperationException}
-     *
-     * @param <V> The Value Type
-     */
-    final class ClearEvent<V> extends AbstractEvent {
+    final class RegisterAllEvent<V> extends AbstractEvent<V> {
         private final List<ImmutablePair<RegistryKey, V>> values;
-        
-        public ClearEvent(IRegistry<V> registry) {
+        public RegisterAllEvent(IRegistry<V> registry, Map<? extends RegistryKey, ? extends V> m) {
             super(registry);
             List<ImmutablePair<RegistryKey, V>> values = new ArrayList<>();
-            registry.forEach((key, value) -> values.add(ImmutablePair.of(key, value)));
+            m.forEach((key, value) -> values.add(ImmutablePair.of(key, value)));
             this.values = new RemoveOnlyArrayList<>(values);
         }
         
@@ -523,7 +512,42 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     }
     
     @FunctionalInterface
-    interface ClearListener<V> extends Listener<ClearEvent<V>> {
+    interface RegisterAllListener<V> extends Listener<V, RegisterAllEvent<V>> {
+    }
+    
+    /**
+     * Type specific way to add a listener for the RegisterAllEvent that does not conflict with other methods
+     *
+     * @param listener The listener
+     */
+    default void addRegisterALlListener(RegisterAllListener<V> listener) {
+        addListener(listener);
+    }
+    
+    /**
+     * Clears this registry of the values
+     */
+    void clear();
+    
+    /**
+     * This event is fired before the clear happens and has a list of Pairings that will be removed <br>
+     * This List is modifiable and you can remove elements from it and the clear will only clear elements in the list <br>
+     * The list is a {@link RemoveOnlyArrayList} so only removals are allowed. You cannot add elements to the list, you will get an {@link UnsupportedOperationException}
+     *
+     * @param <V> The Value Type
+     */
+    final class ClearEvent<V> extends AbstractEvent<V> {
+        private final List<ImmutablePair<RegistryKey, V>> values;
+        public ClearEvent(IRegistry<V> registry) {
+            super(registry);
+            List<ImmutablePair<RegistryKey, V>> values = new ArrayList<>();
+            registry.forEach((key, value) -> values.add(ImmutablePair.of(key, value)));
+            this.values = new RemoveOnlyArrayList<>(values);
+        }
+    }
+    
+    @FunctionalInterface
+    interface ClearListener<V> extends Listener<V, ClearEvent<V>> {
     }
     
     /**
@@ -582,6 +606,25 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param action The action to perform
      */
     void forEach(BiConsumer<RegistryKey, ? super V> action);
+    
+    /**
+     * Pretty much just {@link Map#computeIfAbsent(Object, Function)}
+     * @param key The Key
+     * @param mappingFunction The mapping function
+     * @return The value with the key if present, or the new value it wasn't
+     */
+    default V computeIfAbsent(RegistryKey key, Function<RegistryKey, ? extends V> mappingFunction) {
+        V v;
+        if ((v = get(key)) == null) {
+            V newValue;
+            if ((newValue = mappingFunction.apply(key)) != null) {
+                register(key, newValue);
+                return newValue;
+            }
+        }
+        
+        return v;
+    }
     
     /**
      * Registers the mapping if it doesn't already exist

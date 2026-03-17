@@ -6,7 +6,8 @@ import com.stardevllc.starlib.objects.Nameable;
 import com.stardevllc.starlib.objects.id.Identifiable;
 import com.stardevllc.starlib.time.TimeUnit;
 import com.stardevllc.starlib.tuple.ImmutablePair;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -144,8 +145,31 @@ public interface IRepository<K, V> extends Iterable<Map.Entry<K, V>>, Identifiab
     
     V remove(K key);
     
+    final class PutAllEvent<K, V> extends AbstractEvent {
+        private final List<ImmutablePair<K, V>> entries;
+        
+        public PutAllEvent(IRepository<K, V> repository, Map<? extends K, ? extends V> m) {
+            super(repository);
+            List<ImmutablePair<K, V>> list = new ArrayList<>();
+            m.forEach((k, v) -> list.add(ImmutablePair.of(k, v)));
+            entries = new RemoveOnlyArrayList<>(list);
+        }
+        
+        public List<ImmutablePair<K, V>> getEntries() {
+            return entries;
+        }
+    }
+    
+    @FunctionalInterface
+    interface PutAllListener<K, V> extends Listener<PutAllEvent<K, V>> {}
+    
+    default void addPutAllListener(PutAllListener<K, V> listener) {
+        addListener(listener);
+    }
+    
     default void putAll(@NotNull Map<? extends K, ? extends V> m) {
-        m.forEach(this::put);
+        PutAllEvent<K, V> event = getDispatcher().dispatch(new PutAllEvent<>(this, m));
+        event.getEntries().forEach(e -> put(e.getLeft(), e.getRight()));
     }
     
     final class ClearEvent<K, V> extends AbstractEvent {
@@ -201,6 +225,19 @@ public interface IRepository<K, V> extends Iterable<Map.Entry<K, V>>, Identifiab
         }
         
         return null;
+    }
+    
+    default V computeIfAbsent(K key, Function<K, ? extends V> mappingFunction) {
+        V v;
+        if ((v = get(key)) == null) {
+            V newValue;
+            if ((newValue = mappingFunction.apply(key)) != null) {
+                put(key, newValue);
+                return newValue;
+            }
+        }
+        
+        return v;
     }
     
     default boolean replace(K key, V oldValue, V newValue) {
