@@ -3,14 +3,13 @@ package com.stardevllc.starlib.event.bus;
 import com.stardevllc.starlib.event.EventDispatcher;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- * Represents a bus where events are passed to and listeners are used to react to those events
- *
- * @param <T> The event type
+ * This is a PubSub (Publish Subscribe) structure that allows listening for events to happen and publishing events to it
  */
-public interface IEventBus<T> extends EventDispatcher<T> {
+public interface IEventBus extends EventDispatcher {
     /**
      * Posts an event to the bus, calling listeners
      *
@@ -18,11 +17,11 @@ public interface IEventBus<T> extends EventDispatcher<T> {
      * @param <E>   The event type
      * @return The event
      */
-    <E extends T> E post(E event);
+    <E> E post(E event);
     
     @Override
     @NotNull
-    default <I extends T> I dispatch(I event) {
+    default <E> E dispatch(E event) {
         return post(event);
     }
     
@@ -48,33 +47,56 @@ public interface IEventBus<T> extends EventDispatcher<T> {
     boolean unsubscribe(Object object);
     
     /**
-     * The base event class
-     *
-     * @return The base event class
-     */
-    Class<T> getEventClass();
-    
-    /**
      * Clears all listeners in the bus
      */
-    void clearListeners();
+    default void clearListeners() {
+        
+    }
+    
+    /**
+     * A copy of the set of classes for all events supported by this event bus, this can be null or empty meaning it supports all classes
+     *
+     * @return A copy of the set of supported event classes
+     */
+    default Set<Class<?>> getEventClasses() {
+        return Set.of();
+    }
+    
+    /**
+     * Adds an event type to the supported set of events of this EventBus. This may do nothing depending on the implementation
+     *
+     * @param eventClass The class
+     * @param <E>        The event type
+     */
+    default <E> void addEventType(Class<E> eventClass) {
+        
+    }
     
     /**
      * Adds a child bus to this one. The child's post method is called after this listeners are handled
      *
      * @param childBus The child bus
      */
-    default void addChildBus(IEventBus<?> childBus) {
+    default void addChildBus(IEventBus childBus) {
         
+    }
+    
+    /**
+     * This set is a set of the classes that are cancellable that is supported by this event bus
+     *
+     * @return The set of cancellable classes
+     */
+    default Set<Class<?>> getCancellableClasses() {
+        return Set.of();
     }
     
     /**
      * Sets the handler used to check to see if an event is cancelled
      *
      * @param cancellableClass The class used as the marker of a cancellable event
-     * @param mapper           The mapper that maps an event instance to check
+     * @param predicate        The predicate that checks an event instance to check
      */
-    default <C> void addCancelHandler(Class<C> cancellableClass, Predicate<C> mapper) {
+    default <C> void addCancelHandler(Class<C> cancellableClass, Predicate<C> predicate) {
         
     }
 }

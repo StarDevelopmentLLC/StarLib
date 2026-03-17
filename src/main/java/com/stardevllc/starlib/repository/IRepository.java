@@ -305,9 +305,9 @@ public interface IRepository<K, V> extends Iterable<Map.Entry<K, V>>, Identifiab
         getDispatcher().addListener(listener);
     }
     
-    <E extends Event> @NotNull EventDispatcher<E> getDispatcher();
+    @NotNull EventDispatcher getDispatcher();
     
-    default <E extends Event> void setDispatcher(@NotNull EventDispatcher<E> dispatcher) {
+    default void setDispatcher(@NotNull EventDispatcher dispatcher) {
         
     }
     

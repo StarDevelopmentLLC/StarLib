@@ -15,11 +15,11 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     private final Map<RegistryKey, V> backingMap;
     
     private boolean frozen;
-    private EventDispatcher<?> dispatcher;
+    private EventDispatcher dispatcher;
     
     private final Set<Flag> flags;
     
-    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, boolean frozen, EventDispatcher<?> dispatcher, Set<Flag> flags) {
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, boolean frozen, EventDispatcher dispatcher, Set<Flag> flags) {
         this.valueType = valueType;
         this.id = id;
         this.name = name;
@@ -28,7 +28,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         if (dispatcher != null) {
             this.dispatcher = dispatcher;
         } else {
-            this.dispatcher = new Dispatcher();
+            this.dispatcher = new Dispatcher<>();
         }
         if (flags != null) {
             this.flags = EnumSet.copyOf(flags);
@@ -83,13 +83,13 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     }
     
     @Override
-    public final void setDispatcher(EventDispatcher<?> dispatcher) {
+    public final void setDispatcher(EventDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
     
     @Override
-    public final @NotNull <E extends Event> EventDispatcher<E> getDispatcher() {
-        return (EventDispatcher<E>) (dispatcher != null ? dispatcher : (EventDispatcher<E>) EventDispatcher.NOOP);
+    public final @NotNull EventDispatcher getDispatcher() {
+        return dispatcher != null ? dispatcher : EventDispatcher.NOOP;
     }
     
     @Override
@@ -117,7 +117,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
             return FreezeResult.ALREADY_FROZEN;
         }
         
-        FreezeEvent e = getDispatcher().dispatch(new FreezeEvent(this));
+        FreezeEvent<V> e = getDispatcher().dispatch(new FreezeEvent<>(this));
         if (e.isCancelled()) {
             return FreezeResult.EVENT_CANCELLED;
         }
@@ -136,7 +136,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
             return UnfreezeResult.NOT_FROZEN;
         }
         
-        UnfreezeEvent e = getDispatcher().dispatch(new UnfreezeEvent(this));
+        UnfreezeEvent<V> e = getDispatcher().dispatch(new UnfreezeEvent<>(this));
         if (e.isCancelled()) {
             return UnfreezeResult.EVENT_CANCELLED;
         }
@@ -292,20 +292,20 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         return values().iterator();
     }
     
-    private static class Dispatcher implements EventDispatcher<IRegistry.Event> {
+    private static class Dispatcher<V> implements EventDispatcher {
         
-        private final List<Listener<Event>> listeners = new ArrayList<>();
+        private final List<Listener<V, Event<V>>> listeners = new ArrayList<>();
         
         @Override
-        public @NotNull <I extends Event> I dispatch(I event) {
-            this.listeners.forEach(l -> l.onEvent(event));
+        public @NotNull <E> E dispatch(E event) {
+            this.listeners.forEach(l -> l.onEvent((Event<V>) event));
             return event;
         }
         
         @Override
         public void addListener(Object listener) {
-            if (listener instanceof IRegistry.Listener<?> l) {
-                listeners.add((Listener<Event>) l);
+            if (listener instanceof IRegistry.Listener<?, ?> l) {
+                listeners.add((Listener<V, Event<V>>) l);
             }
         }
     }

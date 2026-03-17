@@ -4,19 +4,17 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * This is meant to be a common interface for dispatching events to different systems.
- *
- * @param <E> The event type
  */
 @FunctionalInterface
-public interface EventDispatcher<E> {
-    EventDispatcher<?> NOOP = new EventDispatcher<>() {
+public interface EventDispatcher {
+    EventDispatcher NOOP = new EventDispatcher() {
         @Override
-        public <I> I dispatch(I event) {
+        public <E> E dispatch(E event) {
             return event;
         }
     };
     
-    <I extends E> @NotNull I dispatch(I event);
+    <E> @NotNull E dispatch(E event);
     
     default void addListener(Object listener) {
         

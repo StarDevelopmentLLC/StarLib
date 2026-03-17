@@ -1,20 +1,15 @@
-package com.stardevllc.starlib.event.bus.impl;
+package com.stardevllc.starlib.event.bus;
 
-import com.stardevllc.starlib.event.bus.*;
 import com.stardevllc.starlib.reflection.ReflectionHelper;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.function.Predicate;
 
 /**
- * This is a complete implementation of {@link IEventBus} <br>
- * It is not required that this implementation is used and mainly an example and for code reuse among StarDevLLC Projects
- *
- * @param <T> The event type
+ * Represents an Event Bus that uses reflection
  */
-public class StarEventBus<T> implements IEventBus<T> {
+public class ReflectionEventBus implements IEventBus {
     private static final Set<String> objectMethods = new HashSet<>();
     
     static {
@@ -23,62 +18,41 @@ public class StarEventBus<T> implements IEventBus<T> {
         }
     }
     
-    /**
-     * The base class  for the event type
-     */
-    protected final Class<T> eventClass;
+    protected final Set<Class<?>> eventTypes = new HashSet<>();
+    protected final Set<IEventBus> childBusses = new HashSet<>();
+    protected final Map<Class<?>, Predicate<?>> cancelHandlers = new HashMap<>();
+    protected final Set<EventHandler> handlers = new TreeSet<>();
     
-    /**
-     * All registered listeners of this bus
-     */
-    private final Set<EventHandler<T>> handlers = new TreeSet<>();
-    
-    /**
-     * All child busses to this event bus
-     */
-    private final List<IEventBus<?>> childBusses = new ArrayList<>();
-    
-    protected Map<Class<?>, Predicate<?>> cancelMappers = new HashMap<>();
-    
-    /**
-     * Constructs a simple event bus that detects the event type (Might not work depending on context)
-     */
-    public StarEventBus() {
-        this((Class<T>) StarEventBus.class.getTypeParameters()[0].getBounds()[0]);
+    public ReflectionEventBus() {
     }
     
-    /**
-     * Constructs a simple event bus with a specified event class
-     *
-     * @param eventClass The event class
-     */
-    public StarEventBus(Class<T> eventClass) {
-        this.eventClass = eventClass;
+    public ReflectionEventBus(Class<?> eventType) {
+        this.eventTypes.add(eventType);
+    }
+    
+    public ReflectionEventBus(Collection<Class<?>> eventTypes) {
+        if (eventTypes != null) {
+            this.eventTypes.addAll(eventTypes);
+        }
+    }
+    
+    public ReflectionEventBus(Class<?>... eventTypes) {
+        if (eventTypes != null) {
+            this.eventTypes.addAll(List.of(eventTypes));
+        }
     }
     
     @Override
-    public void clearListeners() {
-        this.handlers.clear();
-    }
-    
-    @Override
-    public <E extends T> E post(E event) {
-        for (EventHandler<T> listener : handlers) {
+    public <E> E post(E event) {
+        for (EventHandler listener : handlers) {
             listener.handleEvent(event);
         }
         
-        for (IEventBus<?> cb : childBusses) {
-            if (cb.getEventClass().isAssignableFrom(getEventClass())) {
-                ((IEventBus<T>) cb).post(event);
-            }
+        for (IEventBus cb : childBusses) {
+            cb.post(event);
         }
         
         return event;
-    }
-    
-    @Override
-    public <C> void addCancelHandler(Class<C> cancellableClass, Predicate<C> mapper) {
-        this.cancelMappers.put(cancellableClass, mapper);
     }
     
     @Override
@@ -102,25 +76,36 @@ public class StarEventBus<T> implements IEventBus<T> {
                 continue;
             }
             
-            Class<? extends T> eventClass;
-            if (this.eventClass.isAssignableFrom(method.getParameterTypes()[0])) {
-                eventClass = (Class<? extends T>) method.getParameterTypes()[0];
+            //Check to see if the parameter is valid for this event bus
+            Class<?> parameterType = method.getParameterTypes()[0];
+            boolean valid = false;
+            if (this.eventTypes.isEmpty() || this.eventTypes.contains(Object.class)) {
+                valid = true;
             } else {
-                continue;
+                for (Class<?> eventType : this.eventTypes) {
+                    if (eventType.isAssignableFrom(parameterType)) {
+                        valid = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (!valid) {
+                return false;
             }
             
             method.setAccessible(true);
             
-            EventHandler<T> eventListener = new EventHandler<>(
-                    this, listener, eventClass, method,
+            EventHandler eventListener = new EventHandler(
+                    this, listener, parameterType, method,
                     methodAnnotation != null ? methodAnnotation.priority() : defaultPriority,
                     methodAnnotation != null ? methodAnnotation.ignoreCancelled() : defaultIgnoreCancelled
             );
             
-            this.handlers.add(eventListener);
+            return this.handlers.add(eventListener);
         }
         
-        return !handlers.isEmpty();
+        return false;
     }
     
     @Override
@@ -129,34 +114,45 @@ public class StarEventBus<T> implements IEventBus<T> {
     }
     
     @Override
-    public void addChildBus(IEventBus<?> childBus) {
+    public void clearListeners() {
+        this.handlers.clear();
+    }
+    
+    @Override
+    public Set<Class<?>> getEventClasses() {
+        return new HashSet<>(eventTypes);
+    }
+    
+    @Override
+    public <E> void addEventType(Class<E> eventClass) {
+        eventTypes.add(eventClass);
+    }
+    
+    @Override
+    public void addChildBus(IEventBus childBus) {
         this.childBusses.add(childBus);
     }
     
     @Override
-    public Class<T> getEventClass() {
-        return eventClass;
+    public <C> void addCancelHandler(Class<C> cancellableClass, Predicate<C> predicate) {
+        this.cancelHandlers.put(cancellableClass, predicate);
     }
     
-    /**
-     * Returns a copy of the handlers set
-     *
-     * @return The handlers registered to this event bus
-     */
-    public Set<EventHandler<T>> getHandlers() {
-        return new TreeSet<>(handlers);
+    @Override
+    public Set<Class<?>> getCancellableClasses() {
+        return new HashSet<>(cancelHandlers.keySet());
     }
     
     //Class to handle events for each of the methods.
-    public static class EventHandler<E> implements Comparable<EventHandler<?>> {
-        private final StarEventBus<E> bus;
+    public static class EventHandler implements Comparable<EventHandler> {
+        private final ReflectionEventBus bus;
         private final Object listener;
-        private final Class<? extends E> eventClass;
+        private final Class<?> eventClass;
         private final Method method;
         private final EventPriority priority;
         private final boolean ignoreCancelled;
         
-        public EventHandler(StarEventBus<E> bus, Object listener, Class<? extends E> eventClass, Method method, EventPriority priority, boolean ignoreCancelled) {
+        public EventHandler(ReflectionEventBus bus, Object listener, Class<?> eventClass, Method method, EventPriority priority, boolean ignoreCancelled) {
             this.bus = bus;
             this.listener = listener;
             this.eventClass = eventClass;
@@ -167,8 +163,8 @@ public class StarEventBus<T> implements IEventBus<T> {
         
         public void handleEvent(Object event) {
             boolean cancelled = false;
-            if (!bus.cancelMappers.isEmpty()) {
-                for (Entry<Class<?>, Predicate<?>> entry : bus.cancelMappers.entrySet()) {
+            if (!bus.cancelHandlers.isEmpty()) {
+                for (Map.Entry<Class<?>, Predicate<?>> entry : bus.cancelHandlers.entrySet()) {
                     try {
                         Class<?> clazz = entry.getKey();
                         Predicate<Object> condition = (Predicate<Object>) entry.getValue();
@@ -178,7 +174,8 @@ public class StarEventBus<T> implements IEventBus<T> {
                                 break;
                             }
                         }
-                    } catch (Throwable t) {}
+                    } catch (Throwable t) {
+                    }
                 }
             }
             
@@ -200,7 +197,7 @@ public class StarEventBus<T> implements IEventBus<T> {
                 return false;
             }
             
-            EventHandler<?> that = (EventHandler<?>) object;
+            EventHandler that = (EventHandler) object;
             return Objects.equals(listener, that.listener) && Objects.equals(eventClass, that.eventClass) && Objects.equals(method, that.method);
         }
         
@@ -214,7 +211,7 @@ public class StarEventBus<T> implements IEventBus<T> {
         
         @SuppressWarnings("ComparatorMethodParameterNotUsed")
         @Override
-        public int compareTo(EventHandler<?> o) {
+        public int compareTo(EventHandler o) {
             if (o == null) {
                 return 1;
             }

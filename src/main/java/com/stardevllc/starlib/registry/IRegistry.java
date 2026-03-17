@@ -120,7 +120,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @param dispatcher The dispatcher
      */
-    default void setDispatcher(@NotNull EventDispatcher<?> dispatcher) {
+    default void setDispatcher(@NotNull EventDispatcher dispatcher) {
         //No-Op, must provide an implementation
     }
     
@@ -129,8 +129,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @return The event dispatcher
      */
-    default @NotNull <E extends Event<V>> EventDispatcher<E> getDispatcher() {
-        return (EventDispatcher<E>) EventDispatcher.NOOP;
+    default @NotNull <E extends Event<V>> EventDispatcher getDispatcher() {
+        return EventDispatcher.NOOP;
     }
     
     /**
@@ -543,6 +543,10 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
             List<ImmutablePair<RegistryKey, V>> values = new ArrayList<>();
             registry.forEach((key, value) -> values.add(ImmutablePair.of(key, value)));
             this.values = new RemoveOnlyArrayList<>(values);
+        }
+        
+        public List<ImmutablePair<RegistryKey, V>> getValues() {
+            return values;
         }
     }
     

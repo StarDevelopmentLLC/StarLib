@@ -28,7 +28,7 @@ public final class Registries {
         private Supplier<Map<RegistryKey, V>> mapSupplier;
         private RegistryKey id;
         private String name;
-        private EventDispatcher<?> dispatcher;
+        private EventDispatcher dispatcher;
         private Set<IRegistry.Flag> flags = EnumSet.noneOf(IRegistry.Flag.class);
         private boolean global;
         
@@ -51,7 +51,7 @@ public final class Registries {
             return this;
         }
         
-        public RegistryBuilder<V> withDispatcher(EventDispatcher<?> dispatcher) {
+        public RegistryBuilder<V> withDispatcher(EventDispatcher dispatcher) {
             this.dispatcher = dispatcher;
             return this;
         }

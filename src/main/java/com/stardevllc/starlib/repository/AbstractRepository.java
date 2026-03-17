@@ -21,7 +21,7 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     private final Map<K, V> backingMap;
     
     private Function<K, V> fetcher;
-    private EventDispatcher<Event> dispatcher;
+    private EventDispatcher dispatcher;
     
     private long timeout;
     
@@ -29,7 +29,7 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     
     private TaskSubmitter taskSubmitter;
     
-    public AbstractRepository(Class<K> keyType, Class<V> valueType, Map<K, V> backingMap, ID id, String name, Function<K, V> fetcher, EventDispatcher<Event> dispatcher, long timeout, TaskSubmitter taskSubmitter) {
+    public AbstractRepository(Class<K> keyType, Class<V> valueType, Map<K, V> backingMap, ID id, String name, Function<K, V> fetcher, EventDispatcher dispatcher, long timeout, TaskSubmitter taskSubmitter) {
         this.keyType = keyType;
         this.valueType = valueType;
         this.backingMap = backingMap;
@@ -85,8 +85,8 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     }
     
     @Override
-    public final <E extends Event> void setDispatcher(@NotNull EventDispatcher<E> dispatcher) {
-        this.dispatcher = (EventDispatcher<Event>) dispatcher;
+    public final void setDispatcher(@NotNull EventDispatcher dispatcher) {
+        this.dispatcher = dispatcher;
     }
     
     @Override
@@ -208,17 +208,17 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     }
     
     @Override
-    public final @NotNull <E extends Event> EventDispatcher<E> getDispatcher() {
-        return (EventDispatcher<E>) this.dispatcher;
+    public final @NotNull EventDispatcher getDispatcher() {
+        return this.dispatcher;
     }
     
-    private static class Dispatcher implements EventDispatcher<IRepository.Event> {
+    private static class Dispatcher implements EventDispatcher {
         
         private final List<Listener<Event>> listeners = new ArrayList<>();
         
         @Override
-        public @NotNull <I extends Event> I dispatch(I event) {
-            listeners.forEach(listener -> listener.onEvent(event));
+        public @NotNull <I> I dispatch(I event) {
+            listeners.forEach(listener -> listener.onEvent((Event) event));
             return event;
         }
         

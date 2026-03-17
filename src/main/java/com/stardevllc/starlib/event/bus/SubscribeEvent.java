@@ -1,11 +1,9 @@
 package com.stardevllc.starlib.event.bus;
 
-import com.stardevllc.starlib.event.bus.impl.StarEventBus;
-
 import java.lang.annotation.*;
 
 /**
- * Marker annotation for a {@link StarEventBus}. Not required if using a custom event bus
+ * Marker annotation for a {@link ReflectionEventBus}. Not required if using a custom event bus
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -30,7 +30,7 @@ public final class Repositories {
         private String name;
         private ID id;
         private Supplier<Map<K, V>> mapSupplier;
-        private EventDispatcher<IRepository.Event> dispatcher;
+        private EventDispatcher dispatcher;
         private IRepository.TaskSubmitter taskSubmitter;
         private long timeout;
         private Function<K, V> valueFetcher;
@@ -66,7 +66,7 @@ public final class Repositories {
             return this;
         }
         
-        public RepositoryBuilder<K, V> withDispatcher(EventDispatcher<IRepository.Event> dispatcher) {
+        public RepositoryBuilder<K, V> withDispatcher(EventDispatcher dispatcher) {
             this.dispatcher = dispatcher;
             return this;
         }
