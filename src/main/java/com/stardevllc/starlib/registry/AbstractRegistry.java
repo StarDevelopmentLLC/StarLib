@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.registry;
 
 import com.stardevllc.starlib.event.EventDispatcher;
-import com.stardevllc.starlib.tuple.ImmutablePair;
+import com.stardevllc.starlib.tuple.pair.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.tuple;
+package com.stardevllc.starlib.tuple.either;
 
 @SuppressWarnings("ClassCanBeRecord")
 public final class ImmutableEither<L, R> implements Either<L, R> {

@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.generator;
 
-import com.stardevllc.starlib.tuple.ImmutablePair;
-import com.stardevllc.starlib.tuple.Pair;
+import com.stardevllc.starlib.tuple.pair.ImmutablePair;
+import com.stardevllc.starlib.tuple.pair.Pair;
 
 import java.util.*;
 import java.util.function.*;

@@ -5,7 +5,7 @@ import com.stardevllc.starlib.event.EventDispatcher;
 import com.stardevllc.starlib.objects.Nameable;
 import com.stardevllc.starlib.objects.id.Identifiable;
 import com.stardevllc.starlib.time.TimeUnit;
-import com.stardevllc.starlib.tuple.ImmutablePair;
+import com.stardevllc.starlib.tuple.pair.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

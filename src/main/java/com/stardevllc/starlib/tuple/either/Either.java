@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.tuple;
+package com.stardevllc.starlib.tuple.either;
 
 import java.util.function.Consumer;
 

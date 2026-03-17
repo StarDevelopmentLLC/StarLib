@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.tuple;
+package com.stardevllc.starlib.tuple.either;
 
 public class MutableEither<L, R> implements Either<L, R> {
     

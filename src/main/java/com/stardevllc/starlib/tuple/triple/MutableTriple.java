@@ -1,4 +1,4 @@
-package com.stardevllc.starlib.tuple;
+package com.stardevllc.starlib.tuple.triple;
 
 public class MutableTriple<L, M, R> implements Triple<L, M, R> {
     
