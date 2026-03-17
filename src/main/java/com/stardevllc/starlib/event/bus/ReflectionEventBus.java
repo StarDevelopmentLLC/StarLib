@@ -42,16 +42,22 @@ public class ReflectionEventBus implements IEventBus {
         }
     }
     
-    @Override
-    public <E> E post(E event) {
+    protected void callListeners(Object event) {
         for (EventHandler listener : handlers) {
             listener.handleEvent(event);
         }
-        
+    }
+    
+    protected void handleChildBusses(Object event) {
         for (IEventBus cb : childBusses) {
             cb.post(event);
         }
-        
+    }
+    
+    @Override
+    public <E> E post(E event) {
+        callListeners(event);
+        handleChildBusses(event);
         return event;
     }
     
