@@ -110,6 +110,12 @@ public abstract class AbstractProperty<T> implements Property<T> {
         if (this.valid) {
             this.valid = false;
             fireInvalidationListeners();
+            if (this.boundValue != null) {
+                this.boundValue.removeChangeListener(this.boundChangeListener);
+            }
+            
+            this.boundValue = null;
+            this.boundChangeListener = null;
         }
     }
     
