@@ -17,7 +17,7 @@ public class ObjectProperty<T> extends AbstractProperty<T> {
         this.value = value;
     }
     
-    public ObjectProperty(Object bean, Class<T> typeClass, String name) {
+    public ObjectProperty(Object bean, String name, Class<T> typeClass) {
         super(bean, typeClass, name);
     }
     
