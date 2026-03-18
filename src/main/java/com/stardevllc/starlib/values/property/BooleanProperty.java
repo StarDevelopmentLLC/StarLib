@@ -10,6 +10,7 @@ public class BooleanProperty extends AbstractProperty<Boolean> {
     
     public BooleanProperty(boolean value) {
         super(boolean.class);
+        this.value = value;
     }
     
     public BooleanProperty(Object bean, String name) {
