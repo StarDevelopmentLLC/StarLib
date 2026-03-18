@@ -32,7 +32,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         } else {
             this.dispatcher = new Dispatcher<>();
         }
-        if (flags != null) {
+        if (flags != null && !flags.isEmpty()) {
             this.flags = EnumSet.copyOf(flags);
         } else {
             this.flags = EnumSet.noneOf(Flag.class);
