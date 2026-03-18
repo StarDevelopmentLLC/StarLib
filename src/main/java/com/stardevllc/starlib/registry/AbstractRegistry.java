@@ -279,52 +279,12 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     @Override
     public final Set<RegistryKey> keySet() {
-        return new AbstractSet<>() {
-            @Override
-            public Iterator<RegistryKey> iterator() {
-                return new Iterator<>() {
-                    @Override
-                    public boolean hasNext() {
-                        return AbstractRegistry.this.backingMap.keySet().iterator().hasNext();
-                    }
-                    
-                    @Override
-                    public RegistryKey next() {
-                        return AbstractRegistry.this.backingMap.keySet().iterator().next();
-                    }
-                };
-            }
-            
-            @Override
-            public int size() {
-                return AbstractRegistry.this.size();
-            }
-        };
+        return Collections.unmodifiableSet(this.backingMap.keySet());
     }
     
     @Override
     public final Collection<V> values() {
-        return new AbstractCollection<>() {
-            @Override
-            public Iterator<V> iterator() {
-                return new Iterator<>() {
-                    @Override
-                    public boolean hasNext() {
-                        return AbstractRegistry.this.backingMap.values().iterator().hasNext();
-                    }
-                    
-                    @Override
-                    public V next() {
-                        return AbstractRegistry.this.backingMap.values().iterator().next();
-                    }
-                };
-            }
-            
-            @Override
-            public int size() {
-                return AbstractRegistry.this.size();
-            }
-        };
+        return Collections.unmodifiableCollection(this.backingMap.values());
     }
     
     @Override
