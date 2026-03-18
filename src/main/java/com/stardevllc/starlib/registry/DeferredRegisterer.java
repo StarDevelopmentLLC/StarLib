@@ -3,18 +3,10 @@ package com.stardevllc.starlib.registry;
 import java.util.*;
 import java.util.function.Supplier;
 
-public final class DeferredRegisterer<V> {
+public class DeferredRegisterer<V> {
     
     public static <V> DeferredRegisterer<V> create(IRegistry<V> registry) {
         return new DeferredRegisterer<>(registry);
-    }
-    
-    public static <V> DeferredRegisterer<V> clone(IRegistry<V> registry, DeferredRegisterer<V> registerer) {
-        return new DeferredRegisterer<>(registry, registerer);
-    }
-    
-    public static <V> DeferredRegisterer<V> clone(DeferredRegisterer<V> registerer) {
-        return new DeferredRegisterer<>(registerer.registry, registerer);
     }
     
     private final IRegistry<V> registry;

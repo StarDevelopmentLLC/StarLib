@@ -2,14 +2,13 @@ package com.stardevllc.starlib.registry;
 
 import java.util.*;
 
-public final class Registerer<V> {
+public class Registerer<V> {
     
     public static <V> Registerer<V> create(IRegistry<V> registry) {
         return new Registerer<>(registry);
     }
     
     private final IRegistry<V> registry;
-    
     private final Map<RegistryKey, RegistryObject<V>> entries = new HashMap<>();
     
     private Registerer(IRegistry<V> registry) {
