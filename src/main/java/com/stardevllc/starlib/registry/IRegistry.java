@@ -25,24 +25,32 @@ import java.util.function.Function;
  */
 @SuppressWarnings("DuplicatedCode")
 public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
+    
+    /**
+     * Different flags that change the behavior of the registry
+     */
     enum Flag {
-        FREEZING, 
-        UNFREEZING, 
-        REPLACING;
         
-        private final Flag[] parentFlags;
+        /**
+         * Freezing means that the registry does not accept new values <br>
+         * This flag being present doesn't mean that the registry is frozen, just that the freeze() method will work
+         */
+        FREEZING,
         
-        Flag() {
-            parentFlags = null;
-        }
+        /**
+         * Unfreezing means that the registry can be unfrozen by calling the method
+         */
+        UNFREEZING,
         
-        Flag(Flag... parentFlags) {
-            this.parentFlags = parentFlags;
-        }
+        /**
+         * This flag being present means that values can be replaced within the registry
+         */
+        REPLACING,
         
-        public Flag[] getParentFlags() {
-            return parentFlags;
-        }
+        /**
+         * This flag being present means that the bulk clear action can be performed
+         */
+        CLEARING
     }
     
     /**
@@ -51,6 +59,11 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     @FunctionalInterface
     interface Event<V> {
         
+        /**
+         * The registry associated with the event
+         *
+         * @return The registry
+         */
         IRegistry<V> getRegistry();
         
         /**
@@ -74,6 +87,11 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
         }
     }
     
+    /**
+     * A parent abstract event class to make the event definitions a bit smaller and compact
+     *
+     * @param <V> The value type
+     */
     abstract class AbstractEvent<V> implements Event<V> {
         
         private final IRegistry<V> registry;
@@ -99,11 +117,19 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
         }
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default @NotNull RegistryKey getId() {
         return RegistryKey.EMPTY;
     }
     
+    /**
+     * The class type of the values of this Registry
+     *
+     * @return The class of the values
+     */
     Class<V> getValueType();
     
     /**
@@ -125,7 +151,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     }
     
     /**
-     * Gets the EventDispatcher to use for calling events
+     * Gets the EventDispatcher to use for calling events <br>
+     * By default it is the NOOP dispatcher meaning it does nothing
      *
      * @return The event dispatcher
      */
@@ -226,11 +253,23 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     }
     
     /**
+     * Having a parent registry allows for registering things into the parent when one is registered in this registry. <br>
+     * Implementations that do not support the parent registry contract above should return null, not overriding this method works as it returns null by default
+     *
+     * @return The parent registry or null
+     */
+    default IRegistry<? super V> getParentRegistry() {
+        return null;
+    }
+    
+    /**
      * Checks to see if this registry is frozen
      *
      * @return The frozen status
      */
-    boolean isFrozen();
+    default boolean isFrozen() {
+        return false;
+    }
     
     /**
      * Returns if this Registry supports being frozen, false by default
@@ -248,9 +287,11 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     /**
      * Freezes the registry so that no new objects can be registered
      *
-     * @return If the change was successful. True only happens if the event was not cancelled, and if it was not frozen already
+     * @return If the freeze was successful. True only happens if the event was not cancelled, and if it was not frozen already
      */
-    FreezeResult freeze();
+    default FreezeResult freeze() {
+        return FreezeResult.UNSUPPORTED;
+    }
     
     /**
      * This event is fired when the registry is frozen
@@ -262,7 +303,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     }
     
     @FunctionalInterface
-    interface FreezeListener<V> extends Listener<V, FreezeEvent<V>> { }
+    interface FreezeListener<V> extends Listener<V, FreezeEvent<V>> {
+    }
     
     /**
      * Type specific way to add a listener for the FreezeEvent that does not conflict with other methods
@@ -291,7 +333,9 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @return If the change was successful. This only happens if the event is not cancelled, and if the registry was frozen already
      */
-    UnfreezeResult unfreeze();
+    default UnfreezeResult unfreeze() {
+        return UnfreezeResult.UNSUPPORTED;
+    }
     
     /**
      * This event is fired when the registry is unfrozen
@@ -303,7 +347,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     }
     
     @FunctionalInterface
-    interface UnfreezeListener<V> extends Listener<V, UnfreezeEvent<V>> { }
+    interface UnfreezeListener<V> extends Listener<V, UnfreezeEvent<V>> {
+    }
     
     /**
      * Type specific way to add a listener for the UnfreezeEvent that does not conflict with other methods
@@ -499,6 +544,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     
     final class RegisterAllEvent<V> extends AbstractEvent<V> {
         private final List<ImmutablePair<RegistryKey, V>> values;
+        
         public RegisterAllEvent(IRegistry<V> registry, Map<? extends RegistryKey, ? extends V> m) {
             super(registry);
             List<ImmutablePair<RegistryKey, V>> values = new ArrayList<>();
@@ -538,6 +584,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      */
     final class ClearEvent<V> extends AbstractEvent<V> {
         private final List<ImmutablePair<RegistryKey, V>> values;
+        
         public ClearEvent(IRegistry<V> registry) {
             super(registry);
             List<ImmutablePair<RegistryKey, V>> values = new ArrayList<>();
@@ -613,7 +660,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     
     /**
      * Pretty much just {@link Map#computeIfAbsent(Object, Function)}
-     * @param key The Key
+     *
+     * @param key             The Key
      * @param mappingFunction The mapping function
      * @return The value with the key if present, or the new value it wasn't
      */

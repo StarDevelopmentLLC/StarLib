@@ -26,6 +26,7 @@ public final class Registries {
     public static class RegistryBuilder<V> {
         private final Class<V> valueType;
         private Supplier<Map<RegistryKey, V>> mapSupplier;
+        private IRegistry<? super V> parentRegistry;
         private RegistryKey id;
         private String name;
         private EventDispatcher dispatcher;
@@ -79,6 +80,11 @@ public final class Registries {
             return this;
         }
         
+        public RegistryBuilder<V> withParent(IRegistry<? super V> parent) {
+            this.parentRegistry = parent;
+            return this;
+        }
+        
         public IRegistry<V> build() {
             if (id == null && name != null) {
                 this.id = RegistryKey.of(name);
@@ -95,7 +101,7 @@ public final class Registries {
                 throw new IllegalStateException("Map Supplier cannot return a null map");
             }
             
-            IRegistry<V> registry = new AbstractRegistry<>(valueType, id, name, backingMap, false, dispatcher, this.flags) {};
+            IRegistry<V> registry = new AbstractRegistry<>(valueType, id, name, backingMap, parentRegistry, false, dispatcher, this.flags) {};
             
             if (global) {
                 if (id != null && id.isNotEmpty()) {

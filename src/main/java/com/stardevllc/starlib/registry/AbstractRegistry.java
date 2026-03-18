@@ -13,17 +13,19 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     private final RegistryKey id;
     private final String name;
     private final Map<RegistryKey, V> backingMap;
+    private final IRegistry<? super V> parentRegistry;
     
     private boolean frozen;
     private EventDispatcher dispatcher;
     
     private final Set<Flag> flags;
     
-    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, boolean frozen, EventDispatcher dispatcher, Set<Flag> flags) {
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, IRegistry<? super V> parentRegistry, boolean frozen, EventDispatcher dispatcher, Set<Flag> flags) {
         this.valueType = valueType;
         this.id = id;
         this.name = name;
         this.backingMap = backingMap;
+        this.parentRegistry = parentRegistry;
         this.frozen = frozen;
         if (dispatcher != null) {
             this.dispatcher = dispatcher;
@@ -37,8 +39,12 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         }
     }
     
-    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, Flag... flags) {
-        this(valueType, id, name, backingMap, false, null, ofFlagSet(flags));
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, Flag[] flags) {
+        this(valueType, id, name, backingMap, null, false, null, ofFlagSet(flags));
+    }
+    
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, IRegistry<? super V> parentRegistry, Flag[] flags) {
+        this(valueType, id, name, backingMap, parentRegistry, false, null, ofFlagSet(flags));
     }
     
     private static Set<Flag> ofFlagSet(Flag... flags) {
@@ -50,15 +56,20 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     }
     
     public AbstractRegistry(Class<V> valueType, Map<RegistryKey, V> backingMap) {
-        this(valueType, null, null, backingMap);
+        this(valueType, null, null, backingMap, null);
     }
     
     public AbstractRegistry(Class<V> valueType, RegistryKey id, Map<RegistryKey, V> backingMap) {
-        this(valueType, id, id.toString(), backingMap);
+        this(valueType, id, id.toString(), backingMap, null);
     }
     
     public AbstractRegistry(Class<V> valueType, String name, Map<RegistryKey, V> backingMap) {
-        this(valueType, RegistryKey.of(name), name, backingMap);
+        this(valueType, RegistryKey.of(name), name, backingMap, null);
+    }
+    
+    @Override
+    public IRegistry<? super V> getParentRegistry() {
+        return parentRegistry;
     }
     
     @Override
@@ -177,7 +188,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     }
     
     @Override
-    public final V register(RegistryKey key, V value) {
+    public V register(RegistryKey key, V value) {
         if (this.frozen) {
             return null;
         }
@@ -195,11 +206,29 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
             return null;
         }
         
-        return this.backingMap.put(key, value);
+        V ov = this.backingMap.put(key, value);
+        callAdditionalRegisterActions(key, value, ov);
+        
+        if (this.parentRegistry != null) {
+            this.parentRegistry.register(key, value);
+        }
+        
+        return ov;
+    }
+    
+    /**
+     * This method allows you to perform additional actions when a value is registered. <br>
+     * This is called after all checks and after the value is put into the backing map
+     *
+     * @param key      The key
+     * @param value    The new value
+     * @param oldValue The old value
+     */
+    protected void callAdditionalRegisterActions(RegistryKey key, V value, V oldValue) {
     }
     
     @Override
-    public final V remove(RegistryKey key) {
+    public V remove(RegistryKey key) {
         if (this.frozen) {
             return null;
         }
@@ -211,12 +240,30 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
             return null;
         }
         
-        return this.backingMap.remove(key);
+        V v = this.backingMap.remove(key);
+        callAdditionalRemoveActions(key, v);
+        if (this.parentRegistry != null) {
+            this.parentRegistry.remove(key);
+        }
+        return v;
+    }
+    
+    /**
+     * This is called after the value is removed from the internal map
+     *
+     * @param key   The key
+     * @param value The value that was previously associated with the key
+     */
+    protected void callAdditionalRemoveActions(RegistryKey key, V value) {
     }
     
     @Override
     public final void clear() {
         if (this.frozen) {
+            return;
+        }
+        
+        if (!this.hasFlag(Flag.CLEARING)) {
             return;
         }
         
