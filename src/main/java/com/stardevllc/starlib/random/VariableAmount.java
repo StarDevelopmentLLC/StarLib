@@ -217,6 +217,27 @@ public interface VariableAmount {
     default int getFlooredAmount() {
         return (int) Math.floor(getAmount());
     }
+    
+    /**
+     * Gets the amount as if from {@link #getAmount(Random)} but ceiled to the
+     * nearest integer equivalent.
+     *
+     * @param random The random object
+     * @return The ceiled amount
+     */
+    default int getCeilAmount(Random random) {
+        return (int) Math.ceil(getAmount(random));
+    }
+    
+    /**
+     * Gets the amount as if from {@link #getAmount()} but ceiled to the
+     * nearest integer equivalent.
+     *
+     * @return The ceiled amount
+     */
+    default int getCeilAmount() {
+        return (int) Math.ceil(getAmount());
+    }
 
     /**
      * Represents a fixed amount, calls to {@link #getAmount} will always return
