@@ -4,7 +4,7 @@ import java.util.*;
 
 public class HashTable<R, C, V> implements Table<R, C, V> {
     
-    private final LinkedHashMap<R, LinkedHashMap<C, V>> backingMap = new LinkedHashMap<>();
+    protected final LinkedHashMap<R, LinkedHashMap<C, V>> backingMap = new LinkedHashMap<>();
     
     @Override
     public Set<Cell<R, C, V>> getCellSet() {
@@ -46,7 +46,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
     @SuppressWarnings("SuspiciousMethodCalls")
     @Override
     public boolean contains(Object rowKey, Object columnKey) {
-        LinkedHashMap<C, V> rowMap = this.backingMap.get(rowKey);
+        Map<C, V> rowMap = this.backingMap.get(rowKey);
         return rowMap != null && rowMap.containsKey(columnKey);
     }
     
@@ -71,7 +71,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
     @SuppressWarnings("SuspiciousMethodCalls")
     @Override
     public V get(Object rowKey, Object columnKey) {
-        LinkedHashMap<C, V> rowMap = this.backingMap.get(rowKey);
+        Map<C, V> rowMap = this.backingMap.get(rowKey);
         if (rowMap == null) {
             return null;
         }
@@ -99,11 +99,16 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
     @SuppressWarnings("SuspiciousMethodCalls")
     @Override
     public V remove(Object rowKey, Object columnKey) {
-        LinkedHashMap<C, V> rowMap = this.backingMap.get(rowKey);
+        Map<C, V> rowMap = this.backingMap.get(rowKey);
         if (rowMap == null) {
             return null;
         }
-        return rowMap.remove(columnKey);
+        
+        V v = rowMap.remove(columnKey);
+        if (rowMap.isEmpty()) {
+            this.backingMap.remove(rowKey);
+        }
+        return v;
     }
     
     @Override
@@ -151,7 +156,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
     }
     
     @SuppressWarnings("DuplicatedCode")
-    private class ColumnKeyIterator implements Iterator<C> {
+    protected class ColumnKeyIterator implements Iterator<C> {
         
         //This is the iterator for the Row Keys and is only created once per ValueIterator as it is based on the backing maps keySet()
         private final Iterator<R> rowKeyIterator;
@@ -227,7 +232,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
         }
     }
     
-    private class ColumnKeySet extends AbstractSet<C> {
+    protected class ColumnKeySet extends AbstractSet<C> {
         
         @Override
         public Iterator<C> iterator() {
@@ -240,7 +245,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
         }
     }
     
-    private class ValueIterator implements Iterator<V> {
+    protected class ValueIterator implements Iterator<V> {
         
         private final ColumnKeyIterator columnKeyIterator;
         
@@ -269,7 +274,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
         }
     }
     
-    private class Values extends AbstractCollection<V> {
+    protected class Values extends AbstractCollection<V> {
         
         @Override
         public Iterator<V> iterator() {
@@ -282,7 +287,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
         }
     }
     
-    private class HashCell implements Table.Cell<R, C, V> {
+    protected class HashCell implements Table.Cell<R, C, V> {
         
         private final R row;
         private final C column;

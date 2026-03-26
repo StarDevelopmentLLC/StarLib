@@ -3,6 +3,7 @@ package com.stardevllc.starlib.table;
 import com.stardevllc.starlib.tuple.triple.Triple;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 public interface Table<R, C, V> {
     Set<? extends Cell<R, C, V>> getCellSet();
@@ -41,6 +42,25 @@ public interface Table<R, C, V> {
     
     default void putAll(Collection<? extends Triple<? extends R, ? extends C, ? extends V>> collection) {
         collection.forEach(t -> put((Triple<R, C, V>) t));
+    }
+    
+    default V computeIfAbsent(R row, C column, BiFunction<R, C, V> mapper) {
+        V value = get(row, column);
+        if (value == null) {
+            value = mapper.apply(row, column);
+            put(row, column, value);
+        }
+        
+        return value;
+    }
+    
+    default V putIfAbsent(R row, C column, V value) {
+        V v = get(row, column);
+        if (v == null) {
+            put(row, column, value);
+        }
+        
+        return v;
     }
     
     V remove(Object rowKey, Object columnKey);

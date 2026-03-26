@@ -6,7 +6,7 @@ import java.util.*;
 
 public class TreeTable<R extends Comparable<R>, C extends Comparable<C>, V> implements Table<R, C, V> {
     
-    private final TreeMap<R, TreeMap<C, V>> backingMap = new TreeMap<>();
+    protected final TreeMap<R, TreeMap<C, V>> backingMap = new TreeMap<>();
     
     @Override
     public Set<? extends Cell<R, C, V>> getCellSet() {
@@ -242,7 +242,7 @@ public class TreeTable<R extends Comparable<R>, C extends Comparable<C>, V> impl
         }
     }
     
-    private class ValueIterator implements Iterator<V> {
+    protected class ValueIterator implements Iterator<V> {
         
         private final ColumnKeyIterator columnKeyIterator;
         
@@ -271,7 +271,7 @@ public class TreeTable<R extends Comparable<R>, C extends Comparable<C>, V> impl
         }
     }
     
-    private class Values extends AbstractCollection<V> {
+    protected class Values extends AbstractCollection<V> {
         
         @Override
         public Iterator<V> iterator() {
@@ -284,7 +284,7 @@ public class TreeTable<R extends Comparable<R>, C extends Comparable<C>, V> impl
         }
     }
     
-    private class TreeCell implements Cell<R, C, V>, Comparable<Cell<R, C, V>> {
+    protected class TreeCell implements Cell<R, C, V>, Comparable<Cell<R, C, V>> {
         
         private final R row;
         private final C column;
