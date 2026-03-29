@@ -22,6 +22,7 @@ public class Registerer<V> {
         
         RegistryObject<V> registryObject = new RegistryObject<>(registry, key);
         entries.put(key, registryObject);
+        registry.register(key, object);
         return registryObject;
     }
     
