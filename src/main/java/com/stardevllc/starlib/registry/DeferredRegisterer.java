@@ -16,17 +16,12 @@ public class DeferredRegisterer<V> {
     
     private boolean hasRegisteredEntries;
     
-    private DeferredRegisterer(IRegistry<V> registry) {
+    protected DeferredRegisterer(IRegistry<V> registry) {
         this.registry = registry;
-    }
-    
-    private DeferredRegisterer(IRegistry<V> registry, DeferredRegisterer<V> registerer) {
-        this.registry = registry;
-        this.suppliers.putAll(registerer.suppliers);
     }
     
     public RegistryObject<V> register(String key, Supplier<V> supplier) {
-        return register(registry.createKey(key), supplier);
+        return register(createKey(key), supplier);
     }
     
     public RegistryObject<V> register(RegistryKey key, Supplier<V> supplier) {
@@ -39,6 +34,10 @@ public class DeferredRegisterer<V> {
         this.suppliers.put(key, supplier);
         
         return registryObject;
+    }
+    
+    protected RegistryKey createKey(String key) {
+        return registry.createKey(key);
     }
     
     public void registerEntries() {

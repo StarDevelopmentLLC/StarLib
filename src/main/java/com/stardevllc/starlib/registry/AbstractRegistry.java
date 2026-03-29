@@ -20,11 +20,11 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     private final Set<Flag> flags;
     
-    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, IRegistry<? super V> parentRegistry, boolean frozen, EventDispatcher dispatcher, Set<Flag> flags) {
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<? extends RegistryKey, V> backingMap, IRegistry<? super V> parentRegistry, boolean frozen, EventDispatcher dispatcher, Set<Flag> flags) {
         this.valueType = valueType;
         this.id = id;
         this.name = name;
-        this.backingMap = backingMap;
+        this.backingMap = (Map<RegistryKey, V>) backingMap;
         this.parentRegistry = parentRegistry;
         this.frozen = frozen;
         if (dispatcher != null) {
@@ -39,11 +39,11 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         }
     }
     
-    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, Flag[] flags) {
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<? extends RegistryKey, V> backingMap, Flag[] flags) {
         this(valueType, id, name, backingMap, null, false, null, ofFlagSet(flags));
     }
     
-    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<RegistryKey, V> backingMap, IRegistry<? super V> parentRegistry, Flag[] flags) {
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, String name, Map<? extends RegistryKey, V> backingMap, IRegistry<? super V> parentRegistry, Flag[] flags) {
         this(valueType, id, name, backingMap, parentRegistry, false, null, ofFlagSet(flags));
     }
     
@@ -55,15 +55,15 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         }
     }
     
-    public AbstractRegistry(Class<V> valueType, Map<RegistryKey, V> backingMap) {
+    public AbstractRegistry(Class<V> valueType, Map<? extends RegistryKey, V> backingMap) {
         this(valueType, null, null, backingMap, null);
     }
     
-    public AbstractRegistry(Class<V> valueType, RegistryKey id, Map<RegistryKey, V> backingMap) {
+    public AbstractRegistry(Class<V> valueType, RegistryKey id, Map<? extends RegistryKey, V> backingMap) {
         this(valueType, id, id.toString(), backingMap, null);
     }
     
-    public AbstractRegistry(Class<V> valueType, String name, Map<RegistryKey, V> backingMap) {
+    public AbstractRegistry(Class<V> valueType, String name, Map<? extends RegistryKey, V> backingMap) {
         this(valueType, RegistryKey.of(name), name, backingMap, null);
     }
     
