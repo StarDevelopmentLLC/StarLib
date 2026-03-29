@@ -6,9 +6,19 @@ import com.stardevllc.starlib.random.Bounds;
 
 import java.util.Objects;
 
-public record Volume(double value, VolumeUnit unit) {
+public final class Volume {
     
     public static final VolumeUnit DEFAULT_UNIT = VolumeUnit.FLUID_OUNCE;
+    
+    private long id;
+    
+    private final double value;
+    private final VolumeUnit unit;
+    
+    public Volume(double value, VolumeUnit unit) {
+        this.value = value;
+        this.unit = unit;
+    }
     
     public double get(VolumeUnit newUnit) {
         return unit.toUnit(value, newUnit);
@@ -66,12 +76,55 @@ public record Volume(double value, VolumeUnit unit) {
         return new Factory();
     }
     
+    public double value() {
+        return value;
+    }
+    
+    public VolumeUnit unit() {
+        return unit;
+    }
+    
+    public long getId() {
+        return id;
+    }
+    
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        var that = (Volume) obj;
+        return Double.doubleToLongBits(this.value) == Double.doubleToLongBits(that.value) &&
+                this.unit == that.unit;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, unit);
+    }
+    
+    @Override
+    public String toString() {
+        return "Volume[" +
+                "value=" + value + ", " +
+                "unit=" + unit + ']';
+    }
+    
+    
     public static class Builder implements IBuilder<Volume, Builder> {
         
         private double value;
         private VolumeUnit unit;
         
-        public Builder() {}
+        public Builder() {
+        }
         
         public Builder(Builder builder) {
             this.value = builder.value;
@@ -109,7 +162,8 @@ public record Volume(double value, VolumeUnit unit) {
         private Bounds bounds;
         private VolumeUnit unit;
         
-        public Factory() {}
+        public Factory() {
+        }
         
         public Factory(Factory factory) {
             this.bounds = factory.bounds;

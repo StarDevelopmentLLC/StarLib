@@ -6,9 +6,19 @@ import com.stardevllc.starlib.random.Bounds;
 
 import java.util.Objects;
 
-public record Weight(double value, WeightUnit unit) {
+public final class Weight {
     
     public static final WeightUnit DEFAULT_UNIT = WeightUnit.POUND;
+    
+    private long id;
+    
+    private final double value;
+    private final WeightUnit unit;
+    
+    public Weight(double value, WeightUnit unit) {
+        this.value = value;
+        this.unit = unit;
+    }
     
     public double get(WeightUnit newUnit) {
         return unit.toUnit(value, newUnit);
@@ -66,12 +76,54 @@ public record Weight(double value, WeightUnit unit) {
         return new Factory();
     }
     
+    public double value() {
+        return value;
+    }
+    
+    public WeightUnit unit() {
+        return unit;
+    }
+    
+    public long getId() {
+        return id;
+    }
+    
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        var that = (Weight) obj;
+        return Double.doubleToLongBits(this.value) == Double.doubleToLongBits(that.value) &&
+                this.unit == that.unit;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, unit);
+    }
+    
+    @Override
+    public String toString() {
+        return "Weight[" +
+                "value=" + value + ", " +
+                "unit=" + unit + ']';
+    }
+    
     public static class Builder implements IBuilder<Weight, Builder> {
         
         private double value;
         private WeightUnit unit;
         
-        public Builder() {}
+        public Builder() {
+        }
         
         public Builder(Builder builder) {
             this.value = builder.value;
@@ -109,7 +161,8 @@ public record Weight(double value, WeightUnit unit) {
         private Bounds bounds;
         private WeightUnit unit;
         
-        public Factory() {}
+        public Factory() {
+        }
         
         public Factory(Factory factory) {
             this.bounds = factory.bounds;

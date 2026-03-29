@@ -6,9 +6,19 @@ import com.stardevllc.starlib.random.Bounds;
 
 import java.util.Objects;
 
-public record Length(double value, LengthUnit unit) {
+public final class Length {
     
     public static final LengthUnit DEFAULT_UNIT = LengthUnit.INCH;
+    
+    private long id;
+    
+    private final double value;
+    private final LengthUnit unit;
+    
+    public Length(double value, LengthUnit unit) {
+        this.value = value;
+        this.unit = unit;
+    }
     
     public double get(LengthUnit newUnit) {
         return unit.toUnit(value, newUnit);
@@ -66,12 +76,54 @@ public record Length(double value, LengthUnit unit) {
         return new Factory();
     }
     
+    public double value() {
+        return value;
+    }
+    
+    public LengthUnit unit() {
+        return unit;
+    }
+    
+    public long getId() {
+        return id;
+    }
+    
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        var that = (Length) obj;
+        return Double.doubleToLongBits(this.value) == Double.doubleToLongBits(that.value) &&
+                this.unit == that.unit;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, unit);
+    }
+    
+    @Override
+    public String toString() {
+        return "Length[" +
+                "value=" + value + ", " +
+                "unit=" + unit + ']';
+    }
+    
     public static class Builder implements IBuilder<Length, Builder> {
         
         private double value;
         private LengthUnit unit;
         
-        public Builder() {}
+        public Builder() {
+        }
         
         public Builder(Builder builder) {
             this.value = builder.value;
@@ -109,7 +161,8 @@ public record Length(double value, LengthUnit unit) {
         private Bounds bounds;
         private LengthUnit unit;
         
-        public Factory() {}
+        public Factory() {
+        }
         
         public Factory(Factory factory) {
             this.bounds = factory.bounds;
