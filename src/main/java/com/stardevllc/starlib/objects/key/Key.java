@@ -1,14 +1,14 @@
-package com.stardevllc.starlib.objects.id;
+package com.stardevllc.starlib.objects.key;
 
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Represents an ID, a representation of a unique id of an object or group of objects
+ * Represents a Key, a representation of a unique key of an object or group of objects
  */
 @FunctionalInterface
-public interface ID extends Comparable<ID> {
+public interface Key extends Comparable<Key> {
     
-    ID EMPTY = new ID() {
+    Key EMPTY = new Key() {
         @Override
         public int hashCode() {
             return 0;
@@ -21,13 +21,13 @@ public interface ID extends Comparable<ID> {
         
         @SuppressWarnings("ComparatorMethodParameterNotUsed")
         @Override
-        public int compareTo(@NotNull ID o) {
+        public int compareTo(@NotNull Key o) {
             return -1;
         }
     };
     
     default boolean isEmpty() {
-        return true;
+        return toString() == null || toString().isBlank();
     }
     
     default boolean isNotEmpty() {

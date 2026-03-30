@@ -1,15 +1,15 @@
-package com.stardevllc.starlib.objects.id.impl;
+package com.stardevllc.starlib.objects.key.impl;
 
-import com.stardevllc.starlib.objects.id.ID;
+import com.stardevllc.starlib.objects.key.Key;
 import org.jetbrains.annotations.NotNull;
 
-public final class IntId implements ID {
+public final class IntKey implements Key {
     
-    public static final IntId EMPTY = new IntId(0);
+    public static final IntKey EMPTY = new IntKey(0);
     
     private final int value;
     
-    public IntId(int value) {
+    public IntKey(int value) {
         this.value = value;
     }
     
@@ -25,7 +25,7 @@ public final class IntId implements ID {
     
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof IntId iid) {
+        if (obj instanceof IntKey iid) {
             return this.value == iid.value;
         }
         
@@ -38,8 +38,8 @@ public final class IntId implements ID {
     }
     
     @Override
-    public int compareTo(@NotNull ID o) {
-        if (o instanceof IntId iid) {
+    public int compareTo(@NotNull Key o) {
+        if (o instanceof IntKey iid) {
             return Integer.compare(this.value, iid.value);
         }
         

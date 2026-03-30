@@ -1,5 +1,7 @@
 package com.stardevllc.starlib.registry;
 
+import com.stardevllc.starlib.objects.key.Key;
+
 import java.util.*;
 
 public class Registerer<V> {
@@ -9,7 +11,7 @@ public class Registerer<V> {
     }
     
     private final IRegistry<V> registry;
-    private final Map<RegistryKey, RegistryObject<V>> entries = new HashMap<>();
+    private final Map<Key, RegistryObject<V>> entries = new HashMap<>();
     
     protected Registerer(IRegistry<V> registry) {
         this.registry = registry;
@@ -19,7 +21,7 @@ public class Registerer<V> {
         return register(createKey(key), object);
     }
     
-    public RegistryObject<V> register(RegistryKey key, V object) {
+    public RegistryObject<V> register(Key key, V object) {
         if (entries.containsKey(key)) {
             return entries.get(key);
         }
@@ -30,7 +32,7 @@ public class Registerer<V> {
         return registryObject;
     }
     
-    protected RegistryKey createKey(String key) {
+    protected Key createKey(String key) {
         return registry.createKey(key);
     }
     

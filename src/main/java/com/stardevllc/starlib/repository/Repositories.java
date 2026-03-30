@@ -1,8 +1,8 @@
 package com.stardevllc.starlib.repository;
 
 import com.stardevllc.starlib.event.EventDispatcher;
-import com.stardevllc.starlib.objects.id.ID;
-import com.stardevllc.starlib.objects.id.impl.StringId;
+import com.stardevllc.starlib.objects.key.Key;
+import com.stardevllc.starlib.objects.key.impl.StringKey;
 import com.stardevllc.starlib.time.TimeUnit;
 
 import java.util.HashMap;
@@ -12,15 +12,15 @@ import java.util.function.Supplier;
 
 public final class Repositories {
     
-    private static final Map<ID, IRepository<?, ?>> REPOSITORIES = new HashMap<>();
+    private static final Map<Key, IRepository<?, ?>> REPOSITORIES = new HashMap<>();
     
-    public static <K, V> IRepository<K, V> getRepository(ID id) {
+    public static <K, V> IRepository<K, V> getRepository(Key id) {
         return (IRepository<K, V>) REPOSITORIES.get(id);
     }
     
     public static <K, V> void addRepository(IRepository<K, V> repository) {
-        if (repository.getId() != null) {
-            REPOSITORIES.put(repository.getId(), repository);
+        if (repository.getKey() != null) {
+            REPOSITORIES.put(repository.getKey(), repository);
         }
     }
     
@@ -28,7 +28,7 @@ public final class Repositories {
         private Class<K> keyType;
         private Class<V> valueType;
         private String name;
-        private ID id;
+        private Key id;
         private Supplier<Map<K, V>> mapSupplier;
         private EventDispatcher dispatcher;
         private IRepository.TaskSubmitter taskSubmitter;
@@ -46,7 +46,7 @@ public final class Repositories {
             this.mapSupplier = mapSupplier;
         }
         
-        public RepositoryBuilder<K, V> withId(ID id) {
+        public RepositoryBuilder<K, V> withId(Key id) {
             this.id = id;
             return this;
         }
@@ -95,10 +95,10 @@ public final class Repositories {
         }
         
         public IRepository<K, V> build() {
-            ID id = null;
+            Key id = null;
             if (this.id == null) {
                 if (this.name != null) {
-                    id = new StringId(this.name);
+                    id = new StringKey(this.name);
                 }
             } else {
                 id = this.id;
@@ -125,7 +125,7 @@ public final class Repositories {
             
             if (this.global) {
                 if (id != null && id.isNotEmpty()) {
-                    REPOSITORIES.put(repository.getId(), repository);
+                    REPOSITORIES.put(repository.getKey(), repository);
                 }
             }
             return repository;

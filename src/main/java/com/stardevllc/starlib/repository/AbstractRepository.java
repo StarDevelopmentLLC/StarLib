@@ -1,7 +1,7 @@
 package com.stardevllc.starlib.repository;
 
 import com.stardevllc.starlib.event.EventDispatcher;
-import com.stardevllc.starlib.objects.id.ID;
+import com.stardevllc.starlib.objects.key.Key;
 import com.stardevllc.starlib.tuple.pair.ImmutablePair;
 import com.stardevllc.starlib.values.mutable.MutableLong;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +15,7 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     private final Class<K> keyType;
     private final Class<V> valueType;
     
-    private final ID id;
+    private final Key id;
     private final String name;
     
     private final Map<K, V> backingMap;
@@ -29,7 +29,7 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     
     private TaskSubmitter taskSubmitter;
     
-    public AbstractRepository(Class<K> keyType, Class<V> valueType, Map<K, V> backingMap, ID id, String name, Function<K, V> fetcher, EventDispatcher dispatcher, long timeout, TaskSubmitter taskSubmitter) {
+    public AbstractRepository(Class<K> keyType, Class<V> valueType, Map<K, V> backingMap, Key id, String name, Function<K, V> fetcher, EventDispatcher dispatcher, long timeout, TaskSubmitter taskSubmitter) {
         this.keyType = keyType;
         this.valueType = valueType;
         this.backingMap = backingMap;
@@ -45,7 +45,7 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
         this.taskSubmitter = taskSubmitter;
     }
     
-    protected AbstractRepository(Class<K> keyType, Class<V> valueType, @NotNull Map<K, V> backingMap, ID id, String name) {
+    protected AbstractRepository(Class<K> keyType, Class<V> valueType, @NotNull Map<K, V> backingMap, Key id, String name) {
         this(keyType, valueType, backingMap, id, name, null, null, 0, null);
     }
     
@@ -60,7 +60,7 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     }
     
     @Override
-    public final ID getId() {
+    public final Key getKey() {
         return id;
     }
     

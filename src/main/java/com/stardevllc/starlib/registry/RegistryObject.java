@@ -1,5 +1,7 @@
 package com.stardevllc.starlib.registry;
 
+import com.stardevllc.starlib.objects.key.Key;
+
 import java.util.Objects;
 import java.util.function.*;
 import java.util.stream.Stream;
@@ -7,9 +9,9 @@ import java.util.stream.Stream;
 public class RegistryObject<V> implements Supplier<V> {
     
     private final IRegistry<V> registry;
-    private final RegistryKey key;
+    private final Key key;
     
-    public RegistryObject(IRegistry<V> registry, RegistryKey key) {
+    public RegistryObject(IRegistry<V> registry, Key key) {
         this.registry = registry;
         this.key = key;
     }
@@ -30,7 +32,7 @@ public class RegistryObject<V> implements Supplier<V> {
         return registry.get(key);
     }
     
-    public RegistryKey getKey() {
+    public Key getKey() {
         return key;
     }
     
@@ -46,7 +48,7 @@ public class RegistryObject<V> implements Supplier<V> {
         return null;
     }
     
-    public <U> U map(BiFunction<RegistryKey, ? super V, ? extends U> mapper) {
+    public <U> U map(BiFunction<Key, ? super V, ? extends U> mapper) {
         if (isPresent()) {
             return mapper.apply(key, get());
         }
@@ -58,7 +60,7 @@ public class RegistryObject<V> implements Supplier<V> {
         return () -> isPresent() ? mapper.apply(get()) : null;
     }
     
-    public <U> Supplier<U> lazyMap(BiFunction<RegistryKey, ? super V, ? extends U> mapper) {
+    public <U> Supplier<U> lazyMap(BiFunction<Key, ? super V, ? extends U> mapper) {
         return () -> isPresent() ? mapper.apply(key, get()) : null;
     }
     

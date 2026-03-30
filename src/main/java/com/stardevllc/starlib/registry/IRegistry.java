@@ -5,7 +5,8 @@ import com.stardevllc.starlib.event.EventDispatcher;
 import com.stardevllc.starlib.event.bus.IEventBus;
 import com.stardevllc.starlib.event.bus.SubscribeEvent;
 import com.stardevllc.starlib.objects.Nameable;
-import com.stardevllc.starlib.objects.id.Identifiable;
+import com.stardevllc.starlib.objects.key.*;
+import com.stardevllc.starlib.objects.key.impl.StringKey;
 import com.stardevllc.starlib.tuple.pair.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +25,7 @@ import java.util.function.Function;
  * @param <V> The Value Type
  */
 @SuppressWarnings("DuplicatedCode")
-public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
+public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
     
     /**
      * Different flags that change the behavior of the registry
@@ -121,8 +122,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * {@inheritDoc}
      */
     @Override
-    default @NotNull RegistryKey getId() {
-        return RegistryKey.EMPTY;
+    default @NotNull Key getKey() {
+        return StringKey.EMPTY;
     }
     
     /**
@@ -194,8 +195,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param key The String key
      * @return The Key value
      */
-    default @NotNull RegistryKey createKey(String key) {
-        return RegistryKey.of(key);
+    default @NotNull Key createKey(String key) {
+        return Keys.of(key);
     }
     
     /**
@@ -204,8 +205,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param object The object that the key is for
      * @return The Key Value
      */
-    default @NotNull RegistryKey createKey(V object) {
-        return RegistryKey.EMPTY;
+    default @NotNull Key createKey(V object) {
+        return StringKey.EMPTY;
     }
     
     /**
@@ -365,17 +366,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param key The key to check
      * @return If the registry has the key
      */
-    boolean containsKey(RegistryKey key);
-    
-    /**
-     * Convenience method to use a String directly as a Key
-     *
-     * @param key The key
-     * @return If it contains the key
-     */
-    default boolean containsKey(String key) {
-        return containsKey(createKey(key));
-    }
+    boolean containsKey(Object key);
     
     /**
      * Checks to see if this registry contains the specified value
@@ -391,16 +382,10 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param key The key
      * @return The value, or null if no mapping exists
      */
-    V get(RegistryKey key);
+    V get(Key key);
     
-    /**
-     * Convenience method to use a String directly as that is what the key is
-     *
-     * @param key The key
-     * @return The value
-     */
     default V get(String key) {
-        return get(createKey(key));
+        return get(Keys.of(key));
     }
     
     /**
@@ -409,7 +394,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param value The value
      * @return The collection of keys that map to the specified value
      */
-    Collection<RegistryKey> get(V value);
+    Collection<Key> get(V value);
     
     /**
      * Registers a mapping of the key to the value
@@ -418,15 +403,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param value The value
      * @return The previous value or null if it did not exist
      */
-    V register(RegistryKey key, V value);
+    V register(Key key, V value);
     
-    /**
-     * Convenience method to use a String as they key directly
-     *
-     * @param key   The key
-     * @param value The value
-     * @return The previous value or null if it did not exist
-     */
     default V register(String key, V value) {
         return register(createKey(key), value);
     }
@@ -437,17 +415,17 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param <V> The valu type
      */
     final class RegisterEvent<V> extends AbstractEvent<V> {
-        private final RegistryKey key;
+        private final Key key;
         private final V value, oldValue;
         
-        public RegisterEvent(IRegistry<V> registry, RegistryKey key, V value, V oldValue) {
+        public RegisterEvent(IRegistry<V> registry, Key key, V value, V oldValue) {
             super(registry);
             this.key = key;
             this.value = value;
             this.oldValue = oldValue;
         }
         
-        public RegistryKey key() {
+        public Key key() {
             return key;
         }
         
@@ -479,14 +457,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param key The key to remove the mapping
      * @return The value previously associated with the key, or null if the mapping did not exist
      */
-    V remove(RegistryKey key);
+    V remove(Key key);
     
-    /**
-     * Convenience method to use String as the key directly
-     *
-     * @param key The key
-     * @return The value
-     */
     default V remove(String key) {
         return remove(createKey(key));
     }
@@ -497,16 +469,16 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param <V>
      */
     final class RemoveEvent<V> extends AbstractEvent<V> {
-        private final RegistryKey key;
+        private final Key key;
         private final V value;
         
-        public RemoveEvent(IRegistry<V> registry, RegistryKey key, V value) {
+        public RemoveEvent(IRegistry<V> registry, Key key, V value) {
             super(registry);
             this.key = key;
             this.value = value;
         }
         
-        public RegistryKey key() {
+        public Key key() {
             return key;
         }
         
@@ -533,7 +505,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @param m The map
      */
-    default void registerAll(Map<RegistryKey, ? extends V> m) {
+    default void registerAll(Map<Key, ? extends V> m) {
         if (m == null) {
             return;
         }
@@ -543,16 +515,16 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
     }
     
     final class RegisterAllEvent<V> extends AbstractEvent<V> {
-        private final List<ImmutablePair<RegistryKey, V>> values;
+        private final List<ImmutablePair<Key, V>> values;
         
-        public RegisterAllEvent(IRegistry<V> registry, Map<? extends RegistryKey, ? extends V> m) {
+        public RegisterAllEvent(IRegistry<V> registry, Map<? extends Key, ? extends V> m) {
             super(registry);
-            List<ImmutablePair<RegistryKey, V>> values = new ArrayList<>();
+            List<ImmutablePair<Key, V>> values = new ArrayList<>();
             m.forEach((key, value) -> values.add(ImmutablePair.of(key, value)));
             this.values = new RemoveOnlyArrayList<>(values);
         }
         
-        public List<ImmutablePair<RegistryKey, V>> getValues() {
+        public List<ImmutablePair<Key, V>> getValues() {
             return values;
         }
     }
@@ -583,16 +555,16 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param <V> The Value Type
      */
     final class ClearEvent<V> extends AbstractEvent<V> {
-        private final List<ImmutablePair<RegistryKey, V>> values;
+        private final List<ImmutablePair<Key, V>> values;
         
         public ClearEvent(IRegistry<V> registry) {
             super(registry);
-            List<ImmutablePair<RegistryKey, V>> values = new ArrayList<>();
+            List<ImmutablePair<Key, V>> values = new ArrayList<>();
             registry.forEach((key, value) -> values.add(ImmutablePair.of(key, value)));
             this.values = new RemoveOnlyArrayList<>(values);
         }
         
-        public List<ImmutablePair<RegistryKey, V>> getValues() {
+        public List<ImmutablePair<Key, V>> getValues() {
             return values;
         }
     }
@@ -615,7 +587,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @return The key set
      */
-    Set<RegistryKey> keySet();
+    Set<Key> keySet();
     
     /**
      * This is the same as the {@link Map#values()}
@@ -631,7 +603,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param defaultValue The default value
      * @return The value of the mapping if exists, otherwise the default value
      */
-    default V getOrDefault(RegistryKey key, V defaultValue) {
+    default V getOrDefault(Key key, V defaultValue) {
         V existing = get(key);
         if (existing != null) {
             return existing;
@@ -656,7 +628,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      *
      * @param action The action to perform
      */
-    void forEach(BiConsumer<RegistryKey, ? super V> action);
+    void forEach(BiConsumer<Key, ? super V> action);
     
     /**
      * Pretty much just {@link Map#computeIfAbsent(Object, Function)}
@@ -665,7 +637,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param mappingFunction The mapping function
      * @return The value with the key if present, or the new value it wasn't
      */
-    default V computeIfAbsent(RegistryKey key, Function<RegistryKey, ? extends V> mappingFunction) {
+    default V computeIfAbsent(Key key, Function<Key, ? extends V> mappingFunction) {
         V v;
         if ((v = get(key)) == null) {
             V newValue;
@@ -684,7 +656,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param key   The key
      * @param value The value
      */
-    default void registerIfAbsent(RegistryKey key, V value) {
+    default void registerIfAbsent(Key key, V value) {
         if (get(key) == null) {
             register(key, value);
         }
@@ -706,7 +678,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Identifiable {
      * @param key             The key
      * @param mappingFunction The function
      */
-    default void registerIfAbsent(RegistryKey key, Function<RegistryKey, ? extends V> mappingFunction) {
+    default void registerIfAbsent(Key key, Function<Key, ? extends V> mappingFunction) {
         if (get(key) == null) {
             register(key, mappingFunction.apply(key));
         }

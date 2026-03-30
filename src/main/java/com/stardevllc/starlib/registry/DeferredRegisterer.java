@@ -1,5 +1,7 @@
 package com.stardevllc.starlib.registry;
 
+import com.stardevllc.starlib.objects.key.Key;
+
 import java.util.*;
 import java.util.function.Supplier;
 
@@ -11,8 +13,8 @@ public class DeferredRegisterer<V> {
     
     private final IRegistry<V> registry;
     
-    private final Map<RegistryKey, Supplier<V>> suppliers = new LinkedHashMap<>();
-    private final Map<RegistryKey, RegistryObject<V>> entries = new HashMap<>();
+    private final Map<Key, Supplier<V>> suppliers = new LinkedHashMap<>();
+    private final Map<Key, RegistryObject<V>> entries = new HashMap<>();
     
     private boolean hasRegisteredEntries;
     
@@ -24,7 +26,7 @@ public class DeferredRegisterer<V> {
         return register(createKey(key), supplier);
     }
     
-    public RegistryObject<V> register(RegistryKey key, Supplier<V> supplier) {
+    public RegistryObject<V> register(Key key, Supplier<V> supplier) {
         if (entries.containsKey(key)) {
             return entries.get(key);
         }
@@ -32,11 +34,10 @@ public class DeferredRegisterer<V> {
         RegistryObject<V> registryObject = new RegistryObject<>(this.registry, key);
         this.entries.put(key, registryObject);
         this.suppliers.put(key, supplier);
-        
         return registryObject;
     }
     
-    protected RegistryKey createKey(String key) {
+    protected Key createKey(String key) {
         return registry.createKey(key);
     }
     

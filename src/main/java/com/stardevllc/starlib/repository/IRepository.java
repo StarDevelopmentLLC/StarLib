@@ -3,7 +3,7 @@ package com.stardevllc.starlib.repository;
 import com.stardevllc.starlib.collections.RemoveOnlyArrayList;
 import com.stardevllc.starlib.event.EventDispatcher;
 import com.stardevllc.starlib.objects.Nameable;
-import com.stardevllc.starlib.objects.id.Identifiable;
+import com.stardevllc.starlib.objects.key.Keyable;
 import com.stardevllc.starlib.time.TimeUnit;
 import com.stardevllc.starlib.tuple.pair.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ import java.util.function.Function;
  * But also just a way to store objects using similar design pattern to a {@link com.stardevllc.starlib.registry.IRegistry}
  * </p>
  */
-public interface IRepository<K, V> extends Iterable<Map.Entry<K, V>>, Identifiable, Nameable {
+public interface IRepository<K, V> extends Iterable<Map.Entry<K, V>>, Keyable, Nameable {
     
     Class<K> getKeyType();
     
