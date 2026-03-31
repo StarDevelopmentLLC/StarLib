@@ -34,6 +34,10 @@ public interface Key extends Comparable<Key> {
         return !isEmpty();
     }
     
+    default boolean contains(String str) {
+        return toString().contains(str);
+    }
+    
     @Override
     int hashCode();
     
