@@ -5,14 +5,14 @@ import com.stardevllc.starlib.event.EventDispatcher;
 import com.stardevllc.starlib.event.bus.IEventBus;
 import com.stardevllc.starlib.event.bus.SubscribeEvent;
 import com.stardevllc.starlib.objects.Nameable;
+import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.key.*;
 import com.stardevllc.starlib.objects.key.impl.StringKey;
 import com.stardevllc.starlib.tuple.pair.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
+import java.util.function.*;
 
 /**
  * A Registry maps values to a special type of Key
@@ -51,7 +51,12 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
         /**
          * This flag being present means that the bulk clear action can be performed
          */
-        CLEARING
+        CLEARING,
+        
+        /**
+         * This flag being present means that the registry will check partial keys in the get method
+         */
+        CHECK_PARTIAL_IN_GET
     }
     
     /**
@@ -384,8 +389,32 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
      */
     V get(Key key);
     
+    /**
+     * Gets all keys that partially match the provided keys
+     *
+     * @param key The key
+     * @return The matches
+     */
+    List<Key> getPartial(Key key);
+    
+    /**
+     * Gets the value associated with the key
+     *
+     * @param key The key
+     * @return The value, or null if no mapping exists
+     */
     default V get(String key) {
-        return get(Keys.of(key));
+        return get(createKey(key));
+    }
+    
+    /**
+     * Gets all keys that partially match the provided key
+     *
+     * @param key The key
+     * @return The matches
+     */
+    default List<Key> getPartial(String key) {
+        return getPartial(createKey(key));
     }
     
     /**
@@ -682,5 +711,140 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
         if (get(key) == null) {
             register(key, mappingFunction.apply(key));
         }
+    }
+    
+    abstract class Builder<V, R extends IRegistry<V>, B extends Builder<V, R, B>> implements IBuilder<R, B> {
+        protected final Class<V> valueType;
+        protected Supplier<Map<Key, V>> mapSupplier;
+        protected IRegistry<? super V> parentRegistry;
+        protected Key id;
+        protected String name;
+        protected EventDispatcher dispatcher;
+        protected Set<IRegistry.Flag> flags = EnumSet.noneOf(IRegistry.Flag.class);
+        protected boolean global;
+        protected final Map<Key, V> initialValues = new HashMap<>(); //We can use a hashmap here as it doesn't matter and it is faster than other maps
+        protected final List<Listener<V, ? extends Event<V>>> listeners = new ArrayList<>();
+        
+        protected Builder(Class<V> valueType) {
+            this.valueType = valueType;
+        }
+        
+        protected Builder(B builder) {
+            this.valueType = builder.valueType;
+            this.mapSupplier = builder.mapSupplier;
+            this.parentRegistry = builder.parentRegistry;
+            this.id = builder.id;
+            this.name = builder.name;
+            this.dispatcher = builder.dispatcher;
+            this.flags = builder.flags;
+            this.global = builder.global;
+            this.initialValues.putAll(builder.initialValues);
+            this.listeners.addAll(builder.listeners);
+        }
+        
+        public B withSupplier(Supplier<Map<Key, V>> mapSupplier) {
+            this.mapSupplier = mapSupplier;
+            return self();
+        }
+        
+        public B withId(Key key) {
+            this.id = key;
+            return self();
+        }
+        
+        public B withName(String name) {
+            this.name = name;
+            return self();
+        }
+        
+        public B withDispatcher(EventDispatcher dispatcher) {
+            this.dispatcher = dispatcher;
+            return self();
+        }
+        
+        public B withFlags(IRegistry.Flag... flags) {
+            if (flags != null) {
+                this.flags.addAll(List.of(flags));
+            }
+            
+            return self();
+        }
+        
+        public B allowFreezing() {
+            this.flags.add(IRegistry.Flag.FREEZING);
+            return self();
+        }
+        
+        public B allowUnfreezing() {
+            this.flags.add(IRegistry.Flag.UNFREEZING);
+            return self();
+        }
+        
+        public B checkPartialInGet() {
+            this.flags.add(Flag.CHECK_PARTIAL_IN_GET);
+            return self();
+        }
+        
+        public B asGlobal() {
+            this.global = true;
+            return self();
+        }
+        
+        public B withParent(IRegistry<? super V> parent) {
+            this.parentRegistry = parent;
+            return self();
+        }
+        
+        public B put(Key key, V value) {
+            this.initialValues.put(key, value);
+            return self();
+        }
+        
+        public B addRegisterListener(RegisterListener<V> listener) {
+            this.listeners.add(listener);
+            return self();
+        }
+        
+        public B addRemoveListener(RemoveListener<V> listener) {
+            this.listeners.add(listener);
+            return self();
+        }
+        
+        public B addClearListener(ClearListener<V> listener) {
+            this.listeners.add(listener);
+            return self();
+        }
+        
+        protected final B prebuild() {
+            if (id == null && name != null) {
+                this.id = Keys.of(name);
+            } else if (id != null && name == null) {
+                this.name = this.id.toString();
+            }
+            
+            if (mapSupplier == null) {
+                throw new IllegalStateException("Map Supplier cannot be null");
+            }
+            
+            Map<Key, V> backingMap = mapSupplier.get();
+            if (backingMap == null) {
+                throw new IllegalStateException("Map Supplier cannot return a null map");
+            }
+            return self();
+        }
+        
+        protected final R postBuild(R registry) {
+            initialValues.forEach(registry::register);
+            this.listeners.forEach(registry::addListener);
+            
+            if (global) {
+                if (id != null && id.isNotEmpty()) {
+                    Registries.addRegistry(registry);
+                }
+            }
+            return registry;
+        }
+        
+        public abstract B clone();
     }
 }

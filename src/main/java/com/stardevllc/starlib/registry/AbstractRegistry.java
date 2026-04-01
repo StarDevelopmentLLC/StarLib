@@ -173,8 +173,30 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     }
     
     @Override
-    public final V get(Key key) {
-        return this.backingMap.get(key);
+    public V get(Key key) {
+        V v = this.backingMap.get(key);
+        if (v != null || !hasFlag(Flag.CHECK_PARTIAL_IN_GET)) {
+            return v;
+        }
+        
+        List<Key> matches = getPartial(key);
+        
+        if (matches.size() == 1) {
+            return get(matches.getFirst());
+        }
+        
+        return null;
+    }
+    
+    @Override
+    public final List<Key> getPartial(Key key) {
+        List<Key> matches = new ArrayList<>();
+        for (Key k : this.backingMap.keySet()) {
+            if (k.contains(key)) {
+                matches.add(k);
+            }
+        }
+        return matches;
     }
     
     @Override
@@ -193,8 +215,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         return keys;
     }
     
-    @Override
-    public V register(Key key, V value) {
+    protected final V registerBacking(Key key, V value) {
         if (this.frozen) {
             return null;
         }
@@ -222,6 +243,11 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         return ov;
     }
     
+    @Override
+    public V register(Key key, V value) {
+        return registerBacking(key, value);
+    }
+    
     /**
      * This method allows you to perform additional actions when a value is registered. <br>
      * This is called after all checks and after the value is put into the backing map
@@ -233,8 +259,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     protected void callAdditionalRegisterActions(Key key, V value, V oldValue) {
     }
     
-    @Override
-    public V remove(Key key) {
+    protected final V removeBacking(Key key) {
         if (this.frozen) {
             return null;
         }
@@ -254,6 +279,11 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         return v;
     }
     
+    @Override
+    public V remove(Key key) {
+        return removeBacking(key);
+    }
+    
     /**
      * This is called after the value is removed from the internal map
      *
@@ -263,8 +293,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     protected void callAdditionalRemoveActions(Key key, V value) {
     }
     
-    @Override
-    public final void clear() {
+    protected final void clearBacking() {
         if (this.frozen) {
             return;
         }
@@ -281,6 +310,11 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         for (ImmutablePair<Key, V> pair : e.getValues()) {
             this.backingMap.remove(pair.getLeft());
         }
+    }
+    
+    @Override
+    public void clear() {
+        clearBacking();
     }
     
     @Override
@@ -320,6 +354,16 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
             if (listener instanceof IRegistry.Listener<?, ?> l) {
                 listeners.add((Listener<V, Event<V>>) l);
             }
+        }
+    }
+    
+    public abstract static class Builder<V, R extends AbstractRegistry<V>, B extends Builder<V, R, B>> extends IRegistry.Builder<V, R, B> {
+        protected Builder(Class<V> valueType) {
+            super(valueType);
+        }
+        
+        public Builder(B builder) {
+            super(builder);
         }
     }
 }
