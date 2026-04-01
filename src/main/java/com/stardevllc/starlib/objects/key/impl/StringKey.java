@@ -12,7 +12,7 @@ public final class StringKey implements Key {
     public StringKey(String value) {
         this.value = value;
         if (this.value == null) {
-            throw new IllegalArgumentException("Value cannot be null for a StringId");
+            throw new IllegalArgumentException("Value cannot be null for a StringKey");
         }
     }
     
@@ -28,11 +28,7 @@ public final class StringKey implements Key {
     
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof StringKey sid) {
-            return this.value.equals(sid.value);
-        }
-        
-        return super.equals(obj);
+        return value.equals(obj.toString());
     }
     
     @Override
@@ -42,10 +38,6 @@ public final class StringKey implements Key {
     
     @Override
     public int compareTo(@NotNull Key o) {
-        if (o instanceof StringKey sid) {
-            return this.value.compareTo(sid.value);
-        }
-        
-        return -1;
+        return value.compareTo(o.toString());
     }
 }
