@@ -14,7 +14,7 @@ public class Registerer<V> {
     private final IRegistry<V> registry;
     private final Map<Key, RegistryObject<V>> entries = new HashMap<>();
     
-    protected Registerer(IRegistry<V> registry) {
+    public Registerer(IRegistry<V> registry) {
         this.registry = registry;
     }
     

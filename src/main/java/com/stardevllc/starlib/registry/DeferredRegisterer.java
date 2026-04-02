@@ -19,7 +19,7 @@ public class DeferredRegisterer<V> {
     
     private boolean hasRegisteredEntries;
     
-    protected DeferredRegisterer(IRegistry<V> registry) {
+    public DeferredRegisterer(IRegistry<V> registry) {
         this.registry = registry;
     }
     
