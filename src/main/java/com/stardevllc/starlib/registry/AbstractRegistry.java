@@ -217,20 +217,20 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     protected final RegisterResult<V> registerBacking(Key key, V value) {
         if (this.frozen) {
-            return new RegisterResult<>(null, null, null);
+            return RegisterResult.ofFrozenFailure(key, value);
         }
         
         V oldValue = get(key);
         
         if (oldValue != null) {
             if (!hasFlag(Flag.REPLACING)) {
-                return new RegisterResult<>(null, null, null);
+                return RegisterResult.ofReplacementFailure(key, value);
             }
         }
         
         RegisterEvent<V> e = getDispatcher().dispatch(new RegisterEvent<>(this, key, value, oldValue));
         if (e.isCancelled()) {
-            return new RegisterResult<>(null, null, null);
+            return RegisterResult.ofCancelledFailure(key, value);
         }
         
         V ov = this.backingMap.put(key, value);
@@ -240,7 +240,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
             this.parentRegistry.register(key, value);
         }
         
-        return new RegisterResult<>(key, value, ov);
+        return RegisterResult.ofSuccess(key, value, ov);
     }
     
     @Override

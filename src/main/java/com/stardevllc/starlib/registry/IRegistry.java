@@ -9,7 +9,6 @@ import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.key.*;
 import com.stardevllc.starlib.objects.key.impl.StringKey;
 import com.stardevllc.starlib.tuple.pair.ImmutablePair;
-import com.stardevllc.starlib.tuple.triple.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -427,25 +426,30 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
      */
     Collection<Key> get(V value);
     
-    record RegisterResult<V>(Key key, V value, V oldValue) implements Triple<Key, V, V> {
+    @SuppressWarnings("NegativelyNamedBooleanVariable")
+    record RegisterResult<V>(Key key, V value, V oldValue, boolean success, boolean frozen, boolean noReplacements, boolean cancelled, boolean cannotCast) {
+        public static <V> RegisterResult<V> ofSuccess(Key key, V value, V oldValue) {
+            return new RegisterResult<>(key, value, oldValue, true, false, false, false, false);
+        }
+        
+        public static <V> RegisterResult<V> ofFrozenFailure(Key key, V value) {
+            return new RegisterResult<>(key, value, null, false, true, false, false, false);
+        }
+        
+        public static <V> RegisterResult<V> ofReplacementFailure(Key key, V value) {
+            return new RegisterResult<>(key, value, null, false, false, true, false, false);
+        }
+        
+        public static <V> RegisterResult<V> ofCancelledFailure(Key key, V value) {
+            return new RegisterResult<>(key, value, null, false, false, false, true, false);
+        }
+        
+        public static <V> RegisterResult<V> ofCastFailure(Key key, V value) {
+            return new RegisterResult<>(key, value, null, false, false, false, false, true);
+        }
         
         public boolean isPresent() {
-            return key != null;
-        }
-        
-        @Override
-        public Key getLeft() {
-            return key;
-        }
-        
-        @Override
-        public V getMiddle() {
-            return value;
-        }
-        
-        @Override
-        public V getRight() {
-            return oldValue;
+            return key != null && success;
         }
     }
     
@@ -474,7 +478,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
             return register(keyable.getKey(), v);
         } catch (ClassCastException e) {}
         
-        return new RegisterResult<>(null, null, null);
+        return RegisterResult.ofCastFailure(keyable.getKey(), null);
     }
     
     /**
