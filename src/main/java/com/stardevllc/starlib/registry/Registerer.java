@@ -1,6 +1,7 @@
 package com.stardevllc.starlib.registry;
 
 import com.stardevllc.starlib.objects.key.Key;
+import com.stardevllc.starlib.objects.key.Keyable;
 
 import java.util.*;
 
@@ -29,6 +30,11 @@ public class Registerer<V> {
         RegistryObject<V> registryObject = new RegistryObject<>(registry, key);
         entries.put(key, registryObject);
         registry.register(key, object);
+        
+        if (object instanceof Keyable keyable && !keyable.hasKey() && keyable.supportsSettingKey()) {
+            keyable.setKey(key);
+        }
+        
         return registryObject;
     }
     

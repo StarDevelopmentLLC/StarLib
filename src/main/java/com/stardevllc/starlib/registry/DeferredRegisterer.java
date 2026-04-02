@@ -1,6 +1,7 @@
 package com.stardevllc.starlib.registry;
 
 import com.stardevllc.starlib.objects.key.Key;
+import com.stardevllc.starlib.objects.key.Keyable;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -45,7 +46,13 @@ public class DeferredRegisterer<V> {
         if (hasRegisteredEntries) {
             return;
         }
-        this.suppliers.forEach((key, supplier) -> registry.register(key, supplier.get()));
+        this.suppliers.forEach((key, supplier) -> {
+            V value = supplier.get();
+            registry.register(key, value);
+            if (value instanceof Keyable keyable && !keyable.hasKey() && keyable.supportsSettingKey()) {
+                keyable.setKey(key);
+            }
+        });
         this.hasRegisteredEntries = true;
     }
     
