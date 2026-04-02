@@ -215,22 +215,22 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         return keys;
     }
     
-    protected final V registerBacking(Key key, V value) {
+    protected final RegisterResult<V> registerBacking(Key key, V value) {
         if (this.frozen) {
-            return null;
+            return new RegisterResult<>(null, null, null);
         }
         
         V oldValue = get(key);
         
         if (oldValue != null) {
             if (!hasFlag(Flag.REPLACING)) {
-                return null;
+                return new RegisterResult<>(null, null, null);
             }
         }
         
         RegisterEvent<V> e = getDispatcher().dispatch(new RegisterEvent<>(this, key, value, oldValue));
         if (e.isCancelled()) {
-            return null;
+            return new RegisterResult<>(null, null, null);
         }
         
         V ov = this.backingMap.put(key, value);
@@ -240,11 +240,11 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
             this.parentRegistry.register(key, value);
         }
         
-        return ov;
+        return new RegisterResult<>(key, value, ov);
     }
     
     @Override
-    public V register(Key key, V value) {
+    public RegisterResult<V> register(Key key, V value) {
         return registerBacking(key, value);
     }
     

@@ -9,10 +9,12 @@ import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.key.*;
 import com.stardevllc.starlib.objects.key.impl.StringKey;
 import com.stardevllc.starlib.tuple.pair.ImmutablePair;
+import com.stardevllc.starlib.tuple.triple.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 /**
  * A Registry maps values to a special type of Key
@@ -425,6 +427,28 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
      */
     Collection<Key> get(V value);
     
+    record RegisterResult<V>(Key key, V value, V oldValue) implements Triple<Key, V, V> {
+        
+        public boolean isPresent() {
+            return key != null;
+        }
+        
+        @Override
+        public Key getLeft() {
+            return key;
+        }
+        
+        @Override
+        public V getMiddle() {
+            return value;
+        }
+        
+        @Override
+        public V getRight() {
+            return oldValue;
+        }
+    }
+    
     /**
      * Registers a mapping of the key to the value
      *
@@ -432,10 +456,25 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
      * @param value The value
      * @return The previous value or null if it did not exist
      */
-    V register(Key key, V value);
+    RegisterResult<V> register(Key key, V value);
     
-    default V register(String key, V value) {
-        return register(createKey(key), value);
+    default RegisterResult<V> register(String key, V value) {
+        RegisterResult<V> result = register(createKey(key), value);
+        if (value instanceof Keyable keyable) {
+            if (keyable.supportsSettingKey()) {
+                keyable.setKey(result.key());
+            }
+        }
+        return result;
+    }
+    
+    default RegisterResult<V> register(Keyable keyable) {
+        try {
+            V v = (V) keyable;
+            return register(keyable.getKey(), v);
+        } catch (ClassCastException e) {}
+        
+        return new RegisterResult<>(null, null, null);
     }
     
     /**
@@ -534,13 +573,13 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
      *
      * @param m The map
      */
-    default void registerAll(Map<Key, ? extends V> m) {
+    default Set<RegisterResult<V>> registerAll(Map<Key, ? extends V> m) {
         if (m == null) {
-            return;
+            return Set.of();
         }
         
         RegisterAllEvent<V> event = getDispatcher().dispatch(new RegisterAllEvent<>(this, m));
-        event.getValues().forEach(entry -> register(entry.getLeft(), entry.getRight()));
+        return event.getValues().stream().map(entry -> register(entry.getLeft(), entry.getRight())).collect(Collectors.toSet());
     }
     
     final class RegisterAllEvent<V> extends AbstractEvent<V> {
