@@ -30,4 +30,7 @@ public abstract class AbstractFactory<T, F extends AbstractFactory<T, F>> implem
         postcreateConsumer = consumer;
         return self();
     }
+    
+    @Override
+    public abstract F clone();
 }

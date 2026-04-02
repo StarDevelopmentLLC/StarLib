@@ -42,4 +42,7 @@ public abstract class AbstractBuilder<T, B extends AbstractBuilder<T, B>> implem
     public Consumer<T> getPostbuildConsumer() {
         return postbuildConsumer;
     }
+    
+    @Override
+    public abstract B clone();
 }
