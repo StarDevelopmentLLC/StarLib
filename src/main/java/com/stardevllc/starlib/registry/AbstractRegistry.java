@@ -345,7 +345,11 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         
         @Override
         public @NotNull <E> E dispatch(E event) {
-            this.listeners.forEach(l -> l.onEvent((Event<V>) event));
+            this.listeners.forEach(l -> {
+                try {
+                    l.onEvent((Event<V>) event);
+                } catch (ClassCastException e) {}
+            });
             return event;
         }
         
