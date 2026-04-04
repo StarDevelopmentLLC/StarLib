@@ -12,7 +12,17 @@ public class MutablePair<L, R> implements Pair<L, R> {
         this.right = right;
     }
     
+    public MutablePair(Pair<L, R> pair) {
+        this.left = pair.getLeft();
+        this.right = pair.getRight();
+    }
+    
     public MutablePair() {
+    }
+    
+    public void set(Pair<L, R> pair) {
+        this.left = pair.getLeft();
+        this.right = pair.getRight();
     }
     
     @Override

@@ -14,6 +14,18 @@ public class MutableTriple<L, M, R> implements Triple<L, M, R> {
     
     public MutableTriple() {}
     
+    public MutableTriple(Triple<L, M, R> triple) {
+        this.left = triple.getLeft();
+        this.middle = triple.getMiddle();
+        this.right = triple.getRight();
+    }
+    
+    public void set(Triple<L, M, R> triple) {
+        this.left = triple.getLeft();
+        this.middle = triple.getMiddle();
+        this.right = triple.getRight();
+    }
+    
     @Override
     public L getLeft() {
         return left;
