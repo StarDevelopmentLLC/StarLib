@@ -53,7 +53,7 @@ public class HashRegistry<V> extends AbstractRegistry<V> {
         @Override
         public HashRegistry<V> build() {
             this.prebuild();
-            HashRegistry<V> registry = new HashRegistry<>(valueType, id, name, parentRegistry, false, dispatcher, flags);
+            HashRegistry<V> registry = new HashRegistry<>(valueType, key, name, parentRegistry, false, dispatcher, flags);
             return this.postBuild(registry);
         }
         

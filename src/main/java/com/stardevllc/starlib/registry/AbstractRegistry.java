@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
 public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     private final Class<V> valueType;
-    private final Key id;
+    private final Key key;
     private final String name;
     private final Map<Key, V> backingMap;
     private final IRegistry<? super V> parentRegistry;
@@ -22,9 +22,9 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     private final Set<Flag> flags;
     
-    public AbstractRegistry(Class<V> valueType, Key id, String name, Map<? extends Key, V> backingMap, IRegistry<? super V> parentRegistry, boolean frozen, EventDispatcher dispatcher, Set<Flag> flags) {
+    public AbstractRegistry(Class<V> valueType, Key key, String name, Map<? extends Key, V> backingMap, IRegistry<? super V> parentRegistry, boolean frozen, EventDispatcher dispatcher, Set<Flag> flags) {
         this.valueType = valueType;
-        this.id = id;
+        this.key = key;
         this.name = name;
         this.backingMap = (Map<Key, V>) backingMap;
         this.parentRegistry = parentRegistry;
@@ -41,12 +41,12 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         }
     }
     
-    public AbstractRegistry(Class<V> valueType, Key id, String name, Map<? extends Key, V> backingMap, Flag[] flags) {
-        this(valueType, id, name, backingMap, null, false, null, ofFlagSet(flags));
+    public AbstractRegistry(Class<V> valueType, Key key, String name, Map<? extends Key, V> backingMap, Flag[] flags) {
+        this(valueType, key, name, backingMap, null, false, null, ofFlagSet(flags));
     }
     
-    public AbstractRegistry(Class<V> valueType, Key id, String name, Map<? extends Key, V> backingMap, IRegistry<? super V> parentRegistry, Flag[] flags) {
-        this(valueType, id, name, backingMap, parentRegistry, false, null, ofFlagSet(flags));
+    public AbstractRegistry(Class<V> valueType, Key key, String name, Map<? extends Key, V> backingMap, IRegistry<? super V> parentRegistry, Flag[] flags) {
+        this(valueType, key, name, backingMap, parentRegistry, false, null, ofFlagSet(flags));
     }
     
     private static Set<Flag> ofFlagSet(Flag... flags) {
@@ -61,8 +61,8 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         this(valueType, null, null, backingMap, null);
     }
     
-    public AbstractRegistry(Class<V> valueType, Key id, Map<? extends Key, V> backingMap) {
-        this(valueType, id, id.toString(), backingMap, null);
+    public AbstractRegistry(Class<V> valueType, Key key, Map<? extends Key, V> backingMap) {
+        this(valueType, key, key.toString(), backingMap, null);
     }
     
     public AbstractRegistry(Class<V> valueType, String name, Map<? extends Key, V> backingMap) {
@@ -81,10 +81,10 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     @Override
     public final @NotNull Key getKey() {
-        if (this.id == null) {
+        if (this.key == null) {
             return IRegistry.super.getKey();
         }
-        return this.id;
+        return this.key;
     }
     
     @Override
@@ -189,7 +189,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     }
     
     @Override
-    public final List<Key> getPartial(Key key) {
+    public List<Key> getPartial(Key key) {
         List<Key> matches = new ArrayList<>();
         for (Key k : this.backingMap.keySet()) {
             if (k.contains(key)) {
@@ -319,12 +319,129 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     @Override
     public final Set<Key> keySet() {
-        return Collections.unmodifiableSet(this.backingMap.keySet());
+        return new KeySet();
+    }
+    
+    @SuppressWarnings("DuplicatedCode")
+    protected class KeyItr implements Iterator<Key> {
+        
+        protected final Iterator<Key> backingIterator;
+        
+        protected Key current;
+        
+        public KeyItr() {
+            backingIterator = backingMap.keySet().iterator();
+        }
+        
+        @Override
+        public boolean hasNext() {
+            return backingIterator.hasNext();
+        }
+        
+        @Override
+        public Key next() {
+            return current = backingIterator.next();
+        }
+        
+        @Override
+        public void remove() {
+            if (frozen) {
+                throw new UnsupportedOperationException("Cannot remove a key from a frozen registry");
+            }
+            
+            V value = get(current);
+            
+            RemoveEvent<V> e = getDispatcher().dispatch(new RemoveEvent<>(AbstractRegistry.this, key, value));
+            if (e.isCancelled()) {
+                return;
+            }
+            
+            this.backingIterator.remove();
+            callAdditionalRemoveActions(key, value);
+            IRegistry<? super V> pr = AbstractRegistry.this.parentRegistry;
+            if (pr != null) {
+                pr.remove(current);
+            }
+        }
+    }
+    
+    protected class KeySet extends AbstractSet<Key> {
+        @Override
+        public Iterator<Key> iterator() {
+            return new KeyItr();
+        }
+        
+        @Override
+        public int size() {
+            return AbstractRegistry.this.size();
+        }
     }
     
     @Override
     public final Collection<V> values() {
-        return Collections.unmodifiableCollection(this.backingMap.values());
+        return new Values();
+    }
+    
+    @SuppressWarnings("DuplicatedCode")
+    protected class ValuesItr implements Iterator<V> {
+        
+        protected final Iterator<V> backingIterator;
+        
+        protected V current;
+        
+        public ValuesItr() {
+            this.backingIterator = backingMap.values().iterator();
+        }
+        
+        @Override
+        public boolean hasNext() {
+            return backingIterator.hasNext();
+        }
+        
+        @Override
+        public V next() {
+            return current = backingIterator.next();
+        }
+        
+        @Override
+        public void remove() {
+            if (frozen) {
+                throw new UnsupportedOperationException("Cannot remove a key from a frozen registry");
+            }
+            
+            Collection<Key> keys = get(current);
+            
+            if (keys.size() != 1) {
+                return;
+            }
+            
+            Key key = keys.iterator().next();
+            
+            RemoveEvent<V> e = getDispatcher().dispatch(new RemoveEvent<>(AbstractRegistry.this, key, current));
+            if (e.isCancelled()) {
+                return;
+            }
+            
+            this.backingIterator.remove();
+            callAdditionalRemoveActions(key, current);
+            IRegistry<? super V> pr = AbstractRegistry.this.parentRegistry;
+            if (pr != null) {
+                pr.remove(key);
+            }
+        }
+    }
+    
+    protected class Values extends AbstractCollection<V> {
+        
+        @Override
+        public Iterator<V> iterator() {
+            return new ValuesItr();
+        }
+        
+        @Override
+        public int size() {
+            return AbstractRegistry.this.size();
+        }
     }
     
     @Override
@@ -336,7 +453,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     @Override
     public final Iterator<V> iterator() {
-        return values().iterator();
+        return new ValuesItr();
     }
     
     private static class Dispatcher<V> implements EventDispatcher {

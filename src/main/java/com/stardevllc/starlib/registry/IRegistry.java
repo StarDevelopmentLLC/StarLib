@@ -760,7 +760,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
         protected final Class<V> valueType;
         protected Supplier<Map<Key, V>> mapSupplier;
         protected IRegistry<? super V> parentRegistry;
-        protected Key id;
+        protected Key key;
         protected String name;
         protected EventDispatcher dispatcher;
         protected Set<IRegistry.Flag> flags = EnumSet.noneOf(IRegistry.Flag.class);
@@ -776,7 +776,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
             this.valueType = builder.valueType;
             this.mapSupplier = builder.mapSupplier;
             this.parentRegistry = builder.parentRegistry;
-            this.id = builder.id;
+            this.key = builder.key;
             this.name = builder.name;
             this.dispatcher = builder.dispatcher;
             this.flags = builder.flags;
@@ -790,8 +790,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
             return self();
         }
         
-        public B withId(Key key) {
-            this.id = key;
+        public B withKey(Key key) {
+            this.key = key;
             return self();
         }
         
@@ -859,10 +859,10 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
         }
         
         protected final B prebuild() {
-            if (id == null && name != null) {
-                this.id = Keys.of(name);
-            } else if (id != null && name == null) {
-                this.name = this.id.toString();
+            if (key == null && name != null) {
+                this.key = Keys.of(name);
+            } else if (key != null && name == null) {
+                this.name = this.key.toString();
             }
             
             if (mapSupplier == null) {
@@ -881,7 +881,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
             this.listeners.forEach(registry::addListener);
             
             if (global) {
-                if (id != null && id.isNotEmpty()) {
+                if (key != null && key.isNotEmpty()) {
                     Registries.addRegistry(registry);
                 }
             }
