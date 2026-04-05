@@ -143,7 +143,7 @@ public class Instant implements Temporal {
 
     @Override
     public String toString() {
-        return String.format("%s/%s/%s %s:%s:%s.%s", format.format(getMonth()), format.format(getDay()), getYear(), format.format(getHour()), format.format(getMinute()), format.format(getSecond()), format.format(getMillisecond()));
+        return String.format("%s/%s/%s %s:%s:%s", format.format(getMonth()), format.format(getDay()), getYear(), format.format(getHour()), format.format(getMinute()), format.format(getSecond()));
     }
 
     @Override
