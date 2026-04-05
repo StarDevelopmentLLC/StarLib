@@ -3,6 +3,7 @@ package com.stardevllc.starlib.temporal;
 import com.stardevllc.starlib.time.TimeUnit;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class Instant implements Temporal {
 
@@ -28,7 +29,7 @@ public class Instant implements Temporal {
     }
 
     protected Instant(TimeValue timeValue) {
-        this.timeValue = new TimeValue(timeValue.getTime());
+        this.timeValue = timeValue.clone();
     }
     
     public Instant(Map<String, Object> serialized) {
@@ -64,7 +65,7 @@ public class Instant implements Temporal {
 
     public long getMonth() {
         long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
-        return this.timeValue.getTime() / TimeUnit.MONTHS.getMsPerUnit() + 1;
+        return remaining / TimeUnit.MONTHS.getMsPerUnit() + 1;
     }
 
     public Instant addMonths(long months) {
@@ -128,7 +129,8 @@ public class Instant implements Temporal {
     }
     
     public long getMillisecond() {
-        return this.timeValue.getTime() / TimeUnit.SECONDS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.SECONDS.getMsPerUnit();
+        return remaining / TimeUnit.SECONDS.getMsPerUnit();
     }
     
     public Instant addMilliseconds(long milliseconds) {
@@ -141,7 +143,7 @@ public class Instant implements Temporal {
 
     @Override
     public String toString() {
-        return String.format("%s/%s/%s %s:%s:%s", format.format(getMonth()), format.format(getDay()), format.format(getYear()), format.format(getHour()), format.format(getMinute()), format.format(getSecond()));
+        return String.format("%s/%s/%s %s:%s:%s.%s", format.format(getMonth()), format.format(getDay()), getYear(), format.format(getHour()), format.format(getMinute()), format.format(getSecond()), format.format(getMillisecond()));
     }
 
     @Override
@@ -180,5 +182,19 @@ public class Instant implements Temporal {
 
     public Instant subtractYears(long years) {
         return subtract(TimeUnit.YEARS, years);
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Instant instant)) {
+            return false;
+        }
+        
+        return Objects.equals(timeValue, instant.timeValue);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(timeValue);
     }
 }
