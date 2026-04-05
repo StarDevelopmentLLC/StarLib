@@ -25,8 +25,7 @@
 
 package com.stardevllc.starlib.random;
 
-import java.util.Collection;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -48,6 +47,10 @@ public interface RandomSelector<E> {
         return RandomSelectorImpl.uniform(elements);
     }
     
+    static <E> RandomSelector<E> uniform(E[] array) {
+        return RandomSelectorImpl.uniform(Arrays.asList(array));
+    }
+    
     /**
      * Creates a weighted selector which picks elements according to the value of their {@link Weighted#getWeight()}.
      *
@@ -57,6 +60,10 @@ public interface RandomSelector<E> {
      */
     static <E extends Weighted> RandomSelector<E> weighted(Collection<E> elements) {
         return weighted(elements, Weighted.WEIGHER);
+    }
+    
+    static <E extends Weighted> RandomSelector<E> weighted(E[] array) {
+        return weighted(Arrays.asList(array), Weighted.WEIGHER);
     }
     
     /**
@@ -70,6 +77,10 @@ public interface RandomSelector<E> {
      */
     static <E> RandomSelector<E> weighted(Collection<E> elements, Weigher<? super E> weigher) {
         return RandomSelectorImpl.weighted(elements, weigher);
+    }
+    
+    static <E> RandomSelector<E> weighted(E[] array, Weigher<? super E> weigher) {
+        return RandomSelectorImpl.weighted(Arrays.asList(array), weigher);
     }
     
     /**

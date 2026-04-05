@@ -2,6 +2,7 @@ package com.stardevllc.starlib.objects;
 
 import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.factory.IFactory;
+import com.stardevllc.starlib.random.RandomSelector;
 
 import java.util.function.Supplier;
 
@@ -15,6 +16,7 @@ public final class ObjectProvider<T> {
     private Supplier<T> supplier;
     private IFactory<T, ?> factory;
     private IBuilder<T, ?> builder;
+    private RandomSelector<T> selector;
     
     /**
      * Creates an empty  provider
@@ -33,6 +35,7 @@ public final class ObjectProvider<T> {
             this.supplier = provider.supplier;
             this.factory = provider.factory;
             this.builder = provider.builder;
+            this.selector = provider.selector;
         }
     }
     
@@ -73,6 +76,15 @@ public final class ObjectProvider<T> {
     }
     
     /**
+     * Creates a provider with a RandomSelector
+     *
+     * @param selector The selector
+     */
+    public ObjectProvider(RandomSelector<T> selector) {
+        this.selector = selector;
+    }
+    
+    /**
      * Overrides the provider with the new one
      *
      * @param provider The provider
@@ -84,11 +96,13 @@ public final class ObjectProvider<T> {
             this.supplier = provider.supplier;
             this.factory = provider.factory;
             this.builder = provider.builder;
+            this.selector = provider.selector;
         } else {
             this.instance = null;
             this.supplier = null;
             this.factory = null;
             this.builder = null;
+            this.selector = null;
         }
         
         return this;
@@ -100,7 +114,7 @@ public final class ObjectProvider<T> {
      * @return Empty state
      */
     public boolean isEmpty() {
-        return this.instance == null && this.factory == null && this.builder == null && this.supplier == null;
+        return this.instance == null && this.factory == null && this.builder == null && this.supplier == null && selector == null;
     }
     
     /**
@@ -116,6 +130,10 @@ public final class ObjectProvider<T> {
         
         if (supplier != null) {
             return supplier.get();
+        }
+        
+        if (selector != null) {
+            return selector.pick();
         }
         
         if (builder != null) {
@@ -175,6 +193,25 @@ public final class ObjectProvider<T> {
     }
     
     /**
+     * Gets the direct selector
+     *
+     * @return The selector
+     */
+    public RandomSelector<T> getSelector() {
+        return selector;
+    }
+    
+    /**
+     * Sets the values to the provider
+     *
+     * @param provider The provider
+     * @return This provider
+     */
+    public ObjectProvider<T> set(ObjectProvider<T> provider) {
+        return setProvider(provider);
+    }
+    
+    /**
      * Sets the instance, unsetting others
      *
      * @param instance The instance
@@ -185,6 +222,7 @@ public final class ObjectProvider<T> {
         this.supplier = null;
         this.builder = null;
         this.factory = null;
+        this.selector = null;
         return this;
     }
     
@@ -199,6 +237,7 @@ public final class ObjectProvider<T> {
         this.instance = null;
         this.builder = null;
         this.factory = null;
+        this.selector = null;
         return this;
     }
     
@@ -213,6 +252,7 @@ public final class ObjectProvider<T> {
         this.instance = null;
         this.supplier = null;
         this.builder = null;
+        this.selector = null;
         return this;
     }
     
@@ -224,6 +264,22 @@ public final class ObjectProvider<T> {
      */
     public ObjectProvider<T> set(IBuilder<T, ?> builder) {
         this.builder = builder;
+        this.instance = null;
+        this.supplier = null;
+        this.factory = null;
+        this.selector = null;
+        return this;
+    }
+    
+    /**
+     * Sets the selector, unsetting others
+     *
+     * @param selector The selector
+     * @return This provider
+     */
+    public ObjectProvider<T> set(RandomSelector<T> selector) {
+        this.selector = selector;
+        this.builder = null;
         this.instance = null;
         this.supplier = null;
         this.factory = null;
