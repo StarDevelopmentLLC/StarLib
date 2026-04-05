@@ -63,6 +63,10 @@ public class Timer extends Clock<TimerSnapshot> {
             return period;
         }
         
+        if (period == 0) {
+            return 0;
+        }
+        
         long elapsed = this.lengthProperty.get() - this.time.get();
         long periodsElapsed = elapsed / period;
         if (elapsed % period != 0) {

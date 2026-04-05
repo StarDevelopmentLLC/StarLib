@@ -81,6 +81,10 @@ public class Stopwatch extends Clock<StopwatchSnapshot> {
             return period;
         }
         
+        if (period == 0) {
+            return 0;
+        }
+        
         long elapsed = this.time.get() - this.startTime.get();
         long periodsElapsed = elapsed / period;
         if (elapsed % period != 0) {
