@@ -3,6 +3,9 @@ package com.stardevllc.starlib.objects.key;
 import com.stardevllc.starlib.registry.IRegistry;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 /**
  * This represents a fully qualified (fq) key for something within a Registry. <br>
  * The format it is in is "{registrykey}/{key}" <br>
@@ -34,7 +37,33 @@ public class FQKey implements Key {
         this.registry = registry;
         this.key = key;
         
-        this.value = registry.getKey() + "/" + key;
+        //Get the full list of all parents using a loop and a stack
+        Deque<Key> stack = new LinkedList<>();
+        //Push the direct values to the stack
+        stack.push(this.key);
+        stack.push(this.registry.getKey());
+        
+        //Get the parent registry of the one provided
+        IRegistry<?> r = this.registry.getParentRegistry();
+        //Define the conditions of the loop, if this registry doesnt have a parent, this does nothing any further
+        while (r != null) {
+            //If it exists, push the parent key to the stack
+            stack.push(r.getKey());
+            //Reassign the r value to the parent registry and the loop continues
+            r = r.getParentRegistry();
+        }
+        
+        //Now we need to build the final string representation of the key using the stack
+        StringBuilder sb = new StringBuilder();
+        while (stack.peek() != null) {
+            sb.append(stack.pop().toString()).append('/');
+        }
+        
+        // Delete the last / in the final string as it is at the end
+        sb.deleteCharAt(sb.length() - 1);
+        
+        //Now we should have the full name of the key taking in all the parents of the registry
+        this.value = sb.toString();
         this.hashCode = this.value.hashCode();
     }
     
