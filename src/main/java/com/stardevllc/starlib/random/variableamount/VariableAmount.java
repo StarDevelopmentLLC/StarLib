@@ -74,11 +74,15 @@ public interface VariableAmount {
      * @return A variable amount representation
      */
     static VariableAmount range(double min, double max) {
-        return new DoubleVariableAmount.BaseAndVariance(min, fixed(max - min));
+        return new DoubleVariableAmount.Range(min, max);
     }
     
     static VariableAmount range(double min, double max, double divisor) {
-        return new DoubleVariableAmount.BaseAndVariance(min, fixed(max - min), divisor);
+        return new DoubleVariableAmount.Range(min, max, divisor);
+    }
+    
+    static VariableAmount range(double min, double max, double divisor, int places) {
+        return new DoubleVariableAmount.Range(min, max, divisor, places);
     }
     
     /**
@@ -90,11 +94,11 @@ public interface VariableAmount {
      * @return A variable amount representation
      */
     static VariableAmount range(int min, int max) {
-        return new IntegerVariableAmount.BaseAndVariance(min, fixed(max - min));
+        return new IntegerVariableAmount.Range(min, max);
     }
     
     static VariableAmount range(int min, int max, int divisor) {
-        return new IntegerVariableAmount.BaseAndVariance(min, fixed(max - min), divisor);
+        return new IntegerVariableAmount.Range(min, max, divisor);
     }
     
     /**
@@ -106,11 +110,11 @@ public interface VariableAmount {
      * @return A variable amount representation
      */
     static VariableAmount range(long min, long max) {
-        return new LongVariableAmount.BaseAndVariance(min, fixed(max - min));
+        return new LongVariableAmount.Range(min, max);
     }
     
     static VariableAmount range(long min, long max, long divisor) {
-        return new LongVariableAmount.BaseAndVariance(min, fixed(max - min), divisor);
+        return new LongVariableAmount.Range(min, max, divisor);
     }
 
     /**

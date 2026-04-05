@@ -53,6 +53,45 @@ abstract class LongVariableAmount implements VariableAmount {
         }
     }
     
+    static final class Range extends LongVariableAmount {
+        private final long max;
+        private final long divisor;
+        
+        Range(long min, long max, long divisor) {
+            super(min);
+            this.max = max;
+            this.divisor = divisor;
+        }
+        
+        Range(long min, long max) {
+            this(min, max, 1);
+        }
+        
+        @Override
+        public long getLong(Random random) {
+            return random.nextLong(this.base, this.max + 1) / divisor;
+        }
+        
+        @Override
+        public String toString() {
+            return "LongVariableAmount.Range(min=" + this.base + ", max=" + this.max + ", divisor=" + divisor + ")";
+        }
+        
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Range other)) {
+                return false;
+            }
+            return super.equals(o) && this.max == other.max && this.divisor == other.divisor;
+        }
+        
+        @Override
+        public int hashCode() {
+            int result = super.hashCode() * PRIME + Long.hashCode(this.max);
+            return result * PRIME + Long.hashCode(this.divisor);
+        }
+    }
+    
     static final class BaseAndVariance extends LongVariableAmount {
         private final VariableAmount variance;
         private final long divisor;

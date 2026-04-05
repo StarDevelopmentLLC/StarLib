@@ -53,6 +53,45 @@ abstract class IntegerVariableAmount implements VariableAmount {
         }
     }
     
+    static final class Range extends IntegerVariableAmount {
+        private final int max;
+        private final int divisor;
+        
+        Range(int min, int max, int divisor) {
+            super(min);
+            this.max = max;
+            this.divisor = divisor;
+        }
+        
+        Range(int min, int max) {
+            this(min, max, 1);
+        }
+        
+        @Override
+        public int getInt(Random random) {
+            return random.nextInt(this.base, this.max + 1) / divisor;
+        }
+        
+        @Override
+        public String toString() {
+            return "IntegerVariableAmount.Range(min=" + this.base + ", max=" + this.max + ", divisor=" + divisor + ")";
+        }
+        
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Range other)) {
+                return false;
+            }
+            return super.equals(o) && this.max == other.max && this.divisor == other.divisor;
+        }
+        
+        @Override
+        public int hashCode() {
+            int result = super.hashCode() * PRIME + Integer.hashCode(this.max);
+            return result * PRIME + Integer.hashCode(this.divisor);
+        }
+    }
+    
     static final class BaseAndVariance extends IntegerVariableAmount {
         private final VariableAmount variance;
         private final int divisor;

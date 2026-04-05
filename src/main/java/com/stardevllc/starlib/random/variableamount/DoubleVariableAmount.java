@@ -55,14 +55,76 @@ abstract class DoubleVariableAmount implements VariableAmount {
         }
     }
     
+    static final class Range extends DoubleVariableAmount {
+        private final double max, divisor;
+        private final int places;
+        
+        Range(double min, double max, double divisor, int places) {
+            super(min);
+            this.max = max;
+            this.divisor = divisor;
+            this.places = places;
+        }
+        
+        Range(double min, double max, double divisor) {
+            this(min, max, divisor, 0);
+        }
+        
+        Range(double min, double max) {
+            this(min, max, 1);
+        }
+        
+        @Override
+        public double getDouble(Random random) {
+            double value = random.nextDouble(base, max) / divisor;
+            if (places > 0) {
+                double pow = Math.pow(10, places);
+                return Math.round(value * pow) / pow;
+            }
+            return value;
+        }
+        
+        @Override
+        public String toString() {
+            return "DoubleVariableAmount.BaseAndVariance(min=" + this.base + ", max=" + this.max + ", divisor=" + this.divisor + ")";
+        }
+        
+        @Override
+        public boolean equals(Object object) {
+            if (!(object instanceof Range range)) {
+                return false;
+            }
+            if (!super.equals(object)) {
+                return false;
+            }
+            
+            return Double.compare(max, range.max) == 0 && Double.compare(divisor, range.divisor) == 0 && places == range.places;
+        }
+        
+        @Override
+        public int hashCode() {
+            int result = super.hashCode();
+            result = 31 * result + Double.hashCode(max);
+            result = 31 * result + Double.hashCode(divisor);
+            result = 31 * result + places;
+            return result;
+        }
+    }
+    
     static final class BaseAndVariance extends DoubleVariableAmount {
         private final VariableAmount variance;
         private final double divisor;
+        private final int places;
         
-        BaseAndVariance(double base, VariableAmount variance, double divisor) {
+        BaseAndVariance(double base, VariableAmount variance, double divisor, int places) {
             super(base);
             this.variance = variance;
             this.divisor = divisor;
+            this.places = places;
+        }
+        
+        BaseAndVariance(double base, VariableAmount variance, double divisor) {
+            this(base, variance, divisor, 0);
         }
         
         BaseAndVariance(double base, VariableAmount variance) {
@@ -72,7 +134,12 @@ abstract class DoubleVariableAmount implements VariableAmount {
         @Override
         public double getDouble(Random random) {
             double var = this.variance.getDouble(random);
-            return (this.base + random.nextDouble() * var * 2 - var) / divisor;
+            double value = (this.base + random.nextDouble() * var * 2 - var) / divisor;
+            if (places > 0) {
+                double pow = Math.pow(10, places);
+                return Math.round(value * pow) / pow;
+            }
+            return value;
         }
         
         @Override
