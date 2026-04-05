@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializable {
 
-    DecimalFormat format = new DecimalFormat("###,###,###,###,###,###.####");
+    DecimalFormat format = new DecimalFormat("###,###,###,###,###,#00.####");
     
     TimeValue getTime();
     
