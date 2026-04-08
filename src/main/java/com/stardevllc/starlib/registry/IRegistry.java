@@ -378,6 +378,13 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
     }
     
     /**
+     * Gets a set of entries backed by the registry
+     *
+     * @return The set of entries
+     */
+    Set<Map.Entry<Key, V>> entrySet();
+    
+    /**
      * Checks to see if this registry contains the specified key
      *
      * @param key The key to check

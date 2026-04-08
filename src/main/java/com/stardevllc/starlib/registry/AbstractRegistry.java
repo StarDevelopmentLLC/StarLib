@@ -341,6 +341,64 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         return new KeySet();
     }
     
+    @Override
+    public Set<Map.Entry<Key, V>> entrySet() {
+        return Set.of();
+    }
+    
+    protected class EntryItr implements Iterator<Map.Entry<Key, V>> {
+        
+        private final Iterator<Map.Entry<Key, V>> backingIterator;
+        
+        private Map.Entry<Key, V> current;
+        
+        public EntryItr() {
+            this.backingIterator = backingMap.entrySet().iterator();
+        }
+        
+        @Override
+        public boolean hasNext() {
+            return this.backingIterator.hasNext();
+        }
+        
+        @Override
+        public Map.Entry<Key, V> next() {
+            return current = this.backingIterator.next();
+        }
+        
+        @Override
+        public void remove() {
+            if (frozen) {
+                throw new UnsupportedOperationException("Cannot remove a key from a frozen registry");
+            }
+            
+            RemoveEvent<V> e = getDispatcher().dispatch(new RemoveEvent<>(AbstractRegistry.this, current.getKey(), current.getValue()));
+            if (e.isCancelled()) {
+                return;
+            }
+            
+            this.backingIterator.remove();
+            callAdditionalRemoveActions(current.getKey(), current.getValue());
+            IRegistry<? super V> pr = AbstractRegistry.this.parentRegistry;
+            if (pr != null) {
+                pr.remove(current.getKey());
+            }
+        }
+    }
+    
+    protected class EntrySet extends AbstractSet<Map.Entry<Key, V>> {
+        
+        @Override
+        public Iterator<Map.Entry<Key, V>> iterator() {
+            return null;
+        }
+        
+        @Override
+        public int size() {
+            return AbstractRegistry.this.size();
+        }
+    }
+    
     @SuppressWarnings("DuplicatedCode")
     protected class KeyItr implements Iterator<Key> {
         
@@ -425,7 +483,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         @Override
         public void remove() {
             if (frozen) {
-                throw new UnsupportedOperationException("Cannot remove a key from a frozen registry");
+                throw new UnsupportedOperationException("Cannot remove a value from a frozen registry");
             }
             
             Collection<Key> keys = get(current);
