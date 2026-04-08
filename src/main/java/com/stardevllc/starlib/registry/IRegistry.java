@@ -57,7 +57,18 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
         /**
          * This flag being present means that the registry will check partial keys in the get method
          */
-        CHECK_PARTIAL_IN_GET
+        CHECK_PARTIAL_IN_GET,
+        
+        /**
+         * NOTE: This may be renamed when I find a better name/phrasing <br>
+         * This being present means that the current registry's key is added to the full path of a registered item to the parent
+         */
+        ADD_REGISTRY_KEY_TO_PARENT_REGISTER,
+        
+        /**
+         * This being present means that the registration to this registry will fail on parent registration failure
+         */
+        FAIL_ON_PARENT_REGISTER_FAILURE
     }
     
     /**
@@ -427,25 +438,29 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
     Collection<Key> get(V value);
     
     @SuppressWarnings("NegativelyNamedBooleanVariable")
-    record RegisterResult<V>(Key key, V value, V oldValue, boolean success, boolean frozen, boolean noReplacements, boolean cancelled, boolean cannotCast) {
-        public static <V> RegisterResult<V> ofSuccess(Key key, V value, V oldValue) {
-            return new RegisterResult<>(key, value, oldValue, true, false, false, false, false);
+    record RegisterResult<V>(Key key, V value, V oldValue, boolean success, RegisterResult<? super V> parentResult, boolean frozen, boolean noReplacements, boolean cancelled, boolean cannotCast) {
+        public static <V> RegisterResult<V> ofSuccess(Key key, V value, V oldValue, RegisterResult<? super V> parentResult) {
+            return new RegisterResult<>(key, value, oldValue, true, parentResult, false, false, false, false);
+        }
+        
+        public static <V> RegisterResult<V> ofParentFailure(Key key, V value, RegisterResult<? super V> parentResult) {
+            return new RegisterResult<>(key, value, null, false, parentResult, false, false, false, false);
         }
         
         public static <V> RegisterResult<V> ofFrozenFailure(Key key, V value) {
-            return new RegisterResult<>(key, value, null, false, true, false, false, false);
+            return new RegisterResult<>(key, value, null, false, null, true, false, false, false);
         }
         
         public static <V> RegisterResult<V> ofReplacementFailure(Key key, V value) {
-            return new RegisterResult<>(key, value, null, false, false, true, false, false);
+            return new RegisterResult<>(key, value, null, false, null, false, true, false, false);
         }
         
         public static <V> RegisterResult<V> ofCancelledFailure(Key key, V value) {
-            return new RegisterResult<>(key, value, null, false, false, false, true, false);
+            return new RegisterResult<>(key, value, null, false, null, false, false, true, false);
         }
         
         public static <V> RegisterResult<V> ofCastFailure(Key key, V value) {
-            return new RegisterResult<>(key, value, null, false, false, false, false, true);
+            return new RegisterResult<>(key, value, null, false, null, false, false, false, true);
         }
         
         public boolean isPresent() {

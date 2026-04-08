@@ -2,6 +2,7 @@ package com.stardevllc.starlib.registry;
 
 import com.stardevllc.starlib.objects.key.Key;
 import com.stardevllc.starlib.objects.key.Keyable;
+import com.stardevllc.starlib.registry.IRegistry.RegisterResult;
 
 import java.util.*;
 
@@ -13,6 +14,7 @@ public class Registerer<V> {
     
     private final IRegistry<V> registry;
     private final Map<Key, RegistryObject<V>> entries = new HashMap<>();
+    private final Map<Key, RegisterResult<V>> results = new HashMap<>();
     
     public Registerer(IRegistry<V> registry) {
         this.registry = registry;
@@ -29,7 +31,8 @@ public class Registerer<V> {
         
         RegistryObject<V> registryObject = new RegistryObject<>(registry, key);
         entries.put(key, registryObject);
-        registry.register(key, object);
+        RegisterResult<V> result = registry.register(key, object);
+        results.put(key, result);
         
         if (object instanceof Keyable keyable && !keyable.hasKey() && keyable.supportsSettingKey()) {
             keyable.setKey(key);
@@ -44,5 +47,13 @@ public class Registerer<V> {
     
     public Collection<RegistryObject<V>> getEntries() {
         return new ArrayList<>(this.entries.values());
+    }
+    
+    public RegisterResult<V> getResult(Key key) {
+        return this.results.get(key);
+    }
+    
+    public Map<Key, RegisterResult<V>> getResults() {
+        return new HashMap<>(this.results);
     }
 }

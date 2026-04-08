@@ -10,10 +10,26 @@ public class RegistryObject<V> implements Supplier<V> {
     
     private final IRegistry<V> registry;
     private final Key key;
+    private final Registerer<V> registerer;
+    private final DeferredRegisterer<V> deferredRegisterer;
     
-    public RegistryObject(IRegistry<V> registry, Key key) {
+    public RegistryObject(IRegistry<V> registry, Key key, Registerer<V> registerer, DeferredRegisterer<V> deferredRegisterer) {
         this.registry = registry;
         this.key = key;
+        this.registerer = registerer;
+        this.deferredRegisterer = deferredRegisterer;
+    }
+    
+    public RegistryObject(IRegistry<V> registry, Key key) {
+        this(registry, key, null, null);
+    }
+    
+    public RegistryObject(IRegistry<V> registry, Key key, Registerer<V> registerer) {
+        this(registry, key, registerer, null);
+    }
+    
+    public RegistryObject(IRegistry<V> registry, Key key, DeferredRegisterer<V> deferredRegisterer) {
+        this(registry, key, null, deferredRegisterer);
     }
     
     public boolean isPresent() {
@@ -30,6 +46,16 @@ public class RegistryObject<V> implements Supplier<V> {
     @Override
     public V get() {
         return registry.get(key);
+    }
+    
+    public IRegistry.RegisterResult<V> result() {
+        if (this.registerer != null) {
+            return this.registerer.getResult(key);
+        } else if (this.deferredRegisterer != null) {
+            return this.deferredRegisterer.getResult(key);
+        }
+        
+        return null;
     }
     
     public Key getKey() {

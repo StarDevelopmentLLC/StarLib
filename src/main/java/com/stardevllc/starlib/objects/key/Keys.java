@@ -6,6 +6,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public final class Keys {
+    public static Key of(Object base, Object... objects) {
+        StringBuilder sb = new StringBuilder(base.toString());
+        if (objects != null) {
+            for (Object object : objects) {
+                sb.append(object.toString());
+            }
+        }
+        
+        return new StringKey(sb.toString());
+    }
+    
     public static Key of(Object object) {
         if (object instanceof String str) {
             return new StringKey(str);

@@ -16,6 +16,7 @@ public class DeferredRegisterer<V> {
     
     private final Map<Key, Supplier<V>> suppliers = new LinkedHashMap<>();
     private final Map<Key, RegistryObject<V>> entries = new HashMap<>();
+    private final Map<Key, IRegistry.RegisterResult<V>> results = new HashMap<>();
     
     private boolean hasRegisteredEntries;
     
@@ -48,7 +49,8 @@ public class DeferredRegisterer<V> {
         }
         this.suppliers.forEach((key, supplier) -> {
             V value = supplier.get();
-            registry.register(key, value);
+            IRegistry.RegisterResult<V> result = registry.register(key, value);
+            results.put(key, result);
             if (value instanceof Keyable keyable && !keyable.hasKey() && keyable.supportsSettingKey()) {
                 keyable.setKey(key);
             }
@@ -58,5 +60,13 @@ public class DeferredRegisterer<V> {
     
     public Collection<RegistryObject<V>> getEntries() {
         return new ArrayList<>(this.entries.values());
+    }
+    
+    public IRegistry.RegisterResult<V> getResult(Key key) {
+        return this.results.get(key);
+    }
+    
+    public Map<Key, IRegistry.RegisterResult<V>> getResults() {
+        return new HashMap<>(this.results);
     }
 }

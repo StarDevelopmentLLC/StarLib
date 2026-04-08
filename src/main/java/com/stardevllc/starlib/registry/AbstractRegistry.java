@@ -15,6 +15,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     private final Key key;
     private final String name;
     private final Map<Key, V> backingMap;
+    private final Map<Key, Key> parentRegistryKeys = new HashMap<>();
     private final IRegistry<? super V> parentRegistry;
     
     private boolean frozen;
@@ -236,11 +237,24 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         V ov = this.backingMap.put(key, value);
         callAdditionalRegisterActions(key, value, ov);
         
+        RegisterResult<? super V> parentResult;
         if (this.parentRegistry != null) {
-            this.parentRegistry.register(key, value);
+            Key fqKey;
+            if (this.hasKey() && hasFlag(Flag.ADD_REGISTRY_KEY_TO_PARENT_REGISTER)) {
+                fqKey = Keys.of(this.key, "/", key);
+                this.parentRegistryKeys.put(key, fqKey);
+            } else {
+                fqKey = key;
+            }
+            parentResult = this.parentRegistry.register(fqKey, value);
+            if (!parentResult.success() && hasFlag(Flag.FAIL_ON_PARENT_REGISTER_FAILURE)) {
+                return RegisterResult.ofParentFailure(key, value, parentResult);
+            }
+        } else {
+            parentResult = null;
         }
         
-        return RegisterResult.ofSuccess(key, value, ov);
+        return RegisterResult.ofSuccess(key, value, ov, parentResult);
     }
     
     @Override
@@ -274,7 +288,12 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         V v = this.backingMap.remove(key);
         callAdditionalRemoveActions(key, v);
         if (this.parentRegistry != null) {
-            this.parentRegistry.remove(key);
+            Key k = this.parentRegistryKeys.get(key);
+            if (k != null) {
+                this.parentRegistry.remove(k);
+            } else {
+                this.parentRegistry.remove(key);
+            }
         }
         return v;
     }
