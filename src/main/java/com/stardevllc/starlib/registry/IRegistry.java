@@ -625,7 +625,7 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
      *
      * @param listener The listener
      */
-    default void addRegisterALlListener(RegisterAllListener<V> listener) {
+    default void addRegisterAllListener(RegisterAllListener<V> listener) {
         addListener(listener);
     }
     
