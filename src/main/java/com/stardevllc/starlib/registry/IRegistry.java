@@ -437,8 +437,23 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
      */
     Collection<Key> get(V value);
     
+    /**
+     * Represents the result of a registration of an object
+     *
+     * @param key            The key
+     * @param value          The value
+     * @param oldValue       The old value
+     * @param success        If the action was successful
+     * @param parentResult   The parent registry's result
+     * @param frozen         If it was frozen
+     * @param noReplacements If it failed because of the no-replacements flag
+     * @param cancelled      If it failed because it was cancelled
+     * @param cannotCast     If it failed because it failed to cast
+     * @param <V>            The value type
+     */
     @SuppressWarnings("NegativelyNamedBooleanVariable")
-    record RegisterResult<V>(Key key, V value, V oldValue, boolean success, RegisterResult<? super V> parentResult, boolean frozen, boolean noReplacements, boolean cancelled, boolean cannotCast) {
+    record RegisterResult<V>(Key key, V value, V oldValue, boolean success, RegisterResult<? super V> parentResult,
+                             boolean frozen, boolean noReplacements, boolean cancelled, boolean cannotCast) {
         public static <V> RegisterResult<V> ofSuccess(Key key, V value, V oldValue, RegisterResult<? super V> parentResult) {
             return new RegisterResult<>(key, value, oldValue, true, parentResult, false, false, false, false);
         }
@@ -491,7 +506,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
         try {
             V v = (V) keyable;
             return register(keyable.getKey(), v);
-        } catch (ClassCastException e) {}
+        } catch (ClassCastException e) {
+        }
         
         return RegisterResult.ofCastFailure(keyable.getKey(), null);
     }
