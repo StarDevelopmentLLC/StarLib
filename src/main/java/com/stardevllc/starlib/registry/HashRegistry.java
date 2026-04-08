@@ -31,7 +31,12 @@ public class HashRegistry<V> extends AbstractRegistry<V> {
         super(valueType, name, new HashMap<>());
     }
     
+    @Deprecated(forRemoval = true)
     public static <V> Builder<V> builder(Class<V> valueType) {
+        return new Builder<>(valueType);
+    }
+    
+    public static <V> Builder<V> newBuilder(Class<V> valueType) {
         return new Builder<>(valueType);
     }
     
@@ -41,7 +46,7 @@ public class HashRegistry<V> extends AbstractRegistry<V> {
             mapSupplier = HashMap::new;
         }
         
-        public Builder(Builder<V> builder) {
+        protected Builder(Builder<V> builder) {
             super(builder);
         }
         
