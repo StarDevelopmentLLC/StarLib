@@ -10,7 +10,7 @@ public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializa
 
     DecimalFormat format = new DecimalFormat("###,###,###,###,###,#00.####");
     
-    TimeValue getTime();
+    TimeValue getTimeValue();
     
     Temporal clone();
     
@@ -18,59 +18,59 @@ public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializa
     
     @Override
     default int compareTo(Temporal o) {
-        return getTime().compareTo(o.getTime());
+        return getTimeValue().compareTo(o.getTimeValue());
     }
 
     default boolean equalTo(Temporal temporal) {
         if (temporal == null) {
             return false;
         }
-        return getTime().equals(temporal.getTime());
+        return getTimeValue().equals(temporal.getTimeValue());
     }
     
     default boolean lessThan(Temporal temporal) {
         if (temporal == null) {
             return false;
         }
-        return getTime().lessThan(temporal.getTime());    
+        return getTimeValue().lessThan(temporal.getTimeValue());    
     }
     
     default boolean lessThanOrEqualTo(Temporal temporal) {
         if (temporal == null) {
             return false;
         }
-        return getTime().lessThanOrEqualTo(temporal.getTime());
+        return getTimeValue().lessThanOrEqualTo(temporal.getTimeValue());
     }
     
     default boolean greaterThan(Temporal temporal) {
         if (temporal == null) {
             return false;
         }
-        return getTime().greaterThan(temporal.getTime());
+        return getTimeValue().greaterThan(temporal.getTimeValue());
     }
     
     default boolean greaterThanOrEqualTo(Temporal temporal) {
         if (temporal == null) {
             return false;
         }
-        return getTime().greaterThanOrEqualTo(temporal.getTime());
+        return getTimeValue().greaterThanOrEqualTo(temporal.getTimeValue());
     }
     
     default Temporal add(long milliseconds) {
-        getTime().add(milliseconds);
+        getTimeValue().add(milliseconds);
         return this;
     }
     
     default Temporal add(TimeUnit unit, long amount) {
-        getTime().add(unit, amount);
+        getTimeValue().add(unit, amount);
         return this;
     }
     
     default Temporal add(Temporal temporal, Temporal... temporals) {
-        getTime().add(temporal.getTime());
+        getTimeValue().add(temporal.getTimeValue());
         if (temporals != null) {
             for (Temporal t : temporals) {
-                getTime().add(t.getTime());
+                getTimeValue().add(t.getTimeValue());
             }
         }
         
@@ -78,20 +78,20 @@ public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializa
     }
     
     default Temporal subtract(long seconds) {
-        getTime().subtract(seconds);
+        getTimeValue().subtract(seconds);
         return this;
     }
     
     default Temporal subtract(TimeUnit unit, long amount) {
-        getTime().subtract(unit, amount);
+        getTimeValue().subtract(unit, amount);
         return this;
     }
     
     default Temporal subtract(Temporal temporal, Temporal... temporals) {
-        getTime().subtract(temporal.getTime());
+        getTimeValue().subtract(temporal.getTimeValue());
         if (temporals != null) {
             for (Temporal t : temporals) {
-                getTime().subtract(t.getTime());
+                getTimeValue().subtract(t.getTimeValue());
             }
         }
         
@@ -99,27 +99,27 @@ public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializa
     }
 
     default Temporal set(long time) {
-        getTime().set(time);
+        getTimeValue().set(time);
         return this;
     }
     
     default Temporal set(Temporal temporal, Temporal temporals) {
-        getTime().set(0);
+        getTimeValue().set(0);
         add(temporal, temporals);
         return this;
     }
     
     default Temporal set(Temporal temporal) {
         if (temporal == null) {
-            getTime().set(0);
+            getTimeValue().set(0);
         } else {
-            getTime().set(temporal.getTime().getTime());
+            getTimeValue().set(temporal.getTimeValue().getTime());
         }
         return this;
     }
     
     default boolean isEmpty() {
-        return getTime().getTime() == 0;
+        return getTimeValue().getTime() == 0;
     }
     
     default boolean isNotEmpty() {
@@ -128,6 +128,6 @@ public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializa
     
     @Override
     default Map<String, Object> serialize() {
-        return Map.of("timevalue", getTime());
+        return Map.of("timevalue", getTimeValue());
     }
 }

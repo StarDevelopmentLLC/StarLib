@@ -42,7 +42,7 @@ public class Instant implements Temporal {
     }
 
     @Override
-    public TimeValue getTime() {
+    public TimeValue getTimeValue() {
         return timeValue;
     }
 

@@ -67,6 +67,21 @@ public class Duration implements Temporal {
         this.timeValue = new TimeValue();
     }
     
+    public Duration(long millis) {
+        this();
+        this.timeValue.set(millis);
+    }
+    
+    public Duration(Temporal temporal, Temporal... temporals) {
+        this();
+        this.timeValue.set(temporal.getTimeValue().getTime());
+        if (temporals != null) {
+            for (Temporal t : temporals) {
+                this.timeValue.add(t.getTimeValue());
+            }
+        }
+    }
+    
     protected Duration(TimeValue timeValue) {
         this.timeValue = new TimeValue(timeValue.getTime());
     }
@@ -76,7 +91,7 @@ public class Duration implements Temporal {
     }
     
     @Override
-    public TimeValue getTime() {
+    public TimeValue getTimeValue() {
         return timeValue;
     }
     
@@ -201,7 +216,7 @@ public class Duration implements Temporal {
     }
     
     public Duration divide(Duration divisor) {
-        timeValue.divide(divisor.getTime());
+        timeValue.divide(divisor.getTimeValue());
         return this;
     }
     

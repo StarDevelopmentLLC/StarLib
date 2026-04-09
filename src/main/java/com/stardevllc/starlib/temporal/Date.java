@@ -11,16 +11,31 @@ public class Date implements Temporal {
     public Date() {
         this.timeValue = new TimeValue();
     }
+    
+    public Date(long millis) {
+        this();
+        this.timeValue.set(millis);
+    }
+    
+    public Date(Temporal temporal, Temporal... temporals) {
+        this();
+        this.timeValue.add(temporal.getTimeValue());
+        if (temporals != null) {
+            for (Temporal t : temporals) {
+                this.timeValue.add(temporal.getTimeValue());
+            }
+        }
+    }
 
     public Date(long year, long month, long day) {
-        this.timeValue = new TimeValue();
+        this();
         timeValue.add(TimeUnit.YEARS, year);
         timeValue.add(TimeUnit.MONTHS, month - 1);
         timeValue.add(TimeUnit.DAYS, day - 1);
     }
 
     protected Date(TimeValue timeValue) {
-        this.timeValue = new TimeValue();
+        this();
         this.timeValue.set(timeValue.getTime());
     }
     
@@ -29,7 +44,7 @@ public class Date implements Temporal {
     }
 
     @Override
-    public TimeValue getTime() {
+    public TimeValue getTimeValue() {
         return timeValue;
     }
 

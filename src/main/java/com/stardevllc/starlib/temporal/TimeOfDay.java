@@ -32,7 +32,7 @@ public class TimeOfDay implements Temporal {
     }
 
     @Override
-    public TimeValue getTime() {
+    public TimeValue getTimeValue() {
         return timeValue;
     }
     
