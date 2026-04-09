@@ -4,6 +4,7 @@ import com.stardevllc.starlib.objects.key.impl.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public final class Keys {
     public static Key of(Object base, Object... objects) {
@@ -24,6 +25,8 @@ public final class Keys {
             return new IntKey(i);
         } else if (object instanceof Long l) {
             return new LongKey(l);
+        } else if (object instanceof UUID uuid) {
+            return new UUIDKey(uuid);
         }
         
         return new Key() {
