@@ -16,6 +16,10 @@ public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializa
     
     String toString();
     
+    default long getMillis() {
+        return getTimeValue().getTime();
+    }
+    
     @Override
     default int compareTo(Temporal o) {
         return getTimeValue().compareTo(o.getTimeValue());

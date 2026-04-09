@@ -24,6 +24,8 @@
  */
 package com.stardevllc.starlib.random.variableamount;
 
+import com.stardevllc.starlib.temporal.Temporal;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -63,6 +65,10 @@ public interface VariableAmount {
      */
     static VariableAmount fixed(long value) {
         return new LongVariableAmount.Fixed(value);
+    }
+    
+    static VariableAmount fixed(Temporal temporal) {
+        return fixed(temporal.getMillis());
     }
 
     /**
@@ -115,6 +121,14 @@ public interface VariableAmount {
     
     static VariableAmount range(long min, long max, long divisor) {
         return new LongVariableAmount.Range(min, max, divisor);
+    }
+    
+    static VariableAmount range(Temporal min, Temporal max) {
+        return range(min.getMillis(), max.getMillis());
+    }
+    
+    static VariableAmount range(Temporal min, Temporal max, long divisor) {
+        return range(min.getMillis(), max.getMillis(), divisor);
     }
 
     /**
