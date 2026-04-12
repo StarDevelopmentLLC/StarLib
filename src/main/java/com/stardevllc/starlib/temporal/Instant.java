@@ -5,6 +5,7 @@ import com.stardevllc.starlib.time.TimeUnit;
 import java.util.Map;
 import java.util.Objects;
 
+@SuppressWarnings("DuplicatedCode")
 public class Instant implements Temporal {
 
     protected final TimeValue timeValue;
@@ -20,12 +21,12 @@ public class Instant implements Temporal {
 
     public Instant(long month, long day, long year, long hour, long minute, long second) {
         this();
-        timeValue.add(TimeUnit.YEARS, year);
-        timeValue.add(TimeUnit.MONTHS, month - 1);
-        timeValue.add(TimeUnit.DAYS, day - 1);
-        timeValue.add(TimeUnit.HOURS, hour);
-        timeValue.add(TimeUnit.MINUTES, minute);
-        timeValue.add(TimeUnit.SECONDS, second);
+        timeValue.add(TimeUnit.YEARS.getMsPerUnit() * year);
+        timeValue.add(TimeUnit.MONTHS.getMsPerUnit() * month);
+        timeValue.add(TimeUnit.DAYS.getMsPerUnit() * day);
+        timeValue.add(TimeUnit.HOURS.getMsPerUnit() * hour);
+        timeValue.add(TimeUnit.MINUTES.getMsPerUnit() * minute);
+        timeValue.add(TimeUnit.SECONDS.getMsPerUnit() * second);
     }
 
     protected Instant(TimeValue timeValue) {
@@ -65,7 +66,7 @@ public class Instant implements Temporal {
 
     public long getMonth() {
         long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
-        return remaining / TimeUnit.MONTHS.getMsPerUnit() + 1;
+        return remaining / TimeUnit.MONTHS.getMsPerUnit();
     }
 
     public Instant addMonths(long months) {
@@ -77,8 +78,9 @@ public class Instant implements Temporal {
     }
 
     public long getDay() {
-        long remaining = this.timeValue.getTime() % TimeUnit.MONTHS.getMsPerUnit();
-        return remaining / TimeUnit.DAYS.getMsPerUnit() + 1;
+        long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
+        remaining = remaining % TimeUnit.MONTHS.getMsPerUnit();
+        return remaining / TimeUnit.DAYS.getMsPerUnit();
     }
 
     public Instant addDays(long days) {
@@ -90,7 +92,9 @@ public class Instant implements Temporal {
     }
 
     public long getHour() {
-        long remaining = this.timeValue.getTime() % TimeUnit.DAYS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
+        remaining = remaining % TimeUnit.MONTHS.getMsPerUnit();
+        remaining = remaining % TimeUnit.DAYS.getMsPerUnit();
         return remaining / TimeUnit.HOURS.getMsPerUnit();
     }
 
@@ -103,7 +107,10 @@ public class Instant implements Temporal {
     }
 
     public long getMinute() {
-        long remaining = this.timeValue.getTime() % TimeUnit.HOURS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
+        remaining = remaining % TimeUnit.MONTHS.getMsPerUnit();
+        remaining = remaining % TimeUnit.DAYS.getMsPerUnit();
+        remaining = remaining % TimeUnit.HOURS.getMsPerUnit();
         return remaining / TimeUnit.MINUTES.getMsPerUnit();
     }
 
@@ -116,7 +123,11 @@ public class Instant implements Temporal {
     }
 
     public long getSecond() {
-        long remaining = this.timeValue.getTime() % TimeUnit.MINUTES.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
+        remaining = remaining % TimeUnit.MONTHS.getMsPerUnit();
+        remaining = remaining % TimeUnit.DAYS.getMsPerUnit();
+        remaining = remaining % TimeUnit.HOURS.getMsPerUnit();
+        remaining = remaining % TimeUnit.MINUTES.getMsPerUnit();
         return remaining / TimeUnit.SECONDS.getMsPerUnit();
     }
 
@@ -129,7 +140,12 @@ public class Instant implements Temporal {
     }
     
     public long getMillisecond() {
-        long remaining = this.timeValue.getTime() % TimeUnit.SECONDS.getMsPerUnit();
+        long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
+        remaining = remaining % TimeUnit.MONTHS.getMsPerUnit();
+        remaining = remaining % TimeUnit.DAYS.getMsPerUnit();
+        remaining = remaining % TimeUnit.HOURS.getMsPerUnit();
+        remaining = remaining % TimeUnit.MINUTES.getMsPerUnit();
+        remaining = remaining % TimeUnit.SECONDS.getMsPerUnit();
         return remaining / TimeUnit.SECONDS.getMsPerUnit();
     }
     

@@ -20,22 +20,22 @@ public enum TimeUnit {
     /**
      * Seconds
      */
-    SECONDS(java.util.concurrent.TimeUnit.SECONDS.toMillis(1), "second", "s"),
+    SECONDS(1_000, "second", "s"),
     
     /**
      * Minutes
      */
-    MINUTES(java.util.concurrent.TimeUnit.MINUTES.toMillis(1), "minute", "min", "m"),
+    MINUTES(SECONDS.msPerUnit * 60, "minute", "min", "m"),
     
     /**
      * Hours
      */
-    HOURS(java.util.concurrent.TimeUnit.HOURS.toMillis(1), "hour", "h"),
+    HOURS(MINUTES.msPerUnit * 60, "hour", "h"),
     
     /**
      * Days
      */
-    DAYS(java.util.concurrent.TimeUnit.DAYS.toMillis(1), "day", "d"),
+    DAYS(HOURS.msPerUnit * 24, "day", "d"),
     
     /**
      * Weeks
@@ -45,7 +45,7 @@ public enum TimeUnit {
     /**
      * Months (30 days)
      */
-    MONTHS((long) (DAYS.msPerUnit * 30.416666666667), "month", "mo"),
+    MONTHS(Math.round(DAYS.msPerUnit * 30.416666666667), "month", "mo"),
     
     /**
      * Years (365 days)
