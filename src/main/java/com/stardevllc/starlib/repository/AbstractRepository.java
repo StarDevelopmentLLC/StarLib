@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.function.Function;
 
 public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
@@ -15,12 +16,12 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     private final Class<K> keyType;
     private final Class<V> valueType;
     
-    private final Key id;
+    private final Key key;
     private final String name;
     
     private final Map<K, V> backingMap;
     
-    private Function<K, V> fetcher;
+    private Function<K, V> loader;
     private EventDispatcher dispatcher;
     
     private long timeout;
@@ -29,13 +30,13 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     
     private TaskSubmitter taskSubmitter;
     
-    public AbstractRepository(Class<K> keyType, Class<V> valueType, Map<K, V> backingMap, Key id, String name, Function<K, V> fetcher, EventDispatcher dispatcher, long timeout, TaskSubmitter taskSubmitter) {
+    public AbstractRepository(Class<K> keyType, Class<V> valueType, Map<K, V> backingMap, Key key, String name, Function<K, V> loader, EventDispatcher dispatcher, long timeout, TaskSubmitter taskSubmitter) {
         this.keyType = keyType;
         this.valueType = valueType;
         this.backingMap = backingMap;
-        this.id = id;
+        this.key = key;
         this.name = name;
-        this.fetcher = fetcher;
+        this.loader = loader;
         if (dispatcher != null) {
             this.dispatcher = dispatcher;
         } else {
@@ -45,8 +46,8 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
         this.taskSubmitter = taskSubmitter;
     }
     
-    protected AbstractRepository(Class<K> keyType, Class<V> valueType, @NotNull Map<K, V> backingMap, Key id, String name) {
-        this(keyType, valueType, backingMap, id, name, null, null, 0, null);
+    public AbstractRepository(Class<K> keyType, Class<V> valueType, @NotNull Map<K, V> backingMap, Key key, String name) {
+        this(keyType, valueType, backingMap, key, name, null, null, 0, null);
     }
     
     @Override
@@ -61,7 +62,7 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     
     @Override
     public final Key getKey() {
-        return id;
+        return key;
     }
     
     @Override
@@ -70,8 +71,8 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     }
     
     @Override
-    public final void setValueFetcher(@Nullable Function<K, V> fetcher) {
-        this.fetcher = fetcher;
+    public final void setValueLoader(@Nullable Function<K, V> fetcher) {
+        this.loader = fetcher;
     }
     
     @Override
@@ -110,8 +111,8 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     }
     
     @Override
-    public final @Nullable Function<K, V> getValueFetcher() {
-        return this.fetcher;
+    public final @Nullable Function<K, V> getValueLoader() {
+        return this.loader;
     }
     
     @Override
@@ -125,6 +126,22 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
     }
     
     @Override
+    public @Nullable V get(K key, Callable<V> callable) throws Exception {
+        V v = get(key);
+        if (v != null) {
+            return v;
+        }
+        
+        v = callable.call();
+        if (v != null) {
+            put(key, v);
+            return v;
+        }
+        
+        return null;
+    }
+    
+    @Override
     public final @Nullable V get(K key) {
         V value = this.backingMap.get(key);
         MutableLong lastAccess = this.accessMap.computeIfAbsent(key, k -> new MutableLong());
@@ -134,8 +151,8 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
         }
         
         if (value == null) {
-            if (this.fetcher != null) {
-                value = this.fetcher.apply(key);
+            if (this.loader != null) {
+                value = this.loader.apply(key);
                 if (value != null) {
                     this.backingMap.put(key, value);
                 }
@@ -227,6 +244,16 @@ public abstract class AbstractRepository<K, V> implements IRepository<K, V> {
             if (listener instanceof IRepository.Listener<?> l) {
                 this.listeners.add((Listener<Event>) l);
             }
+        }
+    }
+    
+    public abstract static class Builder<K, V, R extends IRepository<K, V>, B extends IRepository.Builder<K, V, R, B>> extends IRepository.Builder<K, V, R, B> {
+        public Builder(Class<K> keyType, Class<V> valueType) {
+            super(keyType, valueType);
+        }
+        
+        public Builder(B builder) {
+            super(builder);
         }
     }
 }
