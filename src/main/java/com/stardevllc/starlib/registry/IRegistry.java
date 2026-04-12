@@ -896,7 +896,8 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
             return self();
         }
         
-        protected final B prebuild() {
+        @SuppressWarnings("DuplicatedCode")
+        protected final B preBuild() {
             if (key == null && name != null) {
                 this.key = Keys.of(name);
             } else if (key != null && name == null) {
