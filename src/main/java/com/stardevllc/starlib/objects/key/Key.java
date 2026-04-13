@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a Key, a representation of a unique key of an object or group of objects
  */
 @FunctionalInterface
-public interface Key extends Comparable<Key> {
+public interface Key extends Comparable<Key>, CharSequence {
     
     /**
      * Just an empty key for non-null uses
@@ -34,13 +34,29 @@ public interface Key extends Comparable<Key> {
         }
     };
     
+    @Override
+    default int length() {
+        return toString().length();
+    }
+    
+    @Override
+    default char charAt(int index) {
+        return toString().charAt(index);
+    }
+    
+    @Override
+    @NotNull
+    default CharSequence subSequence(int start, int end) {
+        return toString().subSequence(start, end);
+    }
+    
     /**
      * Checks to see if this key is empty
      *
      * @return If the key is empty
      */
     default boolean isEmpty() {
-        return toString() == null || toString().isBlank();
+        return toString().isBlank();
     }
     
     /**
@@ -83,10 +99,4 @@ public interface Key extends Comparable<Key> {
      */
     @Override
     boolean equals(Object obj);
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    String toString();
 }
