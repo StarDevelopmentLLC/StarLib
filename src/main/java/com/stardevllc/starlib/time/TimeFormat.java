@@ -124,7 +124,7 @@ public class TimeFormat implements StarSerializable {
                 unitBuilder = new StringBuilder();
                 showIfZero = true;
             } else if (startIndex != -1) {
-                if (c == '0' || c == '#' || c == '*') {
+                if (c == '0' || c == '#' || c == '*' || c == '\'') {
                     patternBuilder.append(c);
                 } else {
                     unitBuilder.append(c);
