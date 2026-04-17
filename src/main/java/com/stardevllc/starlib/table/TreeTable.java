@@ -45,34 +45,29 @@ public class TreeTable<R extends Comparable<R>, C extends Comparable<C>, V> impl
         return columnMap;
     }
     
-    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public boolean contains(Object rowKey, Object columnKey) {
+    public boolean contains(R rowKey, C columnKey) {
         TreeMap<C, V> rowMap = this.backingMap.get(rowKey);
         return rowMap != null && rowMap.containsKey(columnKey);
     }
     
-    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public boolean containsColumn(Object columnKey) {
+    public boolean containsColumn(C columnKey) {
         return columnKeySet().contains(columnKey);
     }
     
-    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public boolean containsRow(Object rowKey) {
+    public boolean containsRow(R rowKey) {
         return this.backingMap.containsKey(rowKey);
     }
     
-    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public boolean containsValue(Object value) {
+    public boolean containsValue(V value) {
         return values().contains(value);
     }
     
-    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public V get(Object rowKey, Object columnKey) {
+    public V get(R rowKey, C columnKey) {
         TreeMap<C, V> rowMap = this.backingMap.get(rowKey);
         if (rowMap == null) {
             return null;
@@ -98,9 +93,8 @@ public class TreeTable<R extends Comparable<R>, C extends Comparable<C>, V> impl
         }
     }
     
-    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public V remove(Object rowKey, Object columnKey) {
+    public V remove(R rowKey, C columnKey) {
         TreeMap<C, V> rowMap = this.backingMap.get(rowKey);
         if (rowMap == null) {
             return null;
@@ -118,9 +112,8 @@ public class TreeTable<R extends Comparable<R>, C extends Comparable<C>, V> impl
         return this.backingMap.keySet();
     }
     
-    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public Map<C, V> remove(Object rowKey) {
+    public Map<C, V> remove(R rowKey) {
         return this.backingMap.remove(rowKey);
     }
     

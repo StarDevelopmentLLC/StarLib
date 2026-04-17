@@ -16,15 +16,15 @@ public interface Table<R, C, V> {
     
     Map<C, Map<R, V>> columnMap();
     
-    boolean contains(Object rowKey, Object columnKey);
+    boolean contains(R rowKey, C columnKey);
     
-    boolean containsColumn(Object columnKey);
+    boolean containsColumn(C columnKey);
     
-    boolean containsRow(Object rowKey);
+    boolean containsRow(R rowKey);
     
-    boolean containsValue(Object value);
+    boolean containsValue(V value);
     
-    V get(Object rowKey, Object columnKey);
+    V get(R rowKey, C columnKey);
     
     boolean isEmpty();
     
@@ -63,9 +63,9 @@ public interface Table<R, C, V> {
         return v;
     }
     
-    V remove(Object rowKey, Object columnKey);
+    V remove(R rowKey, C columnKey);
     
-    Map<C, V> remove(Object rowKey);
+    Map<C, V> remove(R rowKey);
     
     Map<C, V> row(R rowKey);
     
