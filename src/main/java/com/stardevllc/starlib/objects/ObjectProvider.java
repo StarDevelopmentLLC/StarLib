@@ -1,8 +1,10 @@
 package com.stardevllc.starlib.objects;
 
+import com.stardevllc.starlib.chain.Chain;
 import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.factory.IFactory;
 import com.stardevllc.starlib.random.RandomSelector;
+import com.stardevllc.starlib.values.Value;
 
 import java.util.function.Supplier;
 
@@ -17,6 +19,8 @@ public final class ObjectProvider<T> {
     private IFactory<T, ?> factory;
     private IBuilder<T, ?> builder;
     private RandomSelector<T> selector;
+    private Chain<T> chain;
+    private Value<T> value;
     
     /**
      * Creates an empty  provider
@@ -36,6 +40,8 @@ public final class ObjectProvider<T> {
             this.factory = provider.factory;
             this.builder = provider.builder;
             this.selector = provider.selector;
+            this.chain = provider.chain;
+            this.value = provider.value;
         }
     }
     
@@ -84,6 +90,14 @@ public final class ObjectProvider<T> {
         this.selector = selector;
     }
     
+    public ObjectProvider(Chain<T> chain) {
+        this.chain = chain;
+    }
+    
+    public ObjectProvider(Value<T> value) {
+        this.value = value;
+    }
+    
     /**
      * Overrides the provider with the new one
      *
@@ -97,12 +111,16 @@ public final class ObjectProvider<T> {
             this.factory = provider.factory;
             this.builder = provider.builder;
             this.selector = provider.selector;
+            this.chain = provider.chain;
+            this.value = provider.value;
         } else {
             this.instance = null;
             this.supplier = null;
             this.factory = null;
             this.builder = null;
             this.selector = null;
+            this.chain = null;
+            this.value = null;
         }
         
         return this;
@@ -114,7 +132,7 @@ public final class ObjectProvider<T> {
      * @return Empty state
      */
     public boolean isEmpty() {
-        return this.instance == null && this.factory == null && this.builder == null && this.supplier == null && selector == null;
+        return this.instance == null && this.factory == null && this.builder == null && this.supplier == null && selector == null && this.chain == null && this.value == null;
     }
     
     /**
@@ -142,6 +160,14 @@ public final class ObjectProvider<T> {
         
         if (factory != null) {
             return factory.create();
+        }
+        
+        if (this.chain != null) {
+            return this.chain.endOrNull();
+        }
+        
+        if (this.value != null) {
+            return this.value.getValue();
         }
         
         return defaultValue;
@@ -201,6 +227,14 @@ public final class ObjectProvider<T> {
         return selector;
     }
     
+    public Chain<T> getChain() {
+        return chain;
+    }
+    
+    public Value<T> getValue() {
+        return value;
+    }
+    
     /**
      * Sets the values to the provider
      *
@@ -223,6 +257,8 @@ public final class ObjectProvider<T> {
         this.builder = null;
         this.factory = null;
         this.selector = null;
+        this.chain = null;
+        this.value = null;
         return this;
     }
     
@@ -238,6 +274,8 @@ public final class ObjectProvider<T> {
         this.builder = null;
         this.factory = null;
         this.selector = null;
+        this.chain = null;
+        this.value = null;
         return this;
     }
     
@@ -253,6 +291,8 @@ public final class ObjectProvider<T> {
         this.supplier = null;
         this.builder = null;
         this.selector = null;
+        this.chain = null;
+        this.value = null;
         return this;
     }
     
@@ -268,6 +308,8 @@ public final class ObjectProvider<T> {
         this.supplier = null;
         this.factory = null;
         this.selector = null;
+        this.chain = null;
+        this.value = null;
         return this;
     }
     
@@ -279,6 +321,42 @@ public final class ObjectProvider<T> {
      */
     public ObjectProvider<T> set(RandomSelector<T> selector) {
         this.selector = selector;
+        this.builder = null;
+        this.instance = null;
+        this.supplier = null;
+        this.factory = null;
+        this.chain = null;
+        this.value = null;
+        return this;
+    }
+    
+    /**
+     * Sets the chain, unsetting others
+     *
+     * @param chain The chain
+     * @return This provider
+     */
+    public ObjectProvider<T> set(Chain<T> chain) {
+        this.chain = chain;
+        this.selector = null;
+        this.builder = null;
+        this.instance = null;
+        this.supplier = null;
+        this.factory = null;
+        this.value = null;
+        return this;
+    }
+    
+    /**
+     * Sets the value, unsetting others
+     *
+     * @param value The value
+     * @return This provider
+     */
+    public ObjectProvider<T> set(Value<T> value) {
+        this.value = value;
+        this.chain = null;
+        this.selector = null;
         this.builder = null;
         this.instance = null;
         this.supplier = null;
