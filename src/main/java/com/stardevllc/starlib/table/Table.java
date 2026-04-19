@@ -1,5 +1,6 @@
 package com.stardevllc.starlib.table;
 
+import com.stardevllc.starlib.function.TriConsumer;
 import com.stardevllc.starlib.tuple.triple.Triple;
 
 import java.util.*;
@@ -76,6 +77,8 @@ public interface Table<R, C, V> {
     int size();
     
     Collection<V> values();
+    
+    void forEach(TriConsumer<R, C, V> consumer);
     
     interface Cell<R, C, V> extends Triple<R, C, V> {
         boolean equals(Object obj);

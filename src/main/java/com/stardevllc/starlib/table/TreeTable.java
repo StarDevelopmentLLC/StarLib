@@ -1,5 +1,6 @@
 package com.stardevllc.starlib.table;
 
+import com.stardevllc.starlib.function.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -7,6 +8,11 @@ import java.util.*;
 public class TreeTable<R extends Comparable<R>, C extends Comparable<C>, V> implements Table<R, C, V> {
     
     protected final TreeMap<R, TreeMap<C, V>> backingMap = new TreeMap<>();
+    
+    @Override
+    public void forEach(TriConsumer<R, C, V> consumer) {
+        this.backingMap.forEach((rk, row) -> row.forEach((c, v) -> consumer.accept(rk, c, v)));
+    }
     
     @Override
     public Set<? extends Cell<R, C, V>> getCellSet() {

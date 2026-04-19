@@ -6,8 +6,12 @@ import java.util.*;
 
 public class HashTable<R, C, V> implements Table<R, C, V> {
     
-    protected final LinkedHashMap<R, LinkedHashMap<C, V>> backingMap = new LinkedHashMap<>();
     protected final HashMap<R, HashMap<C, V>> backingMap = new HashMap<>();
+    
+    @Override
+    public void forEach(TriConsumer<R, C, V> consumer) {
+        this.backingMap.forEach((rk, row) -> row.forEach((col, val) -> consumer.accept(rk, col, val)));
+    }
     
     @Override
     public Set<Cell<R, C, V>> getCellSet() {
