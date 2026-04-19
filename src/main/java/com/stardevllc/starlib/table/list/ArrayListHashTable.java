@@ -10,7 +10,7 @@ public class ArrayListHashTable<R, C, V> extends HashTable<R, C, List<V>> implem
     public int size() {
         int size = 0;
         
-        for (Map.Entry<R, LinkedHashMap<C, List<V>>> e1 : this.backingMap.entrySet()) {
+        for (Map.Entry<R, HashMap<C, List<V>>> e1 : this.backingMap.entrySet()) {
             for (Map.Entry<C, List<V>> e2 : e1.getValue().entrySet()) {
                 size += e2.getValue().size();
             }

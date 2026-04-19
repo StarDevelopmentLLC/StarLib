@@ -1,10 +1,13 @@
 package com.stardevllc.starlib.table;
 
+import com.stardevllc.starlib.function.TriConsumer;
+
 import java.util.*;
 
 public class HashTable<R, C, V> implements Table<R, C, V> {
     
     protected final LinkedHashMap<R, LinkedHashMap<C, V>> backingMap = new LinkedHashMap<>();
+    protected final HashMap<R, HashMap<C, V>> backingMap = new HashMap<>();
     
     @Override
     public Set<Cell<R, C, V>> getCellSet() {
@@ -20,7 +23,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
     
     @Override
     public Map<R, V> column(C columnKey) {
-        Map<R, V> column = new LinkedHashMap<>();
+        Map<R, V> column = new HashMap<>();
         this.backingMap.forEach((row, colMap) -> {
             V value = colMap.get(columnKey);
             if (value != null) {
@@ -38,8 +41,8 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
     
     @Override
     public Map<C, Map<R, V>> columnMap() {
-        Map<C, Map<R, V>> columnMap = new LinkedHashMap<>();
-        this.backingMap.forEach((row, colMap) -> colMap.forEach((column, value) -> columnMap.computeIfAbsent(column, c -> new LinkedHashMap<>()).put(row, value)));
+        Map<C, Map<R, V>> columnMap = new HashMap<>();
+        this.backingMap.forEach((row, colMap) -> colMap.forEach((column, value) -> columnMap.computeIfAbsent(column, c -> new HashMap<>()).put(row, value)));
         return columnMap;
     }
     
@@ -81,7 +84,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
     
     @Override
     public V put(R rowKey, C columnKey, V value) {
-        return this.backingMap.computeIfAbsent(rowKey, r -> new LinkedHashMap<>()).put(columnKey, value);
+        return this.backingMap.computeIfAbsent(rowKey, r -> new HashMap<>()).put(columnKey, value);
     }
     
     @Override
@@ -122,8 +125,8 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
     
     @Override
     public Map<R, Map<C, V>> rowMap() {
-        Map<R, Map<C, V>> rowMap = new LinkedHashMap<>();
-        this.backingMap.forEach((row, colMap) -> rowMap.put(row, new LinkedHashMap<>(colMap)));
+        Map<R, Map<C, V>> rowMap = new HashMap<>();
+        this.backingMap.forEach((row, colMap) -> rowMap.put(row, new HashMap<>(colMap)));
         return rowMap;
     }
     
@@ -131,7 +134,7 @@ public class HashTable<R, C, V> implements Table<R, C, V> {
     public int size() {
         int size = 0;
         
-        for (Map.Entry<R, LinkedHashMap<C, V>> rowEntry : this.backingMap.entrySet()) {
+        for (Map.Entry<R, HashMap<C, V>> rowEntry : this.backingMap.entrySet()) {
             size += rowEntry.getValue().size();
         }
         

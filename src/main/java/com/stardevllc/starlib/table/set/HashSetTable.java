@@ -10,7 +10,7 @@ public class HashSetTable<R, C, V> extends HashTable<R, C, Set<V>> implements Se
     public int size() {
         int size = 0;
         
-        for (Map.Entry<R, LinkedHashMap<C, Set<V>>> e1 : this.backingMap.entrySet()) {
+        for (Map.Entry<R, HashMap<C, Set<V>>> e1 : this.backingMap.entrySet()) {
             for (Map.Entry<C, Set<V>> e2 : e1.getValue().entrySet()) {
                 size += e2.getValue().size();
             }
