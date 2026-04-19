@@ -15,7 +15,8 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     private final Key key;
     private final String name;
     private final Map<Key, V> backingMap;
-    private final Map<Key, Key> parentRegistryKeys = new HashMap<>();
+    private final SequencedMap<Key, Key> parentRegistryKeys = new LinkedHashMap<>();
+    private final SequencedMap<Key, Key> reversedParentRegistryKeys = parentRegistryKeys.reversed();
     private final IRegistry<? super V> parentRegistry;
     
     private boolean frozen;
@@ -29,6 +30,15 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         this.name = name;
         this.backingMap = (Map<Key, V>) backingMap;
         this.parentRegistry = parentRegistry;
+        if (this.parentRegistry != null) {
+            this.parentRegistry.addRemoveListener(e -> {
+                Key k = reversedParentRegistryKeys.get(e.key());
+                if (k != null) {
+                    remove(k);
+                    parentRegistryKeys.remove(k);
+                }
+            });
+        }
         this.frozen = frozen;
         if (dispatcher != null) {
             this.dispatcher = dispatcher;
@@ -240,7 +250,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         RegisterResult<? super V> parentResult;
         if (this.parentRegistry != null) {
             Key fqKey;
-            if (this.hasKey() && hasFlag(Flag.ADD_REGISTRY_KEY_TO_PARENT_REGISTER)) {
+            if (this.hasKey() && hasFlag(Flag.APPEND_KEY_TO_OBJECT_TO_PARENT)) {
                 fqKey = Keys.of(this.key, "/", key);
                 this.parentRegistryKeys.put(key, fqKey);
             } else {

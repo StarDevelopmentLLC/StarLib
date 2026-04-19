@@ -60,10 +60,9 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
         CHECK_PARTIAL_IN_GET,
         
         /**
-         * NOTE: This may be renamed when I find a better name/phrasing <br>
          * This being present means that the current registry's key is added to the full path of a registered item to the parent
          */
-        ADD_REGISTRY_KEY_TO_PARENT_REGISTER,
+        APPEND_KEY_TO_OBJECT_TO_PARENT,
         
         /**
          * This being present means that the registration to this registry will fail on parent registration failure
@@ -868,6 +867,16 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
         
         public B asGlobal() {
             this.global = true;
+            return self();
+        }
+        
+        public B failOnParentRegisterFailure() {
+            this.flags.add(Flag.FAIL_ON_PARENT_REGISTER_FAILURE);
+            return self();
+        }
+        
+        public B appendKeyToObjectToParent() {
+            this.flags.add(Flag.APPEND_KEY_TO_OBJECT_TO_PARENT);
             return self();
         }
         
