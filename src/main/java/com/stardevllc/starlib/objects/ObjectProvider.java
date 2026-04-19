@@ -20,7 +20,6 @@ public final class ObjectProvider<T> {
     private IBuilder<T, ?> builder;
     private RandomSelector<T> selector;
     private Chain<T> chain;
-    private Value<T> value;
     
     /**
      * Creates an empty  provider
@@ -41,7 +40,6 @@ public final class ObjectProvider<T> {
             this.builder = provider.builder;
             this.selector = provider.selector;
             this.chain = provider.chain;
-            this.value = provider.value;
         }
     }
     
@@ -94,10 +92,6 @@ public final class ObjectProvider<T> {
         this.chain = chain;
     }
     
-    public ObjectProvider(Value<T> value) {
-        this.value = value;
-    }
-    
     /**
      * Overrides the provider with the new one
      *
@@ -112,7 +106,6 @@ public final class ObjectProvider<T> {
             this.builder = provider.builder;
             this.selector = provider.selector;
             this.chain = provider.chain;
-            this.value = provider.value;
         } else {
             this.instance = null;
             this.supplier = null;
@@ -120,7 +113,6 @@ public final class ObjectProvider<T> {
             this.builder = null;
             this.selector = null;
             this.chain = null;
-            this.value = null;
         }
         
         return this;
@@ -132,7 +124,7 @@ public final class ObjectProvider<T> {
      * @return Empty state
      */
     public boolean isEmpty() {
-        return this.instance == null && this.factory == null && this.builder == null && this.supplier == null && selector == null && this.chain == null && this.value == null;
+        return this.instance == null && this.factory == null && this.builder == null && this.supplier == null && selector == null && this.chain == null;
     }
     
     /**
@@ -164,10 +156,6 @@ public final class ObjectProvider<T> {
         
         if (this.chain != null) {
             return this.chain.endOrNull();
-        }
-        
-        if (this.value != null) {
-            return this.value.getValue();
         }
         
         return defaultValue;
@@ -231,10 +219,6 @@ public final class ObjectProvider<T> {
         return chain;
     }
     
-    public Value<T> getValue() {
-        return value;
-    }
-    
     /**
      * Sets the values to the provider
      *
@@ -258,7 +242,6 @@ public final class ObjectProvider<T> {
         this.factory = null;
         this.selector = null;
         this.chain = null;
-        this.value = null;
         return this;
     }
     
@@ -275,7 +258,6 @@ public final class ObjectProvider<T> {
         this.factory = null;
         this.selector = null;
         this.chain = null;
-        this.value = null;
         return this;
     }
     
@@ -292,7 +274,6 @@ public final class ObjectProvider<T> {
         this.builder = null;
         this.selector = null;
         this.chain = null;
-        this.value = null;
         return this;
     }
     
@@ -309,7 +290,6 @@ public final class ObjectProvider<T> {
         this.factory = null;
         this.selector = null;
         this.chain = null;
-        this.value = null;
         return this;
     }
     
@@ -326,7 +306,6 @@ public final class ObjectProvider<T> {
         this.supplier = null;
         this.factory = null;
         this.chain = null;
-        this.value = null;
         return this;
     }
     
@@ -343,7 +322,6 @@ public final class ObjectProvider<T> {
         this.instance = null;
         this.supplier = null;
         this.factory = null;
-        this.value = null;
         return this;
     }
     
@@ -354,7 +332,6 @@ public final class ObjectProvider<T> {
      * @return This provider
      */
     public ObjectProvider<T> set(Value<T> value) {
-        this.value = value;
         this.chain = null;
         this.selector = null;
         this.builder = null;
