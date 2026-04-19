@@ -2,7 +2,8 @@ package com.stardevllc.starlib.table.set;
 
 import com.stardevllc.starlib.table.Table;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Set;
 
 public interface SetTable<R, C, V> extends Table<R, C, Set<V>> {
     void add(R row, C column, V value);

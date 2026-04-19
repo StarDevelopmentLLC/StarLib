@@ -2,9 +2,11 @@ package com.stardevllc.starlib.table.list;
 
 import com.stardevllc.starlib.table.Table;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 public interface ListTable<R, C, V> extends Table<R, C, List<V>> {
+    
     void add(R row, C column, V value);
     
     void add(R row, C column, int index, V value);
