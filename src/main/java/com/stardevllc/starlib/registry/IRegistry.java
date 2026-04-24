@@ -279,6 +279,10 @@ public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
         return null;
     }
     
+    default Key getParentKey(Key key) {
+        return key;
+    }
+    
     /**
      * Checks to see if this registry is frozen
      *

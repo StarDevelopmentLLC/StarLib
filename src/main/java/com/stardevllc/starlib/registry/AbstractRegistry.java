@@ -226,6 +226,11 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         return keys;
     }
     
+    @Override
+    public Key getParentKey(Key key) {
+        return this.parentRegistryKeys.get(key);
+    }
+    
     protected final RegisterResult<V> registerBacking(Key key, V value) {
         if (this.frozen) {
             return RegisterResult.ofFrozenFailure(key, value);
