@@ -107,7 +107,7 @@ public interface Temporal extends Comparable<Temporal>, Cloneable, StarSerializa
         return this;
     }
     
-    default Temporal set(Temporal temporal, Temporal temporals) {
+    default Temporal set(Temporal temporal, Temporal... temporals) {
         getTimeValue().set(0);
         add(temporal, temporals);
         return this;

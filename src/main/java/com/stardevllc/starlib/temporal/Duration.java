@@ -34,7 +34,7 @@ public class Duration implements Temporal {
     }
     
     public static Duration seconds(long seconds) {
-        return new Duration().add(seconds);
+        return new Duration().addSeconds(seconds);
     }
     
     public static Duration minutes(long minutes) {

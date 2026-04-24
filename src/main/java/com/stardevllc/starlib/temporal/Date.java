@@ -29,9 +29,9 @@ public class Date implements Temporal {
 
     public Date(long year, long month, long day) {
         this();
-        timeValue.add(TimeUnit.YEARS, year);
-        timeValue.add(TimeUnit.MONTHS, month - 1);
-        timeValue.add(TimeUnit.DAYS, day - 1);
+        timeValue.add(TimeUnit.YEARS.getMsPerUnit() * year);
+        timeValue.add(TimeUnit.MONTHS.getMsPerUnit() * month);
+        timeValue.add(TimeUnit.DAYS.getMsPerUnit() * day);
     }
 
     protected Date(TimeValue timeValue) {
@@ -56,14 +56,18 @@ public class Date implements Temporal {
     public Date clone() {
         return new Date(this.timeValue);
     }
-
+    
     public long getYear() {
         return this.timeValue.getTime() / TimeUnit.YEARS.getMsPerUnit();
     }
-
+    
+    public Date addYears(long years) {
+        return add(TimeUnit.YEARS, years);
+    }
+    
     public long getMonth() {
         long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
-        return remaining / TimeUnit.MONTHS.getMsPerUnit() + 1;
+        return remaining / TimeUnit.MONTHS.getMsPerUnit();
     }
 
     public Date addMonths(long months) {
@@ -73,10 +77,11 @@ public class Date implements Temporal {
     public Date subtractMonths(long months) {
         return subtract(TimeUnit.MONTHS, months);
     }
-
+    
     public long getDay() {
-        long remaining = this.timeValue.getTime() % TimeUnit.MONTHS.getMsPerUnit();
-        return remaining / TimeUnit.DAYS.getMsPerUnit() + 1;
+        long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
+        remaining = remaining % TimeUnit.MONTHS.getMsPerUnit();
+        return remaining / TimeUnit.DAYS.getMsPerUnit();
     }
 
     public Date addDays(long days) {
