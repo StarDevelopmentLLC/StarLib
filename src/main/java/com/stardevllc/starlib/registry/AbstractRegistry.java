@@ -353,17 +353,19 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     @Override
     public Set<Map.Entry<Key, V>> entrySet() {
-        return Set.of();
+        return new EntrySet();
     }
     
     protected class EntryItr implements Iterator<Map.Entry<Key, V>> {
         
+        private final Set<Map.Entry<Key, V>> entries;
         private final Iterator<Map.Entry<Key, V>> backingIterator;
         
         private Map.Entry<Key, V> current;
         
         public EntryItr() {
-            this.backingIterator = backingMap.entrySet().iterator();
+            this.entries = backingMap.entrySet();
+            this.backingIterator = entries.iterator();
         }
         
         @Override
@@ -400,7 +402,7 @@ public abstract class AbstractRegistry<V> implements IRegistry<V> {
         
         @Override
         public Iterator<Map.Entry<Key, V>> iterator() {
-            return null;
+            return new EntryItr();
         }
         
         @Override
