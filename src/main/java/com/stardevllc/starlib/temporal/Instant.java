@@ -22,8 +22,8 @@ public class Instant implements Temporal {
     public Instant(long month, long day, long year, long hour, long minute, long second) {
         this();
         timeValue.add(TimeUnit.YEARS.getMsPerUnit() * year);
-        timeValue.add(TimeUnit.MONTHS.getMsPerUnit() * month);
-        timeValue.add(TimeUnit.DAYS.getMsPerUnit() * day);
+        timeValue.add(TimeUnit.MONTHS.getMsPerUnit() * (month - 1));
+        timeValue.add(TimeUnit.DAYS.getMsPerUnit() * (day - 1));
         timeValue.add(TimeUnit.HOURS.getMsPerUnit() * hour);
         timeValue.add(TimeUnit.MINUTES.getMsPerUnit() * minute);
         timeValue.add(TimeUnit.SECONDS.getMsPerUnit() * second);
@@ -66,7 +66,7 @@ public class Instant implements Temporal {
 
     public long getMonth() {
         long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
-        return remaining / TimeUnit.MONTHS.getMsPerUnit();
+        return remaining / TimeUnit.MONTHS.getMsPerUnit() + 1;
     }
 
     public Instant addMonths(long months) {
@@ -80,7 +80,7 @@ public class Instant implements Temporal {
     public long getDay() {
         long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
         remaining = remaining % TimeUnit.MONTHS.getMsPerUnit();
-        return remaining / TimeUnit.DAYS.getMsPerUnit();
+        return remaining / TimeUnit.DAYS.getMsPerUnit() + 1;
     }
 
     public Instant addDays(long days) {
