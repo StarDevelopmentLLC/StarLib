@@ -30,8 +30,8 @@ public class Date implements Temporal {
     public Date(long year, long month, long day) {
         this();
         timeValue.add(TimeUnit.YEARS.getMsPerUnit() * year);
-        timeValue.add(TimeUnit.MONTHS.getMsPerUnit() * month);
-        timeValue.add(TimeUnit.DAYS.getMsPerUnit() * day);
+        timeValue.add(TimeUnit.MONTHS.getMsPerUnit() * (month - 1));
+        timeValue.add(TimeUnit.DAYS.getMsPerUnit() * (day - 1));
     }
 
     protected Date(TimeValue timeValue) {
@@ -67,7 +67,7 @@ public class Date implements Temporal {
     
     public long getMonth() {
         long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
-        return remaining / TimeUnit.MONTHS.getMsPerUnit();
+        return remaining / TimeUnit.MONTHS.getMsPerUnit() + 1;
     }
 
     public Date addMonths(long months) {
@@ -81,7 +81,7 @@ public class Date implements Temporal {
     public long getDay() {
         long remaining = this.timeValue.getTime() % TimeUnit.YEARS.getMsPerUnit();
         remaining = remaining % TimeUnit.MONTHS.getMsPerUnit();
-        return remaining / TimeUnit.DAYS.getMsPerUnit();
+        return remaining / TimeUnit.DAYS.getMsPerUnit() + 1;
     }
 
     public Date addDays(long days) {
