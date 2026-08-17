@@ -12,6 +12,26 @@ public interface Key extends Comparable<Key>, CharSequence {
      * Just an empty key for non-null uses
      */
     Key EMPTY = new Key() {
+        
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            
+            if (obj == null) {
+                return true;
+            }
+            
+            if (obj instanceof CharSequence cs) {
+                if (cs.isEmpty()) {
+                    return true;
+                }
+            }
+            
+            return super.equals(obj);
+        }
+        
         @Override
         public int hashCode() {
             return 0;
