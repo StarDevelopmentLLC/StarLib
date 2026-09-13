@@ -1,6 +1,7 @@
 package com.stardevllc.starlib.values.mutable;
 
 import com.stardevllc.starlib.values.MutableValue;
+import com.stardevllc.starlib.values.Value;
 
 public class MutableLong implements MutableValue<Long> {
     
@@ -36,6 +37,22 @@ public class MutableLong implements MutableValue<Long> {
     @Override
     public Long getValue() {
         return get();
+    }
+    
+    public void add(long value) {
+        this.value += value;
+    }
+    
+    public void add(Value<Long> value) {
+        this.value += value.getValue();
+    }
+    
+    public void subtract(long value) {
+        this.value -= value;
+    }
+    
+    public void subtract(Value<Long> value) {
+        this.value -= value.getValue();
     }
     
     @Override
