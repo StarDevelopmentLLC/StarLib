@@ -5,9 +5,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-public class ArrayListTreeMap<K, V> implements ListMap<K, V> {
+public class ArrayListTreeMap<K, V> implements SortedListMap<K, V> {
     
-    private final Map<K, ArrayList<V>> backingMap = new TreeMap<>();
+    private final TreeMap<K, ArrayList<V>> backingMap = new TreeMap<>();
+    
+    public K firstKey() {
+        return backingMap.firstKey();
+    }
+    
+    public K lastKey() {
+        return backingMap.lastKey();
+    }
     
     @Override
     public int size() {
