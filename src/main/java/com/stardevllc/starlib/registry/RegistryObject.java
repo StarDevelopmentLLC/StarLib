@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.function.*;
 import java.util.stream.Stream;
 
+@Deprecated(since = "0.25.0", forRemoval = true)
 public class RegistryObject<V> implements Supplier<V> {
     
     private final IRegistry<V> registry;

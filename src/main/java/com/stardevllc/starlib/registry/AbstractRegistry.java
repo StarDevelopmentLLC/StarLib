@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.BiConsumer;
 
+@Deprecated(since = "0.25.0", forRemoval = true)
 public abstract class AbstractRegistry<V> implements IRegistry<V> {
     
     private final Class<V> valueType;

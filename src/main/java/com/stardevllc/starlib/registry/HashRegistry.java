@@ -6,6 +6,7 @@ import com.stardevllc.starlib.objects.key.Key;
 import java.util.*;
 import java.util.function.Supplier;
 
+@Deprecated(since = "0.25.0", forRemoval = true)
 public class HashRegistry<V> extends AbstractRegistry<V> {
     public HashRegistry(Class<V> valueType, Key id, String name, IRegistry<? super V> parentRegistry, boolean frozen, EventDispatcher dispatcher, Set<Flag> flags) {
         super(valueType, id, name, new HashMap<>(), parentRegistry, frozen, dispatcher, flags);

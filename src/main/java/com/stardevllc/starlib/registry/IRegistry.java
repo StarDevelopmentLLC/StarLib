@@ -22,9 +22,11 @@ import java.util.stream.Collectors;
  * Not all methods in Map are provided and the methods here are also hard restricted to the type parameters
  * A simple way to implement this interface is to have a subclass that uses a Map and just pass-through those methods
  * </p>
+ * @deprecated Superceeded by the Registry Library (Split off to prevent other issues with frameworks)
  *
  * @param <V> The Value Type
  */
+@Deprecated(since = "0.25.0", forRemoval = true)
 @SuppressWarnings("DuplicatedCode")
 public interface IRegistry<V> extends Iterable<V>, Nameable, Keyable {
     

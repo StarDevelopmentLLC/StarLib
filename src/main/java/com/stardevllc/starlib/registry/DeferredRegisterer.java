@@ -6,6 +6,7 @@ import com.stardevllc.starlib.objects.key.Keyable;
 import java.util.*;
 import java.util.function.Supplier;
 
+@Deprecated(since = "0.25.0", forRemoval = true)
 public class DeferredRegisterer<V> {
     
     public static <V> DeferredRegisterer<V> create(IRegistry<V> registry) {

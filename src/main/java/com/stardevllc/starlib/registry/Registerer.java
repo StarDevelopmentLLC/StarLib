@@ -6,6 +6,7 @@ import com.stardevllc.starlib.registry.IRegistry.RegisterResult;
 
 import java.util.*;
 
+@Deprecated(since = "0.25.0", forRemoval = true)
 public class Registerer<V> {
     
     public static <V> Registerer<V> create(IRegistry<V> registry) {

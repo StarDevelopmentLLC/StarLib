@@ -5,6 +5,7 @@ import com.stardevllc.starlib.objects.key.Key;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated(since = "0.25.0", forRemoval = true)
 public final class Registries {
     
     private static final Map<Key, IRegistry<?>> REGISTRIES = new HashMap<>();
