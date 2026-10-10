@@ -12,6 +12,7 @@ import java.util.LinkedList;
  * Example: Registry: starlib:test, Item: starlib:example, FQN: starlib:test/starlib:example, or without namespacing, test/example <br>
  * Text to the left of the "/" is the registry id and text to the right of the "/" is the actual key within that registry
  */
+@Deprecated(since = "0.25.0", forRemoval = true)
 public class FQKey implements Key {
     
     public static FQKey of(IRegistry<?> registry, Key key) {
