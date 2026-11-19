@@ -5,16 +5,28 @@ import java.util.*;
 public class Flags<F extends IFlag> {
     private final Map<F, IFlag.State> backingMap = new HashMap<>();
     
+    private Flags<F> parent;
+    
+    public Flags() {}
+    
+    public Flags(Flags<F> parent) {
+        this.parent = parent;
+    }
+    
     public boolean contains(F flag) {
-        return backingMap.containsKey(flag);
+        boolean localContains = backingMap.containsKey(flag);
+        boolean parentContains = false;
+        if (parent != null) {
+            parentContains = parent.contains(flag);
+        }
+        return localContains || parentContains;
     }
     
     public IFlag.State get(F flag) {
-        if (backingMap.containsKey(flag)) {
-            return backingMap.get(flag);
-        }
+        IFlag.State localState = backingMap.getOrDefault(flag, IFlag.State.NOT_SET);
+        IFlag.State parentState = parent == null ? IFlag.State.NOT_SET : parent.get(flag);
         
-        return IFlag.State.NOT_SET;
+        return IFlag.State.check(localState, parentState);
     }
     
     public void set(F flag, IFlag.State state) {
