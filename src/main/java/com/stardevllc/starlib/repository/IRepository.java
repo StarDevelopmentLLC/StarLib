@@ -19,7 +19,7 @@ import java.util.function.*;
  * <p>
  * The goal behind a repository will be like the Guava Cache
  * A way to get cached values of a type based on a key, will probably have a timeout feature like the guava cache
- * But also just a way to store objects using similar design pattern to a {@link com.stardevllc.starlib.registry.IRegistry}
+ * But also just a way to store objects using similar design pattern to a IRegistry
  * </p>
  */
 public interface IRepository<K, V> extends Iterable<Map.Entry<K, V>>, Keyable, Nameable {
