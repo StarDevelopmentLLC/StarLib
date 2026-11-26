@@ -4,7 +4,6 @@ import com.stardevllc.starlib.chain.Chain;
 import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.factory.IFactory;
 import com.stardevllc.starlib.random.RandomSelector;
-import com.stardevllc.starlib.values.Value;
 
 import java.util.function.Supplier;
 
@@ -317,22 +316,6 @@ public final class ObjectProvider<T> {
      */
     public ObjectProvider<T> set(Chain<T> chain) {
         this.chain = chain;
-        this.selector = null;
-        this.builder = null;
-        this.instance = null;
-        this.supplier = null;
-        this.factory = null;
-        return this;
-    }
-    
-    /**
-     * Sets the value, unsetting others
-     *
-     * @param value The value
-     * @return This provider
-     */
-    public ObjectProvider<T> set(Value<T> value) {
-        this.chain = null;
         this.selector = null;
         this.builder = null;
         this.instance = null;
