@@ -20,7 +20,6 @@ public record MemorySize(long bytes) implements Comparable<MemorySize> {
         return new MemorySize(bytes);
     }
     
-    // Conversions
     public double in(MemoryUnit unit) {
         return unit.fromBytes(bytes);
     }
@@ -29,7 +28,6 @@ public record MemorySize(long bytes) implements Comparable<MemorySize> {
         return unit.fromBytesExact(bytes);
     }
     
-    // Arithmetic
     public MemorySize add(MemorySize other) {
         return new MemorySize(Math.addExact(this.bytes, other.bytes));
     }
