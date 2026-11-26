@@ -36,6 +36,14 @@ public record Density(double kgPerCubicMeter) implements Comparable<Density> {
         return new Density(this.kgPerCubicMeter / divisor);
     }
     
+    public Mass multiplyBy(Volume volume) {
+        return new Mass(this.kgPerCubicMeter * volume.cubicMeters());
+    }
+    
+    public double calculateMassKg(double cubicMeters) {
+        return this.kgPerCubicMeter * cubicMeters;
+    }
+    
     @Override
     public int compareTo(@NotNull Density other) {
         return Double.compare(this.kgPerCubicMeter, other.kgPerCubicMeter);

@@ -30,6 +30,14 @@ public record Mass(double kilograms) implements Comparable<Mass> {
         return new Mass(this.kilograms / factor);
     }
     
+    public Volume divide(Density density) {
+        return new Volume(this.kilograms / density.kgPerCubicMeter());
+    }
+    
+    public Density divideBy(Volume volume) {
+        return new Density(this.kilograms / volume.cubicMeters());
+    }
+    
     @Override
     public int compareTo(Mass other) {
         return Double.compare(this.kilograms, other.kilograms);

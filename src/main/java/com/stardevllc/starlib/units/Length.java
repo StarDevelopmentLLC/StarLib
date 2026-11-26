@@ -30,6 +30,22 @@ public record Length(double meters) implements Comparable<Length> {
         return this.meters / other.meters;
     }
     
+    public Area multiply(Length other) {
+        return new Area(this.meters * other.meters);
+    }
+    
+    public Area squared() {
+        return new Area(this.meters * this.meters);
+    }
+    
+    public Volume multiply(Area area) {
+        return new Volume(this.meters * area.squareMeters());
+    }
+    
+    public Volume cubed() {
+        return new Volume(this.meters * this.meters * this.meters);
+    }
+    
     @Override
     public int compareTo(Length other) {
         return Double.compare(this.meters, other.meters);

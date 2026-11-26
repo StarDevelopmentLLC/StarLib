@@ -36,6 +36,22 @@ public record Volume(double cubicMeters) implements Comparable<Volume> {
         return new Volume(this.cubicMeters / divisor);
     }
     
+    public Area divide(Length height) {
+        return new Area(this.cubicMeters / height.meters());
+    }
+    
+    public Length divide(Area base) {
+        return new Length(this.cubicMeters / base.squareMeters());
+    }
+    
+    public Length cbrt() {
+        return new Length(Math.cbrt(this.cubicMeters));
+    }
+    
+    public Mass multiply(Density density) {
+        return new Mass(this.cubicMeters * density.kgPerCubicMeter());
+    }
+    
     @Override
     public int compareTo(@NotNull Volume other) {
         return Double.compare(this.cubicMeters, other.cubicMeters);
