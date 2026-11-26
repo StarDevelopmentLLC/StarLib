@@ -1,17 +1,21 @@
 package com.stardevllc.starlib.units;
 
 public enum VolumeUnit implements Unit {
-    MILLILITER(1),
-    TEASPOON(4.92892),
-    TABLESPOON(14.7868),
-    CUBIC_INCH(16.3871),
-    FLUID_OUNCE(29.5735),
-    CUP(240),
-    PINT(473.176),
-    QUART(946.353),
-    GALLON(3785.41),
-    CUBIC_FOOT(28316.8),
-    CUBIC_METER(1E6);
+    CUBIC_METER(1.0),
+    LITER(0.001),
+    MILLILITER(1e-6),
+    MICROLITER(1e-9),
+    CUBIC_CENTIMETER(1e-6),
+    CUBIC_INCH(1.6387064e-5),
+    CUBIC_FOOT(0.028316846592),
+    US_FLUID_OUNCE(2.95735295625e-5),
+    US_GALLON(0.003785411784);
+    
+//    TEASPOON(4.92892),
+//    TABLESPOON(14.7868),
+//    CUP(240),
+//    PINT(473.176),
+//    QUART(946.353),
     
     private final double amountInBase;
     private final String[] aliases;
@@ -21,52 +25,12 @@ public enum VolumeUnit implements Unit {
         this.aliases = aliases;
     }
     
-    public double toUnit(double volume, VolumeUnit newUnit) {
-        return getAmountInBase() * volume / newUnit.getAmountInBase();
+    public double toBase(double value) {
+        return value * amountInBase;
     }
     
-    public double toMilliliters(double volume) {
-        return getAmountInBase() * volume;
-    }
-    
-    public double toTeaspoon(double volume) {
-        return toUnit(volume, TEASPOON);
-    }
-    
-    public double toTablespoon(double volume) {
-        return toUnit(volume, TABLESPOON);
-    }
-    
-    public double toCubicInch(double volume) {
-        return toUnit(volume, CUBIC_INCH);
-    }
-    
-    public double toFluidOunce(double volume) {
-        return toUnit(volume, FLUID_OUNCE);
-    }
-    
-    public double toCup(double volume) {
-        return toUnit(volume, CUP);
-    }
-    
-    public double toPint(double volume) {
-        return toUnit(volume, PINT);
-    }
-    
-    public double toQuart(double volume) {
-        return toUnit(volume, QUART);
-    }
-    
-    public double toGallon(double volume) {
-        return toUnit(volume, GALLON);
-    }
-    
-    public double toCubicFoot(double volume) {
-        return toUnit(volume, CUBIC_FOOT);
-    }
-    
-    public double toCubicMeter(double volume) {
-        return toUnit(volume, CUBIC_METER);
+    public double fromBase(double baseValue) {
+        return baseValue / amountInBase;
     }
     
     @Override

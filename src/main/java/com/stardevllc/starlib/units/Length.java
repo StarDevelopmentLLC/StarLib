@@ -1,126 +1,56 @@
 package com.stardevllc.starlib.units;
 
-import com.stardevllc.starlib.objects.builder.IBuilder;
-import com.stardevllc.starlib.objects.factory.IFactory;
-import com.stardevllc.starlib.random.Bounds;
+import com.stardevllc.starlib.objects.ObjectProvider;
+import com.stardevllc.starlib.objects.builder.AbstractBuilder;
+import com.stardevllc.starlib.objects.factory.AbstractFactory;
 
-import java.util.Objects;
-
-public final class Length {
-    
-    public static final LengthUnit DEFAULT_UNIT = LengthUnit.INCH;
-    
-    private long id;
-    
-    private final double value;
-    private final LengthUnit unit;
+public record Length(double meters) implements Comparable<Length> {
     
     public Length(double value, LengthUnit unit) {
-        this.value = value;
-        this.unit = unit;
+        this(unit.toBase(value));
     }
     
-    public double get(LengthUnit newUnit) {
-        return unit.toUnit(value, newUnit);
-    }
-    
-    public double get() {
-        return value;
+    public double to(LengthUnit unit) {
+        return unit.fromBase(this.meters);
     }
     
     public Length add(Length other) {
-        double totalValue = this.value + other.get(this.unit);
-        return new Length(totalValue, this.unit);
-    }
-    
-    public Length add(double d) {
-        return new Length(this.value + d, this.unit);
+        return new Length(this.meters + other.meters);
     }
     
     public Length subtract(Length other) {
-        double totalValue = this.value - other.get(this.unit);
-        return new Length(totalValue, this.unit);
+        return new Length(this.meters - other.meters);
     }
     
-    public Length subtract(double d) {
-        return new Length(this.value - d, this.unit);
+    public Length scale(double factor) {
+        return new Length(this.meters * factor);
     }
     
-    public Length multiply(Length other) {
-        double totalValue = this.value * other.get(this.unit);
-        return new Length(totalValue, this.unit);
+    public double ratio(Length other) {
+        return this.meters / other.meters;
     }
     
-    public Length multiply(double d) {
-        return new Length(this.value * d, this.unit);
-    }
-    
-    public Length divide(Length other) {
-        double totalValue = this.value / other.get(this.unit);
-        return new Length(totalValue, this.unit);
-    }
-    
-    public Length divide(double d) {
-        return new Length(this.value / d, this.unit);
+    @Override
+    public int compareTo(Length other) {
+        return Double.compare(this.meters, other.meters);
     }
     
     public Builder asBuilder() {
         return new Builder(this);
     }
     
-    public static Builder builder() {
-        return new Builder();
+    public static Length of(double meters) {
+        return new Length(meters);
     }
     
-    public static Factory factory() {
-        return new Factory();
+    public static Length of(double value, LengthUnit unit) {
+        return new Length(value, unit);
     }
     
-    public double value() {
-        return value;
-    }
-    
-    public LengthUnit unit() {
-        return unit;
-    }
-    
-    public long getId() {
-        return id;
-    }
-    
-    public void setId(long id) {
-        this.id = id;
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj == null || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        var that = (Length) obj;
-        return Double.doubleToLongBits(this.value) == Double.doubleToLongBits(that.value) &&
-                this.unit == that.unit;
-    }
-    
-    @Override
-    public int hashCode() {
-        return Objects.hash(value, unit);
-    }
-    
-    @Override
-    public String toString() {
-        return "Length[" +
-                "value=" + value + ", " +
-                "unit=" + unit + ']';
-    }
-    
-    public static class Builder implements IBuilder<Length, Builder> {
+    public static class Builder extends AbstractBuilder<Length, Builder> {
         
         private double value;
-        private LengthUnit unit;
+        private LengthUnit unit = LengthUnit.METERS;
         
         public Builder() {
         }
@@ -131,8 +61,7 @@ public final class Length {
         }
         
         public Builder(Length length) {
-            this.value = length.value;
-            this.unit = length.unit;
+            this.value = length.meters;
         }
         
         public Builder value(double value) {
@@ -146,8 +75,8 @@ public final class Length {
         }
         
         @Override
-        public Length build() {
-            return new Length(value, unit);
+        public Length newInstance() {
+            return new Length(unit.toBase(this.value));
         }
         
         @Override
@@ -156,38 +85,37 @@ public final class Length {
         }
     }
     
-    public static class Factory implements IFactory<Length, Factory> {
+    public static class Factory extends AbstractFactory<Length, Factory> {
         
-        private Bounds bounds;
-        private LengthUnit unit;
+        private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
+        private LengthUnit unit = LengthUnit.METERS;
         
         public Factory() {
         }
         
         public Factory(Factory factory) {
-            this.bounds = factory.bounds;
+            this.valueProvider.set(factory.valueProvider);
             this.unit = factory.unit;
         }
         
-        public Factory bounds(Bounds bounds, LengthUnit unit) {
-            this.bounds = bounds;
+        public Factory valueProvider(ObjectProvider<Double> provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory unit(LengthUnit unit) {
             this.unit = unit;
             return self();
         }
         
-        public Factory bounds(long min, long max, long divisor, LengthUnit unit) {
-            return bounds(Bounds.range(min, max, divisor), unit);
-        }
-        
-        public Factory bounds(long min, long max, LengthUnit unit) {
-            return bounds(Bounds.range(min, max), unit);
+        @Override
+        public Length create(Object[] parameters) {
+            return new Length(unit.toBase(valueProvider.get()));
         }
         
         @Override
-        public Length create(Object[] parameters) {
-            Objects.requireNonNull(this.bounds, "bounds must not be null");
-            Objects.requireNonNull(this.unit, "unit must not be null");
-            return new Length(bounds.generateAndDivide(), unit);
+        public Factory clone() {
+            return new Factory(this);
         }
     }
 }

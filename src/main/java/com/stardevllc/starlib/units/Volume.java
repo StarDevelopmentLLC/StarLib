@@ -1,127 +1,62 @@
 package com.stardevllc.starlib.units;
 
-import com.stardevllc.starlib.objects.builder.IBuilder;
-import com.stardevllc.starlib.objects.factory.IFactory;
-import com.stardevllc.starlib.random.Bounds;
+import com.stardevllc.starlib.objects.ObjectProvider;
+import com.stardevllc.starlib.objects.builder.AbstractBuilder;
+import com.stardevllc.starlib.objects.factory.AbstractFactory;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
-public final class Volume {
-    
-    public static final VolumeUnit DEFAULT_UNIT = VolumeUnit.FLUID_OUNCE;
-    
-    private long id;
-    
-    private final double value;
-    private final VolumeUnit unit;
+public record Volume(double cubicMeters) implements Comparable<Volume> {
+    public Volume {
+        if (cubicMeters < 0) {
+            throw new IllegalArgumentException("Volume cannot be negative");
+        }
+    }
     
     public Volume(double value, VolumeUnit unit) {
-        this.value = value;
-        this.unit = unit;
+        this(unit.toBase(value));
     }
     
-    public double get(VolumeUnit newUnit) {
-        return unit.toUnit(value, newUnit);
-    }
-    
-    public double get() {
-        return value;
+    public double to(VolumeUnit targetUnit) {
+        return targetUnit.fromBase(this.cubicMeters);
     }
     
     public Volume add(Volume other) {
-        double totalValue = this.value + other.get(this.unit);
-        return new Volume(totalValue, this.unit);
-    }
-    
-    public Volume add(double d) {
-        return new Volume(this.value + d, this.unit);
+        return new Volume(this.cubicMeters + other.cubicMeters);
     }
     
     public Volume subtract(Volume other) {
-        double totalValue = this.value - other.get(this.unit);
-        return new Volume(totalValue, this.unit);
+        return new Volume(this.cubicMeters - other.cubicMeters);
     }
     
-    public Volume subtract(double d) {
-        return new Volume(this.value - d, this.unit);
+    public Volume multiply(double factor) {
+        return new Volume(this.cubicMeters * factor);
     }
     
-    public Volume multiply(Volume other) {
-        double totalValue = this.value * other.get(this.unit);
-        return new Volume(totalValue, this.unit);
+    public Volume divide(double divisor) {
+        return new Volume(this.cubicMeters / divisor);
     }
     
-    public Volume multiply(double d) {
-        return new Volume(this.value * d, this.unit);
-    }
-    
-    public Volume divide(Volume other) {
-        double totalValue = this.value / other.get(this.unit);
-        return new Volume(totalValue, this.unit);
-    }
-    
-    public Volume divide(double d) {
-        return new Volume(this.value / d, this.unit);
+    @Override
+    public int compareTo(@NotNull Volume other) {
+        return Double.compare(this.cubicMeters, other.cubicMeters);
     }
     
     public Builder asBuilder() {
         return new Builder(this);
     }
     
-    public static Builder builder() {
-        return new Builder();
+    public static Volume of(double cubicMeters) {
+        return new Volume(cubicMeters);
     }
     
-    public static Factory factory() {
-        return new Factory();
+    public static Volume of(double value, VolumeUnit unit) {
+        return new Volume(value, unit);
     }
     
-    public double value() {
-        return value;
-    }
-    
-    public VolumeUnit unit() {
-        return unit;
-    }
-    
-    public long getId() {
-        return id;
-    }
-    
-    public void setId(long id) {
-        this.id = id;
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj == null || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        var that = (Volume) obj;
-        return Double.doubleToLongBits(this.value) == Double.doubleToLongBits(that.value) &&
-                this.unit == that.unit;
-    }
-    
-    @Override
-    public int hashCode() {
-        return Objects.hash(value, unit);
-    }
-    
-    @Override
-    public String toString() {
-        return "Volume[" +
-                "value=" + value + ", " +
-                "unit=" + unit + ']';
-    }
-    
-    
-    public static class Builder implements IBuilder<Volume, Builder> {
+    public static class Builder extends AbstractBuilder<Volume, Builder> {
         
         private double value;
-        private VolumeUnit unit;
+        private VolumeUnit unit = VolumeUnit.CUBIC_METER;
         
         public Builder() {
         }
@@ -132,8 +67,7 @@ public final class Volume {
         }
         
         public Builder(Volume length) {
-            this.value = length.value;
-            this.unit = length.unit;
+            this.value = length.cubicMeters;
         }
         
         public Builder value(double value) {
@@ -147,8 +81,8 @@ public final class Volume {
         }
         
         @Override
-        public Volume build() {
-            return new Volume(value, unit);
+        public Volume newInstance() {
+            return new Volume(unit.toBase(value));
         }
         
         @Override
@@ -157,38 +91,37 @@ public final class Volume {
         }
     }
     
-    public static class Factory implements IFactory<Volume, Factory> {
+    public static class Factory extends AbstractFactory<Volume, Factory> {
         
-        private Bounds bounds;
+        private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
         private VolumeUnit unit;
         
         public Factory() {
         }
         
         public Factory(Factory factory) {
-            this.bounds = factory.bounds;
+            this.valueProvider.set(factory.valueProvider);
             this.unit = factory.unit;
         }
         
-        public Factory bounds(Bounds bounds, VolumeUnit unit) {
-            this.bounds = bounds;
+        public Factory valueProvider(ObjectProvider<Double> provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory unit(VolumeUnit unit) {
             this.unit = unit;
             return self();
         }
         
-        public Factory bounds(long min, long max, long divisor, VolumeUnit unit) {
-            return bounds(Bounds.range(min, max, divisor), unit);
-        }
-        
-        public Factory bounds(long min, long max, VolumeUnit unit) {
-            return bounds(Bounds.range(min, max), unit);
+        @Override
+        public Volume create(Object[] parameters) {
+            return new Volume(unit.toBase(valueProvider.get()));
         }
         
         @Override
-        public Volume create(Object[] parameters) {
-            Objects.requireNonNull(this.bounds, "bounds must not be null");
-            Objects.requireNonNull(this.unit, "unit must not be null");
-            return new Volume(bounds.generateAndDivide(), unit);
+        public Factory clone() {
+            return new Factory(this);
         }
     }
 }
