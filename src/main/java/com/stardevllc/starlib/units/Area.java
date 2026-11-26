@@ -52,7 +52,8 @@ public record Area(double squareMeters) implements Comparable<Area> {
         private double value;
         private AreaUnit unit = AreaUnit.SQUARE_METER;
         
-        public Builder() {}
+        public Builder() {
+        }
         
         public Builder(Area area) {
             this.value = area.squareMeters;
@@ -84,18 +85,24 @@ public record Area(double squareMeters) implements Comparable<Area> {
         }
     }
     
-    public static final class Factory extends AbstractFactory<Area, Factory> {
+    public static final class Factory extends AbstractFactory<Area, Builder, Factory> {
         
         private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
         private AreaUnit unit = AreaUnit.SQUARE_METER;
         
         public Factory() {
+            super(Builder::new);
         }
         
         public Factory(Factory factory) {
             super(factory);
             this.valueProvider.set(factory.valueProvider);
             this.unit = factory.unit;
+        }
+        
+        @Override
+        protected void applyToBuilder(Builder builder, Object[] params) {
+            builder.unit(unit).value(valueProvider.get());
         }
         
         public Factory valueProvider(ObjectProvider<Double> provider) {
@@ -111,11 +118,6 @@ public record Area(double squareMeters) implements Comparable<Area> {
         @Override
         public Factory clone() {
             return new Factory(this);
-        }
-        
-        @Override
-        public Area create(Object[] parameters) {
-            return new Area(unit.toSquareMeters(valueProvider.get()));
         }
     }
 }

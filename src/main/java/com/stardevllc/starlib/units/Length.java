@@ -101,15 +101,17 @@ public record Length(double meters) implements Comparable<Length> {
         }
     }
     
-    public static class Factory extends AbstractFactory<Length, Factory> {
+    public static class Factory extends AbstractFactory<Length, Builder, Factory> {
         
         private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
         private LengthUnit unit = LengthUnit.METERS;
         
         public Factory() {
+            super(Builder::new);
         }
         
         public Factory(Factory factory) {
+            super(factory);
             this.valueProvider.set(factory.valueProvider);
             this.unit = factory.unit;
         }
@@ -125,8 +127,8 @@ public record Length(double meters) implements Comparable<Length> {
         }
         
         @Override
-        public Length create(Object[] parameters) {
-            return new Length(unit.toBase(valueProvider.get()));
+        protected void applyToBuilder(Builder builder, Object[] params) {
+            builder.unit(unit).value(valueProvider.get());            
         }
         
         @Override

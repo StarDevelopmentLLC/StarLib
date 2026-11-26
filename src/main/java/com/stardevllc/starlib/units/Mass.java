@@ -93,15 +93,17 @@ public record Mass(double kilograms) implements Comparable<Mass> {
         }
     }
     
-    public static class Factory extends AbstractFactory<Mass, Factory> {
+    public static class Factory extends AbstractFactory<Mass, Builder, Factory> {
         
         private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
         private MassUnit unit;
         
         public Factory() {
+            super(Builder::new);
         }
         
         public Factory(Factory factory) {
+            super(factory);
             this.valueProvider.set(factory.valueProvider);
             this.unit = factory.unit;
         }
@@ -117,8 +119,8 @@ public record Mass(double kilograms) implements Comparable<Mass> {
         }
         
         @Override
-        public Mass create(Object[] parameters) {
-            return new Mass(unit.toBase(valueProvider.get()));
+        protected void applyToBuilder(Builder builder, Object[] params) {
+            builder.unit(unit).value(valueProvider.get());
         }
         
         @Override

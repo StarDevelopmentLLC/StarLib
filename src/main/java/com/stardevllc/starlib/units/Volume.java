@@ -107,15 +107,17 @@ public record Volume(double cubicMeters) implements Comparable<Volume> {
         }
     }
     
-    public static class Factory extends AbstractFactory<Volume, Factory> {
+    public static class Factory extends AbstractFactory<Volume, Builder, Factory> {
         
         private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
         private VolumeUnit unit;
         
         public Factory() {
+            super(Builder::new);
         }
         
         public Factory(Factory factory) {
+            super(factory);
             this.valueProvider.set(factory.valueProvider);
             this.unit = factory.unit;
         }
@@ -131,8 +133,8 @@ public record Volume(double cubicMeters) implements Comparable<Volume> {
         }
         
         @Override
-        public Volume create(Object[] parameters) {
-            return new Volume(unit.toBase(valueProvider.get()));
+        protected void applyToBuilder(Builder builder, Object[] params) {
+            builder.unit(unit).value(valueProvider.get());
         }
         
         @Override

@@ -98,12 +98,13 @@ public record Density(double kgPerCubicMeter) implements Comparable<Density> {
         }
     }
     
-    public static final class Factory extends AbstractFactory<Density, Factory> {
+    public static final class Factory extends AbstractFactory<Density, Builder, Factory> {
         
         private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
         private DensityUnit unit = DensityUnit.KG_PER_CUBIC_METER;
         
         public Factory() {
+            super(Builder::new);
         }
         
         public Factory(Factory factory) {
@@ -128,8 +129,8 @@ public record Density(double kgPerCubicMeter) implements Comparable<Density> {
         }
         
         @Override
-        public Density create(Object[] parameters) {
-            return new Density(unit.toBase(valueProvider.get()));
+        protected void applyToBuilder(Builder builder, Object[] params) {
+            builder.unit(unit).value(valueProvider.get());
         }
     }
 }
