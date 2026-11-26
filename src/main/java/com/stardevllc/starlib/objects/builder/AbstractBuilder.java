@@ -43,6 +43,23 @@ public abstract class AbstractBuilder<T, B extends AbstractBuilder<T, B>> implem
         return postbuildConsumer;
     }
     
+    public abstract T newInstance();
+    
+    @Override
+    public T build() {
+        if (this.prebuildConsumer != null) {
+            this.prebuildConsumer.accept(self());
+        }
+        
+        T object = newInstance();
+        
+        if (this.postbuildConsumer != null) {
+            this.postbuildConsumer.accept(object);
+        }
+        
+        return object;
+    }
+    
     @Override
     public abstract B clone();
 }
