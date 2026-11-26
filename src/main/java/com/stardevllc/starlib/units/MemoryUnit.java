@@ -3,128 +3,58 @@ package com.stardevllc.starlib.units;
 import com.stardevllc.starlib.converter.string.EnumStringConverter;
 import com.stardevllc.starlib.converter.string.StringConverters;
 
-/**
- * Represents units of computer memory
- */
 public enum MemoryUnit {
+    BYTE(1L),
     
-    /**
-     * Base unit (8 bits technically)
-     */
-    BYTE(1, "b", "bytes"),
+    // Binary (IEC - base 1024)
+    KIBIBYTE(1024L),
+    MEBIBYTE(1048576L),
+    GIBIBYTE(1073741824L),
+    TEBIBYTE(1099511627776L),
+    PEBIBYTE(1125899906842624L),
+    EXBIBYTE(1152921504606846976L),
     
-    /**
-     * Byte * 1,024
-     */
-    KILOBYTE(1024, "kb", "kilobytes"),
-    
-    /**
-     * Byte * 1,048,576
-     */
-    MEGABYTE(1048576, "mb", "megabytes"),
-    
-    /**
-     * Byte * 1,073,741,824
-     */
-    GIGABYTE(1073741824, "gb", "gigabytes"),
-    
-    /**
-     * Byte * 1,099,511,627,776
-     */
-    TERABYTE(1099511627776L, "tb", "terabytes"),
-    
-    /**
-     * Byte * 1,125,899,906,842,624
-     */
-    PETABYTE(1125899906842624L, "pb", "petabytes");
+    // Decimal (SI - base 1000)
+    KILOBYTE(1_000L),
+    MEGABYTE(1_000_000L),
+    GIGABYTE(1_000_000_000L),
+    TERABYTE(1_000_000_000_000L),
+    PETABYTE(1_000_000_000_000_000L),
+    EXABYTE(1_000_000_000_000_000_000L);
     
     static {
         StringConverters.addConverter(MemoryUnit.class, new EnumStringConverter<>(MemoryUnit.class));
     }
     
-    private final long amountInBytes;
+    private final long amountInBase;
     private final String[] aliases;
     
-    MemoryUnit(long amountInBytes, String... aliases) {
-        this.amountInBytes = amountInBytes;
+    MemoryUnit(long amountInBase, String... aliases) {
+        this.amountInBase = amountInBase;
         this.aliases = aliases;
     }
     
-    /**
-     * Amount in Bytes (or base unit)
-     *
-     * @return Amount in bytes
-     */
-    public long getAmountInBytes() {
-        return amountInBytes;
+    public long toBytes(long amount) {
+        return Math.multiplyExact(amount, amountInBase);
     }
     
-    /**
-     * Aliases
-     *
-     * @return Aliases
-     */
+    public long toBytes(double amount) {
+        return Math.round(amount * amountInBase);
+    }
+    
+    public double fromBytes(long bytes) {
+        return (double) bytes / amountInBase;
+    }
+    
+    public long fromBytesExact(long bytes) {
+        return bytes / amountInBase;
+    }
+    
+    public long getAmountInBase() {
+        return amountInBase;
+    }
+    
     public String[] getAliases() {
         return aliases;
-    }
-    
-    /**
-     * Converts to bytes
-     *
-     * @param amount The maount
-     * @return The converted value
-     */
-    public long toBytes(long amount) {
-        return amountInBytes * amount;
-    }
-    
-    /**
-     * Converts to kilobytes
-     *
-     * @param amount The maount
-     * @return The converted value
-     */
-    public double toKilobytes(long amount) {
-        return amountInBytes * amount * 1.0 / KILOBYTE.getAmountInBytes();
-    }
-    
-    /**
-     * Converts to megabytes
-     *
-     * @param amount The maount
-     * @return The converted value
-     */
-    public double toMegabytes(long amount) {
-        return amountInBytes * amount * 1.0 / MEGABYTE.getAmountInBytes();
-    }
-    
-    /**
-     * Converts to gigabytes
-     *
-     * @param amount The maount
-     * @return The converted value
-     */
-    public double toGigabytes(long amount) {
-        return amountInBytes * amount * 1.0 / GIGABYTE.getAmountInBytes();
-    }
-    
-    /**
-     * Converts to terabytes
-     *
-     * @param amount The maount
-     * @return The converted value
-     */
-    public double toTerabytes(long amount) {
-        return amountInBytes * amount * 1.0 / TERABYTE.getAmountInBytes();
-    }
-    
-    /**
-     * Converts to petabytes
-     *
-     * @param amount The maount
-     * @return The converted value
-     */
-    public double toPetabytes(long amount) {
-        return amountInBytes * amount * 1.0 / PETABYTE.getAmountInBytes();
     }
 }
