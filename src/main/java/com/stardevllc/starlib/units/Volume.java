@@ -1,9 +1,13 @@
 package com.stardevllc.starlib.units;
 
-import com.stardevllc.starlib.objects.ObjectProvider;
 import com.stardevllc.starlib.objects.builder.AbstractBuilder;
 import com.stardevllc.starlib.objects.factory.AbstractFactory;
+import com.stardevllc.starlib.objects.provider.DoubleProvider;
+import com.stardevllc.starlib.random.RandomSelector;
+import com.stardevllc.starlib.random.variableamount.VariableAmount;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.DoubleSupplier;
 
 public record Volume(double cubicMeters) implements Comparable<Volume> {
     public Volume {
@@ -109,7 +113,7 @@ public record Volume(double cubicMeters) implements Comparable<Volume> {
     
     public static class Factory extends AbstractFactory<Volume, Builder, Factory> {
         
-        private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
+        private final DoubleProvider valueProvider = new DoubleProvider();
         private VolumeUnit unit;
         
         public Factory() {
@@ -122,7 +126,22 @@ public record Volume(double cubicMeters) implements Comparable<Volume> {
             this.unit = factory.unit;
         }
         
-        public Factory valueProvider(ObjectProvider<Double> provider) {
+        public Factory valueProvider(DoubleProvider provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(RandomSelector<Double> provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(DoubleSupplier provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(VariableAmount provider) {
             this.valueProvider.set(provider);
             return self();
         }

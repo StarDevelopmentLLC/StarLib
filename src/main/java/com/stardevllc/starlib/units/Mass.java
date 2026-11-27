@@ -1,8 +1,12 @@
 package com.stardevllc.starlib.units;
 
-import com.stardevllc.starlib.objects.ObjectProvider;
 import com.stardevllc.starlib.objects.builder.AbstractBuilder;
 import com.stardevllc.starlib.objects.factory.AbstractFactory;
+import com.stardevllc.starlib.objects.provider.DoubleProvider;
+import com.stardevllc.starlib.random.RandomSelector;
+import com.stardevllc.starlib.random.variableamount.VariableAmount;
+
+import java.util.function.DoubleSupplier;
 
 public record Mass(double kilograms) implements Comparable<Mass> {
     
@@ -95,7 +99,7 @@ public record Mass(double kilograms) implements Comparable<Mass> {
     
     public static class Factory extends AbstractFactory<Mass, Builder, Factory> {
         
-        private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
+        private final DoubleProvider valueProvider = new DoubleProvider();
         private MassUnit unit;
         
         public Factory() {
@@ -108,10 +112,25 @@ public record Mass(double kilograms) implements Comparable<Mass> {
             this.unit = factory.unit;
         }
         
-        public Factory valueProvider(ObjectProvider<Double> provider) {
+        public Factory valueProvider(DoubleProvider provider) {
             this.valueProvider.set(provider);
             return self();
         }
+        
+        public Factory valueProvider(RandomSelector<Double> provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(DoubleSupplier provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(VariableAmount provider) {
+            this.valueProvider.set(provider);
+            return self();
+        } 
         
         public Factory unit(MassUnit unit) {
             this.unit = unit;

@@ -4,6 +4,7 @@ import com.stardevllc.starlib.chain.Chain;
 import com.stardevllc.starlib.objects.builder.IBuilder;
 import com.stardevllc.starlib.objects.factory.IFactory;
 import com.stardevllc.starlib.random.RandomSelector;
+import com.stardevllc.starlib.random.variableamount.VariableAmount;
 
 import java.util.function.Supplier;
 

@@ -1,9 +1,13 @@
 package com.stardevllc.starlib.units;
 
-import com.stardevllc.starlib.objects.ObjectProvider;
 import com.stardevllc.starlib.objects.builder.AbstractBuilder;
 import com.stardevllc.starlib.objects.factory.AbstractFactory;
+import com.stardevllc.starlib.objects.provider.DoubleProvider;
+import com.stardevllc.starlib.random.RandomSelector;
+import com.stardevllc.starlib.random.variableamount.VariableAmount;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.DoubleSupplier;
 
 public record Density(double kgPerCubicMeter) implements Comparable<Density> {
     public Density {
@@ -66,7 +70,8 @@ public record Density(double kgPerCubicMeter) implements Comparable<Density> {
         private double value;
         private DensityUnit unit = DensityUnit.KG_PER_CUBIC_METER;
         
-        public Builder() {}
+        public Builder() {
+        }
         
         public Builder(Density density) {
             this.value = density.kgPerCubicMeter;
@@ -100,7 +105,7 @@ public record Density(double kgPerCubicMeter) implements Comparable<Density> {
     
     public static final class Factory extends AbstractFactory<Density, Builder, Factory> {
         
-        private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
+        private final DoubleProvider valueProvider = new DoubleProvider();
         private DensityUnit unit = DensityUnit.KG_PER_CUBIC_METER;
         
         public Factory() {
@@ -113,7 +118,22 @@ public record Density(double kgPerCubicMeter) implements Comparable<Density> {
             this.unit = factory.unit;
         }
         
-        public Factory valueProvider(ObjectProvider<Double> provider) {
+        public Factory valueProvider(DoubleProvider provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(RandomSelector<Double> provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(DoubleSupplier provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(VariableAmount provider) {
             this.valueProvider.set(provider);
             return self();
         }

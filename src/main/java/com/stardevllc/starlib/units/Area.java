@@ -1,8 +1,12 @@
 package com.stardevllc.starlib.units;
 
-import com.stardevllc.starlib.objects.ObjectProvider;
 import com.stardevllc.starlib.objects.builder.AbstractBuilder;
 import com.stardevllc.starlib.objects.factory.AbstractFactory;
+import com.stardevllc.starlib.objects.provider.DoubleProvider;
+import com.stardevllc.starlib.random.RandomSelector;
+import com.stardevllc.starlib.random.variableamount.VariableAmount;
+
+import java.util.function.DoubleSupplier;
 
 public record Area(double squareMeters) implements Comparable<Area> {
     
@@ -87,7 +91,7 @@ public record Area(double squareMeters) implements Comparable<Area> {
     
     public static final class Factory extends AbstractFactory<Area, Builder, Factory> {
         
-        private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
+        private final DoubleProvider valueProvider = new DoubleProvider();
         private AreaUnit unit = AreaUnit.SQUARE_METER;
         
         public Factory() {
@@ -105,7 +109,22 @@ public record Area(double squareMeters) implements Comparable<Area> {
             builder.unit(unit).value(valueProvider.get());
         }
         
-        public Factory valueProvider(ObjectProvider<Double> provider) {
+        public Factory valueProvider(DoubleProvider provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(RandomSelector<Double> provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(DoubleSupplier provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(VariableAmount provider) {
             this.valueProvider.set(provider);
             return self();
         }

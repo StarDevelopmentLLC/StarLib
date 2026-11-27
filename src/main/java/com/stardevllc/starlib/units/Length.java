@@ -1,8 +1,12 @@
 package com.stardevllc.starlib.units;
 
-import com.stardevllc.starlib.objects.ObjectProvider;
 import com.stardevllc.starlib.objects.builder.AbstractBuilder;
 import com.stardevllc.starlib.objects.factory.AbstractFactory;
+import com.stardevllc.starlib.objects.provider.DoubleProvider;
+import com.stardevllc.starlib.random.RandomSelector;
+import com.stardevllc.starlib.random.variableamount.VariableAmount;
+
+import java.util.function.DoubleSupplier;
 
 public record Length(double meters) implements Comparable<Length> {
     
@@ -103,7 +107,7 @@ public record Length(double meters) implements Comparable<Length> {
     
     public static class Factory extends AbstractFactory<Length, Builder, Factory> {
         
-        private final ObjectProvider<Double> valueProvider = new ObjectProvider<>();
+        private final DoubleProvider valueProvider = new DoubleProvider();
         private LengthUnit unit = LengthUnit.METERS;
         
         public Factory() {
@@ -116,7 +120,22 @@ public record Length(double meters) implements Comparable<Length> {
             this.unit = factory.unit;
         }
         
-        public Factory valueProvider(ObjectProvider<Double> provider) {
+        public Factory valueProvider(DoubleProvider provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(RandomSelector<Double> provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(DoubleSupplier provider) {
+            this.valueProvider.set(provider);
+            return self();
+        }
+        
+        public Factory valueProvider(VariableAmount provider) {
             this.valueProvider.set(provider);
             return self();
         }
